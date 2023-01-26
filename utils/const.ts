@@ -1,0 +1,15 @@
+export const JENIS_PERATURAN: {
+  kode: string;
+  nama: string;
+  singkatan?: string;
+}[] = [
+  { kode: "uu", nama: "Undang-Undang" },
+  {
+    kode: "perppu",
+    nama: "Peraturan Pemerintah Pengganti Undang-undang",
+    singkatan: "Perppu",
+  },
+  { kode: "pp", nama: "Peraturan Pemerintah" },
+  { kode: "perpres", nama: "Peraturan Presiden" },
+  { kode: "permenkeu", nama: "Peraturan Menteri Keuangan" },
+];

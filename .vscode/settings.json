@@ -2,11 +2,12 @@
   "deno.enable": true,
   "deno.lint": true,
   "editor.defaultFormatter": "denoland.vscode-deno",
-  "editor.formatOnSave": true,
   "[typescript]": {
+    "editor.formatOnSave": true,
     "editor.defaultFormatter": "denoland.vscode-deno"
   },
   "[typescriptreact]": {
+    "editor.formatOnSave": true,
     "editor.defaultFormatter": "denoland.vscode-deno"
-  },
+  }
 }
