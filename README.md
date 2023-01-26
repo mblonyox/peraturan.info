@@ -1,11 +1,19 @@
-# fresh project
+# peraturan.deno.dev
 
-### Usage
+peraturan.deno.dev adalah upaya replikasi legislation.gov.uk untuk peraturan perundang-undangan di lingkungan Republik Indonesia.
 
-Start the project:
+## Dibuat dengan
+- Deno Fresh
+- Pico CSS
+## Pengembangan
+
+Menjalankan proyek:
 
 ```
 deno task start
 ```
+## Kontribusi
+Jika anda memiliki masukan/saran yang membangun, silakan lakukan _fork_ atas _repository_ ini dan buat _pull request_. Anda juga bisa menulis pada tab _Issues_.
 
-This will watch the project directory and restart as necessary.
+## Lisensi
+Didistribusikan di bawah lisensi MIT. Baca `LICENSE.txt` untuk informasi lebih lanjut.
