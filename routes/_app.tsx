@@ -6,6 +6,10 @@ export default function App({ Component }: AppProps) {
   return (
     <>
       <Head>
+        <meta
+          name="google-site-verification"
+          content="gDCSCeR4yYkod7yJBudB-0OZEo2y507Hz8iNuCeDgwU"
+        />
         <title>Database Peraturan</title>
         <meta
           name="description"
