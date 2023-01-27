@@ -1,4 +1,5 @@
 interface PaginationProps {
+  url: string;
   total: number;
   page: number;
   pageSize: number;
@@ -6,6 +7,7 @@ interface PaginationProps {
 }
 
 export default function Pagination({
+  url,
   total,
   page,
   pageSize,
@@ -27,13 +29,13 @@ export default function Pagination({
   }
 
   const pageUrl = (page: number) => {
-    const params = new URLSearchParams(document.location.search);
+    const params = new URLSearchParams(new URL(url).search);
     params.set("page", `${page}`);
     return `?${params.toString()}`;
   };
 
   return (
-    <nav>
+    <nav style={{ justifyContent: "center" }}>
       <ul>
         {page !== 1 && (
           <li>

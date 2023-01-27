@@ -3,7 +3,7 @@ export const JENIS_PERATURAN: {
   nama: string;
   singkatan?: string;
 }[] = [
-  { kode: "uu", nama: "Undang-Undang" },
+  { kode: "uu", nama: "Undang\u2011Undang" },
   {
     kode: "perppu",
     nama: "Peraturan Pemerintah Pengganti Undang-undang",
