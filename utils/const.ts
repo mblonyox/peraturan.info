@@ -13,3 +13,6 @@ export const JENIS_PERATURAN: {
   { kode: "perpres", nama: "Peraturan Presiden" },
   { kode: "permenkeu", nama: "Peraturan Menteri Keuangan" },
 ];
+
+export const getNamaJenis = (kode: string) =>
+  JENIS_PERATURAN.find((jenis) => jenis.kode === kode)?.nama;

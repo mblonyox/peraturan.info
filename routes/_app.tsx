@@ -10,11 +10,6 @@ export default function App({ Component }: AppProps) {
           name="google-site-verification"
           content="gDCSCeR4yYkod7yJBudB-0OZEo2y507Hz8iNuCeDgwU"
         />
-        <title>Database Peraturan</title>
-        <meta
-          name="description"
-          content="Database Peraturan Perundang-undangan Republik Indonesia"
-        />
         <link
           rel="stylesheet"
           href="https://unpkg.com/@picocss/pico@latest/css/pico.min.css"

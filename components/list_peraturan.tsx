@@ -1,3 +1,4 @@
+import { Head } from "$fresh/runtime.ts";
 import { Peraturan } from "../models/peraturan.ts";
 import { JENIS_PERATURAN } from "../utils/const.ts";
 import Pagination from "./pagination.tsx";
@@ -25,6 +26,9 @@ export default function ListPeraturan({
 }: ListPeraturanProps) {
   return (
     <>
+      <Head>
+        <title>{judul}</title>
+      </Head>
       <div id="info">
         <h1>Hasil Pencarian</h1>
         <p>

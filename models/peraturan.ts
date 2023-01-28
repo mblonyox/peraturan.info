@@ -10,6 +10,7 @@ export interface Peraturan {
   berlakuMulai: Date;
   berlakuSelesai: Date;
   sumber: string;
+  sumberPdf: string;
 }
 
 export const listPeraturan = (db: DB, {
@@ -33,13 +34,15 @@ export const listPeraturan = (db: DB, {
     conditions.push("tahun = :tahun");
     params.tahun = tahun;
   }
-  const whereClause = conditions ? `WHERE ${conditions.join(" AND ")}` : "";
+  const whereClause = conditions.length
+    ? `WHERE ${conditions.join(" AND ")}`
+    : "";
   const filterByJenis = db.queryEntries<{ jenis: string; jumlah: number }>(
     `SELECT jenis, count(*) AS jumlah FROM peraturan ${whereClause} GROUP BY jenis`,
     params,
   );
   const filterByTahun = db.queryEntries<{ tahun: number; jumlah: number }>(
-    `SELECT tahun, count(*) AS jumlah FROM peraturan ${whereClause} GROUP BY tahun`,
+    `SELECT tahun, count(*) AS jumlah FROM peraturan ${whereClause} GROUP BY tahun ORDER BY tahun DESC`,
     params,
   );
 
@@ -56,4 +59,18 @@ export const listPeraturan = (db: DB, {
     params,
   );
   return { total, hasil, page, pageSize, filterByJenis, filterByTahun };
+};
+
+export const getPeraturan = (
+  db: DB,
+  jenis: string,
+  tahun: string,
+  nomor: string,
+) => {
+  const [peraturan] = db.queryEntries<Peraturan>(
+    `SELECT * FROM peraturan WHERE jenis = :jenis AND tahun = :tahun AND nomor = :nomor`,
+    { jenis, tahun, nomor },
+  );
+  if (peraturan) return peraturan;
+  return null;
 };
