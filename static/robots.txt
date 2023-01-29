@@ -1,0 +1,8 @@
+User-agent: *
+
+Sitemap: https://peraturan.deno.dev/sitemap.xml
+Sitemap: https://peraturan.deno.dev/sitemap-uu.xml
+Sitemap: https://peraturan.deno.dev/sitemap-perppu.xml
+Sitemap: https://peraturan.deno.dev/sitemap-pp.xml
+Sitemap: https://peraturan.deno.dev/sitemap-perpres.xml
+Sitemap: https://peraturan.deno.dev/sitemap-permenkeu.xml
