@@ -19,7 +19,7 @@ export default function App({ Component }: AppProps) {
         <ul>
           <li>
             <a href="/">
-              <strong>peraturan.deno.dev</strong>
+              <strong>peraturan</strong>.deno.dev
             </a>
           </li>
         </ul>
