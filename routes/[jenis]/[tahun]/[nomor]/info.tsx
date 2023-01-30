@@ -78,87 +78,103 @@ export default function PeraturanInfoPage(
         </h2>
       </hgroup>
       <article>
-        <h3>Informasi</h3>
-        <table>
-          <tbody>
-            <tr>
-              <td>Jenis</td>
-              <td>:</td>
-              <td>{namaJenis}</td>
-            </tr>
-            <tr>
-              <td>Tahun</td>
-              <td>:</td>
-              <td>{tahun}</td>
-            </tr>
-            <tr>
-              <td>Nomor</td>
-              <td>:</td>
-              <td>{nomor}</td>
-            </tr>
-            <tr>
-              <td>Judul</td>
-              <td>:</td>
-              <td>{judul}</td>
-            </tr>
-            <tr>
-              <td>Tanggal Ditetapkan</td>
-              <td>:</td>
-              <td>
-                {new Date(tanggal_ditetapkan).toLocaleDateString("id", {
-                  day: "numeric",
-                  month: "long",
-                  year: "numeric",
-                })}
-              </td>
-            </tr>
-            <tr>
-              <td>Tanggal Diundangkan</td>
-              <td>:</td>
-              <td>
-                {new Date(tanggal_diundangkan).toLocaleDateString("id", {
-                  day: "numeric",
-                  month: "long",
-                  year: "numeric",
-                })}
-              </td>
-            </tr>
-            <tr>
-              <td>Tanggal Berlaku</td>
-              <td>:</td>
-              <td>
-                {new Date(tanggal_berlaku).toLocaleDateString("id", {
-                  day: "numeric",
-                  month: "long",
-                  year: "numeric",
-                })}
-              </td>
-            </tr>
-          </tbody>
-        </table>
+        <div className="grid">
+          <div>
+            <h3>Informasi</h3>
+            <table>
+              <tbody>
+                <tr>
+                  <td>Jenis</td>
+                  <td>:</td>
+                  <td>{namaJenis}</td>
+                </tr>
+                <tr>
+                  <td>Tahun</td>
+                  <td>:</td>
+                  <td>{tahun}</td>
+                </tr>
+                <tr>
+                  <td>Nomor</td>
+                  <td>:</td>
+                  <td>{nomor}</td>
+                </tr>
+                <tr>
+                  <td>Judul</td>
+                  <td>:</td>
+                  <td>{judul}</td>
+                </tr>
+                <tr>
+                  <td>Tanggal Ditetapkan</td>
+                  <td>:</td>
+                  <td>
+                    {new Date(tanggal_ditetapkan).toLocaleDateString("id", {
+                      day: "numeric",
+                      month: "long",
+                      year: "numeric",
+                    })}
+                  </td>
+                </tr>
+                <tr>
+                  <td>Tanggal Diundangkan</td>
+                  <td>:</td>
+                  <td>
+                    {new Date(tanggal_diundangkan).toLocaleDateString("id", {
+                      day: "numeric",
+                      month: "long",
+                      year: "numeric",
+                    })}
+                  </td>
+                </tr>
+                <tr>
+                  <td>Tanggal Berlaku</td>
+                  <td>:</td>
+                  <td>
+                    {new Date(tanggal_berlaku).toLocaleDateString("id", {
+                      day: "numeric",
+                      month: "long",
+                      year: "numeric",
+                    })}
+                  </td>
+                </tr>
+              </tbody>
+            </table>
 
-        <h3>Abstrak</h3>
-
-        <h3>Sumber</h3>
-        {sumber.map(({ nama, url_page, url_pdf }, index) => (
-          <details open={!index}>
-            <summary role="button">{nama}</summary>
-            <p>
-              🌐 Website:{" "}
-              <a href={url_page} target="_blank" rel="noopener noreferrer">
-                {url_page.substring(0, 50)}
-                {url_page.length > 50 && "..."}
-              </a>
-            </p>
-            <p>
-              📄 Dokumen:{" "}
-              <a href={url_pdf} target="_blank" rel="noopener noreferrer">
-                {url_pdf.substring(0, 50)}
-                {url_pdf.length > 50 && "..."}
-              </a>
-            </p>
-          </details>
-        ))}
+            <h3>Abstrak</h3>
+          </div>
+          <div>
+            <h3>Sumber</h3>
+            {sumber.map(({ nama, url_page, url_pdf }, index) => (
+              <details open={!index}>
+                <summary role="button">{nama}</summary>
+                <p>
+                  <span
+                    style={{
+                      display: "inline-block",
+                      width: "100%",
+                      overflow: "hidden",
+                      whiteSpace: "nowrap",
+                      textOverflow: "ellipsis",
+                    }}
+                  >
+                    {"🌐 "}
+                    <a
+                      href={url_page}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      {url_page}
+                    </a>
+                  </span>
+                </p>
+                <iframe
+                  src={url_pdf}
+                  style={{ width: "100%", aspectRatio: "1" }}
+                >
+                </iframe>
+              </details>
+            ))}
+          </div>
+        </div>
       </article>
     </>
   );
