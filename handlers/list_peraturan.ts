@@ -8,7 +8,6 @@ export const handler: Handler<ListPeraturanProps> = (req, ctx) => {
   const { jenis: kodeJenis, tahun } = ctx.params;
   const namaJenis = getNamaJenis(kodeJenis);
   if (kodeJenis !== "all" && !namaJenis) return ctx.renderNotFound();
-  console.log(tahun);
   if (tahun?.length && (tahun?.length !== 4 || isNaN(parseInt(tahun)))) {
     return ctx.renderNotFound();
   }

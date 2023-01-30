@@ -147,7 +147,10 @@ export default function PeraturanInfoPage(
               <details open={!index}>
                 <summary role="button">{nama}</summary>
                 <p>
-                  <span
+                  <a
+                    href={url_page}
+                    target="_blank"
+                    rel="noopener noreferrer"
                     style={{
                       display: "inline-block",
                       width: "100%",
@@ -157,20 +160,16 @@ export default function PeraturanInfoPage(
                     }}
                   >
                     {"🌐 "}
-                    <a
-                      href={url_page}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                    >
-                      {url_page}
-                    </a>
-                  </span>
+                    {url_page}
+                  </a>
                 </p>
-                <iframe
-                  src={url_pdf}
-                  style={{ width: "100%", aspectRatio: "1" }}
-                >
-                </iframe>
+                {url_pdf && (
+                  <iframe
+                    src={url_pdf}
+                    style={{ width: "100%", aspectRatio: "1" }}
+                  >
+                  </iframe>
+                )}
               </details>
             ))}
           </div>
