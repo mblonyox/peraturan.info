@@ -165,6 +165,8 @@ export default function PeraturanInfoPage(
                 </p>
                 {url_pdf && (
                   <iframe
+                    name={nama}
+                    loading="lazy"
                     src={url_pdf}
                     style={{ width: "100%", aspectRatio: "1" }}
                   >
