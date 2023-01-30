@@ -5,12 +5,10 @@ export interface Peraturan {
   jenis: string;
   tahun: number;
   nomor: number;
-  tanggal: Date;
   judul: string;
-  berlakuMulai: Date;
-  berlakuSelesai: Date;
-  sumber: string;
-  sumberPdf: string;
+  tanggal_ditetapkan: Date;
+  tanggal_diundangkan: Date;
+  tanggal_berlaku: Date;
 }
 
 export const listPeraturan = (db: DB, {
@@ -73,4 +71,18 @@ export const getPeraturan = (
   );
   if (peraturan) return peraturan;
   return null;
+};
+
+export const getSumberPeraturan = (
+  db: DB,
+  jenis: string,
+  tahun: string,
+  nomor: string,
+) => {
+  return db.queryEntries<
+    { nama: string; url_page: string; url_pdf: string }
+  >(
+    `SELECT nama, url_page, url_pdf FROM sumber WHERE jenis_tahun_nomor = :key`,
+    [`${jenis}/${tahun}/${nomor}`],
+  );
 };

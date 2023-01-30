@@ -3,27 +3,29 @@
 // This file is automatically updated during development when running `dev.ts`.
 
 import config from "./deno.json" assert { type: "json" };
-import * as $0 from "./routes/[jenis]/[tahun]/[nomor]/index.tsx";
-import * as $1 from "./routes/[jenis]/[tahun]/index.tsx";
-import * as $2 from "./routes/[jenis]/index.tsx";
-import * as $3 from "./routes/_404.tsx";
-import * as $4 from "./routes/_500.tsx";
-import * as $5 from "./routes/_app.tsx";
-import * as $6 from "./routes/index.tsx";
-import * as $7 from "./routes/new.tsx";
-import * as $8 from "./routes/sitemap-[jenis].xml.ts";
+import * as $0 from "./routes/[jenis]/[tahun]/[nomor]/index.ts";
+import * as $1 from "./routes/[jenis]/[tahun]/[nomor]/info.tsx";
+import * as $2 from "./routes/[jenis]/[tahun]/index.tsx";
+import * as $3 from "./routes/[jenis]/index.tsx";
+import * as $4 from "./routes/_404.tsx";
+import * as $5 from "./routes/_500.tsx";
+import * as $6 from "./routes/_app.tsx";
+import * as $7 from "./routes/index.tsx";
+import * as $8 from "./routes/new.tsx";
+import * as $9 from "./routes/sitemap-[jenis].xml.ts";
 
 const manifest = {
   routes: {
-    "./routes/[jenis]/[tahun]/[nomor]/index.tsx": $0,
-    "./routes/[jenis]/[tahun]/index.tsx": $1,
-    "./routes/[jenis]/index.tsx": $2,
-    "./routes/_404.tsx": $3,
-    "./routes/_500.tsx": $4,
-    "./routes/_app.tsx": $5,
-    "./routes/index.tsx": $6,
-    "./routes/new.tsx": $7,
-    "./routes/sitemap-[jenis].xml.ts": $8,
+    "./routes/[jenis]/[tahun]/[nomor]/index.ts": $0,
+    "./routes/[jenis]/[tahun]/[nomor]/info.tsx": $1,
+    "./routes/[jenis]/[tahun]/index.tsx": $2,
+    "./routes/[jenis]/index.tsx": $3,
+    "./routes/_404.tsx": $4,
+    "./routes/_500.tsx": $5,
+    "./routes/_app.tsx": $6,
+    "./routes/index.tsx": $7,
+    "./routes/new.tsx": $8,
+    "./routes/sitemap-[jenis].xml.ts": $9,
   },
   islands: {},
   baseUrl: import.meta.url,
