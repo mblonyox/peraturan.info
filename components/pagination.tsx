@@ -34,6 +34,11 @@ export default function Pagination({
     return `?${params.toString()}`;
   };
 
+  const isActive = (page: number) => {
+    const params = new URLSearchParams(new URL(url).search);
+    return (params.get("page") || 1) == page;
+  };
+
   return (
     <nav style={{ justifyContent: "center" }}>
       <ul>
@@ -44,7 +49,13 @@ export default function Pagination({
         )}
         {items.map((i) => (
           <li>
-            <a href={pageUrl(i)}>{i}</a>
+            <a
+              class="outline"
+              href={pageUrl(i)}
+              role={isActive(i) ? "button" : undefined}
+            >
+              {i}
+            </a>
           </li>
         ))}
         {page !== lastPage && (
