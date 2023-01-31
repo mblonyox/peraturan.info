@@ -5,6 +5,7 @@ import { Peraturan } from "@models/peraturan.ts";
 interface PeraturanLayoutProps {
   peraturan: Peraturan;
   activeTab: "kerangka" | "isi" | "info";
+  kerangkaEnabled: boolean;
   isiEnabled: boolean;
   children: ComponentChildren;
 }
@@ -13,6 +14,7 @@ export default function PeraturanLayout(
   {
     peraturan: { jenis, nomor, tahun, judul },
     activeTab,
+    kerangkaEnabled,
     isiEnabled,
     children,
   }: PeraturanLayoutProps,
@@ -62,7 +64,7 @@ export default function PeraturanLayout(
           href={`${basePath}/daftar-isi`}
           class={activeTab === "kerangka" ? "" : "outline"}
           role="button"
-          disabled={!isiEnabled}
+          disabled={!kerangkaEnabled}
         >
           Kerangka
         </a>

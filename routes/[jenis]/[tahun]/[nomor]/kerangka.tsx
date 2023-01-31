@@ -32,6 +32,7 @@ export default function KerangkaPeraturanPage(
       {...{
         peraturan,
         activeTab: "kerangka",
+        kerangkaEnabled: false,
         isiEnabled: false,
       }}
     >

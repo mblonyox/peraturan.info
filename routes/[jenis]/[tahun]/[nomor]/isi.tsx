@@ -29,6 +29,7 @@ export default function IsiPeraturanPage(
       {...{
         peraturan,
         activeTab: "isi",
+        kerangkaEnabled: false,
         isiEnabled: false,
       }}
     >

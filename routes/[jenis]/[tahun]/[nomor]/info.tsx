@@ -49,6 +49,7 @@ export default function InfoPeraturanPage(
       {...{
         peraturan,
         activeTab: "info",
+        kerangkaEnabled: false,
         isiEnabled: false,
       }}
     >
