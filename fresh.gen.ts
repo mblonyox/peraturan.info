@@ -5,27 +5,31 @@
 import config from "./deno.json" assert { type: "json" };
 import * as $0 from "./routes/[jenis]/[tahun]/[nomor]/index.ts";
 import * as $1 from "./routes/[jenis]/[tahun]/[nomor]/info.tsx";
-import * as $2 from "./routes/[jenis]/[tahun]/index.tsx";
-import * as $3 from "./routes/[jenis]/index.tsx";
-import * as $4 from "./routes/_404.tsx";
-import * as $5 from "./routes/_500.tsx";
-import * as $6 from "./routes/_app.tsx";
-import * as $7 from "./routes/index.tsx";
-import * as $8 from "./routes/new.tsx";
-import * as $9 from "./routes/sitemap-[jenis].xml.ts";
+import * as $2 from "./routes/[jenis]/[tahun]/[nomor]/isi.tsx";
+import * as $3 from "./routes/[jenis]/[tahun]/[nomor]/kerangka.tsx";
+import * as $4 from "./routes/[jenis]/[tahun]/index.tsx";
+import * as $5 from "./routes/[jenis]/index.tsx";
+import * as $6 from "./routes/_404.tsx";
+import * as $7 from "./routes/_500.tsx";
+import * as $8 from "./routes/_app.tsx";
+import * as $9 from "./routes/index.tsx";
+import * as $10 from "./routes/new.tsx";
+import * as $11 from "./routes/sitemap-[jenis].xml.ts";
 
 const manifest = {
   routes: {
     "./routes/[jenis]/[tahun]/[nomor]/index.ts": $0,
     "./routes/[jenis]/[tahun]/[nomor]/info.tsx": $1,
-    "./routes/[jenis]/[tahun]/index.tsx": $2,
-    "./routes/[jenis]/index.tsx": $3,
-    "./routes/_404.tsx": $4,
-    "./routes/_500.tsx": $5,
-    "./routes/_app.tsx": $6,
-    "./routes/index.tsx": $7,
-    "./routes/new.tsx": $8,
-    "./routes/sitemap-[jenis].xml.ts": $9,
+    "./routes/[jenis]/[tahun]/[nomor]/isi.tsx": $2,
+    "./routes/[jenis]/[tahun]/[nomor]/kerangka.tsx": $3,
+    "./routes/[jenis]/[tahun]/index.tsx": $4,
+    "./routes/[jenis]/index.tsx": $5,
+    "./routes/_404.tsx": $6,
+    "./routes/_500.tsx": $7,
+    "./routes/_app.tsx": $8,
+    "./routes/index.tsx": $9,
+    "./routes/new.tsx": $10,
+    "./routes/sitemap-[jenis].xml.ts": $11,
   },
   islands: {},
   baseUrl: import.meta.url,
