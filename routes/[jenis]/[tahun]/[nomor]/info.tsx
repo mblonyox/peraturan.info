@@ -66,7 +66,7 @@ export default function PeraturanInfoPage(
             <a
               href={`/${jenis}/${tahun}/${nomor}/info`}
             >
-              Info.
+              Informasi
             </a>
           </li>
         </ul>
@@ -77,10 +77,47 @@ export default function PeraturanInfoPage(
           {namaJenis} Nomor {nomor} Tahun {tahun}
         </h2>
       </hgroup>
-      <article>
+      <div className="grid">
+        <a
+          href={`/${jenis}/${tahun}/${nomor}/daftar-isi`}
+          class="outline"
+          role="button"
+          disabled
+        >
+          Daftar Isi
+        </a>
+        <a
+          href={`/${jenis}/${tahun}/${nomor}/batang-tubuh`}
+          class="outline"
+          role="button"
+          disabled
+        >
+          Batang Tubuh
+        </a>
+        <a
+          href={`/${jenis}/${tahun}/${nomor}/lampiran`}
+          class="outline"
+          role="button"
+          disabled
+        >
+          Lampiran
+        </a>
+        <a
+          href={`/${jenis}/${tahun}/${nomor}/penjelasan`}
+          class="outline"
+          role="button"
+          disabled
+        >
+          Penjelasan
+        </a>
+        <a href={`/${jenis}/${tahun}/${nomor}/info`} role="button">
+          Informasi
+        </a>
+      </div>
+      <article style={{ marginTop: "var(--spacing)" }}>
         <div className="grid">
           <div>
-            <h3>Informasi</h3>
+            <h3>Metadata</h3>
             <table>
               <tbody>
                 <tr>
