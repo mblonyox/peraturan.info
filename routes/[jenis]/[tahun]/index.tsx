@@ -1,12 +1,1 @@
-import { PageProps } from "$fresh/server.ts";
-import ListPeraturan, {
-  ListPeraturanProps,
-} from "../../../components/list_peraturan.tsx";
-
-export { handler } from "../../../handlers/list_peraturan.ts";
-
-export default function PeraturanByBentukOnTahun({
-  data,
-}: PageProps<ListPeraturanProps>) {
-  return <ListPeraturan {...data} />;
-}
+export { default, handler } from "../../../components/list_peraturan_page.tsx";

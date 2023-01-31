@@ -1,16 +1,17 @@
 import { Handlers } from "$fresh/server.ts";
 import { RouteConfig } from "$fresh/server.ts";
-import { listPeraturan } from "../models/peraturan.ts";
-import { db } from "../data/db.ts";
+import { getListPeraturan } from "../models/peraturan.ts";
+import { getDB } from "../data/db.ts";
 
 export const config: RouteConfig = {
   routeOverride: "/sitemap-:jenis.xml",
 };
 
 export const handler: Handlers = {
-  GET: (_req, ctx) => {
+  GET: async (_req, ctx) => {
     const { jenis } = ctx.params;
-    const { hasil } = listPeraturan(db, { jenis, pageSize: 10000 });
+    const db = await getDB();
+    const { hasil } = getListPeraturan(db, { jenis, pageSize: 10000 });
 
     return new Response(
       `<?xml version="1.0" encoding="UTF-8"?>

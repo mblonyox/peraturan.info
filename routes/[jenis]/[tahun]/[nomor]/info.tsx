@@ -1,6 +1,6 @@
 import { Handler, PageProps } from "$fresh/server.ts";
 import { Head } from "$fresh/runtime.ts";
-import { db } from "../../../../data/db.ts";
+import { getDB } from "../../../../data/db.ts";
 import {
   getPeraturan,
   getSumberPeraturan,
@@ -8,8 +8,9 @@ import {
 } from "../../../../models/peraturan.ts";
 import { getNamaJenis } from "../../../../utils/const.ts";
 
-export const handler: Handler<PeraturanPageProps> = (req, ctx) => {
+export const handler: Handler<PeraturanPageProps> = async (req, ctx) => {
   const { jenis, tahun, nomor } = ctx.params;
+  const db = await getDB();
   const peraturan = getPeraturan(db, jenis, tahun, nomor);
   if (!peraturan) return ctx.renderNotFound();
   const sumber = getSumberPeraturan(db, jenis, tahun, nomor);

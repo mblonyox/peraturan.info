@@ -1,10 +1,49 @@
+import { Handler, PageProps } from "$fresh/server.ts";
 import { Head } from "$fresh/runtime.ts";
 import { Peraturan } from "../models/peraturan.ts";
 import { JENIS_PERATURAN } from "../utils/const.ts";
 import Pagination from "./pagination.tsx";
 
-export interface ListPeraturanProps {
-  url: string;
+import {
+  getFilterByJenisCount,
+  getFilterByTahunCount,
+  getListPeraturan,
+} from "../models/peraturan.ts";
+import { getNamaJenis } from "../utils/const.ts";
+import { getDB } from "../data/db.ts";
+
+export const handler: Handler<ListPeraturanPageProps> = async (req, ctx) => {
+  const { jenis: kodeJenis, tahun } = ctx.params;
+  const namaJenis = getNamaJenis(kodeJenis);
+  if (kodeJenis !== "all" && !namaJenis) return ctx.renderNotFound();
+  if (tahun?.length && (tahun?.length !== 4 || isNaN(parseInt(tahun)))) {
+    return ctx.renderNotFound();
+  }
+  const searchParams = new URL(req.url).searchParams;
+  const page = parseInt(searchParams.get("page") ?? "1");
+  const pageSize = parseInt(searchParams.get("pageSize") ?? "10");
+
+  const judul =
+    (kodeJenis === "all" ? "semua peraturan" : (namaJenis ?? kodeJenis)) + (
+      tahun ? ` pada tahun ${tahun}` : ""
+    );
+
+  const db = await getDB();
+
+  const jenis = kodeJenis === "all" ? undefined : kodeJenis;
+  const listPeraturan = getListPeraturan(db, { jenis, tahun, page, pageSize });
+  const filterByJenis = getFilterByJenisCount(db, { jenis, tahun });
+  const filterByTahun = getFilterByTahunCount(db, { jenis, tahun });
+
+  return ctx.render({
+    judul,
+    ...listPeraturan,
+    filterByJenis,
+    filterByTahun,
+  });
+};
+
+interface ListPeraturanPageProps {
   judul: string;
   total: number;
   hasil: Peraturan[];
@@ -14,16 +53,18 @@ export interface ListPeraturanProps {
   filterByTahun: { tahun: number; jumlah: number }[];
 }
 
-export default function ListPeraturan({
+export default function ListPeraturanPage({
   url,
-  judul,
-  total,
-  hasil,
-  page,
-  pageSize,
-  filterByJenis,
-  filterByTahun,
-}: ListPeraturanProps) {
+  data: {
+    judul,
+    total,
+    hasil,
+    page,
+    pageSize,
+    filterByJenis,
+    filterByTahun,
+  },
+}: PageProps<ListPeraturanPageProps>) {
   return (
     <>
       <Head>

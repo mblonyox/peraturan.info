@@ -1,5 +1,5 @@
 interface PaginationProps {
-  url: string;
+  url: URL | string;
   total: number;
   page: number;
   pageSize: number;
