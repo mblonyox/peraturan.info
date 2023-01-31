@@ -1,5 +1,6 @@
 {
   "imports": {
+    "@components/": "./components/",
     "$std/": "https://deno.land/std@0.174.0/",
     "$fresh/": "https://deno.land/x/fresh@1.1.0/",
     "$mock_file/": "https://deno.land/x/mock_file@v1.0.1/",
