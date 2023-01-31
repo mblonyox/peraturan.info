@@ -77,17 +77,12 @@ export default function ListPeraturanPage({
         </p>
       </div>
       <Pagination {...{ url, total, page, pageSize }} />
-      <div
-        style={{
-          display: "flex",
-          columnGap: "var(--block-spacing-horizontal)",
-        }}
-      >
+      <div class="grid">
         <aside>
           <PeraturanByJenis data={filterByJenis} />
           <PeraturanByTahun data={filterByTahun} />
         </aside>
-        <div id="hasil">
+        <div id="hasil" style={{ gridColumnEnd: "span 4" }}>
           <table>
             <thead>
               <tr>
