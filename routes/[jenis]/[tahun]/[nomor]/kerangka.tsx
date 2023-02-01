@@ -4,7 +4,7 @@ import { getPeraturan, Peraturan } from "@models/peraturan.ts";
 import PeraturanLayout from "@components/peraturan_layout.tsx";
 
 export const handler: Handler<KerangkaPeraturanPageProps> = async (
-  req,
+  _req,
   ctx,
 ) => {
   const { jenis, tahun, nomor } = ctx.params;

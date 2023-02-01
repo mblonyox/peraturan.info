@@ -61,7 +61,7 @@ export default function PeraturanLayout(
       </hgroup>
       <div className="grid">
         <a
-          href={`${basePath}/daftar-isi`}
+          href={`${basePath}/kerangka`}
           class={activeTab === "kerangka" ? "" : "outline"}
           role="button"
           disabled={!kerangkaEnabled}
@@ -69,7 +69,7 @@ export default function PeraturanLayout(
           Kerangka
         </a>
         <a
-          href={`${basePath}/daftar-isi`}
+          href={`${basePath}/isi`}
           class={activeTab === "isi" ? "" : "outline"}
           role="button"
           disabled={!isiEnabled}

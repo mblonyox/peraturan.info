@@ -8,18 +8,21 @@ import {
 } from "@models/peraturan.ts";
 import { getNamaJenis } from "@utils/const.ts";
 import PeraturanLayout from "@components/peraturan_layout.tsx";
+import { existsMd } from "../../../../utils/fs.ts";
 
 export const handler: Handler<InfoPeraturanPageProps> = async (req, ctx) => {
   const { jenis, tahun, nomor } = ctx.params;
   const db = await getDB();
   const peraturan = getPeraturan(db, jenis, tahun, nomor);
   if (!peraturan) return ctx.renderNotFound();
+  const isiEnabled = await existsMd({ jenis, tahun, nomor });
   const sumber = getSumberPeraturan(db, jenis, tahun, nomor);
-  return ctx.render({ peraturan, sumber });
+  return ctx.render({ peraturan, isiEnabled, sumber });
 };
 
 interface InfoPeraturanPageProps {
   peraturan: Peraturan;
+  isiEnabled: boolean;
   sumber: { nama: string; url_page: string; url_pdf: string }[];
 }
 
@@ -27,6 +30,7 @@ export default function InfoPeraturanPage(
   {
     data: {
       peraturan,
+      isiEnabled,
       sumber,
     },
   }: PageProps<
@@ -50,7 +54,7 @@ export default function InfoPeraturanPage(
         peraturan,
         activeTab: "info",
         kerangkaEnabled: false,
-        isiEnabled: false,
+        isiEnabled,
       }}
     >
       <div className="grid">
