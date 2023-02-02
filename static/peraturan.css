@@ -1,0 +1,68 @@
+.peraturan * {
+  font-family: 'Bookman Old Style', sans-serif;
+  font-size: 12pt;
+  font-weight: normal;
+  color: black;
+}
+.peraturan.wadah {
+  background-color: grey;
+  padding: 1rem;
+}
+.peraturan .kertas {
+  width: 210mm;
+  margin: auto;
+  padding-top: 80mm;
+  padding-left: 25mm;
+  padding-right: 25mm;
+  background-color: white;
+  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;;
+}
+
+.peraturan .isi > .bab,
+.peraturan .isi > .bagian,
+.peraturan .isi > .paragraf,
+.peraturan .isi > .pasal {
+  margin-left: 35mm;
+}
+
+
+.peraturan .pasal p {
+  margin-bottom: 0;
+}
+
+.peraturan table, .peraturan td {
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+.peraturan td {
+  vertical-align: top;
+}
+
+.peraturan td:nth-child(1) {
+  width: 30mm;
+}
+.peraturan td:nth-child(2) {
+  width: 5mm;
+}
+.peraturan td:nth-child(3) {
+  width: 125mm;
+}
+
+.peraturan :not(center, center > *) {
+  text-align: justify;
+}
+
+.peraturan .tabulasi ol  {
+  list-style: lower-alpha;
+}
+.peraturan .tabulasi ol ol {
+  list-style: decimal;
+}
+.peraturan .tabulasi ol ol ol {
+  list-style: lower-alpha ")";
+}
+.peraturan .tabulasi ol ol ol ol{
+  list-style: decimal ")";
+}

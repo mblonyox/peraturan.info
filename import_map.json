@@ -8,6 +8,7 @@
     "$fresh/": "https://deno.land/x/fresh@1.1.0/",
     "$mock_file/": "https://deno.land/x/mock_file@v1.0.1/",
     "$sqlite/": "https://deno.land/x/sqlite@v3.7.0/",
+    "marked": "https://esm.sh/marked@4.2.12",
     "preact": "https://esm.sh/preact@10.10.6",
     "preact/": "https://esm.sh/preact@10.10.6/",
     "preact-render-to-string": "https://esm.sh/*preact-render-to-string@5.2.3/",

@@ -569,6 +569,7 @@
     "https://dev.jspm.io/pg-connection-string@2.5.0": "88db7c98838dc09ebfb18d8b76819a964b2058dae3555c8abc8ef8205379a66e",
     "https://dev.jspm.io/tarn@3": "a18823e1188f20b398a345fc0807f34a12b0b80fcfe58f9e3497ba30d7f8109c",
     "https://esm.sh/*preact-render-to-string@5.2.3/": "9d909ba2cde0c54acc8e39ed14ad166258a59dbb8e031010ab12150a3ddc3a51",
+    "https://esm.sh/marked@4.2.12": "2d2846191abe84ffe668e83995da3543b197b62180ce06e4559027c0b777c22a",
     "https://esm.sh/marked@4.2.12/": "2d2846191abe84ffe668e83995da3543b197b62180ce06e4559027c0b777c22a",
     "https://esm.sh/preact-markdown@2.1.0/": "9a5ad75ab6571d08f6f7f55591e471552c8f11a4e5ffadbdfdb861afc6aa6863",
     "https://esm.sh/preact@10.10.6": "3797eacd827278d2601acc8c9da07da1df226113a5e0f5ff54055ffb9dcf4bf4",
