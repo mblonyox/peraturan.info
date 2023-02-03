@@ -20,7 +20,7 @@ const judul: marked.TokenizerAndRendererExtension = {
     }
   },
   renderer(token) {
-    return `<h1 class="judul" style="text-align:center">${
+    return `<h1 class="judul">${
       this.parser.parseInline(token.tokens ?? [])
     }</h1><br/>`;
   },
@@ -44,7 +44,7 @@ const frasaJabatan: marked.TokenizerAndRendererExtension = {
     }
   },
   renderer(token) {
-    return `<p class="frasa-drtyme" style="text-align:center">DENGAN RAHMAT TUHAN YANG MAHA ESA</p><br/><p class="jabatan-pembentuk" style="text-align:center">${
+    return `<p class="frasa-drtyme">DENGAN RAHMAT TUHAN YANG MAHA ESA</p><br/><p class="jabatan-pembentuk">${
       this.parser.parseInline(token.tokens ?? [])
     }</p><br/>`;
   },
@@ -116,11 +116,11 @@ const diktum: marked.TokenizerAndRendererExtension = {
   },
   renderer(token) {
     return (token.persetujuan.length
-      ? `<p class="persetujuan" style="text-align:center">${
+      ? `<p class="persetujuan">${
         this.parser.parseInline(token.persetujuan ?? [])
       }</p><br/>`
       : "") +
-      `<p style="text-align:center">MEMUTUSKAN:</p><table class="dasar-hukum"><tbody><tr><th><p>Mengingat</p></th><td>:</td><td><p>${
+      `<p class="kata-memutuskan">MEMUTUSKAN:</p><table class="diktum"><tbody><tr><th><p>Mengingat</p></th><td>:</td><td><p>${
         this.parser.parseInline(token.judul ?? [])
       }</p></td></tr></tbody></table><br/>`;
   },
@@ -131,27 +131,26 @@ const bab: marked.TokenizerAndRendererExtension = {
   level: "block",
   tokenizer(src: string, _tokens: marked.Token[] | marked.TokensList) {
     const match = src.match(
-      /^(BAB [MDCLXVI]+\n[\s\S]*?)\n\n([\s\S]+?)(?=\nBAB [MDCLXVI]+\n|$)/,
+      /^((BAB [MDCLXVI]+)\n[\s\S]*?)\n\n([\s\S]+?)(?=\nBAB [MDCLXVI]+\n|$)/,
     );
     if (match) {
       const token = {
-        type: "bab",
+        type: "bagian",
         raw: match[0],
-        id: match[1],
-        judul: this.lexer.blockTokens(match[1].replaceAll("\n", "<br>"), []),
-        isi: this.lexer.blockTokens(match[2], []),
+        judul: match[1],
+        nomor: match[2],
+        tokens: [],
       };
-
+      this.lexer.blockTokens(match[3], token.tokens);
       return token;
     }
   },
   renderer(token) {
-    const id = this.parser.slugger.slug(token.id);
-    return `<div id="${id}" class="bab"><center>${
-      this.parser.parse(token.judul ?? [])
-    }</center><br />${this.parser.parse(token.isi ?? [])}</div>`;
+    const id = this.parser.slugger.slug(token.nomor);
+    return `<h2 id="${id}" class="bab">${
+      token.judul.replaceAll("\n", "<br>")
+    }</h2><br>${this.parser.parse(token.tokens ?? [])}`;
   },
-  childTokens: ["judul", "isi"],
 };
 
 const bagian: marked.TokenizerAndRendererExtension = {
@@ -159,27 +158,26 @@ const bagian: marked.TokenizerAndRendererExtension = {
   level: "block",
   tokenizer(src: string, _tokens: marked.Token[] | marked.TokensList) {
     const match = src.match(
-      /^(Bagian [\s\w]+?\n[\s\S]*?)\n\n([\s\S]+?)(?=\nBagian [\s\w]+?\n|$)/,
+      /^((Bagian .+?)\n[\s\S]+?)\n\n([\s\S]+?)(?=\nBagian [\s\w]+?\n|$)/,
     );
     if (match) {
       const token = {
         type: "bagian",
         raw: match[0],
-        id: match[1],
-        judul: this.lexer.blockTokens(match[1].replaceAll("\n", "<br>"), []),
-        isi: this.lexer.blockTokens(match[2], []),
+        judul: match[1],
+        nomor: match[2],
+        tokens: [],
       };
-
+      this.lexer.blockTokens(match[3], token.tokens);
       return token;
     }
   },
   renderer(token) {
-    const id = this.parser.slugger.slug(token.id);
-    return `<div id="${id}" class="bagian"><center>${
-      this.parser.parse(token.judul ?? [])
-    }</center><br />${this.parser.parse(token.isi ?? [])}</div>`;
+    const id = this.parser.slugger.slug(token.nomor);
+    return `<h3 id="${id}" class="bagian">${
+      token.judul.replaceAll("\n", "<br>")
+    }</h3><br>${this.parser.parse(token.tokens ?? [])}`;
   },
-  childTokens: ["judul", "isi"],
 };
 
 const paragraf: marked.TokenizerAndRendererExtension = {
@@ -187,27 +185,26 @@ const paragraf: marked.TokenizerAndRendererExtension = {
   level: "block",
   tokenizer(src: string, _tokens: marked.Token[] | marked.TokensList) {
     const match = src.match(
-      /^(Paragraf \d+\n[\s\S]*?)\n\n([\s\S]+?)(?=\nParagraf \d+\n|$)/,
+      /^((Paragraf \d+)\n[\s\S]+?)\n\n([\s\S]+?)(?=\nParagraf \d+\n|$)/,
     );
     if (match) {
       const token = {
         type: "paragraf",
         raw: match[0],
-        id: match[1],
-        judul: this.lexer.blockTokens(match[1].replaceAll("\n", "<br>"), []),
-        isi: this.lexer.blockTokens(match[2], []),
+        judul: match[1],
+        nomor: match[2],
+        tokens: [],
       };
-
+      this.lexer.blockTokens(match[3], token.tokens);
       return token;
     }
   },
   renderer(token) {
-    const id = this.parser.slugger.slug(token.id);
-    return `<div id="${id}" class="paragraf"><center>${
-      this.parser.parse(token.judul ?? [])
-    }</center><br />${this.parser.parse(token.isi ?? [])}</div>`;
+    const id = this.parser.slugger.slug(token.nomor);
+    return `<h4 id="${id}" class="paragraf">${
+      token.judul.replaceAll("\n", "<br>")
+    }</h4><br>${this.parser.parse(token.tokens ?? [])}`;
   },
-  childTokens: ["judul", "isi"],
 };
 
 const pasal: marked.TokenizerAndRendererExtension = {
@@ -221,43 +218,43 @@ const pasal: marked.TokenizerAndRendererExtension = {
       const token = {
         type: "pasal",
         raw: match[0],
-        id: match[1],
-        judul: this.lexer.blockTokens(match[1], []),
-        isi: this.lexer.blockTokens(match[2], []),
+        nomor: match[1],
+        tokens: [],
       };
-
+      this.lexer.blockTokens(match[2], token.tokens);
+      // deno-lint-ignore no-explicit-any
+      token.tokens.forEach((token: any) => {
+        if (token.type === "ayat") token.nomorPasal = match[1];
+      });
       return token;
     }
   },
   renderer(token) {
-    const id = this.parser.slugger.slug(token.id);
-    return `<div id="${id}" class="pasal"><center>${
-      this.parser.parse(token.judul ?? [])
-    }</center>${this.parser.parse(token.isi ?? [])}</div>`;
+    const id = this.parser.slugger.slug(token.nomor);
+    return `<h5 id="${id}" class="pasal">${token.nomor}</h5><div class="isi-pasal">${
+      this.parser.parse(token.tokens ?? [])
+    }</div><br>`;
   },
-  childTokens: ["judul", "isi"],
 };
 
 const ayat: marked.TokenizerAndRendererExtension = {
   name: "ayat",
   level: "block",
-  tokenizer(src: string, tokens: marked.Token[] | marked.TokensList) {
+  tokenizer(src: string, _tokens: marked.Token[] | marked.TokensList) {
     const match = src.match(
       /^(\(\d+\)) ([\s\S]+?)(?=\n\(\d+\) |\n{2,}|$)/,
     );
-    if (!match) return;
-    const pasal = tokens.findLast((token) =>
-      token.type as string === "pasal"
-    ) as marked.Token & { nomor: string };
-    const token = {
-      type: "ayat",
-      raw: match[0],
-      nomor: match[1],
-      nomorPasal: pasal?.nomor,
-      tokens: this.lexer.blockTokens(match[2], []),
-    };
-
-    return token;
+    if (match) {
+      const token = {
+        type: "ayat",
+        raw: match[0],
+        nomor: match[1],
+        nomorPasal: null,
+        tokens: [],
+      };
+      this.lexer.blockTokens(match[2], token.tokens);
+      return token;
+    }
   },
   renderer(token) {
     const id = this.parser.slugger.slug(

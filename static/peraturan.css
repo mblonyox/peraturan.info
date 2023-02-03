@@ -18,20 +18,37 @@
   background-color: white;
   box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;;
 }
+.peraturan .judul,
+.peraturan .frasa-drtyme,
+.peraturan .jabatan-pembentuk,
+.peraturan .persetujuan,
+.peraturan .kata-memutuskan,
+.peraturan .bab,
+.peraturan .bagian,
+.peraturan .paragraf,
+.peraturan .pasal {
+  text-align: center;
+}
 
-.peraturan .isi > .bab,
-.peraturan .isi > .bagian,
-.peraturan .isi > .paragraf,
-.peraturan .isi > .pasal {
+.peraturan .bab,
+.peraturan .bagian,
+.peraturan .paragraf,
+.peraturan .pasal,
+.peraturan .isi-pasal,
+.peraturan .ayat {
   margin-left: 35mm;
 }
 
-.peraturan .isi .ayat {
+.peraturan .isi-pasal > .ayat {
+  margin-left: 0;
+}
+
+.peraturan .ayat {
   position: relative;
   padding-left: 10mm;
 }
 
-.peraturan .isi .ayat > span:first-child {
+.peraturan .ayat > span:first-child {
   top: 0;
   left: 0;
   position: absolute;
@@ -44,6 +61,7 @@
 .peraturan h5,
 .peraturan h6,
 .peraturan p {
+  margin-top: 0;
   margin-bottom: 0;
 }
 
