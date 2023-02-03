@@ -1,6 +1,6 @@
 # peraturan.deno.dev
 
-peraturan.deno.dev adalah upaya replikasi legislation.gov.uk untuk peraturan perundang-undangan di lingkungan Republik Indonesia.
+peraturan.deno.dev adalah upaya untuk meningkatkan cara penyajian peraturan perundang-undangan di Indonesia sehingga lebih user-friendly yang  terinspirasi dari legislation.gov.uk.
 
 ## Dibuat dengan
 - Deno Fresh
