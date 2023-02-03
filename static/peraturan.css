@@ -7,6 +7,7 @@
 .peraturan.wadah {
   background-color: grey;
   padding: 1rem;
+  overflow: auto;
 }
 .peraturan .kertas {
   width: 210mm;
@@ -25,22 +26,30 @@
   margin-left: 35mm;
 }
 
-
-.peraturan .pasal p {
+.peraturan h1,
+.peraturan h2,
+.peraturan h3,
+.peraturan h4,
+.peraturan h5,
+.peraturan h6,
+.peraturan p {
   margin-bottom: 0;
 }
 
-.peraturan table, .peraturan td {
+.peraturan table,
+.peraturan th,
+.peraturan td {
   margin: 0;
   padding: 0;
   border: 0;
 }
 
+.peraturan th,
 .peraturan td {
   vertical-align: top;
 }
 
-.peraturan td:nth-child(1) {
+.peraturan th:first-child {
   width: 30mm;
 }
 .peraturan td:nth-child(2) {
@@ -52,6 +61,10 @@
 
 .peraturan :not(center, center > *) {
   text-align: justify;
+}
+
+.peraturan ol {
+  margin-bottom: 0;
 }
 
 .peraturan .tabulasi ol  {

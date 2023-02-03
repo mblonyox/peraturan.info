@@ -1,14 +1,14 @@
 import { asset, Head } from "$fresh/runtime.ts";
 import { marked } from "marked";
-import { bab, bagian, paragraf, pasal, pembukaan } from "@utils/md.ts";
+import { peraturan } from "@utils/md.ts";
 
 interface PeraturanMarkdownProps {
   md: string;
 }
 
 export default function PeraturanMarkdown({ md }: PeraturanMarkdownProps) {
-  marked.use({ extensions: [pembukaan, bab, bagian, paragraf, pasal] });
-  const parsed = marked.parse(md, { breaks: true, gfm: true });
+  marked.use(peraturan);
+  const parsed = marked.parse(md);
   return (
     <>
       <Head>
