@@ -99,7 +99,7 @@ const diktum: marked.TokenizerAndRendererExtension = {
   level: "block",
   tokenizer(src, _tokens: marked.Token[] | marked.TokensList) {
     const match = src.match(
-      /^((?<=(?:.+\n)*?))\n?MEMUTUSKAN:\nMenetapkan *:\n([\s\S]+?)(?:\n{2,}|$)/,
+      /^(Dengan[\s\S]+)?\n?MEMUTUSKAN:\nMenetapkan *:\n([\s\S]+?)(?:\n{2,}|$)/,
     );
     if (match) {
       const token = {
