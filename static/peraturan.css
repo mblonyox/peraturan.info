@@ -26,6 +26,17 @@
   margin-left: 35mm;
 }
 
+.peraturan .isi .ayat {
+  position: relative;
+  padding-left: 10mm;
+}
+
+.peraturan .isi .ayat > span:first-child {
+  top: 0;
+  left: 0;
+  position: absolute;
+}
+
 .peraturan h1,
 .peraturan h2,
 .peraturan h3,

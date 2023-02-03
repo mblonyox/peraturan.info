@@ -238,6 +238,37 @@ const pasal: marked.TokenizerAndRendererExtension = {
   childTokens: ["judul", "isi"],
 };
 
+const ayat: marked.TokenizerAndRendererExtension = {
+  name: "ayat",
+  level: "block",
+  tokenizer(src: string, tokens: marked.Token[] | marked.TokensList) {
+    const match = src.match(
+      /^(\(\d+\)) ([\s\S]+?)(?=\n\(\d+\) |\n{2,}|$)/,
+    );
+    if (!match) return;
+    const pasal = tokens.findLast((token) =>
+      token.type as string === "pasal"
+    ) as marked.Token & { nomor: string };
+    const token = {
+      type: "ayat",
+      raw: match[0],
+      nomor: match[1],
+      nomorPasal: pasal?.nomor,
+      tokens: this.lexer.blockTokens(match[2], []),
+    };
+
+    return token;
+  },
+  renderer(token) {
+    const id = this.parser.slugger.slug(
+      `${token.nomorPasal} ayat ${token.nomor}`,
+    );
+    return `<div id="${id}" class="ayat"><span>${token.nomor}</span>${
+      this.parser.parse(token.tokens ?? [])
+    }</div>`;
+  },
+};
+
 export const peraturan: marked.MarkedExtension = {
   extensions: [
     judul,
@@ -249,6 +280,6 @@ export const peraturan: marked.MarkedExtension = {
     bagian,
     paragraf,
     pasal,
+    ayat,
   ],
-  gfm: true,
 };
