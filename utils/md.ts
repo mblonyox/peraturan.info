@@ -120,7 +120,7 @@ const diktum: marked.TokenizerAndRendererExtension = {
         this.parser.parseInline(token.persetujuan ?? [])
       }</p><br/>`
       : "") +
-      `<p class="kata-memutuskan">MEMUTUSKAN:</p><table class="diktum"><tbody><tr><th><p>Mengingat</p></th><td>:</td><td><p>${
+      `<p class="kata-memutuskan">MEMUTUSKAN:</p><table class="diktum"><tbody><tr><th><p>Menetapkan</p></th><td>:</td><td><p>${
         this.parser.parseInline(token.judul ?? [])
       }</p></td></tr></tbody></table><br/>`;
   },
