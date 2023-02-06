@@ -96,15 +96,19 @@
   margin-bottom: 0;
 }
 
-.peraturan .tabulasi ol  {
-  list-style: lower-alpha;
-}
-.peraturan .tabulasi ol ol {
+.peraturan ol.butir.number  {
   list-style: decimal;
 }
-.peraturan .tabulasi ol ol ol {
-  list-style: lower-alpha ")";
+.peraturan ol.butir.lower-latin  {
+  list-style: lower-latin;
 }
-.peraturan .tabulasi ol ol ol ol{
-  list-style: decimal ")";
+.peraturan ol.butir.kurung  {
+  counter-reset: list;
+  list-style: none;
+}
+.peraturan ol.butir.number.kurung > li::marker  {
+  content: counter(list) ")";
+}
+.peraturan ol.butir.lower-latin.kurung > li::marker  {
+  content: counter(list, lower-latin) ")";
 }

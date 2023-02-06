@@ -221,6 +221,7 @@ const pasal: marked.TokenizerAndRendererExtension = {
         nomor: match[1],
         tokens: [],
       };
+      this.lexer.state.top = false;
       this.lexer.blockTokens(match[2], token.tokens);
       // deno-lint-ignore no-explicit-any
       token.tokens.forEach((token: any) => {
@@ -252,6 +253,7 @@ const ayat: marked.TokenizerAndRendererExtension = {
         nomorPasal: null,
         tokens: [],
       };
+      this.lexer.state.top = false;
       this.lexer.blockTokens(match[2], token.tokens);
       return token;
     }
@@ -263,6 +265,62 @@ const ayat: marked.TokenizerAndRendererExtension = {
     return `<div id="${id}" class="ayat"><span>${token.nomor}</span>${
       this.parser.parse(token.tokens ?? [])
     }</div>`;
+  },
+};
+
+const butirList: marked.TokenizerAndRendererExtension = {
+  name: "butir-list",
+  level: "block",
+  tokenizer(src: string, _tokens: marked.Token[] | marked.TokensList) {
+    const match = src.match(
+      /^( {0,6})((?:\d+|[a-z]+)[\)\.])[ \t].+?(?=\n|$)/,
+    );
+    if (!match) return;
+    const numberStyle = /^\d+/.test(match[2]);
+    const marker = match[2].slice(-1);
+    const list = {
+      type: "butir-list",
+      style: numberStyle ? "number" : "lower-latin",
+      marker,
+      raw: "",
+      items: [] as unknown[],
+    };
+    const itemBullet = match[1] + (numberStyle ? "\\d+" : "[a-z]+") +
+      `\\${marker}[ \\t]`;
+    const itemRegex = new RegExp(
+      `${itemBullet}([\\s\\S]+?)(?=${itemBullet}|\\n{2,}|$)`,
+    );
+    while (src) {
+      const match = itemRegex.exec(src);
+      if (!match) break;
+      const raw = match[0];
+      src = src.substring(raw.length);
+      const item = {
+        type: "butir-item",
+        raw,
+        tokens: [],
+      };
+      this.lexer.state.top = false;
+      this.lexer.blockTokens(match[1], item.tokens);
+      list.items.push(item);
+      list.raw += raw;
+    }
+    if (list.raw.length) return list;
+  },
+  renderer(token) {
+    const styleClassName = token.style +
+      (token.marker === ")" ? " kurung" : "");
+    return `<ol class="butir ${styleClassName}">${
+      this.parser.parse(token.items)
+    }</ol>`;
+  },
+  childTokens: ["items"],
+};
+
+const butirItem: marked.RendererExtension = {
+  name: "butir-item",
+  renderer(token) {
+    return `<li>${this.parser.parse(token.tokens ?? [])}</li>`;
   },
 };
 
@@ -278,5 +336,7 @@ export const peraturan: marked.MarkedExtension = {
     paragraf,
     pasal,
     ayat,
+    butirList,
+    butirItem,
   ],
 };
