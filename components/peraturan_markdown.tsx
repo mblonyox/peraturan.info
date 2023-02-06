@@ -3,12 +3,17 @@ import { marked } from "marked";
 import { peraturan } from "@utils/md.ts";
 
 interface PeraturanMarkdownProps {
-  md: string;
+  md?: string;
+  html?: string;
 }
 
-export default function PeraturanMarkdown({ md }: PeraturanMarkdownProps) {
-  marked.use(peraturan);
-  const parsed = marked.parse(md);
+export default function PeraturanMarkdown(
+  { md, html }: PeraturanMarkdownProps,
+) {
+  if (md) {
+    marked.use(peraturan);
+    html = marked.parse(md);
+  }
   return (
     <>
       <Head>
@@ -23,7 +28,7 @@ export default function PeraturanMarkdown({ md }: PeraturanMarkdownProps) {
       </Head>
       <div className="peraturan wadah">
         <div className="kertas">
-          <div class="isi" dangerouslySetInnerHTML={{ __html: parsed }}>
+          <div class="isi" dangerouslySetInnerHTML={{ __html: html ?? "" }}>
           </div>
         </div>
       </div>

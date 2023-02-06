@@ -135,7 +135,7 @@ const bab: marked.TokenizerAndRendererExtension = {
     );
     if (match) {
       const token = {
-        type: "bagian",
+        type: "bab",
         raw: match[0],
         judul: match[1],
         nomor: match[2],

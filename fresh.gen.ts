@@ -3,33 +3,37 @@
 // This file is automatically updated during development when running `dev.ts`.
 
 import config from "./deno.json" assert { type: "json" };
-import * as $0 from "./routes/[jenis]/[tahun]/[nomor]/index.ts";
-import * as $1 from "./routes/[jenis]/[tahun]/[nomor]/info.tsx";
-import * as $2 from "./routes/[jenis]/[tahun]/[nomor]/isi.tsx";
-import * as $3 from "./routes/[jenis]/[tahun]/[nomor]/kerangka.tsx";
-import * as $4 from "./routes/[jenis]/[tahun]/index.tsx";
-import * as $5 from "./routes/[jenis]/index.tsx";
-import * as $6 from "./routes/_404.tsx";
-import * as $7 from "./routes/_500.tsx";
-import * as $8 from "./routes/_app.tsx";
-import * as $9 from "./routes/index.tsx";
-import * as $10 from "./routes/new.tsx";
-import * as $11 from "./routes/sitemap-[jenis].xml.ts";
+import * as $0 from "./routes/[jenis]/[tahun]/[nomor]/[partial-bab].tsx";
+import * as $1 from "./routes/[jenis]/[tahun]/[nomor]/[partial-pasal].tsx";
+import * as $2 from "./routes/[jenis]/[tahun]/[nomor]/index.ts";
+import * as $3 from "./routes/[jenis]/[tahun]/[nomor]/info.tsx";
+import * as $4 from "./routes/[jenis]/[tahun]/[nomor]/isi.tsx";
+import * as $5 from "./routes/[jenis]/[tahun]/[nomor]/kerangka.tsx";
+import * as $6 from "./routes/[jenis]/[tahun]/index.tsx";
+import * as $7 from "./routes/[jenis]/index.tsx";
+import * as $8 from "./routes/_404.tsx";
+import * as $9 from "./routes/_500.tsx";
+import * as $10 from "./routes/_app.tsx";
+import * as $11 from "./routes/index.tsx";
+import * as $12 from "./routes/new.tsx";
+import * as $13 from "./routes/sitemap-[jenis].xml.ts";
 
 const manifest = {
   routes: {
-    "./routes/[jenis]/[tahun]/[nomor]/index.ts": $0,
-    "./routes/[jenis]/[tahun]/[nomor]/info.tsx": $1,
-    "./routes/[jenis]/[tahun]/[nomor]/isi.tsx": $2,
-    "./routes/[jenis]/[tahun]/[nomor]/kerangka.tsx": $3,
-    "./routes/[jenis]/[tahun]/index.tsx": $4,
-    "./routes/[jenis]/index.tsx": $5,
-    "./routes/_404.tsx": $6,
-    "./routes/_500.tsx": $7,
-    "./routes/_app.tsx": $8,
-    "./routes/index.tsx": $9,
-    "./routes/new.tsx": $10,
-    "./routes/sitemap-[jenis].xml.ts": $11,
+    "./routes/[jenis]/[tahun]/[nomor]/[partial-bab].tsx": $0,
+    "./routes/[jenis]/[tahun]/[nomor]/[partial-pasal].tsx": $1,
+    "./routes/[jenis]/[tahun]/[nomor]/index.ts": $2,
+    "./routes/[jenis]/[tahun]/[nomor]/info.tsx": $3,
+    "./routes/[jenis]/[tahun]/[nomor]/isi.tsx": $4,
+    "./routes/[jenis]/[tahun]/[nomor]/kerangka.tsx": $5,
+    "./routes/[jenis]/[tahun]/index.tsx": $6,
+    "./routes/[jenis]/index.tsx": $7,
+    "./routes/_404.tsx": $8,
+    "./routes/_500.tsx": $9,
+    "./routes/_app.tsx": $10,
+    "./routes/index.tsx": $11,
+    "./routes/new.tsx": $12,
+    "./routes/sitemap-[jenis].xml.ts": $13,
   },
   islands: {},
   baseUrl: import.meta.url,
