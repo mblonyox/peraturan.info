@@ -7,6 +7,12 @@ import { getPeraturan, Peraturan } from "@models/peraturan.ts";
 import { readTextMd } from "@utils/fs.ts";
 import PeraturanLayout from "@components/peraturan_layout.tsx";
 import PeraturanMarkdown from "@components/peraturan_markdown.tsx";
+import {
+  getNamaJenis,
+  SEO_DESCRIPTION,
+  SEO_TITLE,
+} from "../../../../utils/const.ts";
+import SeoTags from "../../../../components/seo_tags.tsx";
 
 export const config: RouteConfig = {
   routeOverride: "/:jenis/:tahun/:nomor/:pasal(pasal-\\d+){/ayat-:ayat(\\d+)}?",
@@ -18,6 +24,7 @@ export const handler: Handler<PeraturanPartialPageProps> = async (req, ctx) => {
   const peraturan = getPeraturan(db, jenis, tahun, nomor);
   if (!peraturan) return ctx.renderNotFound();
   const md = await readTextMd({ jenis, tahun, nomor });
+  if (!md) return ctx.renderNotFound();
   marked.use(peraturanExtension);
   const tokens = marked.lexer(md);
   // deno-lint-ignore no-explicit-any
@@ -27,13 +34,17 @@ export const handler: Handler<PeraturanPartialPageProps> = async (req, ctx) => {
     ).flat();
   const pasals = getPasal(tokens);
   let token;
-
+  const breadcrumbs = [];
   // deno-lint-ignore no-explicit-any
   token = pasals.find((token: any) => {
     const slug = token?.nomor?.toLowerCase()?.replace(" ", "-");
     return slug === pasal;
   });
   if (ayat) {
+    breadcrumbs.push({
+      teks: token?.nomor,
+      url: token?.nomor?.toLowerCase()?.replace(" ", "-"),
+    });
     // deno-lint-ignore no-explicit-any
     token = token?.tokens?.find((token: any) => {
       const slug = token?.nomor?.toLowerCase()?.replaceAll(/[\(\)]/g, "");
@@ -41,35 +52,57 @@ export const handler: Handler<PeraturanPartialPageProps> = async (req, ctx) => {
         slug === ayat;
     });
   }
+  breadcrumbs.push({
+    teks: (token.type === "ayat" ? `ayat ` : "") + token?.nomor,
+  });
   if (!token) return ctx.renderNotFound();
+  const judulPartial = breadcrumbs.map(({ teks }) => teks).join(" ");
   const html = marked.parser([token as marked.Token]);
-  return ctx.render({ peraturan, html });
+  return ctx.render({ peraturan, breadcrumbs, judulPartial, html });
 };
 
 interface PeraturanPartialPageProps {
   peraturan: Peraturan;
+  breadcrumbs: { teks: string; url?: string }[];
+  judulPartial: string;
   html: string;
 }
 
 export default function PeraturanPartialPage(
   {
+    url,
     data: {
       peraturan,
+      breadcrumbs,
+      judulPartial,
       html,
     },
   }: PageProps<
     PeraturanPartialPageProps
   >,
 ) {
+  const {
+    jenis,
+    tahun,
+    nomor,
+    judul,
+  } = peraturan;
+  const namaJenis = getNamaJenis(jenis);
   return (
     <PeraturanLayout
       {...{
         peraturan,
+        breadcrumbs,
         activeTab: "isi",
-        kerangkaEnabled: true,
-        isiEnabled: true,
+        hasMd: true,
       }}
     >
+      <SeoTags
+        title={`${judulPartial} - ${namaJenis} ${judul} | ${SEO_TITLE}`}
+        description={`${judulPartial} ${namaJenis} Nomor ${nomor} Tahun ${tahun} tentang ${judul}. ` +
+          SEO_DESCRIPTION}
+        url={url}
+      />
       <PeraturanMarkdown html={html} />
     </PeraturanLayout>
   );

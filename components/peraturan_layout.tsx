@@ -4,18 +4,18 @@ import { getNamaJenis } from "../utils/const.ts";
 import { Peraturan } from "@models/peraturan.ts";
 interface PeraturanLayoutProps {
   peraturan: Peraturan;
+  breadcrumbs: { teks: string; url?: string }[];
   activeTab: "kerangka" | "isi" | "info";
-  kerangkaEnabled: boolean;
-  isiEnabled: boolean;
+  hasMd: boolean;
   children: ComponentChildren;
 }
 
 export default function PeraturanLayout(
   {
     peraturan: { jenis, nomor, tahun, judul },
+    breadcrumbs,
     activeTab,
-    kerangkaEnabled,
-    isiEnabled,
+    hasMd,
     children,
   }: PeraturanLayoutProps,
 ) {
@@ -24,18 +24,13 @@ export default function PeraturanLayout(
 
   return (
     <>
-      <Head>
-        <title>{judul}</title>
-        <meta
-          name="description"
-          content={`${namaJenis} Nomor ${nomor} Tahun ${tahun} tentang ${judul}`}
-        />
-      </Head>
-
       <nav aria-label="breadcrumb">
         <ul>
           <li>
             <a href={`/${jenis}`}>{namaJenis}</a>
+          </li>
+          <li>
+            <a href={`/${jenis}/${tahun}`}>{tahun}</a>
           </li>
           <li>
             <a
@@ -44,13 +39,9 @@ export default function PeraturanLayout(
               No. {nomor} Th. {tahun}
             </a>
           </li>
-          <li>
-            {activeTab === "info"
-              ? "Informasi"
-              : activeTab === "kerangka"
-              ? "Kerangka (Outline)"
-              : "Isi Peraturan"}
-          </li>
+          {breadcrumbs.map(({ teks, url }) => (
+            <li>{url ? <a href={basePath + "/" + url}>{teks}</a> : teks}</li>
+          ))}
         </ul>
       </nav>
       <hgroup>
@@ -64,7 +55,7 @@ export default function PeraturanLayout(
           href={`${basePath}/kerangka`}
           class={activeTab === "kerangka" ? "" : "outline"}
           role="button"
-          disabled={!kerangkaEnabled}
+          disabled={!hasMd}
         >
           Kerangka
         </a>
@@ -72,7 +63,7 @@ export default function PeraturanLayout(
           href={`${basePath}/isi`}
           class={activeTab === "isi" ? "" : "outline"}
           role="button"
-          disabled={!isiEnabled}
+          disabled={!hasMd}
         >
           Isi
         </a>

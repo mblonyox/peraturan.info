@@ -1,36 +1,37 @@
 import { Handler, PageProps } from "$fresh/server.ts";
-import { Head } from "$fresh/runtime.ts";
 import { getDB } from "@data/db.ts";
 import {
   getPeraturan,
   getSumberPeraturan,
   Peraturan,
 } from "@models/peraturan.ts";
-import { getNamaJenis } from "@utils/const.ts";
+import { getNamaJenis, SEO_DESCRIPTION, SEO_TITLE } from "@utils/const.ts";
+import { existsMd } from "@utils/fs.ts";
 import PeraturanLayout from "@components/peraturan_layout.tsx";
-import { existsMd } from "../../../../utils/fs.ts";
+import SeoTags from "@components/seo_tags.tsx";
 
 export const handler: Handler<InfoPeraturanPageProps> = async (req, ctx) => {
   const { jenis, tahun, nomor } = ctx.params;
   const db = await getDB();
   const peraturan = getPeraturan(db, jenis, tahun, nomor);
   if (!peraturan) return ctx.renderNotFound();
-  const isiEnabled = await existsMd({ jenis, tahun, nomor });
+  const hasMd = await existsMd({ jenis, tahun, nomor });
   const sumber = getSumberPeraturan(db, jenis, tahun, nomor);
-  return ctx.render({ peraturan, isiEnabled, sumber });
+  return ctx.render({ peraturan, hasMd, sumber });
 };
 
 interface InfoPeraturanPageProps {
   peraturan: Peraturan;
-  isiEnabled: boolean;
+  hasMd: boolean;
   sumber: { nama: string; url_page: string; url_pdf: string }[];
 }
 
 export default function InfoPeraturanPage(
   {
+    url,
     data: {
       peraturan,
-      isiEnabled,
+      hasMd,
       sumber,
     },
   }: PageProps<
@@ -52,11 +53,18 @@ export default function InfoPeraturanPage(
     <PeraturanLayout
       {...{
         peraturan,
+        breadcrumbs: [{ teks: "Informasi." }],
         activeTab: "info",
-        kerangkaEnabled: false,
-        isiEnabled,
+        hasMd,
       }}
     >
+      <SeoTags
+        title={`Informasi - ${namaJenis} ${judul} | ${SEO_TITLE}`}
+        description={"Informasi metadata, abstrak dan sumber peraturan " +
+          `${namaJenis} Nomor ${nomor} Tahun ${tahun} tentang ${judul}. ` +
+          SEO_DESCRIPTION}
+        url={url}
+      />
       <div className="grid">
         <div>
           <h3>Metadata</h3>

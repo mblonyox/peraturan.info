@@ -4,7 +4,7 @@ import { Head, HEAD_CONTEXT } from "$fresh/runtime.ts";
 interface SeoTagsProps {
   title: string;
   description: string;
-  url: string;
+  url: string | URL;
   image?: string;
 }
 
@@ -25,12 +25,12 @@ export default function SeoTags(
       <meta name="twitter:card" content="summary" />
       <meta name="twitter:title" content={title} />
       <meta name="twitter:description" content={description} />
-      <meta name="twitter:url" content={url} />
+      <meta name="twitter:url" content={url.toString()} />
       <meta name="twitter:creator" content="@mblonyox" />
       <meta property="og:type" content="website" />
       <meta property="og:title" content={title} />
       <meta property="og:description" content={description} />
-      <meta property="og:url" content={url} />
+      <meta property="og:url" content={url.toString()} />
       <meta property="og:site_name" content="Peraturan.deno.dev" />
       <script
         type="application/ld+json"
@@ -40,7 +40,7 @@ export default function SeoTags(
             "@type": "WebSite",
             name: title,
             about: description,
-            url: url,
+            url: url.toString(),
           }),
         }}
       />

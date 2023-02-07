@@ -21,4 +21,13 @@ export const existsMd = async (
 
 export const readTextMd = (
   { jenis, tahun, nomor }: { jenis: string; tahun: string; nomor: string },
-) => Deno.readTextFile(getMdFilePath(jenis, tahun, nomor));
+) => {
+  try {
+    return Deno.readTextFile(getMdFilePath(jenis, tahun, nomor));
+  } catch (error) {
+    if (error instanceof Deno.errors.NotFound) {
+      return null;
+    }
+    throw error;
+  }
+};

@@ -13,6 +13,7 @@ export const handler: Handler<KerangkaPeraturanPageProps> = async (
   const peraturan = getPeraturan(db, jenis, tahun, nomor);
   if (!peraturan) return ctx.renderNotFound();
   const md = await readTextMd({ jenis, tahun, nomor });
+  if (!md) return ctx.renderNotFound();
   return ctx.render({ peraturan, md });
 };
 
@@ -34,9 +35,9 @@ export default function KerangkaPeraturanPage(
     <PeraturanLayout
       {...{
         peraturan,
+        breadcrumbs: [{ teks: "Kerangka" }],
         activeTab: "kerangka",
-        kerangkaEnabled: true,
-        isiEnabled: true,
+        hasMd: true,
       }}
     >
     </PeraturanLayout>
