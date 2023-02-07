@@ -28,7 +28,7 @@ export default function App({ Component }: AppProps) {
             <a href="/new">Terbaru</a>
           </li>
           <li>
-            <details role="list">
+            <details role="list" dir="rtl">
               <summary aria-haspopup="listbox" role="link">
                 Peraturan
               </summary>
