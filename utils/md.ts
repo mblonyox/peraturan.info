@@ -54,7 +54,7 @@ const konsideran: marked.TokenizerAndRendererExtension = {
   name: "konsideran",
   level: "block",
   tokenizer(src: string, _tokens: marked.Token[] | marked.TokensList) {
-    const match = src.match(/^Menimbang *:\n([\s\S]+?)(?:\n{2,}|$)/);
+    const match = src.match(/^Menimbang[ \t]*:[ \t]*\n([\s\S]+?\n)(?:\n+|$)/);
     if (match) {
       const token = {
         type: "konsideran",
@@ -76,7 +76,7 @@ const dasarHukum: marked.TokenizerAndRendererExtension = {
   name: "dasar-hukum",
   level: "block",
   tokenizer(src: string, _tokens: marked.Token[] | marked.TokensList) {
-    const match = src.match(/^Mengingat *:\n([\s\S]+?)(?:\n{2,}|$)/);
+    const match = src.match(/^Mengingat[ \t]*:[ \t]*\n([\s\S]+?\n)(?:\n+|$)/);
     if (match) {
       const token = {
         type: "dasar-hukum",
@@ -99,7 +99,7 @@ const diktum: marked.TokenizerAndRendererExtension = {
   level: "block",
   tokenizer(src, _tokens: marked.Token[] | marked.TokensList) {
     const match = src.match(
-      /^(Dengan[\s\S]+)?\n?MEMUTUSKAN:\nMenetapkan *:\n([\s\S]+?)(?:\n{2,}|$)/,
+      /^(Dengan[\s\S]+)?\n?MEMUTUSKAN:\nMenetapkan[ \t]*:[ \t]*\n([\s\S]+?\n)(?:\n+|$)/,
     );
     if (match) {
       const token = {
@@ -131,7 +131,7 @@ const bab: marked.TokenizerAndRendererExtension = {
   level: "block",
   tokenizer(src: string, _tokens: marked.Token[] | marked.TokensList) {
     const match = src.match(
-      /^((BAB [MDCLXVI]+)\n[\s\S]*?)\n\n([\s\S]+?)(?=\nBAB [MDCLXVI]+\n|$)/,
+      /^((BAB [MDCLXVI]+)\n[\s\S]*?)\n\n([\s\S]+?\n)(?=BAB [MDCLXVI]+\n|$)/,
     );
     if (match) {
       const token = {
@@ -158,7 +158,7 @@ const bagian: marked.TokenizerAndRendererExtension = {
   level: "block",
   tokenizer(src: string, _tokens: marked.Token[] | marked.TokensList) {
     const match = src.match(
-      /^((Bagian .+?)\n[\s\S]+?)\n\n([\s\S]+?)(?=\nBagian [\s\w]+?\n|$)/,
+      /^((Bagian .+?)\n[\s\S]+?)\n\n([\s\S]+?\n)(?=Bagian [\s\w]+?\n|$)/,
     );
     if (match) {
       const token = {
@@ -185,7 +185,7 @@ const paragraf: marked.TokenizerAndRendererExtension = {
   level: "block",
   tokenizer(src: string, _tokens: marked.Token[] | marked.TokensList) {
     const match = src.match(
-      /^((Paragraf \d+)\n[\s\S]+?)\n\n([\s\S]+?)(?=\nParagraf \d+\n|$)/,
+      /^((Paragraf \d+)\n[\s\S]+?)\n\n([\s\S]+?\n)(?=Paragraf \d+\n|$)/,
     );
     if (match) {
       const token = {
@@ -212,7 +212,7 @@ const pasal: marked.TokenizerAndRendererExtension = {
   level: "block",
   tokenizer(src: string, _tokens: marked.Token[] | marked.TokensList) {
     const match = src.match(
-      /^(Pasal \d+)\n([\s\S]+?)(?=\nPasal \d+\n|$)/,
+      /^(Pasal \d+)\n([\s\S]+?\n)(?=Pasal \d+\n|$)/,
     );
     if (match) {
       const token = {
@@ -243,7 +243,7 @@ const ayat: marked.TokenizerAndRendererExtension = {
   level: "block",
   tokenizer(src: string, _tokens: marked.Token[] | marked.TokensList) {
     const match = src.match(
-      /^(\(\d+\)) ([\s\S]+?)(?=\n\(\d+\) |\n{2,}|$)/,
+      /^(\(\d+\))[ \t]([\s\S]+?\n)(?=\(\d+\)[ \t]|\n+|$)/,
     );
     if (match) {
       const token = {
@@ -273,10 +273,10 @@ const butirList: marked.TokenizerAndRendererExtension = {
   level: "block",
   tokenizer(src: string, _tokens: marked.Token[] | marked.TokensList) {
     const match = src.match(
-      /^( {0,6})((?:\d+|[a-z]+)[\)\.])[ \t].+?(?=\n|$)/,
+      /^( {0,6})((?:\d{1,2}|[a-z]{1,2})[\)\.])[ \t].+?(?=\n|$)/,
     );
     if (!match) return;
-    const numberStyle = /^\d+/.test(match[2]);
+    const numberStyle = /^\d{1,2}/.test(match[2]);
     const marker = match[2].slice(-1);
     const list = {
       type: "butir-list",
@@ -285,10 +285,10 @@ const butirList: marked.TokenizerAndRendererExtension = {
       raw: "",
       items: [] as unknown[],
     };
-    const itemBullet = match[1] + (numberStyle ? "\\d+" : "[a-z]+") +
+    const itemBullet = match[1] + (numberStyle ? "\\d{1,2}" : "[a-z]{1,2}") +
       `\\${marker}[ \\t]`;
     const itemRegex = new RegExp(
-      `${itemBullet}([\\s\\S]+?)(?=${itemBullet}|\\n{2,}|$)`,
+      `^${itemBullet}([\\s\\S]+?\n)(?=${itemBullet}|\\n+|$)`,
     );
     while (src) {
       const match = itemRegex.exec(src);
