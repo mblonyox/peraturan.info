@@ -17,10 +17,6 @@ export default function PeraturanMarkdown(
   return (
     <>
       <Head>
-        <link
-          href="https://fonts.cdnfonts.com/css/bookman-old-style"
-          rel="stylesheet"
-        />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link
           rel="preconnect"

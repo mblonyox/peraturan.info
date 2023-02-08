@@ -14,6 +14,31 @@ export default function App({ Component }: AppProps) {
           rel="stylesheet"
           href="https://unpkg.com/@picocss/pico@latest/css/pico.min.css"
         />
+        <meta name="theme-color" content="#11191f" />
+        <link
+          rel="apple-touch-icon"
+          sizes="180x180"
+          href="/icons/apple-touch-icon.png"
+        />
+        <link
+          rel="icon"
+          type="image/png"
+          sizes="32x32"
+          href="/icons/favicon-32x32.png"
+        />
+        <link
+          rel="icon"
+          type="image/png"
+          sizes="16x16"
+          href="/icons/favicon-16x16.png"
+        />
+        <link rel="manifest" href="/manifest.json" />
+        <script
+          dangerouslySetInnerHTML={{
+            __html:
+              `if (typeof navigator.serviceWorker !== 'undefined') { navigator.serviceWorker.register('/sw.js') }`,
+          }}
+        />
       </Head>
       <nav class="container">
         <ul>
