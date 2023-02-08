@@ -9,7 +9,9 @@ export const handler: Handlers = {
     const db = await getDB();
     const peraturan = getPeraturan(db, jenis, tahun, nomor);
     if (!peraturan) return ctx.renderNotFound();
-    const subPath = await existsMd({ jenis, tahun, nomor }) ? "/isi" : "/info";
+    const subPath = await existsMd({ jenis, tahun, nomor })
+      ? "/kerangka"
+      : "/info";
     return Response.redirect(
       req.url + subPath,
       307,
