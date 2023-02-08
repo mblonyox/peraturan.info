@@ -2,14 +2,10 @@ import { Handler, PageProps } from "$fresh/server.ts";
 import { getDB } from "@data/db.ts";
 import { getPeraturan, Peraturan } from "@models/peraturan.ts";
 import { readTextMd } from "@utils/fs.ts";
+import { getNamaJenis, SEO_DESCRIPTION, SEO_TITLE } from "@utils/const.ts";
 import PeraturanLayout from "@components/peraturan_layout.tsx";
-import PeraturanOutline from "../../../../components/peraturan_outline.tsx";
-import SeoTags from "../../../../components/seo_tags.tsx";
-import {
-  getNamaJenis,
-  SEO_DESCRIPTION,
-  SEO_TITLE,
-} from "../../../../utils/const.ts";
+import PeraturanOutline from "@components/peraturan_outline.tsx";
+import SeoTags from "@components/seo_tags.tsx";
 
 export const handler: Handler<KerangkaPeraturanPageProps> = async (
   _req,

@@ -8,7 +8,7 @@ export default function Terbaru({ url }: PageProps) {
       <SeoTags
         title={`Terbaru | ${SEO_TITLE}`}
         description={SEO_DESCRIPTION}
-        url={url.toString()}
+        url={url}
       />
       <h1>Peraturan Terbaru</h1>
       <p>

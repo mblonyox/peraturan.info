@@ -5,14 +5,10 @@ import { peraturan as peraturanExtension } from "@utils/md.ts";
 import { getDB } from "@data/db.ts";
 import { getPeraturan, Peraturan } from "@models/peraturan.ts";
 import { readTextMd } from "@utils/fs.ts";
+import { getNamaJenis, SEO_DESCRIPTION, SEO_TITLE } from "@utils/const.ts";
 import PeraturanLayout from "@components/peraturan_layout.tsx";
 import PeraturanMarkdown from "@components/peraturan_markdown.tsx";
-import {
-  getNamaJenis,
-  SEO_DESCRIPTION,
-  SEO_TITLE,
-} from "../../../../utils/const.ts";
-import SeoTags from "../../../../components/seo_tags.tsx";
+import SeoTags from "@components/seo_tags.tsx";
 
 export const config: RouteConfig = {
   routeOverride: "/:jenis/:tahun/:nomor/:pasal(pasal-\\d+){/ayat-:ayat(\\d+)}?",
