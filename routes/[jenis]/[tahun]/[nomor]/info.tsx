@@ -65,10 +65,10 @@ export default function InfoPeraturanPage(
           SEO_DESCRIPTION}
         url={url}
       />
-      <div className="grid">
-        <div>
-          <h3>Metadata</h3>
-          <table>
+      <div className="row">
+        <div className="col-12 col-lg-6 col-xxl-4">
+          <h2>Metadata</h2>
+          <table className="table table-striped">
             <tbody>
               <tr>
                 <td>Jenis</td>
@@ -125,42 +125,62 @@ export default function InfoPeraturanPage(
               </tr>
             </tbody>
           </table>
-
-          <h3>Abstrak</h3>
         </div>
-        <div>
-          <h3>Sumber</h3>
-          {sumber.map(({ nama, url_page, url_pdf }, index) => (
-            <details open={!index}>
-              <summary role="button">{nama}</summary>
-              <p>
-                <a
-                  href={url_page}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  style={{
-                    display: "inline-block",
-                    width: "100%",
-                    overflow: "hidden",
-                    whiteSpace: "nowrap",
-                    textOverflow: "ellipsis",
-                  }}
+        <div className="col-12 col-lg-6 col-xxl-8">
+          <h2>Sumber</h2>
+          <div className="accordion" id="accordion-sumber">
+            {sumber.map(({ nama, url_page, url_pdf }, index) => (
+              <div className="accordion-item">
+                <h3 className="accordion-header" id={"heading-sumber-" + index}>
+                  <button
+                    className="accordion-button collapsed"
+                    type="button"
+                    data-bs-toggle="collapse"
+                    data-bs-target={"#collapse-sumber-" + index}
+                    aria-expanded="false"
+                    aria-controls={"collapse-sumber-" + index}
+                  >
+                    {nama}
+                  </button>
+                </h3>
+                <div
+                  className="accordion-collapse collapse"
+                  id={"collapse-sumber-" + index}
+                  aria-labelledby={"heading-sumber-" + index}
+                  data-bs-parent="#accordion-sumber"
                 >
-                  {"🌐 "}
-                  {url_page}
-                </a>
-              </p>
-              {url_pdf && (
-                <iframe
-                  name={nama}
-                  loading="lazy"
-                  src={url_pdf}
-                  style={{ width: "100%", aspectRatio: "1" }}
-                >
-                </iframe>
-              )}
-            </details>
-          ))}
+                  <div className="accordion-body">
+                    <p>
+                      <a
+                        href={url_page}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        style={{
+                          display: "inline-block",
+                          width: "100%",
+                          overflow: "hidden",
+                          whiteSpace: "nowrap",
+                          textOverflow: "ellipsis",
+                        }}
+                      >
+                        {"🌐 "}
+                        {url_page}
+                      </a>
+                    </p>
+                    {url_pdf && (
+                      <iframe
+                        name={nama}
+                        loading="lazy"
+                        src={url_pdf}
+                        style={{ width: "100%", aspectRatio: "1" }}
+                      >
+                      </iframe>
+                    )}
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
         </div>
       </div>
     </PeraturanLayout>
