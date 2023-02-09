@@ -1,16 +1,16 @@
 import { Handler, PageProps } from "$fresh/server.ts";
 import { Head } from "$fresh/runtime.ts";
-import { Peraturan } from "../models/peraturan.ts";
-import { JENIS_PERATURAN } from "../utils/const.ts";
+import { Peraturan } from "@models/peraturan.ts";
+import { JENIS_PERATURAN } from "@utils/const.ts";
 import Pagination from "./pagination.tsx";
 
 import {
   getFilterByJenisCount,
   getFilterByTahunCount,
   getListPeraturan,
-} from "../models/peraturan.ts";
-import { getNamaJenis } from "../utils/const.ts";
-import { getDB } from "../data/db.ts";
+} from "@models/peraturan.ts";
+import { getNamaJenis } from "@utils/const.ts";
+import { getDB } from "@data/db.ts";
 
 export const handler: Handler<ListPeraturanPageProps> = async (req, ctx) => {
   const { jenis: kodeJenis, tahun } = ctx.params;
@@ -70,20 +70,19 @@ export default function ListPeraturanPage({
       <Head>
         <title>{judul}</title>
       </Head>
-      <div id="info">
+      <div class="my-3 my-lg-5">
         <h1>Hasil Pencarian</h1>
         <p>
           Pencarian anda atas {judul} menemukan sebanyak {total} hasil.
         </p>
       </div>
-      <Pagination {...{ url, total, page, pageSize }} />
-      <div class="grid">
-        <aside>
+      <div class="row">
+        <aside class="col-lg-3 col-xxl-2 d-none d-lg-block">
           <PeraturanByJenis data={filterByJenis} />
           <PeraturanByTahun data={filterByTahun} />
         </aside>
-        <div id="hasil" style={{ gridColumnEnd: "span 4" }}>
-          <table>
+        <div class="col-12 col-xxl-10 col-lg-9">
+          <table class="table table-striped border-top table-hover">
             <thead>
               <tr>
                 <th scope="col">#</th>
@@ -112,7 +111,8 @@ export default function ListPeraturanPage({
                 </tr>
               ))}
             </tbody>
-          </table>
+          </table>{" "}
+          <Pagination {...{ url, total, page, pageSize }} />
         </div>
       </div>
     </>

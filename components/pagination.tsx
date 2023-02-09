@@ -40,29 +40,32 @@ export default function Pagination({
   };
 
   return (
-    <nav style={{ justifyContent: "center" }}>
-      <ul>
-        {page !== 1 && (
-          <li>
-            <a href={pageUrl(1)}>{"Awal"}</a>
-          </li>
-        )}
+    <nav aria-label="Laman-laman hasil pencarian">
+      <ul class="pagination justify-content-center">
+        <li class={"page-item" + (page === 1 ? " disabled" : "")}>
+          <a class="page-link" href={pageUrl(1)} disabled={page === 1}>
+            Awal
+          </a>
+        </li>
         {items.map((i) => (
-          <li>
+          <li class={"page-item" + (page === i ? " active" : "")}>
             <a
-              class="outline"
+              class="page-link"
               href={pageUrl(i)}
-              role={isActive(i) ? "button" : undefined}
             >
               {i}
             </a>
           </li>
         ))}
-        {page !== lastPage && (
-          <li>
-            <a href={pageUrl(lastPage)}>{"Akhir"}</a>
-          </li>
-        )}
+        <li class={"page-item" + (page === lastPage ? " disabled" : "")}>
+          <a
+            class="page-link"
+            href={pageUrl(lastPage)}
+            disabled={page === lastPage}
+          >
+            Akhir
+          </a>
+        </li>
       </ul>
     </nav>
   );
