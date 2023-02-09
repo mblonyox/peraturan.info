@@ -1,4 +1,5 @@
 import { asset } from "$fresh/runtime.ts";
+import DarkModeToggler from "../islands/dark_mode_toggler.tsx";
 
 export default function LayoutNavbar() {
   const menus = [
@@ -31,8 +32,11 @@ export default function LayoutNavbar() {
         >
           <span class="navbar-toggler-icon"></span>
         </button>
-        <div class="collapse navbar-collapse" id="navbarSupportedContent">
-          <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+        <div
+          class="collapse navbar-collapse"
+          id="navbarSupportedContent"
+        >
+          <ul class="navbar-nav mb-2 me-auto mb-lg-0">
             <li class="nav-item">
               <a class="nav-link active" aria-current="page" href="/">
                 Beranda
@@ -60,7 +64,7 @@ export default function LayoutNavbar() {
               </ul>
             </li>
           </ul>
-          <form class="d-flex" role="search">
+          <form class="d-flex mx-lg-2" role="search">
             <div className="input-group">
               <input
                 name="query"
@@ -74,6 +78,7 @@ export default function LayoutNavbar() {
               </button>
             </div>
           </form>
+          <DarkModeToggler />
         </div>
       </div>
     </nav>

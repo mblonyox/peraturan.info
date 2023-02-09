@@ -17,6 +17,7 @@ import * as $10 from "./routes/_app.tsx";
 import * as $11 from "./routes/index.tsx";
 import * as $12 from "./routes/new.tsx";
 import * as $13 from "./routes/sitemap-[jenis].xml.ts";
+import * as $$0 from "./islands/dark_mode_toggler.tsx";
 
 const manifest = {
   routes: {
@@ -35,7 +36,9 @@ const manifest = {
     "./routes/new.tsx": $12,
     "./routes/sitemap-[jenis].xml.ts": $13,
   },
-  islands: {},
+  islands: {
+    "./islands/dark_mode_toggler.tsx": $$0,
+  },
   baseUrl: import.meta.url,
   config,
 };
