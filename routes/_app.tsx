@@ -1,6 +1,7 @@
 import { AppProps } from "$fresh/server.ts";
 import { Head } from "$fresh/runtime.ts";
-import { JENIS_PERATURAN } from "../utils/const.ts";
+import LayoutNavbar from "@components/layout_navbar.tsx";
+import LayoutFooter from "../components/layout_footer.tsx";
 
 export default function App({ Component }: AppProps) {
   return (
@@ -11,9 +12,17 @@ export default function App({ Component }: AppProps) {
           content="gDCSCeR4yYkod7yJBudB-0OZEo2y507Hz8iNuCeDgwU"
         />
         <link
+          href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css"
           rel="stylesheet"
-          href="https://unpkg.com/@picocss/pico@latest/css/pico.min.css"
+          integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD"
+          crossOrigin="anonymous"
         />
+        <script
+          src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"
+          integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN"
+          crossOrigin="anonymous"
+        >
+        </script>
         <meta name="theme-color" content="#11191f" />
         <link
           rel="apple-touch-icon"
@@ -36,55 +45,15 @@ export default function App({ Component }: AppProps) {
         <script
           dangerouslySetInnerHTML={{
             __html:
-              `if (typeof navigator.serviceWorker !== 'undefined') { navigator.serviceWorker.register('/sw.js') }`,
+              `if (typeof navigator.serviceWorker !== 'undefined'  && location.hostname !== "localhost") { navigator.serviceWorker.register('/sw.js') }`,
           }}
         />
       </Head>
-      <nav class="container">
-        <ul>
-          <li>
-            <a href="/">
-              <strong>peraturan</strong>.deno.dev
-            </a>
-          </li>
-        </ul>
-        <ul>
-          <li>
-            <a href="/new">Terbaru</a>
-          </li>
-          <li>
-            <details role="list" dir="rtl">
-              <summary aria-haspopup="listbox" role="link">
-                Peraturan
-              </summary>
-              <ul role="listbox">
-                {JENIS_PERATURAN.map((x) => (
-                  <li>
-                    <a href={`/${x.kode}`}>{x.singkatan ?? x.nama}</a>
-                  </li>
-                ))}
-              </ul>
-            </details>
-          </li>
-        </ul>
-      </nav>
-      <hr />
+      <LayoutNavbar />
       <main class="container">
         <Component></Component>
       </main>
-      <footer>
-        <div className="container">
-          <hr />
-          {"Created with ☕ by "}
-          <a
-            href="https://mblonyox.com"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            @mblonyox
-          </a>
-        </div>
-      </footer>
+      <LayoutFooter />
     </>
   );
 }

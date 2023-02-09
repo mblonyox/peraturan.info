@@ -1,6 +1,6 @@
 {
   "recommendations": [
     "denoland.vscode-deno",
-    "alexcvzz.vscode-sqlite"
+    "ecmel.vscode-html-css"
   ]
 }
