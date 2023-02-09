@@ -23,16 +23,16 @@ export default function PeraturanLayout(
   const basePath = `/${jenis}/${tahun}/${nomor}`;
 
   return (
-    <>
+    <div class="my-3 my-lg-5">
       <nav aria-label="breadcrumb">
-        <ul>
-          <li>
+        <ul class="breadcrumb">
+          <li class="breadcrumb-item">
             <a href={`/${jenis}`}>{namaJenis}</a>
           </li>
-          <li>
+          <li class="breadcrumb-item">
             <a href={`/${jenis}/${tahun}`}>{tahun}</a>
           </li>
-          <li>
+          <li class="breadcrumb-item">
             <a
               href={basePath}
             >
@@ -40,44 +40,56 @@ export default function PeraturanLayout(
             </a>
           </li>
           {breadcrumbs.map(({ teks, url }) => (
-            <li>{url ? <a href={basePath + "/" + url}>{teks}</a> : teks}</li>
+            <li class={"breadcrumb-item" + (url ? "" : " active")}>
+              {url ? <a href={basePath + "/" + url}>{teks}</a> : teks}
+            </li>
           ))}
         </ul>
       </nav>
-      <hgroup>
+      <hgroup className="my-2 my-lg-3">
         <h1>{judul}</h1>
-        <h2>
+        <p>
           {namaJenis} Nomor {nomor} Tahun {tahun}
-        </h2>
+        </p>
       </hgroup>
-      <div className="grid">
-        <a
-          href={`${basePath}/kerangka`}
-          class={activeTab === "kerangka" ? "" : "outline"}
-          role="button"
-          disabled={!hasMd}
-        >
-          Kerangka
-        </a>
-        <a
-          href={`${basePath}/isi`}
-          class={activeTab === "isi" ? "" : "outline"}
-          role="button"
-          disabled={!hasMd}
-        >
-          Isi
-        </a>
-        <a
-          href={`${basePath}/info`}
-          class={activeTab === "info" ? "" : "outline"}
-          role="button"
-        >
-          Informasi
-        </a>
+      <div className="card">
+        <div className="card-header">
+          <ul className="nav nav-tabs card-header-tabs justify-content-around">
+            <li className="nav-item">
+              <a
+                href={`${basePath}/kerangka`}
+                class={"nav-link" +
+                  (activeTab === "kerangka" ? " active" : "") +
+                  (!hasMd ? " disabled" : "")}
+                disabled={!hasMd}
+              >
+                Kerangka
+              </a>
+            </li>
+            <li className="nav-item">
+              <a
+                href={`${basePath}/isi`}
+                class={"nav-link" + (activeTab === "isi" ? " active" : "") +
+                  (!hasMd ? " disabled" : "")}
+                disabled={!hasMd}
+              >
+                Isi
+              </a>
+            </li>
+            <li className="nav-item">
+              <a
+                href={`${basePath}/info`}
+                class={"nav-link" + (activeTab === "info" ? " active" : "")}
+              >
+                Informasi
+              </a>
+            </li>
+          </ul>
+        </div>
+        <div className="card-body">
+          {children}
+        </div>
       </div>
-      <article style={{ marginTop: "var(--spacing)" }}>
-        {children}
-      </article>
-    </>
+    </div>
   );
 }
