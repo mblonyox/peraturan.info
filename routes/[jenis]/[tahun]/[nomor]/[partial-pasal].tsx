@@ -29,37 +29,84 @@ export const handler: Handler<PeraturanPartialPageProps> = async (req, ctx) => {
       token.type === "pasal" ? [token] : getPasal(token?.tokens ?? [])
     ).flat();
   const pasals = getPasal(tokens);
-  let token;
+  let token, prev, next;
   const breadcrumbs = [];
   // deno-lint-ignore no-explicit-any
   token = pasals.find((token: any) => {
     const slug = token?.nomor?.toLowerCase()?.replace(" ", "-");
     return slug === pasal;
   });
+  if (!token) return ctx.renderNotFound();
+  {
+    const index = pasals.indexOf(token);
+    if (index > 0) {
+      const prevToken = pasals[index - 1];
+      prev = {
+        teks: prevToken.nomor,
+        url: prevToken.nomor?.toLowerCase()?.replace(" ", "-"),
+      };
+    }
+    if (index < pasals.length - 1) {
+      const nextToken = pasals[index + 1];
+      next = {
+        teks: nextToken.nomor,
+        url: nextToken.nomor?.toLowerCase()?.replace(" ", "-"),
+      };
+    }
+  }
   if (ayat) {
     breadcrumbs.push({
-      teks: token?.nomor,
-      url: token?.nomor?.toLowerCase()?.replace(" ", "-"),
+      teks: token.nomor,
+      url: token.nomor?.toLowerCase()?.replace(" ", "-"),
     });
+    const pasal = token;
+    const ayats = token.tokens;
     // deno-lint-ignore no-explicit-any
-    token = token?.tokens?.find((token: any) => {
+    token = ayats?.find((token: any) => {
       const slug = token?.nomor?.toLowerCase()?.replaceAll(/[\(\)]/g, "");
       return token.type === "ayat" &&
         slug === ayat;
     });
+    if (!token) return ctx.renderNotFound();
+    {
+      const index = ayats.indexOf(token);
+      if (index > 0) {
+        const prevToken = ayats[index - 1];
+        prev = {
+          teks: `${pasal.nomor} ayat ${prevToken.nomor}`,
+          url: pasal.nomor?.toLowerCase()?.replace(" ", "-") + "/ayat-" +
+            prevToken.nomor?.toLowerCase()?.replaceAll(
+              /[\(\)]/g,
+              "",
+            ),
+        };
+      }
+      if (index < ayats.length - 1) {
+        const nextToken = ayats[index + 1];
+        next = {
+          teks: `${pasal.nomor} ayat ${nextToken.nomor}`,
+          url: pasal.nomor?.toLowerCase()?.replace(" ", "-") + "/ayat-" +
+            nextToken.nomor?.toLowerCase()?.replaceAll(
+              /[\(\)]/g,
+              "",
+            ),
+        };
+      }
+    }
   }
   breadcrumbs.push({
     teks: (token.type === "ayat" ? `ayat ` : "") + token?.nomor,
   });
-  if (!token) return ctx.renderNotFound();
   const judulPartial = breadcrumbs.map(({ teks }) => teks).join(" ");
   const html = marked.parser([token as marked.Token]);
-  return ctx.render({ peraturan, breadcrumbs, judulPartial, html });
+  return ctx.render({ peraturan, breadcrumbs, prev, next, judulPartial, html });
 };
 
 interface PeraturanPartialPageProps {
   peraturan: Peraturan;
   breadcrumbs: { teks: string; url?: string }[];
+  prev?: { teks: string; url: string };
+  next?: { teks: string; url: string };
   judulPartial: string;
   html: string;
 }
@@ -70,6 +117,8 @@ export default function PeraturanPartialPage(
     data: {
       peraturan,
       breadcrumbs,
+      prev,
+      next,
       judulPartial,
       html,
     },
@@ -99,6 +148,20 @@ export default function PeraturanPartialPage(
           SEO_DESCRIPTION}
         url={url}
       />
+      <div className="d-flex justify-content-between my-2">
+        <a
+          className={"btn btn-outline-secondary" + (!prev ? " disabled" : "")}
+          href={`/${jenis}/${tahun}/${nomor}/${prev?.url}`}
+        >
+          &lt;&lt; {prev?.teks}
+        </a>
+        <a
+          className={"btn btn-outline-secondary" + (!next ? " disabled" : "")}
+          href={`/${jenis}/${tahun}/${nomor}/${next?.url}`}
+        >
+          {next?.teks} &gt;&gt;
+        </a>
+      </div>
       <PeraturanMarkdown html={html} />
     </PeraturanLayout>
   );
