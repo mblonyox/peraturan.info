@@ -19,6 +19,7 @@ import * as $12 from "./routes/index.tsx";
 import * as $13 from "./routes/new.tsx";
 import * as $14 from "./routes/sitemap-[jenis].xml.ts";
 import * as $$0 from "./islands/dark_mode_toggler.tsx";
+import * as $$1 from "./islands/print_button.tsx";
 
 const manifest = {
   routes: {
@@ -40,6 +41,7 @@ const manifest = {
   },
   islands: {
     "./islands/dark_mode_toggler.tsx": $$0,
+    "./islands/print_button.tsx": $$1,
   },
   baseUrl: import.meta.url,
   config,

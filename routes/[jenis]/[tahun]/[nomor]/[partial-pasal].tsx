@@ -9,6 +9,7 @@ import { getNamaJenis, SEO_DESCRIPTION, SEO_TITLE } from "@utils/const.ts";
 import PeraturanLayout from "@components/peraturan_layout.tsx";
 import PeraturanMarkdown from "@components/peraturan_markdown.tsx";
 import SeoTags from "@components/seo_tags.tsx";
+import PrintButton from "../../../../islands/print_button.tsx";
 
 export const config: RouteConfig = {
   routeOverride: "/:jenis/:tahun/:nomor/:pasal(pasal-\\d+){/ayat-:ayat(\\d+)}?",
@@ -155,6 +156,7 @@ export default function PeraturanPartialPage(
         >
           &lt;&lt; {prev?.teks}
         </a>
+        <PrintButton />
         <a
           className={"btn btn-outline-secondary" + (!next ? " disabled" : "")}
           href={`/${jenis}/${tahun}/${nomor}/${next?.url}`}
