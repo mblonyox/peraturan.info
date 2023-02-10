@@ -1,8 +1,8 @@
 import { Handler, PageProps } from "$fresh/server.ts";
-import { Head } from "$fresh/runtime.ts";
 import { Peraturan } from "@models/peraturan.ts";
-import { JENIS_PERATURAN } from "@utils/const.ts";
+import { JENIS_PERATURAN, SEO_DESCRIPTION, SEO_TITLE } from "@utils/const.ts";
 import Pagination from "./pagination.tsx";
+import SeoTags from "./seo_tags.tsx";
 
 import {
   getFilterByJenisCount,
@@ -38,8 +38,8 @@ export const handler: Handler<ListPeraturanPageProps> = async (req, ctx) => {
   return ctx.render({
     judul,
     ...listPeraturan,
-    filterByJenis,
-    filterByTahun,
+    filterByJenisProps: { data: filterByJenis, tahun },
+    filterByTahunProps: { data: filterByTahun, jenis },
   });
 };
 
@@ -49,8 +49,8 @@ interface ListPeraturanPageProps {
   hasil: Peraturan[];
   page: number;
   pageSize: number;
-  filterByJenis: { jenis: string; jumlah: number }[];
-  filterByTahun: { tahun: number; jumlah: number }[];
+  filterByJenisProps: FilterByJenisProps;
+  filterByTahunProps: FilterByTahunProps;
 }
 
 export default function ListPeraturanPage({
@@ -61,15 +61,17 @@ export default function ListPeraturanPage({
     hasil,
     page,
     pageSize,
-    filterByJenis,
-    filterByTahun,
+    filterByJenisProps,
+    filterByTahunProps,
   },
 }: PageProps<ListPeraturanPageProps>) {
   return (
     <>
-      <Head>
-        <title>{judul}</title>
-      </Head>
+      <SeoTags
+        title={`Hasil pencarian ${judul}, halaman ${page} | ${SEO_TITLE}`}
+        description={`Pencarian anda atas ${judul} menemukan sebanyak ${total} hasil. ${SEO_DESCRIPTION}`}
+        url={url}
+      />
       <div class="my-3 my-lg-5">
         <h1>Hasil Pencarian</h1>
         <p>
@@ -78,8 +80,8 @@ export default function ListPeraturanPage({
       </div>
       <div class="row">
         <aside class="col-lg-3 col-xxl-2 d-none d-lg-block">
-          <PeraturanByJenis data={filterByJenis} />
-          <PeraturanByTahun data={filterByTahun} />
+          <FilterByJenis {...filterByJenisProps} />
+          <FilterByTahun {...filterByTahunProps} />
         </aside>
         <div class="col-12 col-xxl-10 col-lg-9">
           <table class="table table-striped border-top table-hover">
@@ -119,21 +121,22 @@ export default function ListPeraturanPage({
   );
 }
 
-interface PeraturanByJenisProps {
+interface FilterByJenisProps {
   data: { jenis: string; jumlah: number }[];
+  tahun?: string;
 }
 
-function PeraturanByJenis({ data }: PeraturanByJenisProps) {
+function FilterByJenis({ data, tahun }: FilterByJenisProps) {
   return (
     <section>
-      <p>Peraturan berdasar bentuk</p>
+      <p>Saring berdasar jenis</p>
       <ul style={{ maxHeight: 480, overflowY: "auto" }}>
         <li>
-          <a href="/all">Semua jenis</a>
+          <a href={`/all/${tahun ?? ""}`}>Semua jenis</a>
         </li>
         {data.map(({ jenis, jumlah }) => (
           <li key={jenis}>
-            <a href={`/${jenis}`}>
+            <a href={`/${jenis}/${tahun ?? ""}`}>
               {jenis}&nbsp;({jumlah})
             </a>
           </li>
@@ -143,21 +146,22 @@ function PeraturanByJenis({ data }: PeraturanByJenisProps) {
   );
 }
 
-interface PeraturanByTahunProps {
+interface FilterByTahunProps {
   data: { tahun: number; jumlah: number }[];
+  jenis?: string;
 }
 
-function PeraturanByTahun({ data }: PeraturanByTahunProps) {
+function FilterByTahun({ data, jenis }: FilterByTahunProps) {
   return (
     <section>
-      <p>Peraturan berdasar tahun</p>
+      <p>Saring berdasar tahun</p>
       <ul style={{ maxHeight: 480, overflowY: "auto" }}>
         <li>
-          <a href="/all">Semua tahun</a>
+          <a href={`/${jenis ?? "all"}`}>Semua tahun</a>
         </li>
         {data.map(({ tahun, jumlah }) => (
           <li key={tahun}>
-            <a href={`/all/${tahun}`}>
+            <a href={`/${jenis ?? "all"}/${tahun}`}>
               {tahun}&nbsp;({jumlah})
             </a>
           </li>
