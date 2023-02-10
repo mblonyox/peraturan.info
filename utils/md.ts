@@ -126,6 +126,33 @@ const diktum: marked.TokenizerAndRendererExtension = {
   },
 };
 
+const buku: marked.TokenizerAndRendererExtension = {
+  name: "buku",
+  level: "block",
+  tokenizer(src: string, _tokens: marked.Token[] | marked.TokensList) {
+    const match = src.match(
+      /^((BUKU [A-Z ]+)\n[\s\S]*?)\n\n([\s\S]+?\n)(?=BUKU [A-Z ]+\n|$)/,
+    );
+    if (match) {
+      const token = {
+        type: "buku",
+        raw: match[0],
+        judul: match[1],
+        nomor: match[2],
+        tokens: [],
+      };
+      this.lexer.blockTokens(match[3], token.tokens);
+      return token;
+    }
+  },
+  renderer(token) {
+    const id = this.parser.slugger.slug(token.nomor);
+    return `<h2 id="${id}" class="buku">${
+      token.judul.replaceAll("\n", "<br>")
+    }</h2><br>${this.parser.parse(token.tokens ?? [])}`;
+  },
+};
+
 const bab: marked.TokenizerAndRendererExtension = {
   name: "bab",
   level: "block",
@@ -147,9 +174,9 @@ const bab: marked.TokenizerAndRendererExtension = {
   },
   renderer(token) {
     const id = this.parser.slugger.slug(token.nomor);
-    return `<h2 id="${id}" class="bab">${
+    return `<h3 id="${id}" class="bab">${
       token.judul.replaceAll("\n", "<br>")
-    }</h2><br>${this.parser.parse(token.tokens ?? [])}`;
+    }</h3><br>${this.parser.parse(token.tokens ?? [])}`;
   },
 };
 
@@ -174,9 +201,9 @@ const bagian: marked.TokenizerAndRendererExtension = {
   },
   renderer(token) {
     const id = this.parser.slugger.slug(token.nomor);
-    return `<h3 id="${id}" class="bagian">${
+    return `<h4 id="${id}" class="bagian">${
       token.judul.replaceAll("\n", "<br>")
-    }</h3><br>${this.parser.parse(token.tokens ?? [])}`;
+    }</h4><br>${this.parser.parse(token.tokens ?? [])}`;
   },
 };
 
@@ -201,9 +228,9 @@ const paragraf: marked.TokenizerAndRendererExtension = {
   },
   renderer(token) {
     const id = this.parser.slugger.slug(token.nomor);
-    return `<h4 id="${id}" class="paragraf">${
+    return `<h5 id="${id}" class="paragraf">${
       token.judul.replaceAll("\n", "<br>")
-    }</h4><br>${this.parser.parse(token.tokens ?? [])}`;
+    }</h5><br>${this.parser.parse(token.tokens ?? [])}`;
   },
 };
 
@@ -232,7 +259,7 @@ const pasal: marked.TokenizerAndRendererExtension = {
   },
   renderer(token) {
     const id = this.parser.slugger.slug(token.nomor);
-    return `<h5 id="${id}" class="pasal">${token.nomor}</h5><div class="isi-pasal">${
+    return `<h6 id="${id}" class="pasal">${token.nomor}</h6><div class="isi-pasal">${
       this.parser.parse(token.tokens ?? [])
     }</div><br>`;
   },
@@ -331,6 +358,7 @@ export const peraturan: marked.MarkedExtension = {
     konsideran,
     dasarHukum,
     diktum,
+    buku,
     bab,
     bagian,
     paragraf,

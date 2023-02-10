@@ -21,6 +21,7 @@
 .peraturan .jabatan-pembentuk,
 .peraturan .persetujuan,
 .peraturan .kata-memutuskan,
+.peraturan .buku,
 .peraturan .bab,
 .peraturan .bagian,
 .peraturan .paragraf,
@@ -28,6 +29,7 @@
   text-align: center;
 }
 
+.peraturan .buku,
 .peraturan .bab,
 .peraturan .bagian,
 .peraturan .paragraf,

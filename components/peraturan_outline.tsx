@@ -12,7 +12,7 @@ export default function PeraturanOutline(
   marked.use(peraturan);
   const tokens = marked.lexer(md);
   const batangTubuh = tokens.filter((token: { type: string }) =>
-    token.type === "bab" || token.type === "pasal"
+    token.type === "buku" || token.type === "bab" || token.type === "pasal"
   );
 
   return (
@@ -49,7 +49,7 @@ function BatangTubuhToken(
     /[\(\)]/g,
     "",
   );
-  path = (token.type === "bab" || token.type === "pasal" ? basePath : path) +
+  path = (token.type === "pasal" ? basePath : path) +
     `/${slug}`;
   const subTokens = token.tokens?.filter((token) =>
     ["bab", "bagian", "paragraf", "pasal", "ayat"].includes(token.type)
