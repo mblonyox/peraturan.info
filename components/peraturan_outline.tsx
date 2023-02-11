@@ -16,12 +16,12 @@ export default function PeraturanOutline(
   );
 
   return (
-    <ul>
-      <li>JUDUL</li>
-      <li>PEMBUKAAN</li>
-      <li>
+    <ul className="list-group">
+      <li className="list-group-item">JUDUL</li>
+      <li className="list-group-item">PEMBUKAAN</li>
+      <li className="list-group-item">
         BATANG TUBUH
-        <ul>
+        <ul className="list-group list-group-flush">
           {batangTubuh.map((token) => (
             <BatangTubuhToken
               token={token}
@@ -31,7 +31,7 @@ export default function PeraturanOutline(
           ))}
         </ul>
       </li>
-      <li>PENUTUP</li>
+      <li className="list-group-item">PENUTUP</li>
     </ul>
   );
 }
@@ -60,14 +60,16 @@ function BatangTubuhToken(
     ? token.raw?.substring(token.nomor.length, token.nomor.length + 80)
     : "";
   return (
-    <li>
+    <li className="list-group-item">
       {subTokens?.length
         ? (
           <details open={token.type === "pasal"}>
             <summary>
-              <a href={path}>{judul}</a>
+              <div className="d-inline-flex w-75 ms-2">
+                <a href={path}>{judul}</a>
+              </div>
             </summary>
-            <ul>
+            <ul className="list-group list-group-flush">
               {subTokens.map((token) => (
                 <BatangTubuhToken
                   token={token}
@@ -79,13 +81,13 @@ function BatangTubuhToken(
           </details>
         )
         : (
-          <>
-            <a href={path}>
+          <div className="d-flex gap-2 w-100 ms-2">
+            <a className="text-nowrap" href={path}>
               {judul}
             </a>
             {preview &&
               <cite>{preview}{token.raw.length > 80 ? "…" : ""}</cite>}
-          </>
+          </div>
         )}
     </li>
   );
