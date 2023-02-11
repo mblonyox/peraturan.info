@@ -20,7 +20,7 @@ export default function DarkModeToggler() {
         window.matchMedia("(prefers-color-scheme: dark)").matches);
     const bsTheme = isDark ? "dark" : "light";
     document.documentElement.setAttribute("data-bs-theme", bsTheme);
-    document.cookie = `theme=${bsTheme}; Max-Age=1707109200`;
+    document.cookie = `theme=${bsTheme}; Max-Age=1707109200; Path=/`;
     localStorage.setItem("theme", theme);
   }, [theme]);
 
