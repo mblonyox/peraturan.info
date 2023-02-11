@@ -54,7 +54,7 @@ export default function PeraturanLayout(
       </hgroup>
       <div className="card">
         <div className="card-header">
-          <ul className="nav nav-tabs card-header-tabs justify-content-around">
+          <ul className="nav nav-tabs nav-fill card-header-tabs justify-content-around">
             <li className="nav-item">
               <a
                 href={`${basePath}/kerangka`}
