@@ -15,9 +15,10 @@ import * as $8 from "./routes/[jenis]/index.tsx";
 import * as $9 from "./routes/_404.tsx";
 import * as $10 from "./routes/_500.tsx";
 import * as $11 from "./routes/_app.tsx";
-import * as $12 from "./routes/index.tsx";
-import * as $13 from "./routes/new.tsx";
-import * as $14 from "./routes/sitemap-[jenis].xml.ts";
+import * as $12 from "./routes/_middleware.tsx";
+import * as $13 from "./routes/index.tsx";
+import * as $14 from "./routes/new.tsx";
+import * as $15 from "./routes/sitemap-[jenis].xml.ts";
 import * as $$0 from "./islands/dark_mode_toggler.tsx";
 import * as $$1 from "./islands/print_button.tsx";
 
@@ -35,9 +36,10 @@ const manifest = {
     "./routes/_404.tsx": $9,
     "./routes/_500.tsx": $10,
     "./routes/_app.tsx": $11,
-    "./routes/index.tsx": $12,
-    "./routes/new.tsx": $13,
-    "./routes/sitemap-[jenis].xml.ts": $14,
+    "./routes/_middleware.tsx": $12,
+    "./routes/index.tsx": $13,
+    "./routes/new.tsx": $14,
+    "./routes/sitemap-[jenis].xml.ts": $15,
   },
   islands: {
     "./islands/dark_mode_toggler.tsx": $$0,
