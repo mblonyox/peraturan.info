@@ -1,7 +1,17 @@
 import { DB } from "$sqlite/mod.ts";
 
+export const JENIS2_PERATURAN = [
+  "uu",
+  "perppu",
+  "pp",
+  "perpres",
+  "permenkeu",
+] as const;
+
+export type JenisPeraturan = typeof JENIS2_PERATURAN[number];
+
 export type Peraturan = {
-  jenis: string;
+  jenis: JenisPeraturan;
   tahun: number;
   nomor: number;
   judul: string;
@@ -9,6 +19,33 @@ export type Peraturan = {
   tanggal_diundangkan: Date;
   tanggal_berlaku: Date;
   nomor_text: string;
+};
+
+export type PuuRef = `${JenisPeraturan}/${number}/${number}`;
+
+export type SumberPeraturan = {
+  id: number;
+  puu: PuuRef;
+  nama: string;
+  url_page: string;
+  url_pdf: string;
+};
+
+export const JENIS2_RELASI = [
+  "cabut",
+  "cabut_sebagian",
+  "ubah",
+  "dasar_hukum",
+] as const;
+
+export type JenisRelasi = typeof JENIS2_RELASI[number];
+
+export type RelasiPeraturan = {
+  id: number;
+  puu1: PuuRef;
+  relasi: JenisRelasi;
+  puu2: PuuRef;
+  catatan: string;
 };
 
 // deno-lint-ignore no-explicit-any
@@ -90,13 +127,6 @@ export const getPeraturan = (
   return null;
 };
 
-export type SumberPeraturan = {
-  id: number;
-  nama: string;
-  url_page: string;
-  url_pdf: string;
-};
-
 export const getSumberPeraturan = (
   db: DB,
   jenis: string,
@@ -104,7 +134,31 @@ export const getSumberPeraturan = (
   nomor: string,
 ) => {
   return db.queryEntries<SumberPeraturan>(
-    `SELECT * FROM sumber WHERE jenis_tahun_nomor = :key`,
+    `SELECT * FROM sumber WHERE puu = :key`,
+    [`${jenis}/${tahun}/${nomor}`],
+  );
+};
+
+export const getRelasiPeraturan1 = (
+  db: DB,
+  jenis: string,
+  tahun: string,
+  nomor: string,
+) => {
+  return db.queryEntries<RelasiPeraturan & Peraturan>(
+    `SELECT * FROM relasi LEFT JOIN peraturan ON relasi.puu2 = peraturan.jenis || '/' || peraturan.tahun || '/' || peraturan.nomor WHERE puu1 = :key`,
+    [`${jenis}/${tahun}/${nomor}`],
+  );
+};
+
+export const getRelasiPeraturan2 = (
+  db: DB,
+  jenis: string,
+  tahun: string,
+  nomor: string,
+) => {
+  return db.queryEntries<RelasiPeraturan & Peraturan>(
+    `SELECT * FROM relasi LEFT JOIN peraturan ON relasi.puu1 = peraturan.jenis || '/' || peraturan.tahun || '/' || peraturan.nomor WHERE puu2 = :key`,
     [`${jenis}/${tahun}/${nomor}`],
   );
 };

@@ -10,15 +10,16 @@ import * as $3 from "./routes/[jenis]/[tahun]/[nomor]/index.ts";
 import * as $4 from "./routes/[jenis]/[tahun]/[nomor]/info.tsx";
 import * as $5 from "./routes/[jenis]/[tahun]/[nomor]/isi.tsx";
 import * as $6 from "./routes/[jenis]/[tahun]/[nomor]/kerangka.tsx";
-import * as $7 from "./routes/[jenis]/[tahun]/index.tsx";
-import * as $8 from "./routes/[jenis]/index.tsx";
-import * as $9 from "./routes/_404.tsx";
-import * as $10 from "./routes/_500.tsx";
-import * as $11 from "./routes/_app.tsx";
-import * as $12 from "./routes/_middleware.tsx";
-import * as $13 from "./routes/index.tsx";
-import * as $14 from "./routes/new.tsx";
-import * as $15 from "./routes/sitemap-[jenis].xml.ts";
+import * as $7 from "./routes/[jenis]/[tahun]/[nomor]/terkait.tsx";
+import * as $8 from "./routes/[jenis]/[tahun]/index.tsx";
+import * as $9 from "./routes/[jenis]/index.tsx";
+import * as $10 from "./routes/_404.tsx";
+import * as $11 from "./routes/_500.tsx";
+import * as $12 from "./routes/_app.tsx";
+import * as $13 from "./routes/_middleware.tsx";
+import * as $14 from "./routes/index.tsx";
+import * as $15 from "./routes/new.tsx";
+import * as $16 from "./routes/sitemap-[jenis].xml.ts";
 import * as $$0 from "./islands/dark_mode_toggler.tsx";
 import * as $$1 from "./islands/print_button.tsx";
 
@@ -31,15 +32,16 @@ const manifest = {
     "./routes/[jenis]/[tahun]/[nomor]/info.tsx": $4,
     "./routes/[jenis]/[tahun]/[nomor]/isi.tsx": $5,
     "./routes/[jenis]/[tahun]/[nomor]/kerangka.tsx": $6,
-    "./routes/[jenis]/[tahun]/index.tsx": $7,
-    "./routes/[jenis]/index.tsx": $8,
-    "./routes/_404.tsx": $9,
-    "./routes/_500.tsx": $10,
-    "./routes/_app.tsx": $11,
-    "./routes/_middleware.tsx": $12,
-    "./routes/index.tsx": $13,
-    "./routes/new.tsx": $14,
-    "./routes/sitemap-[jenis].xml.ts": $15,
+    "./routes/[jenis]/[tahun]/[nomor]/terkait.tsx": $7,
+    "./routes/[jenis]/[tahun]/index.tsx": $8,
+    "./routes/[jenis]/index.tsx": $9,
+    "./routes/_404.tsx": $10,
+    "./routes/_500.tsx": $11,
+    "./routes/_app.tsx": $12,
+    "./routes/_middleware.tsx": $13,
+    "./routes/index.tsx": $14,
+    "./routes/new.tsx": $15,
+    "./routes/sitemap-[jenis].xml.ts": $16,
   },
   islands: {
     "./islands/dark_mode_toggler.tsx": $$0,

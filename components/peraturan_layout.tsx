@@ -1,11 +1,10 @@
-import { Head } from "$fresh/runtime.ts";
 import { ComponentChildren } from "preact";
-import { getNamaJenis } from "../utils/const.ts";
+import { getNamaJenis } from "@utils/const.ts";
 import { Peraturan } from "@models/peraturan.ts";
 interface PeraturanLayoutProps {
   peraturan: Peraturan;
   breadcrumbs: { teks: string; url?: string }[];
-  activeTab: "kerangka" | "isi" | "info";
+  activeTab: "kerangka" | "isi" | "terkait" | "info";
   hasMd: boolean;
   children: ComponentChildren;
 }
@@ -74,6 +73,14 @@ export default function PeraturanLayout(
                 disabled={!hasMd}
               >
                 Isi
+              </a>
+            </li>
+            <li className="nav-item">
+              <a
+                href={`${basePath}/terkait`}
+                class={"nav-link" + (activeTab === "terkait" ? " active" : "")}
+              >
+                Terkait
               </a>
             </li>
             <li className="nav-item">
