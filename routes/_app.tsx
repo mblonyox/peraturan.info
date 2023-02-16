@@ -1,11 +1,15 @@
 import { AppProps } from "$fresh/server.ts";
 import { Head } from "$fresh/runtime.ts";
+import { appContext } from "@utils/app_context.tsx";
 import LayoutNavbar from "@components/layout_navbar.tsx";
-import LayoutFooter from "../components/layout_footer.tsx";
+import LayoutFooter from "@components/layout_footer.tsx";
 
-export default function App({ Component }: AppProps) {
+export default function App({ Component, contextState }: AppProps) {
+  const theme = contextState?.["theme"] as "dark" | "light" | undefined;
+  const url = contextState?.["url"] as string | undefined;
+
   return (
-    <>
+    <appContext.Provider value={{ theme, url }}>
       <Head>
         <meta
           name="google-site-verification"
@@ -54,6 +58,6 @@ export default function App({ Component }: AppProps) {
         <Component></Component>
       </main>
       <LayoutFooter />
-    </>
+    </appContext.Provider>
   );
 }

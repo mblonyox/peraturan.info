@@ -1,7 +1,11 @@
 import { useEffect, useState } from "preact/hooks";
 
-export default function DarkModeToggler() {
-  const [theme, setTheme] = useState<"light" | "dark" | "system">();
+export default function DarkModeToggler(
+  { initTheme }: { initTheme?: "dark" | "light" },
+) {
+  const [theme, setTheme] = useState<"light" | "dark" | "system">(
+    initTheme ?? "system",
+  );
 
   useEffect(() => {
     const storedTheme = localStorage.getItem("theme");

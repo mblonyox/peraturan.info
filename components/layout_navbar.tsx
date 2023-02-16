@@ -1,13 +1,18 @@
 import { asset } from "$fresh/runtime.ts";
-import DarkModeToggler from "../islands/dark_mode_toggler.tsx";
+import { useContext } from "preact/hooks";
+import { appContext } from "@utils/app_context.tsx";
+import DarkModeToggler from "@islands/dark_mode_toggler.tsx";
 
 export default function LayoutNavbar() {
+  const { theme, url } = useContext(appContext);
+  const pathname = new URL(url ?? "").pathname;
+
   const menus = [
-    { url: "uu", teks: "Undang\u2011Undang" },
-    { url: "perppu", teks: "Perppu" },
-    { url: "pp", teks: "Peraturan Pemerintah" },
-    { url: "perpres", teks: "Peraturan Presiden" },
-    { url: "permenkeu", teks: "Peraturan Menteri Keuangan" },
+    { path: "/uu", teks: "Undang\u2011Undang" },
+    { path: "/perppu", teks: "Perppu" },
+    { path: "/pp", teks: "Peraturan Pemerintah" },
+    { path: "/perpres", teks: "Peraturan Presiden" },
+    { path: "/permenkeu", teks: "Peraturan Menteri Keuangan" },
   ];
 
   return (
@@ -38,16 +43,29 @@ export default function LayoutNavbar() {
         >
           <ul class="navbar-nav mb-2 me-auto mb-lg-0">
             <li class="nav-item">
-              <a class="nav-link active" aria-current="page" href="/">
+              <a
+                class={"nav-link" + (pathname === "/" ? " active" : "")}
+                aria-current={pathname === "/" ? "page" : "false"}
+                href="/"
+              >
                 Beranda
               </a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="/new">Terbaru</a>
+              <a
+                class={"nav-link" + (pathname === "/new" ? " active" : "")}
+                aria-current={pathname === "/new" ? "page" : "false"}
+                href="/new"
+              >
+                Terbaru
+              </a>
             </li>
             <li class="nav-item dropdown">
               <a
-                class="nav-link dropdown-toggle"
+                class={"nav-link dropdown-toggle" +
+                  (menus.some(({ path }) => (pathname.startsWith(path)))
+                    ? " active"
+                    : "")}
                 href="#"
                 role="button"
                 data-bs-toggle="dropdown"
@@ -56,9 +74,18 @@ export default function LayoutNavbar() {
                 Peraturan
               </a>
               <ul class="dropdown-menu">
-                {menus.map(({ url, teks }) => (
+                {menus.map(({ path, teks }) => (
                   <li>
-                    <a class="dropdown-item" href={url}>{teks}</a>
+                    <a
+                      class={"dropdown-item nav-link" +
+                        (pathname.startsWith(path) ? " active" : "")}
+                      aria-current={pathname.startsWith(path)
+                        ? "page"
+                        : "false"}
+                      href={path}
+                    >
+                      {teks}
+                    </a>
                   </li>
                 ))}
               </ul>
@@ -78,7 +105,7 @@ export default function LayoutNavbar() {
               </button>
             </div>
           </form>
-          <DarkModeToggler />
+          <DarkModeToggler initTheme={theme} />
         </div>
       </div>
     </nav>

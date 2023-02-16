@@ -1,11 +1,12 @@
 {
   "imports": {
     "@components/": "./components/",
+    "@islands/": "./islands/",
     "@models/": "./models/",
     "@data/": "./data/",
     "@utils/": "./utils/",
     "$std/": "https://deno.land/std@0.174.0/",
-    "$fresh/": "https://deno.land/x/fresh@1.1.0/",
+    "$fresh/": "https://raw.githubusercontent.com/mblonyox/fresh/a7e36dc8ed500d6aa8cfe192aed6dad27c553e40/",
     "$mock_file/": "https://deno.land/x/mock_file@v1.0.1/",
     "$sqlite/": "https://deno.land/x/sqlite@v3.7.0/",
     "marked": "https://esm.sh/marked@4.2.12",
