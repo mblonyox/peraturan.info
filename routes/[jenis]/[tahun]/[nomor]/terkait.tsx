@@ -70,6 +70,14 @@ export default function TerkaitPeraturanPage(
       items: relasi1.filter((r) => r.relasi === "cabut_sebagian"),
     },
     { title: "Mengubah", items: relasi1.filter((r) => r.relasi === "ubah") },
+    {
+      title: "Dasar Hukum",
+      items: relasi1.filter((r) => r.relasi === "dasar_hukum"),
+    },
+    {
+      title: "Dijadikan Dasar Hukum berlakunya",
+      items: relasi2.filter((r) => r.relasi === "dasar_hukum"),
+    },
   ];
 
   return (
