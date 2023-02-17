@@ -103,12 +103,11 @@
   list-style: lower-latin;
 }
 .peraturan ol.butir.kurung  {
-  counter-reset: list;
   list-style: none;
 }
 .peraturan ol.butir.number.kurung > li::marker  {
-  content: counter(list) ")";
+  content: counter(list-item, decimal) ") ";
 }
 .peraturan ol.butir.lower-latin.kurung > li::marker  {
-  content: counter(list, lower-latin) ")";
+  content: counter(list-item, lower-latin) ") ";
 }
