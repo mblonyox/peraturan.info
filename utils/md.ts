@@ -66,7 +66,7 @@ const konsideran: marked.TokenizerAndRendererExtension = {
     }
   },
   renderer(token) {
-    return `<table class="konsideran"><tbody><tr><th><p>Menimbang</p></th><td>:</td><td>${
+    return `<table class="konsideran"><tbody><tr><th>Menimbang</th><td>:</td><td>${
       this.parser.parse(token.tokens ?? [])
     }</td></tr></tbody></table><br/>`;
   },
@@ -88,7 +88,7 @@ const dasarHukum: marked.TokenizerAndRendererExtension = {
     }
   },
   renderer(token) {
-    return `<table class="dasar-hukum"><tbody><tr><th><p>Mengingat</p></th><td>:</td><td>${
+    return `<table class="dasar-hukum"><tbody><tr><th>Mengingat</th><td>:</td><td>${
       this.parser.parse(token.tokens ?? [])
     }</td></tr></tbody></table><br/>`;
   },
@@ -99,7 +99,7 @@ const diktum: marked.TokenizerAndRendererExtension = {
   level: "block",
   tokenizer(src, _tokens: marked.Token[] | marked.TokensList) {
     const match = src.match(
-      /^(Dengan[\s\S]+)?\n?MEMUTUSKAN:\nMenetapkan[ \t]*:[ \t]*\n([\s\S]+?\n)(?:\n+|$)/,
+      /^(Dengan[\s\S]+\n)?MEMUTUSKAN:\n(?:Mencabut[ \t]*:[ \t]*\n([\s\S]+?\n)\n)?Menetapkan[ \t]*:[ \t]*\n([\s\S]+?\n)(?:\n+|$)/,
     );
     if (match) {
       const token = {
@@ -109,7 +109,8 @@ const diktum: marked.TokenizerAndRendererExtension = {
           match[1]?.replaceAll("\n", "<br/>"),
           [],
         ),
-        judul: this.lexer.inlineTokens(match[2], []),
+        mencabut: this.lexer.inlineTokens(match[2], []),
+        menetapkan: this.lexer.inlineTokens(match[3], []),
       };
       return token;
     }
@@ -118,10 +119,16 @@ const diktum: marked.TokenizerAndRendererExtension = {
     return (token.persetujuan.length
       ? `<p class="persetujuan">${
         this.parser.parseInline(token.persetujuan ?? [])
-      }</p><br/>`
+      }</p>`
       : "") +
-      `<p class="kata-memutuskan">MEMUTUSKAN:</p><table class="diktum"><tbody><tr><th><p>Menetapkan</p></th><td>:</td><td><p>${
-        this.parser.parseInline(token.judul ?? [])
+      '<p class="kata-memutuskan">MEMUTUSKAN:</p>' +
+      (token.mencabut.length
+        ? `<table><tbody><tr><th><p>Mencabut</p></th><td>:</td><td><p>${
+          this.parser.parseInline(token.mencabut ?? [])
+        }</p></td></tr></tbody></table><br/>`
+        : "") +
+      `<table><tbody><tr><th><p>Menetapkan</p></th><td>:</td><td><p>${
+        this.parser.parseInline(token.menetapkan ?? [])
       }</p></td></tr></tbody></table><br/>`;
   },
 };
@@ -131,7 +138,7 @@ const buku: marked.TokenizerAndRendererExtension = {
   level: "block",
   tokenizer(src: string, _tokens: marked.Token[] | marked.TokensList) {
     const match = src.match(
-      /^((BUKU [A-Z ]+)\n[\s\S]*?)\n\n([\s\S]+?\n)(?=BUKU [A-Z ]+\n|$)/,
+      /^((BUKU [A-Z ]+)\n[\s\S]*?)\n\n([\s\S]+?\n)(?=BUKU [A-Z ]+\n|\n{2,}|$)/,
     );
     if (match) {
       const token = {
@@ -158,7 +165,7 @@ const bab: marked.TokenizerAndRendererExtension = {
   level: "block",
   tokenizer(src: string, _tokens: marked.Token[] | marked.TokensList) {
     const match = src.match(
-      /^((BAB [MDCLXVI]+)\n[\s\S]*?)\n\n([\s\S]+?\n)(?=BAB [MDCLXVI]+\n|$)/,
+      /^((BAB [MDCLXVI]+)\n[\s\S]*?)\n\n([\s\S]+?\n)(?=BAB [MDCLXVI]+\n|\n{2,}|$)/,
     );
     if (match) {
       const token = {
@@ -185,7 +192,7 @@ const bagian: marked.TokenizerAndRendererExtension = {
   level: "block",
   tokenizer(src: string, _tokens: marked.Token[] | marked.TokensList) {
     const match = src.match(
-      /^((Bagian .+?)\n[\s\S]+?)\n\n([\s\S]+?\n)(?=Bagian [\s\w]+?\n|$)/,
+      /^((Bagian .+?)\n[\s\S]+?)\n\n([\s\S]+?\n)(?=Bagian [\s\w]+?\n|\n{2,}|$)/,
     );
     if (match) {
       const token = {
@@ -212,7 +219,7 @@ const paragraf: marked.TokenizerAndRendererExtension = {
   level: "block",
   tokenizer(src: string, _tokens: marked.Token[] | marked.TokensList) {
     const match = src.match(
-      /^((Paragraf \d+)\n[\s\S]+?)\n\n([\s\S]+?\n)(?=Paragraf \d+\n|$)/,
+      /^((Paragraf \d+)\n[\s\S]+?)\n\n([\s\S]+?\n)(?=Paragraf \d+\n|\n{2,}|$)/,
     );
     if (match) {
       const token = {
@@ -239,7 +246,7 @@ const pasal: marked.TokenizerAndRendererExtension = {
   level: "block",
   tokenizer(src: string, _tokens: marked.Token[] | marked.TokensList) {
     const match = src.match(
-      /^(Pasal \d+)\n([\s\S]+?\n)(?=Pasal \d+\n|$)/,
+      /^(Pasal \d+)\n([\s\S]+?\n)(?=Pasal \d+\n|\n{2,}|$)/,
     );
     if (match) {
       const token = {
