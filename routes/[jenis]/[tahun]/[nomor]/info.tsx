@@ -171,7 +171,7 @@ export default function InfoPeraturanPage(
                       <iframe
                         name={nama}
                         loading="lazy"
-                        src={url_pdf}
+                        src={`https://docs.google.com/gview?url=${url_pdf}&embedded=true`}
                         style={{ width: "100%", aspectRatio: "1" }}
                       >
                       </iframe>
