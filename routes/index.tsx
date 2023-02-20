@@ -1,16 +1,9 @@
-import { PageProps } from "$fresh/server.ts";
 import { asset } from "$fresh/runtime.ts";
-import { JENIS_PERATURAN, SEO_DESCRIPTION, SEO_TITLE } from "@utils/const.ts";
-import SeoTags from "@components/seo_tags.tsx";
+import { JENIS_PERATURAN } from "@utils/const.ts";
 
-export default function Home({ url }: PageProps) {
+export default function Home() {
   return (
     <>
-      <SeoTags
-        title={SEO_TITLE}
-        description={SEO_DESCRIPTION}
-        url={url}
-      />
       <div class="py-5 my-5 text-center">
         <img
           src={asset("/logo.webp")}

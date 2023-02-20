@@ -1,7 +1,14 @@
+import { useContext } from "preact/hooks";
 import { createContext } from "preact";
 
-export type AppContext = {
-  theme?: "dark" | "light";
+export type AppContextState = {
   url?: string;
+  theme?: "dark" | "light";
+  seo?: { title: string; description: string; image?: string };
+  breadcrumbs?: { name: string; url?: string }[];
 };
-export const appContext = createContext<AppContext>({});
+const appContext = createContext<AppContextState>({});
+
+export const AppContextProvider = appContext.Provider;
+
+export const useAppContext = () => useContext(appContext);

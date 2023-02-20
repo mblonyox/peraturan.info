@@ -1,10 +1,9 @@
 import { asset } from "$fresh/runtime.ts";
-import { useContext } from "preact/hooks";
-import { appContext } from "@utils/app_context.tsx";
+import { useAppContext } from "@utils/app_context.tsx";
 import DarkModeToggler from "@islands/dark_mode_toggler.tsx";
 
 export default function LayoutNavbar() {
-  const { theme, url } = useContext(appContext);
+  const { theme, url } = useAppContext();
   const pathname = new URL(url ?? "").pathname;
 
   const menus = [

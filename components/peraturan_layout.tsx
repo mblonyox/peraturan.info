@@ -3,7 +3,6 @@ import { getNamaJenis } from "@utils/const.ts";
 import { Peraturan } from "@models/peraturan.ts";
 interface PeraturanLayoutProps {
   peraturan: Peraturan;
-  breadcrumbs: { teks: string; url?: string }[];
   activeTab: "kerangka" | "isi" | "terkait" | "info";
   hasMd: boolean;
   children: ComponentChildren;
@@ -12,7 +11,6 @@ interface PeraturanLayoutProps {
 export default function PeraturanLayout(
   {
     peraturan: { jenis, nomor, tahun, judul },
-    breadcrumbs,
     activeTab,
     hasMd,
     children,
@@ -23,28 +21,6 @@ export default function PeraturanLayout(
 
   return (
     <div class="my-3 my-lg-5">
-      <nav aria-label="breadcrumb">
-        <ul class="breadcrumb">
-          <li class="breadcrumb-item">
-            <a href={`/${jenis}`}>{namaJenis}</a>
-          </li>
-          <li class="breadcrumb-item">
-            <a href={`/${jenis}/${tahun}`}>{tahun}</a>
-          </li>
-          <li class="breadcrumb-item">
-            <a
-              href={basePath}
-            >
-              No. {nomor} Th. {tahun}
-            </a>
-          </li>
-          {breadcrumbs.map(({ teks, url }) => (
-            <li class={"breadcrumb-item" + (url ? "" : " active")}>
-              {url ? <a href={basePath + "/" + url}>{teks}</a> : teks}
-            </li>
-          ))}
-        </ul>
-      </nav>
       <hgroup className="my-2 my-lg-3">
         <h1>{judul}</h1>
         <p>
