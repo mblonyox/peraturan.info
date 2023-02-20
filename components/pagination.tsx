@@ -42,25 +42,25 @@ export default function Pagination({
 
   return (
     <nav aria-label="Laman-laman hasil pencarian">
-      <ul class="pagination justify-content-center">
-        <li class={"page-item" + (page === 1 ? " disabled" : "")}>
-          <a class="page-link" href={pageUrl(1)} disabled={page === 1}>
+      <ul className="pagination justify-content-center">
+        <li className={"page-item" + (page === 1 ? " disabled" : "")}>
+          <a className="page-link" href={pageUrl(1)} disabled={page === 1}>
             Awal
           </a>
         </li>
         {items.map((i) => (
-          <li class={"page-item" + (page === i ? " active" : "")}>
+          <li className={"page-item" + (page === i ? " active" : "")}>
             <a
-              class="page-link"
+              className="page-link"
               href={pageUrl(i)}
             >
               {i}
             </a>
           </li>
         ))}
-        <li class={"page-item" + (page === lastPage ? " disabled" : "")}>
+        <li className={"page-item" + (page === lastPage ? " disabled" : "")}>
           <a
-            class="page-link"
+            className="page-link"
             href={pageUrl(lastPage)}
             disabled={page === lastPage}
           >

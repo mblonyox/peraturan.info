@@ -20,7 +20,7 @@ const setElement = (iframe: HTMLIFrameElement, el: HTMLElement) => {
   const doc = contentWindow!.document;
   doc.open();
   doc.write(
-    '<!DOCTYPE html><html><head><meta charset="utf-8"></head><body class="peraturan"></body></html>',
+    '<!DOCTYPE html><html><head><meta charset="utf-8"></head><body className="peraturan"></body></html>',
   );
   const cssLink = doc.createElement("link");
   cssLink.type = "text/css";
@@ -67,7 +67,7 @@ export default function PrintButton() {
         width="16"
         height="16"
         fill="currentColor"
-        class="bi bi-printer"
+        className="bi bi-printer"
         viewBox="0 0 16 16"
       >
         <path d="M2.5 8a.5.5 0 1 0 0-1 .5.5 0 0 0 0 1z" />

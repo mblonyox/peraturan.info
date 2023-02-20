@@ -92,13 +92,13 @@ export default function ListPeraturanPage({
 
   return (
     <>
-      <div class="row">
-        <aside class="col-lg-3 col-xxl-2 d-none d-lg-block">
+      <div className="row">
+        <aside className="col-lg-3 col-xxl-2 d-none d-lg-block">
           <FilterByJenis {...filterByJenisProps} />
           <FilterByTahun {...filterByTahunProps} />
         </aside>
-        <div class="col-12 col-xxl-10 col-lg-9">
-          <table class="table table-striped border-top table-hover">
+        <div className="col-12 col-xxl-10 col-lg-9">
+          <table className="table table-striped border-top table-hover">
             <thead>
               <tr>
                 <th scope="col">#</th>

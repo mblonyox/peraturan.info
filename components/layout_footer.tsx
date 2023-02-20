@@ -40,7 +40,7 @@ export default function LayoutFooter() {
                 width="24"
                 height="24"
                 fill="currentColor"
-                class="bi bi-github"
+                className="bi bi-github"
                 viewBox="0 0 16 16"
                 alt="Github"
               >

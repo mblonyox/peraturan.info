@@ -5,7 +5,7 @@ export default function LayoutBreadcrumbs() {
   if (!breadcrumbs) return null;
   return (
     <nav aria-label="breadcrumb">
-      <ul class="breadcrumb">
+      <ul className="breadcrumb">
         <li className="breadcrumb-item">
           <a href="/">
             <svg
@@ -13,7 +13,7 @@ export default function LayoutBreadcrumbs() {
               width="16"
               height="16"
               fill="currentColor"
-              class="bi bi-house"
+              className="bi bi-house"
               viewBox="0 0 16 16"
               alt="Beranda"
             >
@@ -22,7 +22,7 @@ export default function LayoutBreadcrumbs() {
           </a>
         </li>
         {breadcrumbs.map(({ name, url }) => (
-          <li class={"breadcrumb-item" + (url ? "" : " active")}>
+          <li className={"breadcrumb-item" + (url ? "" : " active")}>
             {url ? <a href={url}>{name}</a> : name}
           </li>
         ))}

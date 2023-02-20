@@ -15,7 +15,7 @@ export default function LayoutNavbar() {
   ];
 
   return (
-    <nav class="navbar navbar-expand-lg bg-secondary-subtle">
+    <nav className="navbar navbar-expand-lg bg-secondary-subtle">
       <div className="container">
         <a href="/" className="navbar-brand">
           <img
@@ -26,7 +26,7 @@ export default function LayoutNavbar() {
           />
         </a>
         <button
-          class="navbar-toggler"
+          className="navbar-toggler"
           type="button"
           data-bs-toggle="collapse"
           data-bs-target="#navbarSupportedContent"
@@ -34,34 +34,34 @@ export default function LayoutNavbar() {
           aria-expanded="false"
           aria-label="Toggle navigation"
         >
-          <span class="navbar-toggler-icon"></span>
+          <span className="navbar-toggler-icon"></span>
         </button>
         <div
-          class="collapse navbar-collapse"
+          className="collapse navbar-collapse"
           id="navbarSupportedContent"
         >
-          <ul class="navbar-nav mb-2 me-auto mb-lg-0">
-            <li class="nav-item">
+          <ul className="navbar-nav mb-2 me-auto mb-lg-0">
+            <li className="nav-item">
               <a
-                class={"nav-link" + (pathname === "/" ? " active" : "")}
+                className={"nav-link" + (pathname === "/" ? " active" : "")}
                 aria-current={pathname === "/" ? "page" : "false"}
                 href="/"
               >
                 Beranda
               </a>
             </li>
-            <li class="nav-item">
+            <li className="nav-item">
               <a
-                class={"nav-link" + (pathname === "/new" ? " active" : "")}
+                className={"nav-link" + (pathname === "/new" ? " active" : "")}
                 aria-current={pathname === "/new" ? "page" : "false"}
                 href="/new"
               >
                 Terbaru
               </a>
             </li>
-            <li class="nav-item dropdown">
+            <li className="nav-item dropdown">
               <a
-                class={"nav-link dropdown-toggle" +
+                className={"nav-link dropdown-toggle" +
                   (menus.some(({ path }) => (pathname.startsWith(path)))
                     ? " active"
                     : "")}
@@ -72,11 +72,11 @@ export default function LayoutNavbar() {
               >
                 Peraturan
               </a>
-              <ul class="dropdown-menu">
+              <ul className="dropdown-menu">
                 {menus.map(({ path, teks }) => (
                   <li>
                     <a
-                      class={"dropdown-item nav-link" +
+                      className={"dropdown-item nav-link" +
                         (pathname.startsWith(path) ? " active" : "")}
                       aria-current={pathname.startsWith(path)
                         ? "page"
@@ -90,11 +90,11 @@ export default function LayoutNavbar() {
               </ul>
             </li>
           </ul>
-          <form class="d-flex mx-lg-2" role="search">
+          <form className="d-flex mx-lg-2" role="search">
             <div className="input-group">
               <input
                 name="query"
-                class="form-control"
+                className="form-control"
                 type="search"
                 placeholder="Pencarian..."
                 aria-label="Pencarian"

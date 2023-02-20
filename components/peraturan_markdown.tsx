@@ -34,7 +34,7 @@ export default function PeraturanMarkdown(
       </Head>
       <div className="peraturan wadah">
         <div className="kertas">
-          <div class="isi" dangerouslySetInnerHTML={{ __html: html ?? "" }}>
+          <div className="isi" dangerouslySetInnerHTML={{ __html: html ?? "" }}>
           </div>
         </div>
       </div>

@@ -4,7 +4,7 @@ import { NAMA2_JENIS } from "@models/peraturan.ts";
 export default function Home() {
   return (
     <>
-      <div class="py-5 my-5 text-center">
+      <div className="py-5 my-5 text-center">
         <img
           src={asset("/logo.webp")}
           alt="Logo Peraturan.deno.dev"

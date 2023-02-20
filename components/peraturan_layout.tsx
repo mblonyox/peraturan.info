@@ -29,7 +29,7 @@ export default function PeraturanLayout(
             <li className="nav-item">
               <a
                 href={url}
-                class={"nav-link" +
+                className={"nav-link" +
                   (activeTab === name ? " active" : "") +
                   (disabledTabs?.includes(name) ? " disabled" : "")}
                 disabled={disabledTabs?.includes(name)}
