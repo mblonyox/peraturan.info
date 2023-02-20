@@ -1,5 +1,5 @@
 import { asset } from "$fresh/runtime.ts";
-import { JENIS_PERATURAN } from "@utils/const.ts";
+import { NAMA2_JENIS } from "@models/peraturan.ts";
 
 export default function Home() {
   return (
@@ -37,9 +37,9 @@ export default function Home() {
           Mulai cari peraturan dari bentuk-bentuk berikut:
         </p>
         <ul>
-          {JENIS_PERATURAN.map((x) => (
+          {Object.entries(NAMA2_JENIS).map(([kode, { panjang }]) => (
             <li>
-              <a href={`/${x.kode}`}>{x.nama}</a>
+              <a href={`/${kode}`}>{panjang}</a>
             </li>
           ))}
         </ul>

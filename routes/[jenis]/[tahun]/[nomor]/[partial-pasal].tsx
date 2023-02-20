@@ -1,15 +1,13 @@
 import { Handler, PageProps } from "$fresh/server.ts";
 import { RouteConfig } from "$fresh/server.ts";
 import { marked } from "marked";
-import { peraturan as peraturanExtension } from "@utils/md.ts";
+import { PartialToken, peraturan as peraturanExtension } from "@utils/md.ts";
 import { getDB } from "@data/db.ts";
 import { getPeraturan, Peraturan } from "@models/peraturan.ts";
 import { readTextMd } from "@utils/fs.ts";
-import { getNamaJenis, SEO_DESCRIPTION, SEO_TITLE } from "@utils/const.ts";
 import PeraturanLayout from "@components/peraturan_layout.tsx";
 import PeraturanMarkdown from "@components/peraturan_markdown.tsx";
-import SeoTags from "@components/seo_tags.tsx";
-import PrintButton from "../../../../islands/print_button.tsx";
+import PrintButton from "@islands/print_button.tsx";
 
 export const config: RouteConfig = {
   routeOverride: "/:jenis/:tahun/:nomor/:pasal(pasal-\\d+){/ayat-:ayat(\\d+)}?",
@@ -24,16 +22,20 @@ export const handler: Handler<PeraturanPartialPageProps> = async (req, ctx) => {
   if (!md) return ctx.renderNotFound();
   marked.use(peraturanExtension);
   const tokens = marked.lexer(md);
-  // deno-lint-ignore no-explicit-any
-  const getPasal = (tokens: any[]): any[] =>
+  const getPasals = (
+    tokens: marked.Tokens.Generic[],
+  ): PartialToken[] =>
     tokens.map((token) =>
-      token.type === "pasal" ? [token] : getPasal(token?.tokens ?? [])
+      token.type === "pasal"
+        ? [token as PartialToken]
+        : getPasals(token?.tokens ?? [])
     ).flat();
-  const pasals = getPasal(tokens);
-  let token, prev, next;
-  const breadcrumbs = [];
-  // deno-lint-ignore no-explicit-any
-  token = pasals.find((token: any) => {
+  const pasals = getPasals(tokens);
+  let token: PartialToken | undefined, prev, next;
+  const breadcrumbs: { name: string; url?: string }[] = [
+    ...peraturan.breadcrumbs,
+  ];
+  token = pasals.find((token: marked.Tokens.Generic) => {
     const slug = token?.nomor?.toLowerCase()?.replace(" ", "-");
     return slug === pasal;
   });
@@ -57,32 +59,31 @@ export const handler: Handler<PeraturanPartialPageProps> = async (req, ctx) => {
   }
   if (ayat) {
     breadcrumbs.push({
-      teks: token.nomor,
+      name: token.nomor,
       url: token.nomor?.toLowerCase()?.replace(" ", "-"),
     });
     const pasal = token;
     const ayats = token.tokens;
-    // deno-lint-ignore no-explicit-any
-    token = ayats?.find((token: any) => {
+    token = ayats?.find((token: PartialToken) => {
       const slug = token?.nomor?.toLowerCase()?.replaceAll(/[\(\)]/g, "");
       return token.type === "ayat" &&
         slug === ayat;
     });
     if (!token) return ctx.renderNotFound();
     {
-      const index = ayats.indexOf(token);
-      if (index > 0) {
-        const prevToken = ayats[index - 1];
+      const index = ayats?.indexOf(token);
+      if (!!index && index > 0) {
+        const prevToken = ayats?.[index - 1];
         prev = {
-          teks: `${pasal.nomor} ayat ${prevToken.nomor}`,
+          teks: `${pasal.nomor} ayat ${prevToken?.nomor}`,
           url: pasal.nomor?.toLowerCase()?.replace(" ", "-") + "/ayat-" +
-            prevToken.nomor?.toLowerCase()?.replaceAll(
+            prevToken?.nomor?.toLowerCase()?.replaceAll(
               /[\(\)]/g,
               "",
             ),
         };
       }
-      if (index < ayats.length - 1) {
+      if (!!index && !!ayats && index < ayats?.length - 1) {
         const nextToken = ayats[index + 1];
         next = {
           teks: `${pasal.nomor} ayat ${nextToken.nomor}`,
@@ -96,31 +97,35 @@ export const handler: Handler<PeraturanPartialPageProps> = async (req, ctx) => {
     }
   }
   breadcrumbs.push({
-    teks: (token.type === "ayat" ? `ayat ` : "") + token?.nomor,
+    name: (token.type === "ayat" ? `ayat ` : "") + token?.nomor,
   });
-  const judulPartial = breadcrumbs.map(({ teks }) => teks).join(" ");
+  const judulPartial = breadcrumbs.map(({ name }) => name).join(" ");
   const html = marked.parser([token as marked.Token]);
-  return ctx.render({ peraturan, breadcrumbs, prev, next, judulPartial, html });
+  ctx.state.seo = {
+    title: `${judulPartial} | ${peraturan.rujukPanjang}`,
+    description: `${token.raw}.`,
+  };
+  ctx.state.breadcrumbs = breadcrumbs;
+  ctx.state.pageHeading = {
+    title: peraturan.judul,
+    description: peraturan.rujukPendek,
+  };
+  return ctx.render({ peraturan, prev, next, html });
 };
 
 interface PeraturanPartialPageProps {
   peraturan: Peraturan;
-  breadcrumbs: { teks: string; url?: string }[];
   prev?: { teks: string; url: string };
   next?: { teks: string; url: string };
-  judulPartial: string;
   html: string;
 }
 
 export default function PeraturanPartialPage(
   {
-    url,
     data: {
       peraturan,
-      breadcrumbs,
       prev,
       next,
-      judulPartial,
       html,
     },
   }: PageProps<
@@ -128,38 +133,21 @@ export default function PeraturanPartialPage(
   >,
 ) {
   const {
-    jenis,
-    tahun,
-    nomor,
-    judul,
+    path,
   } = peraturan;
-  const namaJenis = getNamaJenis(jenis);
   return (
-    <PeraturanLayout
-      {...{
-        peraturan,
-        breadcrumbs,
-        activeTab: "isi",
-        hasMd: true,
-      }}
-    >
-      <SeoTags
-        title={`${judulPartial} - ${namaJenis} ${judul} | ${SEO_TITLE}`}
-        description={`${judulPartial} ${namaJenis} Nomor ${nomor} Tahun ${tahun} tentang ${judul}. ` +
-          SEO_DESCRIPTION}
-        url={url}
-      />
+    <PeraturanLayout activeTab="isi">
       <div className="d-flex justify-content-between my-2">
         <a
           className={"btn btn-outline-secondary" + (!prev ? " disabled" : "")}
-          href={`/${jenis}/${tahun}/${nomor}/${prev?.url}`}
+          href={`/${path}/${prev?.url}`}
         >
           &lt;&lt; {prev?.teks}
         </a>
         <PrintButton />
         <a
           className={"btn btn-outline-secondary" + (!next ? " disabled" : "")}
-          href={`/${jenis}/${tahun}/${nomor}/${next?.url}`}
+          href={`/${path}/${next?.url}`}
         >
           {next?.teks} &gt;&gt;
         </a>

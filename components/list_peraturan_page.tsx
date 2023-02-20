@@ -1,23 +1,21 @@
 import { Handler, PageProps } from "$fresh/server.ts";
-import { Peraturan } from "@models/peraturan.ts";
-import { JENIS_PERATURAN } from "@utils/const.ts";
-import Pagination from "./pagination.tsx";
-
+import { getDB } from "@data/db.ts";
 import {
   getFilterByJenisCount,
   getFilterByTahunCount,
   getListPeraturan,
+  NAMA2_JENIS,
+  Peraturan,
 } from "@models/peraturan.ts";
-import { getNamaJenis } from "@utils/const.ts";
-import { getDB } from "@data/db.ts";
 import { AppContextState } from "@utils/app_context.tsx";
+import Pagination from "./pagination.tsx";
 
 export const handler: Handler<ListPeraturanPageProps, AppContextState> = async (
   req,
   ctx,
 ) => {
   const { jenis: kodeJenis, tahun } = ctx.params;
-  const namaJenis = getNamaJenis(kodeJenis) ??
+  const namaJenis = NAMA2_JENIS[kodeJenis]?.panjang ??
     (kodeJenis === "all" && "semua peraturan");
   if (kodeJenis !== "all" && !namaJenis) return ctx.renderNotFound();
   if (tahun?.length && (tahun?.length !== 4 || isNaN(parseInt(tahun)))) {
@@ -27,21 +25,24 @@ export const handler: Handler<ListPeraturanPageProps, AppContextState> = async (
   const page = parseInt(searchParams.get("page") ?? "1");
   const pageSize = parseInt(searchParams.get("pageSize") ?? "10");
 
-  const judul = (namaJenis || kodeJenis) + (
-    tahun ? ` pada tahun ${tahun}` : ""
-  );
-
   const db = await getDB();
-
   const jenis = kodeJenis === "all" ? undefined : kodeJenis;
   const listPeraturan = getListPeraturan(db, { jenis, tahun, page, pageSize });
   const filterByJenis = getFilterByJenisCount(db, { jenis, tahun });
   const filterByTahun = getFilterByTahunCount(db, { jenis, tahun });
 
+  const judul = (namaJenis || kodeJenis) + (
+    tahun ? ` pada tahun ${tahun}` : ""
+  );
+  const range = listPeraturan.hasil.length
+    ? `Menampilkan ${(page - 1) * pageSize + 1} s.d. ${
+      (page - 1) * pageSize + listPeraturan.hasil.length
+    } dari ${listPeraturan.total} peraturan.`
+    : "";
+
   ctx.state.seo = {
-    title: `Hasil pencarian ${judul}, halaman ${page}`,
-    description:
-      `Pencarian anda atas ${judul} menemukan sebanyak ${listPeraturan.total} hasil.`,
+    title: `Daftar ${judul}, halaman #${page}.`,
+    description: `Tampilan daftar ${judul}. ${range}`,
   };
 
   ctx.state.breadcrumbs = [
@@ -53,6 +54,11 @@ export const handler: Handler<ListPeraturanPageProps, AppContextState> = async (
     ctx.state.breadcrumbs[0].url = `/${kodeJenis}`;
     ctx.state.breadcrumbs.push({ name: tahun });
   }
+
+  ctx.state.pageHeading = {
+    title: `Daftar Peraturan`,
+    description: `${range}`,
+  };
 
   return ctx.render({
     judul,
@@ -74,7 +80,6 @@ interface ListPeraturanPageProps {
 
 export default function ListPeraturanPage({
   data: {
-    judul,
     total,
     hasil,
     page,
@@ -83,14 +88,10 @@ export default function ListPeraturanPage({
     filterByTahunProps,
   },
 }: PageProps<ListPeraturanPageProps>) {
+  const startIndex = ((page - 1) * pageSize) + 1;
+
   return (
     <>
-      <div class="my-3 my-lg-5">
-        <h1>Hasil Pencarian</h1>
-        <p>
-          Pencarian anda atas {judul} menemukan sebanyak {total} hasil.
-        </p>
-      </div>
       <div class="row">
         <aside class="col-lg-3 col-xxl-2 d-none d-lg-block">
           <FilterByJenis {...filterByJenisProps} />
@@ -107,26 +108,32 @@ export default function ListPeraturanPage({
               </tr>
             </thead>
             <tbody>
-              {hasil.map(({ jenis, nomor, tahun, judul }, index) => (
+              {hasil.map((
+                {
+                  path,
+                  judul,
+                  nomorPendek,
+                  namaJenisPanjang,
+                },
+                index,
+              ) => (
                 <tr key={judul}>
-                  <th scope="row">{(page - 1) * pageSize + index + 1}</th>
+                  <th scope="row">{startIndex + index}</th>
                   <td>
-                    <a href={`/${jenis}/${tahun}/${nomor}`}>{judul}</a>
+                    {judul}
                   </td>
                   <td>
-                    <a href={`/${jenis}/${tahun}/${nomor}`}>
-                      No.&nbsp;{nomor} Tahun&nbsp;{tahun}
+                    <a href={path}>
+                      {nomorPendek}
                     </a>
                   </td>
                   <td>
-                    {JENIS_PERATURAN.find((j) =>
-                      j.kode === jenis
-                    )?.nama}
+                    {namaJenisPanjang}
                   </td>
                 </tr>
               ))}
             </tbody>
-          </table>{" "}
+          </table>
           <Pagination {...{ total, page, pageSize }} />
         </div>
       </div>

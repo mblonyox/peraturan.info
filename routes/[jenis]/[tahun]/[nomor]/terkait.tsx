@@ -7,34 +7,47 @@ import {
   Peraturan,
   RelasiPeraturan,
 } from "@models/peraturan.ts";
-import { getNamaJenis, SEO_DESCRIPTION, SEO_TITLE } from "@utils/const.ts";
 import { existsMd } from "@utils/fs.ts";
+import { AppContextState } from "@utils/app_context.tsx";
 import PeraturanLayout from "@components/peraturan_layout.tsx";
-import SeoTags from "@components/seo_tags.tsx";
 
-export const handler: Handler<TerkaitPeraturanPageProps> = async (req, ctx) => {
-  const { jenis, tahun, nomor } = ctx.params;
-  const db = await getDB();
-  const peraturan = getPeraturan(db, jenis, tahun, nomor);
-  if (!peraturan) return ctx.renderNotFound();
-  const hasMd = await existsMd({ jenis, tahun, nomor });
-  const relasi1 = getRelasiPeraturan1(db, jenis, tahun, nomor);
-  const relasi2 = getRelasiPeraturan2(db, jenis, tahun, nomor);
-  return ctx.render({ peraturan, hasMd, relasi1, relasi2 });
-};
+export const handler: Handler<TerkaitPeraturanPageProps, AppContextState> =
+  async (_req, ctx) => {
+    const { jenis, tahun, nomor } = ctx.params;
+    const db = await getDB();
+    const peraturan = getPeraturan(db, jenis, tahun, nomor);
+    if (!peraturan) return ctx.renderNotFound();
+    const hasMd = await existsMd({ jenis, tahun, nomor });
+    const relasi1 = getRelasiPeraturan1(db, jenis, tahun, nomor);
+    const relasi2 = getRelasiPeraturan2(db, jenis, tahun, nomor);
+    ctx.state.seo = {
+      title: `Peraturan Terkait | ${peraturan.rujukPanjang}`,
+      description:
+        `Peraturan Terkait (Dasar Hukum, Perubahan, Pencabutan, dll.) atas ${peraturan.rujukPanjang}`,
+    };
+    ctx.state.breadcrumbs = [...peraturan.breadcrumbs, {
+      name: "Peraturan Terkait",
+    }];
+    ctx.state.pageHeading = {
+      title: peraturan.judul,
+      description: peraturan.rujukPendek,
+    };
+    return ctx.render({ hasMd, relasi1, relasi2 });
+  };
 
 interface TerkaitPeraturanPageProps {
-  peraturan: Peraturan;
   hasMd: boolean;
-  relasi1: (RelasiPeraturan & Peraturan)[];
-  relasi2: (RelasiPeraturan & Peraturan)[];
+  relasi1: (Pick<RelasiPeraturan, "id" | "relasi" | "catatan"> & {
+    peraturan: Peraturan;
+  })[];
+  relasi2: (Pick<RelasiPeraturan, "id" | "relasi" | "catatan"> & {
+    peraturan: Peraturan;
+  })[];
 }
 
 export default function TerkaitPeraturanPage(
   {
-    url,
     data: {
-      peraturan,
       hasMd,
       relasi1,
       relasi2,
@@ -43,14 +56,6 @@ export default function TerkaitPeraturanPage(
     TerkaitPeraturanPageProps
   >,
 ) {
-  const {
-    jenis,
-    tahun,
-    nomor,
-    judul,
-  } = peraturan;
-  const namaJenis = getNamaJenis(jenis);
-
   const itemsTerkait = [
     {
       title: "Dicabut dengan",
@@ -82,20 +87,9 @@ export default function TerkaitPeraturanPage(
 
   return (
     <PeraturanLayout
-      {...{
-        peraturan,
-        breadcrumbs: [{ teks: "Peraturan Terkait" }],
-        activeTab: "terkait",
-        hasMd,
-      }}
+      activeTab="terkait"
+      disabledTabs={!hasMd ? ["kerangka", "isi"] : []}
     >
-      <SeoTags
-        title={`Peraturan Terkait - ${namaJenis} ${judul} | ${SEO_TITLE}`}
-        description={"Peraturan yang terkait dengan peraturan " +
-          `${namaJenis} Nomor ${nomor} Tahun ${tahun} tentang ${judul}. ` +
-          SEO_DESCRIPTION}
-        url={url}
-      />
       <div className="row">
         {itemsTerkait.map(({ title, items }) => {
           if (!items.length) return;
@@ -103,19 +97,20 @@ export default function TerkaitPeraturanPage(
             <div className="col-12 col-md-6 col-xxl-4">
               <h2>{title}:</h2>
               <ul>
-                {items.map((item) => (
+                {items.map((
+                  { catatan, peraturan: { path, judul, rujukPendek } },
+                ) => (
                   <li>
                     <a
                       className="h6"
-                      href={`/${item.jenis}/${item.tahun}/${item.nomor}`}
+                      href={path}
                     >
-                      {getNamaJenis(item.jenis)} Nomor {item.nomor} Tahun{" "}
-                      {item.tahun}
+                      {rujukPendek}
                     </a>
-                    <p>{item.judul}</p>
-                    {item.catatan && (
+                    <p>{judul}</p>
+                    {catatan && (
                       <p>
-                        <em>{item.catatan}</em>
+                        <em>{catatan}</em>
                       </p>
                     )}
                   </li>

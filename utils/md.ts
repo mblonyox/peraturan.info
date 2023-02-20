@@ -1,5 +1,11 @@
 import { marked } from "marked";
 
+export type PartialToken = marked.Tokens.Generic & {
+  nomor: string;
+  judul: string;
+  tokens?: PartialToken[];
+};
+
 const judul: marked.TokenizerAndRendererExtension = {
   name: "judul",
   level: "block",

@@ -6,6 +6,10 @@ export type AppContextState = {
   theme?: "dark" | "light";
   seo?: { title: string; description: string; image?: string };
   breadcrumbs?: { name: string; url?: string }[];
+  pageHeading?: {
+    title: string;
+    description: string;
+  };
 };
 const appContext = createContext<AppContextState>({});
 

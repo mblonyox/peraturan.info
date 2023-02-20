@@ -5,18 +5,30 @@ import {
   getSumberPeraturan,
   Peraturan,
 } from "@models/peraturan.ts";
-import { getNamaJenis, SEO_DESCRIPTION, SEO_TITLE } from "@utils/const.ts";
 import { existsMd } from "@utils/fs.ts";
+import { AppContextState } from "@utils/app_context.tsx";
 import PeraturanLayout from "@components/peraturan_layout.tsx";
-import SeoTags from "@components/seo_tags.tsx";
 
-export const handler: Handler<InfoPeraturanPageProps> = async (req, ctx) => {
+export const handler: Handler<InfoPeraturanPageProps, AppContextState> = async (
+  _req,
+  ctx,
+) => {
   const { jenis, tahun, nomor } = ctx.params;
   const db = await getDB();
   const peraturan = getPeraturan(db, jenis, tahun, nomor);
   if (!peraturan) return ctx.renderNotFound();
   const hasMd = await existsMd({ jenis, tahun, nomor });
   const sumber = getSumberPeraturan(db, jenis, tahun, nomor);
+  ctx.state.seo = {
+    title: `Informasi | ${peraturan.rujukPanjang}`,
+    description:
+      `Informasi umum (Metadata, Sumber Peraturan, Abstrak) atas ${peraturan.rujukPanjang}`,
+  };
+  ctx.state.breadcrumbs = [...peraturan.breadcrumbs, { name: "Informasi" }];
+  ctx.state.pageHeading = {
+    title: peraturan.judul,
+    description: peraturan.rujukPendek,
+  };
   return ctx.render({ peraturan, hasMd, sumber });
 };
 
@@ -28,7 +40,6 @@ interface InfoPeraturanPageProps {
 
 export default function InfoPeraturanPage(
   {
-    url,
     data: {
       peraturan,
       hasMd,
@@ -39,7 +50,7 @@ export default function InfoPeraturanPage(
   >,
 ) {
   const {
-    jenis,
+    namaJenisPanjang,
     tahun,
     nomor,
     judul,
@@ -47,24 +58,12 @@ export default function InfoPeraturanPage(
     tanggal_diundangkan,
     tanggal_berlaku,
   } = peraturan;
-  const namaJenis = getNamaJenis(jenis);
 
   return (
     <PeraturanLayout
-      {...{
-        peraturan,
-        breadcrumbs: [{ teks: "Informasi." }],
-        activeTab: "info",
-        hasMd,
-      }}
+      activeTab="info"
+      disabledTabs={!hasMd ? ["kerangka", "isi"] : []}
     >
-      <SeoTags
-        title={`Informasi - ${namaJenis} ${judul} | ${SEO_TITLE}`}
-        description={"Informasi metadata, abstrak dan sumber peraturan " +
-          `${namaJenis} Nomor ${nomor} Tahun ${tahun} tentang ${judul}. ` +
-          SEO_DESCRIPTION}
-        url={url}
-      />
       <div className="row">
         <div className="col-12 col-lg-6 col-xxl-4">
           <h2>Metadata</h2>
@@ -73,7 +72,7 @@ export default function InfoPeraturanPage(
               <tr>
                 <td>Jenis</td>
                 <td>:</td>
-                <td>{namaJenis}</td>
+                <td>{namaJenisPanjang}</td>
               </tr>
               <tr>
                 <td>Tahun</td>
@@ -94,7 +93,7 @@ export default function InfoPeraturanPage(
                 <td>Tanggal Ditetapkan</td>
                 <td>:</td>
                 <td>
-                  {new Date(tanggal_ditetapkan).toLocaleDateString("id", {
+                  {tanggal_ditetapkan.toLocaleDateString("id", {
                     day: "numeric",
                     month: "long",
                     year: "numeric",
@@ -105,7 +104,7 @@ export default function InfoPeraturanPage(
                 <td>Tanggal Diundangkan</td>
                 <td>:</td>
                 <td>
-                  {new Date(tanggal_diundangkan).toLocaleDateString("id", {
+                  {tanggal_diundangkan.toLocaleDateString("id", {
                     day: "numeric",
                     month: "long",
                     year: "numeric",
@@ -116,7 +115,7 @@ export default function InfoPeraturanPage(
                 <td>Tanggal Berlaku</td>
                 <td>:</td>
                 <td>
-                  {new Date(tanggal_berlaku).toLocaleDateString("id", {
+                  {tanggal_berlaku.toLocaleDateString("id", {
                     day: "numeric",
                     month: "long",
                     year: "numeric",
