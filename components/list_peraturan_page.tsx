@@ -1,8 +1,7 @@
 import { Handler, PageProps } from "$fresh/server.ts";
 import { Peraturan } from "@models/peraturan.ts";
-import { JENIS_PERATURAN, SEO_DESCRIPTION, SEO_TITLE } from "@utils/const.ts";
+import { JENIS_PERATURAN } from "@utils/const.ts";
 import Pagination from "./pagination.tsx";
-import SeoTags from "./seo_tags.tsx";
 
 import {
   getFilterByJenisCount,
@@ -11,10 +10,15 @@ import {
 } from "@models/peraturan.ts";
 import { getNamaJenis } from "@utils/const.ts";
 import { getDB } from "@data/db.ts";
+import { AppContextState } from "@utils/app_context.tsx";
 
-export const handler: Handler<ListPeraturanPageProps> = async (req, ctx) => {
+export const handler: Handler<ListPeraturanPageProps, AppContextState> = async (
+  req,
+  ctx,
+) => {
   const { jenis: kodeJenis, tahun } = ctx.params;
-  const namaJenis = getNamaJenis(kodeJenis);
+  const namaJenis = getNamaJenis(kodeJenis) ??
+    (kodeJenis === "all" && "semua peraturan");
   if (kodeJenis !== "all" && !namaJenis) return ctx.renderNotFound();
   if (tahun?.length && (tahun?.length !== 4 || isNaN(parseInt(tahun)))) {
     return ctx.renderNotFound();
@@ -23,10 +27,9 @@ export const handler: Handler<ListPeraturanPageProps> = async (req, ctx) => {
   const page = parseInt(searchParams.get("page") ?? "1");
   const pageSize = parseInt(searchParams.get("pageSize") ?? "10");
 
-  const judul =
-    (kodeJenis === "all" ? "semua peraturan" : (namaJenis ?? kodeJenis)) + (
-      tahun ? ` pada tahun ${tahun}` : ""
-    );
+  const judul = (namaJenis || kodeJenis) + (
+    tahun ? ` pada tahun ${tahun}` : ""
+  );
 
   const db = await getDB();
 
@@ -34,6 +37,22 @@ export const handler: Handler<ListPeraturanPageProps> = async (req, ctx) => {
   const listPeraturan = getListPeraturan(db, { jenis, tahun, page, pageSize });
   const filterByJenis = getFilterByJenisCount(db, { jenis, tahun });
   const filterByTahun = getFilterByTahunCount(db, { jenis, tahun });
+
+  ctx.state.seo = {
+    title: `Hasil pencarian ${judul}, halaman ${page}`,
+    description:
+      `Pencarian anda atas ${judul} menemukan sebanyak ${listPeraturan.total} hasil.`,
+  };
+
+  ctx.state.breadcrumbs = [
+    {
+      name: (namaJenis || kodeJenis),
+    },
+  ];
+  if (tahun) {
+    ctx.state.breadcrumbs[0].url = `/${kodeJenis}`;
+    ctx.state.breadcrumbs.push({ name: tahun });
+  }
 
   return ctx.render({
     judul,
@@ -54,7 +73,6 @@ interface ListPeraturanPageProps {
 }
 
 export default function ListPeraturanPage({
-  url,
   data: {
     judul,
     total,
@@ -67,11 +85,6 @@ export default function ListPeraturanPage({
 }: PageProps<ListPeraturanPageProps>) {
   return (
     <>
-      <SeoTags
-        title={`Hasil pencarian ${judul}, halaman ${page} | ${SEO_TITLE}`}
-        description={`Pencarian anda atas ${judul} menemukan sebanyak ${total} hasil. ${SEO_DESCRIPTION}`}
-        url={url}
-      />
       <div class="my-3 my-lg-5">
         <h1>Hasil Pencarian</h1>
         <p>
@@ -114,7 +127,7 @@ export default function ListPeraturanPage({
               ))}
             </tbody>
           </table>{" "}
-          <Pagination {...{ url, total, page, pageSize }} />
+          <Pagination {...{ total, page, pageSize }} />
         </div>
       </div>
     </>

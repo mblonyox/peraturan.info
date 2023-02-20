@@ -1,5 +1,6 @@
+import { useAppContext } from "../utils/app_context.tsx";
+
 interface PaginationProps {
-  url: URL | string;
   total: number;
   page: number;
   pageSize: number;
@@ -7,12 +8,12 @@ interface PaginationProps {
 }
 
 export default function Pagination({
-  url,
   total,
   page,
   pageSize,
   maxItems,
 }: PaginationProps) {
+  const { url } = useAppContext();
   const lastPage = Math.ceil(total / pageSize);
   const itemsSize = maxItems ?? 5;
 
@@ -29,13 +30,13 @@ export default function Pagination({
   }
 
   const pageUrl = (page: number) => {
-    const params = new URLSearchParams(new URL(url).search);
+    const params = new URLSearchParams(new URL(url ?? "").search);
     params.set("page", `${page}`);
     return `?${params.toString()}`;
   };
 
   const isActive = (page: number) => {
-    const params = new URLSearchParams(new URL(url).search);
+    const params = new URLSearchParams(new URL(url ?? "").search);
     return (params.get("page") || 1) == page;
   };
 

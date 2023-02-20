@@ -56,9 +56,11 @@ export default function App(
       </Head>
       <SeoTags />
       <LayoutNavbar />
-      <LayoutBreadcrumbs />
-      <main class="container">
-        <Component></Component>
+      <main class="py-2 py-lg-3">
+        <div className="container">
+          <LayoutBreadcrumbs />
+          <Component></Component>
+        </div>
       </main>
       <LayoutFooter />
     </AppContextProvider>
