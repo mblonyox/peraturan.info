@@ -2,7 +2,7 @@ import { Handler, PageProps } from "$fresh/server.ts";
 import { RouteConfig } from "$fresh/server.ts";
 import { marked } from "marked";
 import { getDB } from "@data/db.ts";
-import { getPeraturan } from "@models/peraturan.ts";
+import { getPeraturan } from "@models/mod.ts";
 import { peraturan as peraturanExtension } from "@utils/md.ts";
 import { readTextMd } from "@utils/fs.ts";
 import { AppContextState } from "@utils/app_context.tsx";

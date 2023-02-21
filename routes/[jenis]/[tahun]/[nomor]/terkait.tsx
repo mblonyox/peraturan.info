@@ -6,7 +6,7 @@ import {
   getRelasiPeraturan2,
   Peraturan,
   RelasiPeraturan,
-} from "@models/peraturan.ts";
+} from "@models/mod.ts";
 import { existsMd } from "@utils/fs.ts";
 import { AppContextState } from "@utils/app_context.tsx";
 import PeraturanLayout from "@components/peraturan_layout.tsx";

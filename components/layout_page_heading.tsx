@@ -4,7 +4,7 @@ export default function LayoutPageHeading() {
   const { pageHeading } = useAppContext();
   if (!pageHeading) return null;
   return (
-    <hgroup className="my-3 my-lg-5">
+    <hgroup className="mb-3 mb-lg-5">
       <h1>{pageHeading.title}</h1>
       <p>{pageHeading.description}</p>
     </hgroup>

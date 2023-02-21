@@ -24,7 +24,7 @@ export const NAMA2_JENIS: Record<
   "permenkeu": { pendek: "PMK", panjang: "Peraturan Menteri Keuangan" },
 };
 
-type PeraturanRow = {
+export type PeraturanRow = {
   jenis: string;
   tahun: string;
   nomor: string;
@@ -107,31 +107,6 @@ export class Peraturan {
 
 export type PuuRef = `${JenisPeraturan}/${number}/${number}`;
 
-export type SumberPeraturan = {
-  id: number;
-  puu: PuuRef;
-  nama: string;
-  url_page: string;
-  url_pdf: string;
-};
-
-export const JENIS2_RELASI = [
-  "cabut",
-  "cabut_sebagian",
-  "ubah",
-  "dasar_hukum",
-] as const;
-
-export type JenisRelasi = typeof JENIS2_RELASI[number];
-
-export type RelasiPeraturan = {
-  id: number;
-  puu1: PuuRef;
-  relasi: JenisRelasi;
-  puu2: PuuRef;
-  catatan: string;
-};
-
 // deno-lint-ignore no-explicit-any
 function buildWhereClause({ ...params }: Record<string, any>) {
   (Object.keys(params) as Array<keyof typeof params>).forEach((key) => {
@@ -210,50 +185,4 @@ export const getPeraturan = (
   );
   if (row) return new Peraturan(row);
   return null;
-};
-
-export const getSumberPeraturan = (
-  db: DB,
-  jenis: string,
-  tahun: string,
-  nomor: string,
-) => {
-  return db.queryEntries<SumberPeraturan>(
-    `SELECT * FROM sumber WHERE puu = :key`,
-    [`${jenis}/${tahun}/${nomor}`],
-  );
-};
-
-export const getRelasiPeraturan1 = (
-  db: DB,
-  jenis: string,
-  tahun: string,
-  nomor: string,
-) => {
-  return db.queryEntries<RelasiPeraturan & PeraturanRow>(
-    `SELECT * FROM relasi LEFT JOIN peraturan ON relasi.puu2 = peraturan.jenis || '/' || peraturan.tahun || '/' || peraturan.nomor WHERE puu1 = :key`,
-    [`${jenis}/${tahun}/${nomor}`],
-  ).map(({ id, relasi, catatan, ...row }) => ({
-    id,
-    relasi,
-    catatan,
-    peraturan: new Peraturan(row),
-  }));
-};
-
-export const getRelasiPeraturan2 = (
-  db: DB,
-  jenis: string,
-  tahun: string,
-  nomor: string,
-) => {
-  return db.queryEntries<RelasiPeraturan & PeraturanRow>(
-    `SELECT * FROM relasi LEFT JOIN peraturan ON relasi.puu1 = peraturan.jenis || '/' || peraturan.tahun || '/' || peraturan.nomor WHERE puu2 = :key`,
-    [`${jenis}/${tahun}/${nomor}`],
-  ).map(({ id, relasi, catatan, ...row }) => ({
-    id,
-    relasi,
-    catatan,
-    peraturan: new Peraturan(row),
-  }));
 };
