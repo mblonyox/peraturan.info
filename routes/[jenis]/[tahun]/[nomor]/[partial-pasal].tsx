@@ -36,7 +36,7 @@ export const handler: Handler<PeraturanPartialPageProps> = async (req, ctx) => {
     ...peraturan.breadcrumbs,
   ];
   token = pasals.find((token: marked.Tokens.Generic) => {
-    const slug = token?.nomor?.toLowerCase()?.replace(" ", "-");
+    const slug = token.nomor.toLowerCase().replace(" ", "-");
     return slug === pasal;
   });
   if (!token) return ctx.renderNotFound();
@@ -45,55 +45,57 @@ export const handler: Handler<PeraturanPartialPageProps> = async (req, ctx) => {
     if (index > 0) {
       const prevToken = pasals[index - 1];
       prev = {
-        teks: prevToken.nomor,
-        url: prevToken.nomor?.toLowerCase()?.replace(" ", "-"),
+        name: prevToken.nomor,
+        url: peraturan.path + "/" +
+          prevToken.nomor.toLowerCase().replace(" ", "-"),
       };
     }
     if (index < pasals.length - 1) {
       const nextToken = pasals[index + 1];
       next = {
-        teks: nextToken.nomor,
-        url: nextToken.nomor?.toLowerCase()?.replace(" ", "-"),
+        name: nextToken.nomor,
+        url: peraturan.path + "/" +
+          nextToken.nomor.toLowerCase().replace(" ", "-"),
       };
     }
   }
   if (ayat) {
     breadcrumbs.push({
       name: token.nomor,
-      url: token.nomor?.toLowerCase()?.replace(" ", "-"),
+      url: token.nomor.toLowerCase().replace(" ", "-"),
     });
     const pasal = token;
-    const ayats = token.tokens;
-    token = ayats?.find((token: PartialToken) => {
+    const ayats = token.tokens as PartialToken[];
+    token = ayats.find((token) => {
       const slug = token?.nomor?.toLowerCase()?.replaceAll(/[\(\)]/g, "");
       return token.type === "ayat" &&
         slug === ayat;
     });
     if (!token) return ctx.renderNotFound();
-    {
-      const index = ayats?.indexOf(token);
-      if (!!index && index > 0) {
-        const prevToken = ayats?.[index - 1];
-        prev = {
-          teks: `${pasal.nomor} ayat ${prevToken?.nomor}`,
-          url: pasal.nomor?.toLowerCase()?.replace(" ", "-") + "/ayat-" +
-            prevToken?.nomor?.toLowerCase()?.replaceAll(
-              /[\(\)]/g,
-              "",
-            ),
-        };
-      }
-      if (!!index && !!ayats && index < ayats?.length - 1) {
-        const nextToken = ayats[index + 1];
-        next = {
-          teks: `${pasal.nomor} ayat ${nextToken.nomor}`,
-          url: pasal.nomor?.toLowerCase()?.replace(" ", "-") + "/ayat-" +
-            nextToken.nomor?.toLowerCase()?.replaceAll(
-              /[\(\)]/g,
-              "",
-            ),
-        };
-      }
+    const index = ayats.indexOf(token);
+    if (index > 0) {
+      const prevToken = ayats[index - 1];
+      prev = {
+        name: `${pasal.nomor} ayat ${prevToken?.nomor}`,
+        url: peraturan.path + "/" +
+          pasal.nomor?.toLowerCase()?.replace(" ", "-") + "/ayat-" +
+          prevToken?.nomor?.toLowerCase()?.replaceAll(
+            /[\(\)]/g,
+            "",
+          ),
+      };
+    }
+    if (index < ayats.length - 1) {
+      const nextToken = ayats[index + 1];
+      next = {
+        name: `${pasal.nomor} ayat ${nextToken.nomor}`,
+        url: peraturan.path + "/" +
+          pasal.nomor.toLowerCase().replace(" ", "-") + "/ayat-" +
+          nextToken.nomor.toLowerCase().replaceAll(
+            /[\(\)]/g,
+            "",
+          ),
+      };
     }
   }
   breadcrumbs.push({
@@ -110,46 +112,41 @@ export const handler: Handler<PeraturanPartialPageProps> = async (req, ctx) => {
     title: peraturan.judul,
     description: peraturan.rujukPendek,
   };
-  return ctx.render({ peraturan, prev, next, html });
+  return ctx.render({ prev, next, html });
 };
 
 interface PeraturanPartialPageProps {
-  peraturan: Peraturan;
-  prev?: { teks: string; url: string };
-  next?: { teks: string; url: string };
+  prev?: { name: string; url: string };
+  next?: { name: string; url: string };
   html: string;
 }
 
 export default function PeraturanPartialPage(
   {
     data: {
-      peraturan,
+      html,
       prev,
       next,
-      html,
     },
   }: PageProps<
     PeraturanPartialPageProps
   >,
 ) {
-  const {
-    path,
-  } = peraturan;
   return (
     <PeraturanLayout activeTab="isi">
       <div className="d-flex justify-content-between my-2">
         <a
           className={"btn btn-outline-secondary" + (!prev ? " disabled" : "")}
-          href={`/${path}/${prev?.url}`}
+          href={prev?.url}
         >
-          &lt;&lt; {prev?.teks}
+          &lt;&lt; {prev?.name}
         </a>
         <PrintButton />
         <a
           className={"btn btn-outline-secondary" + (!next ? " disabled" : "")}
-          href={`/${path}/${next?.url}`}
+          href={next?.url}
         >
-          {next?.teks} &gt;&gt;
+          {next?.name} &gt;&gt;
         </a>
       </div>
       <PeraturanMarkdown html={html} />
