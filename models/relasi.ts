@@ -6,6 +6,7 @@ export const JENIS2_RELASI = [
   "cabut_sebagian",
   "ubah",
   "dasar_hukum",
+  "tetapkan",
 ] as const;
 
 export type JenisRelasi = typeof JENIS2_RELASI[number];

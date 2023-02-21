@@ -69,6 +69,16 @@ export default function TerkaitPeraturanPage(
       title: "Diubah dengan",
       items: relasi2.filter((r) => r.relasi === "ubah"),
     },
+    {
+      title: "Ditetapkan dengan",
+      items: relasi2.filter((r) => r.relasi === "tetapkan"),
+    },
+
+    {
+      title: "Menetapkan",
+      items: relasi1.filter((r) => r.relasi === "tetapkan"),
+    },
+
     { title: "Mencabut", items: relasi1.filter((r) => r.relasi === "cabut") },
     {
       title: "Mencabut sebagian",
