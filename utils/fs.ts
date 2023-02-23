@@ -2,8 +2,11 @@ import { dirname, fromFileUrl, join } from "$std/path/mod.ts";
 
 const rootPath = join(dirname(fromFileUrl(import.meta.url)), "..");
 
-const getMdFilePath = (jenis: string, tahun: string, nomor: string) =>
-  join(rootPath, "data", "markdowns", `${jenis}-${tahun}-${nomor}.md`);
+const getMdFilePath = (
+  jenis: string,
+  tahun: string | number,
+  nomor: string | number,
+) => join(rootPath, "data", "markdowns", `${jenis}-${tahun}-${nomor}.md`);
 
 export const existsMd = async (
   { jenis, tahun, nomor }: { jenis: string; tahun: string; nomor: string },
@@ -19,11 +22,15 @@ export const existsMd = async (
   }
 };
 
-export const readTextMd = (
-  { jenis, tahun, nomor }: { jenis: string; tahun: string; nomor: string },
+export const readTextMd = async (
+  { jenis, tahun, nomor }: {
+    jenis: string;
+    tahun: string | number;
+    nomor: string | number;
+  },
 ) => {
   try {
-    return Deno.readTextFile(getMdFilePath(jenis, tahun, nomor));
+    return await Deno.readTextFile(getMdFilePath(jenis, tahun, nomor));
   } catch (error) {
     if (error instanceof Deno.errors.NotFound) {
       return null;
