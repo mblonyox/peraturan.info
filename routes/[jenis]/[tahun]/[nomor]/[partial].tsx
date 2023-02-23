@@ -6,6 +6,7 @@ import { getDB } from "@data/db.ts";
 import { getPeraturan } from "@models/mod.ts";
 import { readTextMd } from "@utils/fs.ts";
 import { AppContextState } from "@utils/app_context.tsx";
+import { ellipsis } from "@utils/string.ts";
 import PeraturanLayout from "@components/peraturan_layout.tsx";
 import PeraturanMarkdown from "@components/peraturan_markdown.tsx";
 import PrintButton from "@islands/print_button.tsx";
@@ -18,7 +19,6 @@ export const config: RouteConfig = {
 export const handler: Handler<PeraturanPartialPageProps, AppContextState> =
   async (_req, ctx) => {
     const { jenis, tahun, nomor, partial } = ctx.params;
-    console.log({ partial });
     const db = await getDB();
     const peraturan = getPeraturan(db, jenis, tahun, nomor);
     if (!peraturan) return ctx.renderNotFound();
@@ -53,7 +53,10 @@ export const handler: Handler<PeraturanPartialPageProps, AppContextState> =
     const html = marked.parser(tokens as marked.Token[]);
     ctx.state.seo = {
       title: `${judulPartial} | ${peraturan.rujukPanjang}`,
-      description: `${tokens.map((token) => token.raw).join("\n")}`,
+      description: ellipsis(
+        `${tokens.map((token) => token.raw).join("\n")}`,
+        155,
+      ),
     };
     ctx.state.breadcrumbs = breadcrumbs;
     ctx.state.pageHeading = {

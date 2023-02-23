@@ -6,6 +6,7 @@ import { getPeraturan } from "@models/mod.ts";
 import { PartialToken, peraturan as peraturanExtension } from "@utils/md.ts";
 import { readTextMd } from "@utils/fs.ts";
 import { AppContextState } from "@utils/app_context.tsx";
+import { ellipsis } from "@utils/string.ts";
 import PeraturanLayout from "@components/peraturan_layout.tsx";
 import PeraturanMarkdown from "@components/peraturan_markdown.tsx";
 import PrintButton from "@islands/print_button.tsx";
@@ -70,7 +71,7 @@ export const handler: Handler<PeraturanPartialPageProps, AppContextState> =
     const html = marked.parser([token as marked.Token]);
     ctx.state.seo = {
       title: `${judulPartial} | ${peraturan.rujukPanjang}`,
-      description: `${token.raw}.`,
+      description: ellipsis(token.raw),
     };
     ctx.state.breadcrumbs = breadcrumbs;
     ctx.state.pageHeading = {

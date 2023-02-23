@@ -5,6 +5,7 @@ import { PartialToken, peraturan as peraturanExtension } from "@utils/md.ts";
 import { getDB } from "@data/db.ts";
 import { getPeraturan } from "@models/mod.ts";
 import { readTextMd } from "@utils/fs.ts";
+import { ellipsis } from "@utils/string.ts";
 import PeraturanLayout from "@components/peraturan_layout.tsx";
 import PeraturanMarkdown from "@components/peraturan_markdown.tsx";
 import PrintButton from "@islands/print_button.tsx";
@@ -105,7 +106,7 @@ export const handler: Handler<PeraturanPartialPageProps> = async (req, ctx) => {
   const html = marked.parser([token as marked.Token]);
   ctx.state.seo = {
     title: `${judulPartial} | ${peraturan.rujukPanjang}`,
-    description: `${token.raw}.`,
+    description: ellipsis(token.raw, 155),
   };
   ctx.state.breadcrumbs = breadcrumbs;
   ctx.state.pageHeading = {
