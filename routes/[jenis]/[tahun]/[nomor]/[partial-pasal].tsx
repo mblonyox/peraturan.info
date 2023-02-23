@@ -3,7 +3,7 @@ import { RouteConfig } from "$fresh/server.ts";
 import { marked } from "marked";
 import { PartialToken, peraturan as peraturanExtension } from "@utils/md.ts";
 import { getDB } from "@data/db.ts";
-import { getPeraturan, Peraturan } from "@models/mod.ts";
+import { getPeraturan } from "@models/mod.ts";
 import { readTextMd } from "@utils/fs.ts";
 import PeraturanLayout from "@components/peraturan_layout.tsx";
 import PeraturanMarkdown from "@components/peraturan_markdown.tsx";

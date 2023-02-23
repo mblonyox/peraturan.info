@@ -6,20 +6,21 @@ import config from "./deno.json" assert { type: "json" };
 import * as $0 from "./routes/[jenis]/[tahun]/[nomor]/[partial-bab].tsx";
 import * as $1 from "./routes/[jenis]/[tahun]/[nomor]/[partial-buku].tsx";
 import * as $2 from "./routes/[jenis]/[tahun]/[nomor]/[partial-pasal].tsx";
-import * as $3 from "./routes/[jenis]/[tahun]/[nomor]/index.ts";
-import * as $4 from "./routes/[jenis]/[tahun]/[nomor]/info.tsx";
-import * as $5 from "./routes/[jenis]/[tahun]/[nomor]/isi.tsx";
-import * as $6 from "./routes/[jenis]/[tahun]/[nomor]/kerangka.tsx";
-import * as $7 from "./routes/[jenis]/[tahun]/[nomor]/terkait.tsx";
-import * as $8 from "./routes/[jenis]/[tahun]/index.tsx";
-import * as $9 from "./routes/[jenis]/index.tsx";
-import * as $10 from "./routes/_404.tsx";
-import * as $11 from "./routes/_500.tsx";
-import * as $12 from "./routes/_app.tsx";
-import * as $13 from "./routes/_middleware.tsx";
-import * as $14 from "./routes/index.tsx";
-import * as $15 from "./routes/new.tsx";
-import * as $16 from "./routes/sitemap-[jenis].xml.ts";
+import * as $3 from "./routes/[jenis]/[tahun]/[nomor]/[partial].tsx";
+import * as $4 from "./routes/[jenis]/[tahun]/[nomor]/index.ts";
+import * as $5 from "./routes/[jenis]/[tahun]/[nomor]/info.tsx";
+import * as $6 from "./routes/[jenis]/[tahun]/[nomor]/isi.tsx";
+import * as $7 from "./routes/[jenis]/[tahun]/[nomor]/kerangka.tsx";
+import * as $8 from "./routes/[jenis]/[tahun]/[nomor]/terkait.tsx";
+import * as $9 from "./routes/[jenis]/[tahun]/index.tsx";
+import * as $10 from "./routes/[jenis]/index.tsx";
+import * as $11 from "./routes/_404.tsx";
+import * as $12 from "./routes/_500.tsx";
+import * as $13 from "./routes/_app.tsx";
+import * as $14 from "./routes/_middleware.tsx";
+import * as $15 from "./routes/index.tsx";
+import * as $16 from "./routes/new.tsx";
+import * as $17 from "./routes/sitemap-[jenis].xml.ts";
 import * as $$0 from "./islands/dark_mode_toggler.tsx";
 import * as $$1 from "./islands/print_button.tsx";
 
@@ -28,20 +29,21 @@ const manifest = {
     "./routes/[jenis]/[tahun]/[nomor]/[partial-bab].tsx": $0,
     "./routes/[jenis]/[tahun]/[nomor]/[partial-buku].tsx": $1,
     "./routes/[jenis]/[tahun]/[nomor]/[partial-pasal].tsx": $2,
-    "./routes/[jenis]/[tahun]/[nomor]/index.ts": $3,
-    "./routes/[jenis]/[tahun]/[nomor]/info.tsx": $4,
-    "./routes/[jenis]/[tahun]/[nomor]/isi.tsx": $5,
-    "./routes/[jenis]/[tahun]/[nomor]/kerangka.tsx": $6,
-    "./routes/[jenis]/[tahun]/[nomor]/terkait.tsx": $7,
-    "./routes/[jenis]/[tahun]/index.tsx": $8,
-    "./routes/[jenis]/index.tsx": $9,
-    "./routes/_404.tsx": $10,
-    "./routes/_500.tsx": $11,
-    "./routes/_app.tsx": $12,
-    "./routes/_middleware.tsx": $13,
-    "./routes/index.tsx": $14,
-    "./routes/new.tsx": $15,
-    "./routes/sitemap-[jenis].xml.ts": $16,
+    "./routes/[jenis]/[tahun]/[nomor]/[partial].tsx": $3,
+    "./routes/[jenis]/[tahun]/[nomor]/index.ts": $4,
+    "./routes/[jenis]/[tahun]/[nomor]/info.tsx": $5,
+    "./routes/[jenis]/[tahun]/[nomor]/isi.tsx": $6,
+    "./routes/[jenis]/[tahun]/[nomor]/kerangka.tsx": $7,
+    "./routes/[jenis]/[tahun]/[nomor]/terkait.tsx": $8,
+    "./routes/[jenis]/[tahun]/index.tsx": $9,
+    "./routes/[jenis]/index.tsx": $10,
+    "./routes/_404.tsx": $11,
+    "./routes/_500.tsx": $12,
+    "./routes/_app.tsx": $13,
+    "./routes/_middleware.tsx": $14,
+    "./routes/index.tsx": $15,
+    "./routes/new.tsx": $16,
+    "./routes/sitemap-[jenis].xml.ts": $17,
   },
   islands: {
     "./islands/dark_mode_toggler.tsx": $$0,

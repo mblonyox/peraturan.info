@@ -1,5 +1,6 @@
 import { marked } from "marked";
 import { peraturan } from "@utils/md.ts";
+import { ellipsis } from "@utils/string.ts";
 
 interface PeraturanOutlineProps {
   md: string;
@@ -10,17 +11,71 @@ export default function PeraturanOutline(
   { md, path }: PeraturanOutlineProps,
 ) {
   marked.use(peraturan);
-  const tokens = marked.lexer(md);
-  const batangTubuh = tokens.filter((token: { type: string }) =>
+  const tokens = marked.lexer(md) as marked.Tokens.Generic[];
+  const judul = tokens.find((token) => token.type === "judul");
+  const konsideran = tokens.find((token) => token.type === "konsideran");
+  const dasarHukum = tokens.find((token) => token.type === "dasar-hukum");
+  const batangTubuh = tokens.filter((token) =>
     token.type === "buku" || token.type === "bab" || token.type === "pasal"
   );
 
   return (
     <ul className="list-group">
-      <li className="list-group-item">JUDUL</li>
-      <li className="list-group-item">PEMBUKAAN</li>
       <li className="list-group-item">
-        BATANG TUBUH
+        <div className="d-flex flex-column gap-2">
+          <a href={path + "/judul"}>
+            JUDUL
+          </a>
+          <cite>{judul?.raw}</cite>
+        </div>
+      </li>
+      <li className="list-group-item">
+        <a href={path + "/pembukaan"}>
+          PEMBUKAAN
+        </a>
+        <ul className="list-group list-group-flush">
+          <li className="list-group-item">
+            <details>
+              <summary>
+                <div className="d-inline-flex w-75 ms-2">
+                  <a href={path + "/konsideran"}>Konsideran (Menimbang)</a>
+                </div>
+              </summary>
+              <ul>
+                {konsideran?.tokens?.map((token: marked.Tokens.Generic) =>
+                  (token.type === "list" || token.type === "butir-list")
+                    ? token.items
+                    : (token.tokens ?? [token])
+                ).flat().map(
+                  (token) => <li>{ellipsis(token.raw)}</li>,
+                )}
+              </ul>
+            </details>
+          </li>
+          <li className="list-group-item">
+            <details>
+              <summary>
+                <div className="d-inline-flex w-75 ms-2">
+                  <a href={path + "/konsideran"}>Dasar Hukum (Mengingat)</a>
+                </div>
+              </summary>
+              <ul>
+                {dasarHukum?.tokens?.map((token: marked.Tokens.Generic) =>
+                  (token.type === "list" || token.type === "butir-list")
+                    ? token.items
+                    : (token.tokens ?? [token])
+                ).flat().map(
+                  (token) => <li>{ellipsis(token.raw)}</li>,
+                )}
+              </ul>
+            </details>
+          </li>
+        </ul>
+      </li>
+      <li className="list-group-item">
+        <a href={path + "/batang-tubuh"}>
+          BATANG TUBUH
+        </a>
         <ul className="list-group list-group-flush">
           {batangTubuh.map((token) => (
             <BatangTubuhToken
@@ -55,9 +110,9 @@ function BatangTubuhToken(
     ["bab", "bagian", "paragraf", "pasal", "ayat"].includes(token.type)
   );
   const preview = (token.type === "pasal" && !subTokens?.length)
-    ? token.raw?.substring(judul.length, judul.length + 80)
+    ? ellipsis(token.raw?.substring(judul.length))
     : (token.type === "ayat")
-    ? token.raw?.substring(token.nomor.length, token.nomor.length + 80)
+    ? ellipsis(token.raw?.substring(token.nomor.length))
     : "";
   return (
     <li className="list-group-item">
@@ -86,7 +141,7 @@ function BatangTubuhToken(
               {judul}
             </a>
             {preview &&
-              <cite>{preview}{token.raw.length > 80 ? "…" : ""}</cite>}
+              <cite>{preview}</cite>}
           </div>
         )}
     </li>
