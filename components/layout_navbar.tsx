@@ -90,7 +90,7 @@ export default function LayoutNavbar() {
               </ul>
             </li>
           </ul>
-          <form className="d-flex mx-lg-2" role="search">
+          <form className="d-flex mx-lg-2" role="search" action="/search">
             <div className="input-group">
               <input
                 name="query"

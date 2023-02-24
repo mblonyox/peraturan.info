@@ -1,20 +1,30 @@
-import { useAppContext } from "../utils/app_context.tsx";
+import { useAppContext } from "@/utils/app_context.tsx";
 
-interface PaginationProps {
-  total: number;
-  page: number;
-  pageSize: number;
-  maxItems?: number;
-}
+type PaginationProps =
+  & {
+    page: number;
+    maxItems?: number;
+  }
+  & ({
+    total: number;
+    pageSize: number;
+    lastPage?: never;
+  } | {
+    total?: never;
+    pageSize?: never;
+    lastPage: number;
+  });
 
 export default function Pagination({
   total,
   page,
   pageSize,
+  lastPage,
   maxItems,
 }: PaginationProps) {
   const { url } = useAppContext();
-  const lastPage = Math.ceil(total / pageSize);
+  const searchParams = new URLSearchParams(new URL(url ?? "").search);
+  lastPage ??= Math.ceil((total ?? 0) / (pageSize ?? 10));
   const itemsSize = maxItems ?? 5;
 
   const items = [page];
@@ -30,14 +40,9 @@ export default function Pagination({
   }
 
   const pageUrl = (page: number) => {
-    const params = new URLSearchParams(new URL(url ?? "").search);
+    const params = new URLSearchParams(searchParams);
     params.set("page", `${page}`);
     return `?${params.toString()}`;
-  };
-
-  const isActive = (page: number) => {
-    const params = new URLSearchParams(new URL(url ?? "").search);
-    return (params.get("page") || 1) == page;
   };
 
   return (
