@@ -1,9 +1,9 @@
 import { Handler, PageProps } from "$fresh/server.ts";
-import { getDB } from "@data/db.ts";
-import { getPeraturan, Peraturan } from "@models/mod.ts";
-import { readTextMd } from "@utils/fs.ts";
-import PeraturanLayout from "@components/peraturan_layout.tsx";
-import PeraturanOutline from "@components/peraturan_outline.tsx";
+import { getDB } from "@/data/db.ts";
+import { getPeraturan, Peraturan } from "@/models/mod.ts";
+import { readTextMd } from "@/utils/fs.ts";
+import PeraturanLayout from "@/components/peraturan_layout.tsx";
+import PeraturanOutline from "@/components/peraturan_outline.tsx";
 
 export const handler: Handler<KerangkaPeraturanPageProps> = async (
   _req,

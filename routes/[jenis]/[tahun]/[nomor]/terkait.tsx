@@ -1,15 +1,15 @@
 import { Handler, PageProps } from "$fresh/server.ts";
-import { getDB } from "@data/db.ts";
+import { getDB } from "@/data/db.ts";
 import {
   getPeraturan,
   getRelasiPeraturan1,
   getRelasiPeraturan2,
   Peraturan,
   RelasiPeraturan,
-} from "@models/mod.ts";
-import { existsMd } from "@utils/fs.ts";
-import { AppContextState } from "@utils/app_context.tsx";
-import PeraturanLayout from "@components/peraturan_layout.tsx";
+} from "@/models/mod.ts";
+import { existsMd } from "@/utils/fs.ts";
+import { AppContextState } from "@/utils/app_context.tsx";
+import PeraturanLayout from "@/components/peraturan_layout.tsx";
 
 export const handler: Handler<TerkaitPeraturanPageProps, AppContextState> =
   async (_req, ctx) => {

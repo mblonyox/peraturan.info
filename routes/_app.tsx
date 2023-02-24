@@ -1,11 +1,11 @@
 import { AppProps } from "$fresh/server.ts";
 import { Head } from "$fresh/runtime.ts";
-import { AppContextProvider, AppContextState } from "@utils/app_context.tsx";
-import LayoutNavbar from "@components/layout_navbar.tsx";
-import LayoutFooter from "@components/layout_footer.tsx";
-import LayoutBreadcrumbs from "@components/layout_breadcrumbs.tsx";
-import LayoutPageHeading from "@components/layout_page_heading.tsx";
-import SeoTags from "@components/seo_tags.tsx";
+import { AppContextProvider, AppContextState } from "@/utils/app_context.tsx";
+import LayoutNavbar from "@/components/layout_navbar.tsx";
+import LayoutFooter from "@/components/layout_footer.tsx";
+import LayoutBreadcrumbs from "@/components/layout_breadcrumbs.tsx";
+import LayoutPageHeading from "@/components/layout_page_heading.tsx";
+import SeoTags from "@/components/seo_tags.tsx";
 
 export default function App(
   { Component, contextState }: AppProps<AppContextState>,

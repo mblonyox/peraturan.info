@@ -1,6 +1,6 @@
 import { Head } from "$fresh/runtime.ts";
-import { useAppContext } from "@utils/app_context.tsx";
-import { SEO_DESCRIPTION, SEO_TITLE } from "@utils/const.ts";
+import { useAppContext } from "@/utils/app_context.tsx";
+import { SEO_DESCRIPTION, SEO_TITLE } from "@/utils/const.ts";
 
 export default function SeoTags() {
   const { url, seo } = useAppContext();

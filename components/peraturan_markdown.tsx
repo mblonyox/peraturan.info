@@ -1,6 +1,6 @@
 import { asset, Head } from "$fresh/runtime.ts";
 import { marked } from "marked";
-import { peraturan } from "@utils/md.ts";
+import { peraturan } from "@/utils/md.ts";
 
 interface PeraturanMarkdownProps {
   md?: string;

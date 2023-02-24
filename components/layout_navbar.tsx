@@ -1,6 +1,6 @@
 import { asset } from "$fresh/runtime.ts";
-import { useAppContext } from "@utils/app_context.tsx";
-import DarkModeToggler from "@islands/dark_mode_toggler.tsx";
+import { useAppContext } from "@/utils/app_context.tsx";
+import DarkModeToggler from "@/islands/dark_mode_toggler.tsx";
 
 export default function LayoutNavbar() {
   const { theme, url } = useAppContext();

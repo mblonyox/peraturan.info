@@ -1,5 +1,5 @@
 import { asset } from "$fresh/runtime.ts";
-import { NAMA2_JENIS } from "@models/mod.ts";
+import { NAMA2_JENIS } from "@/models/mod.ts";
 
 export default function Home() {
   return (

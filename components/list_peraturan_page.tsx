@@ -1,13 +1,13 @@
 import { Handler, PageProps } from "$fresh/server.ts";
-import { getDB } from "@data/db.ts";
+import { getDB } from "@/data/db.ts";
 import {
   getFilterByJenisCount,
   getFilterByTahunCount,
   getListPeraturan,
   NAMA2_JENIS,
   Peraturan,
-} from "@models/peraturan.ts";
-import { AppContextState } from "@utils/app_context.tsx";
+} from "@/models/peraturan.ts";
+import { AppContextState } from "@/utils/app_context.tsx";
 import Pagination from "./pagination.tsx";
 
 export const handler: Handler<ListPeraturanPageProps, AppContextState> = async (

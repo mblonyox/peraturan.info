@@ -1,5 +1,5 @@
-import { getDB } from "@data/db.ts";
-import { getListPeraturan } from "@models/peraturan.ts";
+import { getDB } from "@/data/db.ts";
+import { getListPeraturan } from "@/models/peraturan.ts";
 
 const db = await getDB();
 const { hasil } = await getListPeraturan(db, { pageSize: 20000 });

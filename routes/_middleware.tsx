@@ -1,6 +1,6 @@
 import { getCookies } from "$std/http/cookie.ts";
 import { MiddlewareHandler } from "$fresh/server.ts";
-import { AppContextState } from "@utils/app_context.tsx";
+import { AppContextState } from "@/utils/app_context.tsx";
 
 export const handler: MiddlewareHandler<AppContextState>[] = [
   (req, ctx) => {

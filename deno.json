@@ -1,7 +1,10 @@
 {
   "tasks": {
     "start": "deno run -A --watch=static/,routes/ dev.ts",
-    "indexing": "deno run --allow-read=data/ --allow-write=index.json indexing.ts"
+    "indexing": "deno run --allow-read=data/ --allow-write=index.json indexing.ts",
+    "esm:add": "deno run -A https://esm.sh/v107 add",
+    "esm:update": "deno run -A https://esm.sh/v107 update",
+    "esm:remove": "deno run -A https://esm.sh/v107 remove"
   },
   "importMap": "./import_map.json",
   "compilerOptions": {

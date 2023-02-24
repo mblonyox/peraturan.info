@@ -1,6 +1,6 @@
 import { marked } from "marked";
-import { peraturan } from "@utils/md.ts";
-import { ellipsis } from "@utils/string.ts";
+import { peraturan } from "@/utils/md.ts";
+import { ellipsis } from "@/utils/string.ts";
 
 interface PeraturanOutlineProps {
   md: string;

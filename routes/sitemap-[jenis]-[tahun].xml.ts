@@ -1,10 +1,10 @@
 import { Handlers } from "$fresh/server.ts";
 import { RouteConfig } from "$fresh/server.ts";
-import { getDB } from "@data/db.ts";
-import { getListPeraturan } from "@models/peraturan.ts";
-import { readTextMd } from "@utils/fs.ts";
+import { getDB } from "@/data/db.ts";
+import { getListPeraturan } from "@/models/peraturan.ts";
+import { readTextMd } from "@/utils/fs.ts";
 import { marked } from "marked";
-import { PartialToken, peraturan as peraturanExtension } from "@utils/md.ts";
+import { PartialToken, peraturan as peraturanExtension } from "@/utils/md.ts";
 
 type UrlTag = {
   loc: string;

@@ -1,4 +1,4 @@
-import { useAppContext } from "@utils/app_context.tsx";
+import { useAppContext } from "@/utils/app_context.tsx";
 
 export default function LayoutPageHeading() {
   const { pageHeading } = useAppContext();

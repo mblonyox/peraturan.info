@@ -1,7 +1,7 @@
 import { Handlers } from "$fresh/server.ts";
 import { RouteConfig } from "$fresh/server.ts";
-import { getDB } from "@data/db.ts";
-import { getFilterByTahunCount } from "@models/peraturan.ts";
+import { getDB } from "@/data/db.ts";
+import { getFilterByTahunCount } from "@/models/peraturan.ts";
 
 export const config: RouteConfig = {
   routeOverride: "/sitemap-:jenis.xml",

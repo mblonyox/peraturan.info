@@ -1,14 +1,14 @@
 import { Handler, PageProps } from "$fresh/server.ts";
 import { RouteConfig } from "$fresh/server.ts";
 import { marked } from "marked";
-import { PartialToken, peraturan as peraturanExtension } from "@utils/md.ts";
-import { getDB } from "@data/db.ts";
-import { getPeraturan } from "@models/mod.ts";
-import { readTextMd } from "@utils/fs.ts";
-import { ellipsis } from "@utils/string.ts";
-import PeraturanLayout from "@components/peraturan_layout.tsx";
-import PeraturanMarkdown from "@components/peraturan_markdown.tsx";
-import PrintButton from "@islands/print_button.tsx";
+import { PartialToken, peraturan as peraturanExtension } from "@/utils/md.ts";
+import { getDB } from "@/data/db.ts";
+import { getPeraturan } from "@/models/mod.ts";
+import { readTextMd } from "@/utils/fs.ts";
+import { ellipsis } from "@/utils/string.ts";
+import PeraturanLayout from "@/components/peraturan_layout.tsx";
+import PeraturanMarkdown from "@/components/peraturan_markdown.tsx";
+import PrintButton from "@/islands/print_button.tsx";
 
 export const config: RouteConfig = {
   routeOverride: "/:jenis/:tahun/:nomor/:pasal(pasal-\\d+){/ayat-:ayat(\\d+)}?",

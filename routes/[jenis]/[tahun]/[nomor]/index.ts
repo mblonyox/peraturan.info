@@ -1,7 +1,7 @@
 import { Handlers } from "$fresh/server.ts";
-import { getDB } from "@data/db.ts";
-import { getPeraturan } from "@models/mod.ts";
-import { existsMd } from "@utils/fs.ts";
+import { getDB } from "@/data/db.ts";
+import { getPeraturan } from "@/models/mod.ts";
+import { existsMd } from "@/utils/fs.ts";
 
 export const handler: Handlers = {
   GET: async (req, ctx) => {
