@@ -26,6 +26,7 @@ export const config: RouteConfig = {
 
 export const handler: Handlers = {
   GET: async (req, ctx) => {
+    const now = new Date();
     const origin = new URL(req.url).origin;
     const { jenis, tahun } = ctx.params;
     const db = await getDB();
@@ -34,13 +35,13 @@ export const handler: Handlers = {
     for (const p of hasil) {
       urls.push({
         loc: origin + p.path + "/info",
-        lastmod: p.tanggal_ditetapkan,
+        lastmod: now,
         changefreq: "yearly",
         priority: 0.5,
       });
       urls.push({
         loc: origin + p.path + "/terkait",
-        lastmod: p.tanggal_ditetapkan,
+        lastmod: now,
         changefreq: "yearly",
         priority: 0.9,
       });
@@ -54,7 +55,7 @@ export const handler: Handlers = {
         paths.forEach((path) => {
           urls.push({
             loc: origin + p.path + path,
-            lastmod: p.tanggal_ditetapkan,
+            lastmod: now,
             changefreq: "yearly",
             priority: 1.0,
           });

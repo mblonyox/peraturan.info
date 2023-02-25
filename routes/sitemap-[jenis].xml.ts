@@ -14,15 +14,14 @@ type SitemapTag = {
 
 export const handler: Handlers = {
   GET: async (req, ctx) => {
+    const now = new Date();
     const origin = new URL(req.url).origin;
     const { jenis } = ctx.params;
     const db = await getDB();
     const tahunJumlah = getFilterByTahunCount(db, { jenis });
     const indexes: SitemapTag[] = tahunJumlah.map(({ tahun }) => ({
       loc: origin + `/sitemap-${jenis}-${tahun}.xml`,
-      lastmod: new Date().getFullYear() <= tahun
-        ? new Date()
-        : new Date(tahun, 11, 31),
+      lastmod: now,
     }));
 
     return new Response(
