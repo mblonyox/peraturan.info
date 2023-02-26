@@ -1,37 +1,21 @@
 {
   "imports": {
     "@/": "./",
-    "$std/": "https://deno.land/std@0.177.0/",
+    "$std/": "https://deno.land/std@0.178.0/",
     "$mock_file/": "https://deno.land/x/mock_file@v1.0.1/",
     "$sqlite/": "https://deno.land/x/sqlite@v3.7.0/",
-    "@algolia/client-search": "https://esm.sh/v107/*@algolia/client-search@4.14.3",
-    "@algolia/requester-fetch": "https://esm.sh/v107/*@algolia/requester-fetch@4.14.3",
-    "@preact/signals-core": "https://esm.sh/v107/@preact/signals-core@1.0.1",
-    "@preact/signals": "https://esm.sh/v107/*@preact/signals@1.0.4",
-    "algoliasearch/lite": "https://esm.sh/v107/*algoliasearch@4.14.3/lite",
-    "marked": "https://esm.sh/v107/marked@4.2.12",
-    "marked/": "https://esm.sh/v107/marked@4.2.12/",
-    "preact-render-to-string": "https://esm.sh/v107/*preact-render-to-string@5.2.6",
-    "preact": "https://esm.sh/v107/preact@10.12.1",
-    "preact/": "https://esm.sh/v107/preact@10.12.1/",
-    "$fresh/": "https://raw.githubusercontent.com/mblonyox/fresh/a7e36dc8ed500d6aa8cfe192aed6dad27c553e40/"
+    "@preact/signals-core": "https://esm.sh/v108/@preact/signals-core@1.0.1",
+    "@preact/signals": "https://esm.sh/v108/*@preact/signals@1.0.4",
+    "marked": "https://esm.sh/v108/marked@4.2.12",
+    "marked/": "https://esm.sh/v108/marked@4.2.12/",
+    "preact-render-to-string": "https://esm.sh/v108/*preact-render-to-string@5.2.6",
+    "preact": "https://esm.sh/v108/preact@10.12.1",
+    "preact/": "https://esm.sh/v108/preact@10.12.1/",
+    "$fresh/": "https://raw.githubusercontent.com/mblonyox/fresh/27aa53ad6138294c7782b4a52325821670a027a8/"
   },
   "scopes": {
-    "https://esm.sh/v107/": {
-      "@algolia/cache-browser-local-storage": "https://esm.sh/v107/@algolia/cache-browser-local-storage@4.14.3",
-      "@algolia/cache-common": "https://esm.sh/v107/@algolia/cache-common@4.14.3",
-      "@algolia/cache-in-memory": "https://esm.sh/v107/@algolia/cache-in-memory@4.14.3",
-      "@algolia/client-account": "https://esm.sh/v107/@algolia/client-account@4.14.3",
-      "@algolia/client-analytics": "https://esm.sh/v107/@algolia/client-analytics@4.14.3",
-      "@algolia/client-common": "https://esm.sh/v107/@algolia/client-common@4.14.3",
-      "@algolia/client-personalization": "https://esm.sh/v107/@algolia/client-personalization@4.14.3",
-      "@algolia/logger-common": "https://esm.sh/v107/@algolia/logger-common@4.14.3",
-      "@algolia/logger-console": "https://esm.sh/v107/@algolia/logger-console@4.14.3",
-      "@algolia/requester-browser-xhr": "https://esm.sh/v107/@algolia/requester-browser-xhr@4.14.3",
-      "@algolia/requester-common": "https://esm.sh/v107/@algolia/requester-common@4.14.3",
-      "@algolia/requester-node-http": "https://esm.sh/v107/@algolia/requester-node-http@4.14.3",
-      "@algolia/transporter": "https://esm.sh/v107/@algolia/transporter@4.14.3",
-      "pretty-format": "https://esm.sh/v107/pretty-format@3.8.0"
+    "https://esm.sh/v108/": {
+      "pretty-format": "https://esm.sh/v108/pretty-format@3.8.0"
     }
   }
 }
