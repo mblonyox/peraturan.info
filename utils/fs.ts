@@ -1,6 +1,6 @@
 import { dirname, fromFileUrl, join } from "$std/path/mod.ts";
 
-const rootPath = join(dirname(fromFileUrl(import.meta.url)), "..");
+export const rootPath = join(dirname(fromFileUrl(import.meta.url)), "..");
 
 const getMdFilePath = (
   jenis: string,
