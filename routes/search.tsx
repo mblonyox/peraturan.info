@@ -1,19 +1,8 @@
 import { Handler, PageProps } from "$fresh/server.ts";
 import { AppContextState } from "@/utils/app_context.tsx";
 import { search, SearchResult } from "@lyrasearch/lyra";
-import { restoreFromFile } from "@lyrasearch/plugin-data-persistence";
-import { rootPath } from "@/utils/fs.ts";
+import { getLyra, Schema } from "@/data/lyra.ts";
 import Pagination from "@/components/pagination.tsx";
-
-type Schema = {
-  path: "string";
-  jenis: "string";
-  tahun: "number";
-  nomor: "string";
-  judul: "string";
-  tanggal: "number";
-  teks: "string";
-};
 
 export const handler: Handler<SearchPageProps, AppContextState> = async (
   req,
@@ -24,11 +13,7 @@ export const handler: Handler<SearchPageProps, AppContextState> = async (
   const limit = parseInt(params.get("limit") ?? "12");
   const page = parseInt(params.get("page") ?? "1");
   const offset = (page - 1) * limit;
-  const index = await restoreFromFile<Schema>(
-    "dpack",
-    rootPath + "/data/index.dpack",
-    "deno",
-  );
+  const index = await getLyra();
   const result = await search(index, {
     term: query,
     properties: ["jenis", "nomor", "judul"],
@@ -56,13 +41,6 @@ export const handler: Handler<SearchPageProps, AppContextState> = async (
     result,
     paginationProps: { page, lastPage: Math.ceil(result.count / limit) },
   });
-};
-
-type SearchRow = {
-  judul: string;
-  nomor: string;
-  jenis: string;
-  content: string;
 };
 
 type SearchPageProps = {
