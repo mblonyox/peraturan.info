@@ -70,9 +70,7 @@ export default function App(
         <div className="container">
           <LayoutBreadcrumbs />
           <LayoutPageHeading />
-          <div className="my-3 my-lg-5">
-            <Component></Component>
-          </div>
+          <Component></Component>
         </div>
       </main>
       <LayoutFooter />

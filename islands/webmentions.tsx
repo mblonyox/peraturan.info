@@ -1,6 +1,6 @@
 import { asset } from "$fresh/runtime.ts";
 
-export default function LayoutWebmentions() {
+export default function Webmentions() {
   return (
     <>
       <link rel="stylesheet" href={asset("/styles/webmention.css")} />

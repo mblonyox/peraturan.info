@@ -25,7 +25,8 @@ import * as $18 from "./routes/sitemap-[jenis]-[tahun].xml.ts";
 import * as $19 from "./routes/sitemap-[jenis].xml.ts";
 import * as $$0 from "./islands/dark_mode_toggler.tsx";
 import * as $$1 from "./islands/print_button.tsx";
-import * as $$2 from "./islands/webmentions.tsx";
+import * as $$2 from "./islands/share_buttons.tsx";
+import * as $$3 from "./islands/webmentions.tsx";
 
 const manifest = {
   routes: {
@@ -53,7 +54,8 @@ const manifest = {
   islands: {
     "./islands/dark_mode_toggler.tsx": $$0,
     "./islands/print_button.tsx": $$1,
-    "./islands/webmentions.tsx": $$2,
+    "./islands/share_buttons.tsx": $$2,
+    "./islands/webmentions.tsx": $$3,
   },
   baseUrl: import.meta.url,
   config,
