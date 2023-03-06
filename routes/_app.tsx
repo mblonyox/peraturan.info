@@ -17,6 +17,7 @@ export default function App(
           name="google-site-verification"
           content="gDCSCeR4yYkod7yJBudB-0OZEo2y507Hz8iNuCeDgwU"
         />
+        <link rel="me" href="https://github.com/mblonyox" />
         <link
           href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css"
           rel="stylesheet"
