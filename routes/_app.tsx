@@ -19,6 +19,14 @@ export default function App(
         />
         <link rel="me" href="mailto:mblonyox@gmail.com" />
         <link
+          rel="webmention"
+          href="https://webmention.io/peraturan.deno.dev/webmention"
+        />
+        <link
+          rel="pingback"
+          href="https://webmention.io/peraturan.deno.dev/xmlrpc"
+        />
+        <link
           href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css"
           rel="stylesheet"
           integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD"
@@ -62,7 +70,9 @@ export default function App(
         <div className="container">
           <LayoutBreadcrumbs />
           <LayoutPageHeading />
-          <Component></Component>
+          <div className="my-3 my-lg-5">
+            <Component></Component>
+          </div>
         </div>
       </main>
       <LayoutFooter />
