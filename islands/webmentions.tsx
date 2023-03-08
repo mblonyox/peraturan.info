@@ -149,13 +149,6 @@ async function getComments(target: string): Promise<WMEntry[]> {
   url.searchParams.set("sort-by", "published");
   url.searchParams.set("sort-dir", "down");
   url.searchParams.set("target", target);
-  url.searchParams.append("wm-property[]", "in-reply-to");
-  url.searchParams.append("wm-property[]", "mention-of");
-  /**
-   * For now if we append this parameter
-   * the response will fail with 500 response.
-   */
-  // url.searchParams.append("wm-property[]", "rsvp");
   const response = await fetch(url);
   if (!response.ok) {
     throw Error(response.statusText);
