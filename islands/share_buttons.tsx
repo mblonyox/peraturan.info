@@ -1,24 +1,31 @@
-import { useCallback, useEffect, useMemo, useState } from "preact/hooks";
+import { ellipsis } from "@/utils/string.ts";
+import { useAppContext } from "@/utils/app_context.tsx";
 
-type State = {
-  title?: string;
-  description?: string;
-  url?: string;
-};
+function getUrlTitleDescription() {
+  const { seo, url } = useAppContext();
+  if (typeof document === "undefined") {
+    return {
+      url,
+      title: seo?.title,
+      description: seo?.description,
+    };
+  }
+  return {
+    url: document.URL,
+    title: document.title,
+    description: document.querySelector<HTMLMetaElement>(
+      'meta[name="description"]',
+    )
+      ?.content,
+  };
+}
 
 export default function ShareButtons() {
-  const [{ title, description, url }, setState] = useState<State>({});
-  useEffect(() => {
-    setState({
-      url: document.URL,
-      title: document.title,
-      description: document.querySelector<HTMLMetaElement>(
-        'meta[name="description"]',
-      )?.content,
-    });
-  }, []);
-  const text = useMemo(() => `${title} : ${description}`, [title, description]);
-  const shareHandler = useCallback(() => {
+  const { url, title, description } = getUrlTitleDescription();
+  const encodedUrl = encodeURI(url ?? "");
+  const encodedTitle = encodeURI(title ?? "");
+  const encodedText = encodeURI(`${title} : ${description}`);
+  const onClickShare = () => {
     if ("share" in navigator) {
       navigator
         .share({
@@ -28,25 +35,27 @@ export default function ShareButtons() {
         })
         .catch(console.error);
     } else {
-      const share_uri = `https://www.addtoany.com/share#url=${
-        encodeURI(url!)
-      }&title=${encodeURI(title!)}`;
+      const share_uri =
+        `https://www.addtoany.com/share#url=${encodedUrl}&title=${encodedTitle}`;
       const wo = window.open(
         "about:blank",
         undefined,
         "height=500,width=500",
       );
-      wo!.opener = null;
-      wo!.location = share_uri;
+      if (wo) {
+        wo.opener = null;
+        wo.location = share_uri;
+      }
     }
-  }, [title, text, url]);
+  };
+
   return (
     <div className="row gap-1 my-2 my-lg-3">
       <div className="col-12 col-lg d-grid">
         <a
-          href={`https://twitter.com/intent/tweet?text=${encodeURI(text)}&url=${
-            encodeURI(url!)
-          }`}
+          href={`https://twitter.com/intent/tweet?text=${
+            ellipsis(encodedText, 240)
+          }&url=${encodedUrl}`}
           target="_blank"
           rel="noopener noreferrer"
           className="btn btn-secondary"
@@ -67,7 +76,7 @@ export default function ShareButtons() {
       </div>
       <div className="col-12 col-lg d-grid">
         <a
-          href={`https://wa.me/?text=${encodeURI(text)}%20${encodeURI(url!)}`}
+          href={`https://wa.me/?text=${encodedText}%20${encodedUrl}`}
           target="_blank"
           rel="noopener noreferrer"
           className="btn btn-secondary"
@@ -88,9 +97,7 @@ export default function ShareButtons() {
       </div>
       <div className="col-12 col-lg d-grid">
         <a
-          href={`https://www.linkedin.com/sharing/share-offsite/?url=${
-            encodeURI(url!)
-          }`}
+          href={`https://www.linkedin.com/sharing/share-offsite/?url=${encodedUrl}`}
           target="_blank"
           rel="noopener noreferrer"
           className="btn btn-secondary"
@@ -109,7 +116,7 @@ export default function ShareButtons() {
         </a>
       </div>
       <div className="col-12 col-lg d-grid">
-        <button className="btn btn-secondary" onClick={shareHandler}>
+        <button className="btn btn-secondary" onClick={onClickShare}>
           <svg
             xmlns="http://www.w3.org/2000/svg"
             width="24"
