@@ -1,4 +1,12 @@
-import { useSignal } from "@preact/signals";
+import { useSignal, useSignalEffect } from "@preact/signals";
+
+async function getAutocomplete(query: string): Promise<string[]> {
+  const url = new URL("/api/autocomplete", document.baseURI);
+  url.searchParams.set("query", query);
+  const response = await fetch(url);
+  if (!response.ok) throw Error(response.statusText);
+  return response.json();
+}
 
 type Props = {
   initQuery?: string;
@@ -6,6 +14,17 @@ type Props = {
 
 export default function SearchInput({ initQuery }: Props) {
   const query = useSignal(initQuery);
+  const options = useSignal<string[]>([]);
+  const debounceId = useSignal<number | undefined>(undefined);
+  useSignalEffect(() => {
+    const q = query.value ?? "";
+    if (typeof debounceId.peek() == "number") clearTimeout(debounceId.peek());
+    debounceId.value = setTimeout(() => {
+      getAutocomplete(q)
+        .then((value) => options.value = value);
+    }, 300);
+    return () => clearTimeout(debounceId.peek());
+  });
   return (
     <form className="d-flex mx-lg-2" role="search" action="/search">
       <div className="input-group">
@@ -13,10 +32,11 @@ export default function SearchInput({ initQuery }: Props) {
           name="query"
           className="form-control border-secondary border-end-0"
           type="search"
+          list="autocomplete-list"
           placeholder="Pencarian..."
           aria-label="Pencarian"
           value={query.value}
-          onChange={(e) => query.value = e.currentTarget.value}
+          onInput={(e) => query.value = e.currentTarget.value}
         />
         <button className="btn btn-outline-secondary" type="submit">
           <svg
@@ -32,6 +52,9 @@ export default function SearchInput({ initQuery }: Props) {
           </svg>
         </button>
       </div>
+      <datalist id="autocomplete-list">
+        {options.value.map((value) => <option value={value} />)}
+      </datalist>
     </form>
   );
 }

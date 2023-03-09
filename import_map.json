@@ -6,6 +6,7 @@
     "$mock_file/": "https://deno.land/x/mock_file@v1.0.1/",
     "$sqlite/": "https://deno.land/x/sqlite@v3.7.0/",
     "@lyrasearch/lyra": "https://esm.sh/v110/@lyrasearch/lyra@0.4.10",
+    "@lyrasearch/lyra/": "https://esm.sh/v110/@lyrasearch/lyra@0.4.10/",
     "@lyrasearch/plugin-data-persistence": "https://esm.sh/v110/*@lyrasearch/plugin-data-persistence@0.1.1",
     "@preact/signals-core": "https://esm.sh/v110/@preact/signals-core@1.2.3",
     "@preact/signals": "https://esm.sh/v110/*@preact/signals@1.1.3",
