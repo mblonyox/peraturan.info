@@ -1,30 +1,23 @@
 import { asset } from "$fresh/runtime.ts";
 import { useAppContext } from "@/utils/app_context.tsx";
 import DarkModeToggler from "@/islands/dark_mode_toggler.tsx";
+import SearchInput from "@/islands/search_input.tsx";
+
+const menus = [
+  { path: "/uu", teks: "Undang\u2011Undang" },
+  { path: "/perppu", teks: "Perppu" },
+  { path: "/pp", teks: "Peraturan Pemerintah" },
+  { path: "/perpres", teks: "Peraturan Presiden" },
+  { path: "/permenkeu", teks: "Peraturan Menteri Keuangan" },
+];
 
 export default function LayoutNavbar() {
   const { theme, url } = useAppContext();
-  const pathname = new URL(url ?? "").pathname;
-
-  const menus = [
-    { path: "/uu", teks: "Undang\u2011Undang" },
-    { path: "/perppu", teks: "Perppu" },
-    { path: "/pp", teks: "Peraturan Pemerintah" },
-    { path: "/perpres", teks: "Peraturan Presiden" },
-    { path: "/permenkeu", teks: "Peraturan Menteri Keuangan" },
-  ];
+  const { pathname, searchParams } = new URL(url ?? "");
 
   return (
     <nav className="navbar navbar-expand-lg bg-secondary-subtle">
-      <div className="container">
-        <a href="/" className="navbar-brand">
-          <img
-            src={asset("/logo.webp")}
-            alt="Logo Peraturan.deno.dev"
-            width={32}
-            height={32}
-          />
-        </a>
+      <div className="container gap-1">
         <button
           className="navbar-toggler"
           type="button"
@@ -36,6 +29,20 @@ export default function LayoutNavbar() {
         >
           <span className="navbar-toggler-icon"></span>
         </button>
+        <a href="/" className="navbar-brand">
+          <img
+            src={asset("/logo.webp")}
+            alt="Logo Peraturan.deno.dev"
+            width={32}
+            height={32}
+          />
+        </a>
+        <div className="order-lg-4 flex-fill">
+          <SearchInput initQuery={searchParams.get("query")?.trim()} />
+        </div>
+        <div className="order-lg-5">
+          <DarkModeToggler initTheme={theme} />
+        </div>
         <div
           className="collapse navbar-collapse"
           id="navbarSupportedContent"
@@ -90,21 +97,6 @@ export default function LayoutNavbar() {
               </ul>
             </li>
           </ul>
-          <form className="d-flex mx-lg-2" role="search" action="/search">
-            <div className="input-group">
-              <input
-                name="query"
-                className="form-control"
-                type="search"
-                placeholder="Pencarian..."
-                aria-label="Pencarian"
-              />
-              <button className="btn btn-outline-secondary" type="submit">
-                Cari
-              </button>
-            </div>
-          </form>
-          <DarkModeToggler initTheme={theme} />
         </div>
       </div>
     </nav>

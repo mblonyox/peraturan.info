@@ -130,8 +130,7 @@ function CommentCard({ entry }: { entry: WMEntry }) {
             width={32}
             height={32}
             onError={(e) => {
-              const target = e.target as HTMLImageElement;
-              target.src = asset("/logo.webp");
+              e.currentTarget.src = asset("/logo.webp");
             }}
           />
           <span className="fw-bold">{who}</span>
