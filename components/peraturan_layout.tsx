@@ -1,6 +1,6 @@
 import { ComponentChildren } from "preact";
 import Webmentions from "@/islands/webmentions.tsx";
-import ShareButtons from "@/islands/share_buttons.tsx";
+import SocialShareButtons from "./social_share_buttons.tsx";
 
 const tabs = [
   { name: "kerangka", url: "./kerangka" },
@@ -25,7 +25,7 @@ export default function PeraturanLayout(
 ) {
   return (
     <>
-      <ShareButtons />
+      <SocialShareButtons />
       <div className="card mb-2 mb-lg-3">
         <div className="card-header">
           <ul className="nav nav-tabs nav-fill card-header-tabs justify-content-around">
