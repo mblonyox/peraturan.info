@@ -1,6 +1,7 @@
 import { Handler, PageProps } from "$fresh/server.ts";
 import { AppContextState } from "@/utils/app_context.tsx";
 import { search, SearchResult } from "@lyrasearch/lyra";
+import { formatNanoseconds } from "@lyrasearch/lyra/internals";
 import { getLyra, Schema } from "@/data/lyra.ts";
 import Pagination from "@/components/pagination.tsx";
 
@@ -25,8 +26,8 @@ export const handler: Handler<SearchPageProps, AppContextState> = async (
     ? `Pencarian dengan kata kunci "${query}" menampilkan ${offset + 1} s.d. ${
       offset + result.hits.length
     } dari ${result.count} hasil dalam ${
-      result.elapsed as bigint / 1_000n
-    } milidetik.`
+      formatNanoseconds(result.elapsed as bigint)
+    }.`
     : "Pencarian tidak menemukan hasil.";
   ctx.state.seo = {
     title,
