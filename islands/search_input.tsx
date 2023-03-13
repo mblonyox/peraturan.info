@@ -31,6 +31,7 @@ export default function SearchInput({ initQuery }: Props) {
         <input
           name="query"
           className="form-control border-secondary border-end-0"
+          style={{ width: 0 }}
           type="search"
           list="autocomplete-list"
           placeholder="Pencarian..."
