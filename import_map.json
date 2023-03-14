@@ -18,6 +18,7 @@
     "preact-render-to-string/": "https://esm.sh/v111/*preact-render-to-string@5.2.6/",
     "preact": "https://esm.sh/v111/preact@10.13.0",
     "preact/": "https://esm.sh/v111/preact@10.13.0/",
+    "printd": "https://esm.sh/v111/printd@1.6.0",
     "$fresh/": "https://raw.githubusercontent.com/mblonyox/fresh/27aa53ad6138294c7782b4a52325821670a027a8/"
   },
   "scopes": {

@@ -1,67 +1,16 @@
 import { asset } from "$fresh/runtime.ts";
-import { useCallback, useState } from "preact/hooks";
-
-const createIframe = () => {
-  const el = document.createElement("iframe");
-  el.setAttribute("src", "about:blank");
-  el.setAttribute(
-    "style",
-    "visibility:hidden;width:0;height:0;position:absolute;z-index:-9999;bottom:0;",
-  );
-  el.setAttribute("width", "0");
-  el.setAttribute("height", "0");
-  el.setAttribute("wmode", "opaque");
-  document.body.appendChild(el);
-  return el;
-};
-
-const setElement = (iframe: HTMLIFrameElement, el: HTMLElement) => {
-  const { contentWindow } = iframe;
-  const doc = contentWindow!.document;
-  doc.open();
-  doc.write(
-    '<!DOCTYPE html><html><head><meta charset="utf-8"></head><body className="peraturan"></body></html>',
-  );
-  const cssLink = doc.createElement("link");
-  cssLink.type = "text/css";
-  cssLink.rel = "stylesheet";
-  cssLink.href = asset("/peraturan.css");
-  doc.head.appendChild(cssLink);
-  doc.body.appendChild(el.cloneNode(true));
-  doc.close();
-  console.log(cssLink);
-};
+import { useCallback } from "preact/hooks";
 
 export default function PrintButton() {
-  const [isLoading, setIsLoading] = useState(false);
-
-  const handler = useCallback(() => {
-    const el = document.querySelector<HTMLElement>(".peraturan .kertas .isi");
+  const onClickHandler = useCallback(async () => {
+    const { default: Printd } = await import("printd");
+    const d = new Printd();
+    const el = document.querySelector(".peraturan");
     if (!el) return;
-    if (isLoading) return;
-    setIsLoading(true);
-    const iframe = createIframe();
-    setElement(iframe, el);
-    const onClose = () => {
-      document.body.removeChild(iframe);
-      setIsLoading(false);
-    };
-    iframe.addEventListener("load", function () {
-      this.contentWindow?.addEventListener(
-        "afterprint",
-        onClose,
-      );
-      this.contentWindow?.addEventListener(
-        "beforeunload",
-        onClose,
-      );
-      this.contentWindow?.focus();
-      this.contentWindow?.print();
-    });
-  }, [isLoading]);
-
+    d.print(el as HTMLElement, [asset("/peraturan.css")]);
+  }, []);
   return (
-    <button className="btn btn-outline-secondary" onClick={handler}>
+    <button className="btn btn-outline-secondary" onClick={onClickHandler}>
       <svg
         xmlns="http://www.w3.org/2000/svg"
         width="16"

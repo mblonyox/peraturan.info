@@ -4,17 +4,19 @@
   font-weight: normal;
   color: black;
 }
-.peraturan.wadah {
-  background-color: grey;
-  padding: 1rem;
-  overflow: auto;
-}
-.peraturan .kertas {
-  width: 210mm;
-  margin: auto;
-  padding: 25mm;
-  background-color: white;
-  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;;
+@media screen {
+  .peraturan.wadah {
+    background-color: grey;
+    padding: 1rem;
+    overflow: auto;
+  }
+  .peraturan .kertas {
+    width: 210mm;
+    margin: auto;
+    padding: 25mm;
+    background-color: white;
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;;
+  }
 }
 .peraturan .judul,
 .peraturan .frasa-drtyme,
