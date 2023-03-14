@@ -1,7 +1,8 @@
 import { getCookies } from "$std/http/cookie.ts";
 import { MiddlewareHandler } from "$fresh/server.ts";
 import { AppContextState } from "@/utils/app_context.tsx";
-import { generate_social_image } from "@/utils/social_image.ts";
+import { generateSocialImage } from "@/utils/social_image.ts";
+import { SEO_DESCRIPTION, SEO_TITLE } from "@/utils/const.ts";
 
 export const handler: MiddlewareHandler<AppContextState>[] = [
   (req, ctx) => {
@@ -16,9 +17,11 @@ export const handler: MiddlewareHandler<AppContextState>[] = [
     const response = await ctx.next();
     const url = req.url;
     const socialImage = new URL(url).searchParams.get("social-image");
-    const seo = ctx.state.seo;
-    if ((socialImage !== null) && seo) {
-      const image = await generate_social_image({ ...seo, url });
+    if (socialImage !== null) {
+      const seo = ctx.state.seo;
+      const title = seo?.title ?? SEO_TITLE;
+      const description = seo?.description ?? SEO_DESCRIPTION;
+      const image = await generateSocialImage({ title, description, url });
       return new Response(image);
     }
     return response;

@@ -25,7 +25,7 @@ const getLogo = () =>
     ),
   );
 
-export const generate_social_image = async (
+export const generateSocialImage = async (
   { title, description, url, format }: {
     title: string;
     description: string;

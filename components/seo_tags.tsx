@@ -14,7 +14,7 @@ export default function SeoTags() {
       <meta name="description" content={description} />
       <meta itemProp="name" content={title} />
       <meta itemProp="description" content={description} />
-      <meta name="twitter:card" content="summary" />
+      <meta name="twitter:card" content="summary_large_image" />
       <meta name="twitter:title" content={title} />
       <meta name="twitter:description" content={description} />
       <meta name="twitter:url" content={url?.toString()} />
