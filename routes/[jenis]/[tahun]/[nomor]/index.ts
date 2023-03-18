@@ -14,7 +14,7 @@ export const handler: Handlers = {
       : "/info";
     return Response.redirect(
       req.url + subPath,
-      307,
+      302,
     );
   },
 };
