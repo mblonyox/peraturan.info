@@ -4,9 +4,9 @@
   "dir": "ltr",
   "display": "standalone",
   "name": "Peraturan.deno.dev",
-  "orientation": "any",
+  "orientation": "natural",
   "scope": "/",
-  "short_name": "Peraturan.deno.dev",
+  "short_name": "Peraturan",
   "start_url": "/",
   "theme_color": "#11191f",
   "categories": [
