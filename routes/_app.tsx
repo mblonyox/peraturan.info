@@ -59,8 +59,15 @@ export default function App(
         <link rel="manifest" href="/manifest.json" />
         <script
           dangerouslySetInnerHTML={{
-            __html:
-              `if (typeof navigator.serviceWorker !== 'undefined'  && location.hostname !== "localhost") { navigator.serviceWorker.register('/sw.js') }`,
+            __html: `if (
+                typeof navigator.serviceWorker !== "undefined" &&
+                location.hostname !== "localhost"
+              ) {
+                self.addEventListener("load", async () => {
+                  const registration = await navigator.serviceWorker.register("/sw.js");
+                  if (registration.waiting) registration.waiting.postMessage("SKIP_WAITING");
+                });
+              }`,
           }}
         />
       </Head>

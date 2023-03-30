@@ -7,12 +7,17 @@ importScripts(
 
 self.addEventListener("message", (event) => {
   if (event.data && event.data.type === "SKIP_WAITING") {
+    caches.keys().then((cacheNames) => {
+      cacheNames.forEach((cacheName) => {
+        caches.delete(cacheName);
+      });
+    });
     self.skipWaiting();
   }
 });
 
 workbox.routing.registerRoute(
-  "https://cdn.jsdelivr.net/(.*)",
+  new RegExp("https://cdn\\.jsdelivr\\.net/(.*)"),
   new workbox.strategies.CacheFirst({
     cacheName: "cdn-cache",
   }),
