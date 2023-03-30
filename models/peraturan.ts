@@ -97,7 +97,7 @@ export class Peraturan {
   }
 
   get rujukPendek() {
-    return `${this.namaJenisPendek} ${this.nomorPendek}`;
+    return `${this.namaJenisPanjang} ${this.nomorPanjang}`;
   }
 
   get rujukPanjang() {
