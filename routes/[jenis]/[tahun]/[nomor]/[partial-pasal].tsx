@@ -63,7 +63,7 @@ export const handler: Handler<PeraturanPartialPageProps> = async (req, ctx) => {
   if (ayat) {
     breadcrumbs.push({
       name: token.nomor,
-      url: token.nomor.toLowerCase().replace(" ", "-"),
+      url: peraturan.path + "/" + token.nomor.toLowerCase().replace(" ", "-"),
     });
     const pasal = token;
     const ayats = token.tokens as PartialToken[];
@@ -102,7 +102,7 @@ export const handler: Handler<PeraturanPartialPageProps> = async (req, ctx) => {
   breadcrumbs.push({
     name: (token.type === "ayat" ? `ayat ` : "") + token?.nomor,
   });
-  const judulPartial = breadcrumbs.map(({ name }) => name).join(" ");
+  const judulPartial = breadcrumbs.slice(3).map(({ name }) => name).join(" ");
   const html = marked.parser([token as marked.Token]);
   ctx.state.seo = {
     title: `${judulPartial} | ${peraturan.rujukPanjang}`,
