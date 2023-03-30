@@ -88,7 +88,8 @@ export class Peraturan {
   }
 
   get nomorPendek() {
-    return "No. " + (this.nomor_text || `${this.nomor} Th. ${this.tahun}`);
+    return "No.\xa0" +
+      (this.nomor_text || `${this.nomor}\xa0Th.\xa0${this.tahun}`);
   }
 
   get nomorPanjang() {
