@@ -38,3 +38,14 @@ export const readTextMd = async (
     throw error;
   }
 };
+
+export const lastModMd = async (
+  { jenis, tahun, nomor }: {
+    jenis: string;
+    tahun: string | number;
+    nomor: string | number;
+  },
+) => {
+  const stat = await Deno.stat(getMdFilePath(jenis, tahun, nomor));
+  return stat.mtime || new Date();
+};

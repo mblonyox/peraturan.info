@@ -1,6 +1,6 @@
 import { Handlers } from "$fresh/server.ts";
 import { RouteConfig } from "$fresh/server.ts";
-import { getDB } from "@/data/db.ts";
+import { getDB, lastModDB } from "@/data/db.ts";
 import { getFilterByTahunCount } from "@/models/peraturan.ts";
 
 export const config: RouteConfig = {
@@ -14,14 +14,14 @@ type SitemapTag = {
 
 export const handler: Handlers = {
   GET: async (req, ctx) => {
-    const now = new Date();
     const origin = new URL(req.url).origin;
     const { jenis } = ctx.params;
     const db = await getDB();
+    const lastmod = await lastModDB();
     const tahunJumlah = getFilterByTahunCount(db, { jenis });
     const indexes: SitemapTag[] = tahunJumlah.map(({ tahun }) => ({
       loc: origin + `/sitemap-${jenis}-${tahun}.xml`,
-      lastmod: now,
+      lastmod,
     }));
 
     return new Response(

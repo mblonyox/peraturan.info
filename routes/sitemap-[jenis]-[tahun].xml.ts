@@ -1,8 +1,8 @@
 import { Handlers } from "$fresh/server.ts";
 import { RouteConfig } from "$fresh/server.ts";
-import { getDB } from "@/data/db.ts";
+import { getDB, lastModDB } from "@/data/db.ts";
 import { getListPeraturan } from "@/models/peraturan.ts";
-import { readTextMd } from "@/utils/fs.ts";
+import { lastModMd, readTextMd } from "@/utils/fs.ts";
 import { marked } from "marked";
 import { PartialToken, peraturan as peraturanExtension } from "@/utils/md.ts";
 
@@ -26,22 +26,22 @@ export const config: RouteConfig = {
 
 export const handler: Handlers = {
   GET: async (req, ctx) => {
-    const now = new Date();
     const origin = new URL(req.url).origin;
     const { jenis, tahun } = ctx.params;
     const db = await getDB();
+    const lastmod = await lastModDB();
     const { hasil } = getListPeraturan(db, { jenis, tahun, pageSize: 10000 });
     const urls: UrlTag[] = [];
     for (const p of hasil) {
       urls.push({
         loc: origin + p.path + "/info",
-        lastmod: now,
+        lastmod,
         changefreq: "yearly",
         priority: 0.5,
       });
       urls.push({
         loc: origin + p.path + "/terkait",
-        lastmod: now,
+        lastmod,
         changefreq: "yearly",
         priority: 0.9,
       });
@@ -51,11 +51,16 @@ export const handler: Handlers = {
         nomor: p.nomor,
       });
       if (md) {
+        const lastmod = await lastModMd({
+          jenis,
+          tahun,
+          nomor: p.nomor,
+        });
         const paths = getPartialPaths(md);
         paths.forEach((path) => {
           urls.push({
             loc: origin + p.path + path,
-            lastmod: now,
+            lastmod,
             changefreq: "yearly",
             priority: 1.0,
           });
