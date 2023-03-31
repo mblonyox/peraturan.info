@@ -56,7 +56,7 @@ export default function PeraturanOutline(
             <details>
               <summary>
                 <div className="d-inline-flex w-75 ms-2">
-                  <a href={path + "/konsideran"}>Dasar Hukum (Mengingat)</a>
+                  <a href={path + "/dasar-hukum"}>Dasar Hukum (Mengingat)</a>
                 </div>
               </summary>
               <ul>
