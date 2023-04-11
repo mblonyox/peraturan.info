@@ -97,7 +97,7 @@ export default function ListPeraturanPage({
           <FilterByJenis {...filterByJenisProps} />
           <FilterByTahun {...filterByTahunProps} />
         </aside>
-        <div className="col-12 col-xxl-10 col-lg-9">
+        <div className="col-12 col-xxl-10 col-lg-9 overflow-x-auto">
           <table className="table table-striped border-top table-hover">
             <thead>
               <tr>
