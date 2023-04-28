@@ -47,5 +47,5 @@ export const lastModMd = async (
   },
 ) => {
   const stat = await Deno.stat(getMdFilePath(jenis, tahun, nomor));
-  return stat.mtime || new Date();
+  return stat.mtime ?? undefined;
 };
