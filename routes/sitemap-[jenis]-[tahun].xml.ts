@@ -29,19 +29,12 @@ export const handler: Handlers = {
     const origin = new URL(req.url).origin;
     const { jenis, tahun } = ctx.params;
     const db = await getDB();
-    const { hasil, total } = getListPeraturan(db, {
+    const { hasil } = getListPeraturan(db, {
       jenis,
       tahun,
       pageSize: 10000,
     });
     const urls: UrlTag[] = [];
-    for (const page of Array(Math.ceil(total / 10)).keys()) {
-      urls.push({
-        loc: origin + `/${jenis}/${tahun}?page=${page + 1}`,
-        changefreq: "yearly",
-        priority: 0.4,
-      });
-    }
     for (const p of hasil) {
       const lastmod = p.created_at;
       urls.push({
