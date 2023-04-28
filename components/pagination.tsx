@@ -49,10 +49,29 @@ export default function Pagination({
     <nav aria-label="Laman-laman hasil pencarian">
       <ul className="pagination justify-content-center">
         <li className={"page-item" + (page === 1 ? " disabled" : "")}>
-          <a className="page-link" href={pageUrl(1)} disabled={page === 1}>
-            Awal
+          <a
+            className="page-link"
+            href={pageUrl(page - 1)}
+            disabled={page === 1}
+          >
+            &lt;
           </a>
         </li>
+        {!items.includes(1) && (
+          <>
+            <li className="page-item">
+              <a
+                className="page-link"
+                href={pageUrl(1)}
+              >
+                {1}
+              </a>
+            </li>
+            <li className="page-item">
+              <span className="page-link">&#8230;</span>
+            </li>
+          </>
+        )}
         {items.map((i) => (
           <li className={"page-item" + (page === i ? " active" : "")}>
             <a
@@ -63,13 +82,28 @@ export default function Pagination({
             </a>
           </li>
         ))}
+        {!items.includes(lastPage) && (
+          <>
+            <li className="page-item">
+              <span className="page-link">&#8230;</span>
+            </li>
+            <li className="page-item">
+              <a
+                className="page-link"
+                href={pageUrl(lastPage)}
+              >
+                {lastPage}
+              </a>
+            </li>
+          </>
+        )}
         <li className={"page-item" + (page === lastPage ? " disabled" : "")}>
           <a
             className="page-link"
-            href={pageUrl(lastPage)}
+            href={pageUrl(page + 1)}
             disabled={page === lastPage}
           >
-            Akhir
+            &gt;
           </a>
         </li>
       </ul>
