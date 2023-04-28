@@ -91,53 +91,90 @@ export default function ListPeraturanPage({
   const startIndex = ((page - 1) * pageSize) + 1;
 
   return (
-    <>
-      <div className="row">
-        <aside className="col-lg-3 col-xxl-2 d-none d-lg-block">
+    <div className="row">
+      <div className="d-lg-none my-2">
+        <button
+          type="button"
+          className="btn btn-outline-secondary"
+          data-bs-toggle="offcanvas"
+          data-bs-target="#filters"
+          aria-label="Open Filters"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="16"
+            height="16"
+            fill="currentColor"
+            class="bi bi-funnel"
+            viewBox="0 0 16 16"
+          >
+            <path d="M1.5 1.5A.5.5 0 0 1 2 1h12a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-.128.334L10 8.692V13.5a.5.5 0 0 1-.342.474l-3 1A.5.5 0 0 1 6 14.5V8.692L1.628 3.834A.5.5 0 0 1 1.5 3.5v-2zm1 .5v1.308l4.372 4.858A.5.5 0 0 1 7 8.5v5.306l2-.666V8.5a.5.5 0 0 1 .128-.334L13.5 3.308V2h-11z" />
+          </svg>
+          &nbsp;Saring
+        </button>
+      </div>
+      <aside
+        className="col-lg-3 col-xxl-2 offcanvas-start offcanvas-lg"
+        id="filters"
+      >
+        <div className="offcanvas-header">
+          <h5 class="offcanvas-title">
+            Saring Peraturan
+          </h5>
+          <button
+            type="button"
+            class="btn-close"
+            data-bs-dismiss="offcanvas"
+            data-bs-target="#filters"
+            aria-label="Close Filters"
+          >
+          </button>
+        </div>
+        <div className="offcanvas-body flex-column">
           <FilterByJenis {...filterByJenisProps} />
           <FilterByTahun {...filterByTahunProps} />
-        </aside>
-        <div className="col-12 col-xxl-10 col-lg-9 overflow-x-auto">
-          <table className="table table-striped border-top table-hover">
-            <thead>
-              <tr>
-                <th scope="col">#</th>
-                <th scope="col">Judul</th>
-                <th scope="col">Nomor dan Tahun</th>
-                <th scope="col">Bentuk</th>
-              </tr>
-            </thead>
-            <tbody>
-              {hasil.map((
-                {
-                  path,
-                  judul,
-                  nomorPendek,
-                  namaJenisPanjang,
-                },
-                index,
-              ) => (
-                <tr key={judul}>
-                  <th scope="row">{startIndex + index}</th>
-                  <td>
-                    {judul}
-                  </td>
-                  <td>
-                    <a href={path}>
-                      {nomorPendek}
-                    </a>
-                  </td>
-                  <td>
-                    {namaJenisPanjang}
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-          <Pagination {...{ total, page, pageSize }} />
         </div>
+      </aside>
+      <div className="col-12 col-xxl-10 col-lg-9 overflow-x-auto">
+        <table className="table table-striped border-top table-hover">
+          <thead>
+            <tr>
+              <th scope="col">#</th>
+              <th scope="col">Judul</th>
+              <th scope="col">Nomor dan Tahun</th>
+              <th scope="col">Bentuk</th>
+            </tr>
+          </thead>
+          <tbody>
+            {hasil.map((
+              {
+                path,
+                judul,
+                nomorPendek,
+                namaJenisPanjang,
+              },
+              index,
+            ) => (
+              <tr key={judul}>
+                <th scope="row">{startIndex + index}</th>
+                <td>
+                  {judul}
+                </td>
+                <td>
+                  <a href={path}>
+                    {nomorPendek}
+                  </a>
+                </td>
+                <td>
+                  {namaJenisPanjang}
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+        <Pagination {...{ total, page, pageSize }} />
       </div>
-    </>
+    </div>
   );
 }
 
