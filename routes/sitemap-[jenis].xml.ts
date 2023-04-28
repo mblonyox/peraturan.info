@@ -28,8 +28,9 @@ export const handler: Handlers = {
       '<?xml version="1.0" encoding="UTF-8"?>' +
         '<sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">' +
         indexes.map(({ loc, lastmod }) =>
-          "<sitemap>" + `<loc>${loc}</loc>` +
-          `<lastmod>${lastmod?.toISOString()}</lastmod>` +
+          "<sitemap>" +
+          `<loc>${loc}</loc>` +
+          (lastmod ? `<lastmod>${lastmod?.toISOString()}</lastmod>` : "") +
           "</sitemap>"
         ).join("") + "</sitemapindex>",
       { headers: { "Content-Type": "text/xml" } },

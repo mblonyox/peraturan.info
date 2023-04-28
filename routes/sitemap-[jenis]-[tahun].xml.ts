@@ -29,10 +29,10 @@ export const handler: Handlers = {
     const origin = new URL(req.url).origin;
     const { jenis, tahun } = ctx.params;
     const db = await getDB();
-    const lastmod = await lastModDB();
     const { hasil } = getListPeraturan(db, { jenis, tahun, pageSize: 10000 });
     const urls: UrlTag[] = [];
     for (const p of hasil) {
+      const lastmod = p.created_at;
       urls.push({
         loc: origin + p.path + "/info",
         lastmod,
@@ -72,10 +72,12 @@ export const handler: Handlers = {
       '<?xml version="1.0" encoding="UTF-8"?>' +
         '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">' +
         urls.map(({ loc, lastmod, changefreq, priority }) =>
-          "<url>" + `<loc>${loc}</loc>` +
-          `<lastmod>${lastmod?.toISOString()}</lastmod>` +
-          `<changefreq>${changefreq}</changefreq>` +
-          `<priority>${priority}</priority>` + "</url>"
+          "<url>" +
+          `<loc>${loc}</loc>` +
+          (lastmod ? `<lastmod>${lastmod?.toISOString()}</lastmod>` : "") +
+          (changefreq ? `<changefreq>${changefreq}</changefreq>` : "") +
+          (priority ? `<priority>${priority}</priority>` : "") +
+          "</url>"
         )
           .join("") +
         "</urlset>",

@@ -33,6 +33,7 @@ export type PeraturanRow = {
   tanggal_diundangkan: string;
   tanggal_berlaku: string;
   nomor_text: string;
+  created_at: string;
 };
 
 export class Peraturan {
@@ -44,6 +45,7 @@ export class Peraturan {
   tanggal_diundangkan: Date;
   tanggal_berlaku: Date;
   nomor_text: string;
+  created_at: Date;
 
   constructor(
     {
@@ -55,6 +57,7 @@ export class Peraturan {
       tanggal_diundangkan,
       tanggal_berlaku,
       nomor_text,
+      created_at,
     }: PeraturanRow,
   ) {
     this.jenis = jenis as JenisPeraturan;
@@ -65,6 +68,7 @@ export class Peraturan {
     this.tanggal_diundangkan = new Date(tanggal_diundangkan);
     this.tanggal_berlaku = new Date(tanggal_berlaku);
     this.nomor_text = nomor_text;
+    this.created_at = new Date(parseInt(created_at) * 1000);
   }
 
   get path() {
