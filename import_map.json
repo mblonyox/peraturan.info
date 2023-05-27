@@ -1,30 +1,30 @@
 {
   "imports": {
     "@/": "./",
-    "$std/": "https://deno.land/std@0.187.0/",
+    "$std/": "https://deno.land/std@0.189.0/",
     "$imagescript/": "https://deno.land/x/imagescript@1.2.15/",
     "$mock_file/": "https://deno.land/x/mock_file@v1.1.2/",
     "$sqlite/": "https://deno.land/x/sqlite@v3.7.2/",
-    "@lyrasearch/lyra": "https://esm.sh/v121/@lyrasearch/lyra@0.4.12",
-    "@lyrasearch/lyra/": "https://esm.sh/v121/@lyrasearch/lyra@0.4.12/",
-    "@lyrasearch/plugin-data-persistence": "https://esm.sh/v121/*@lyrasearch/plugin-data-persistence@0.1.1",
-    "@lyrasearch/plugin-data-persistence/": "https://esm.sh/v121/*@lyrasearch/plugin-data-persistence@0.1.1/",
-    "@preact/signals-core": "https://esm.sh/v121/@preact/signals-core@1.3.0",
-    "@preact/signals": "https://esm.sh/v121/*@preact/signals@1.1.3",
-    "dpack": "https://esm.sh/v121/dpack@0.6.22",
-    "marked": "https://esm.sh/v121/marked@5.0.2",
-    "marked/": "https://esm.sh/v121/marked@5.0.2/",
-    "preact-render-to-string": "https://esm.sh/v121/*preact-render-to-string@6.0.3",
-    "preact-render-to-string/": "https://esm.sh/v121/*preact-render-to-string@6.0.3/",
-    "preact": "https://esm.sh/v121/preact@10.14.0",
-    "preact/": "https://esm.sh/v121/preact@10.14.0/",
-    "printd": "https://esm.sh/v121/printd@1.6.0",
-    "$fresh/": "https://raw.githubusercontent.com/mblonyox/fresh/e3f16da379fc8d85193588cd5c6aca11ef1d7e62/"
+    "@lyrasearch/lyra": "https://esm.sh/v124/@lyrasearch/lyra@0.4.12",
+    "@lyrasearch/lyra/": "https://esm.sh/v124/@lyrasearch/lyra@0.4.12/",
+    "@lyrasearch/plugin-data-persistence": "https://esm.sh/v124/*@lyrasearch/plugin-data-persistence@0.1.1",
+    "@lyrasearch/plugin-data-persistence/": "https://esm.sh/v124/*@lyrasearch/plugin-data-persistence@0.1.1/",
+    "@preact/signals-core": "https://esm.sh/v124/@preact/signals-core@1.3.0",
+    "@preact/signals": "https://esm.sh/v124/*@preact/signals@1.1.3",
+    "dpack": "https://esm.sh/v124/dpack@0.6.22",
+    "marked": "https://esm.sh/v124/marked@5.0.2",
+    "marked/": "https://esm.sh/v124/marked@5.0.2/",
+    "preact-render-to-string": "https://esm.sh/v124/*preact-render-to-string@6.0.3",
+    "preact-render-to-string/": "https://esm.sh/v124/*preact-render-to-string@6.0.3/",
+    "preact": "https://esm.sh/v124/preact@10.14.1",
+    "preact/": "https://esm.sh/v124/preact@10.14.1/",
+    "printd": "https://esm.sh/v124/printd@1.6.0",
+    "$fresh/": "https://raw.githubusercontent.com/mblonyox/fresh/3142dbe199b578278c110669dfc367e355b454ce/"
   },
   "scopes": {
-    "https://esm.sh/v121/": {
-      "@msgpack/msgpack": "https://esm.sh/v121/@msgpack/msgpack@2.8.0",
-      "pretty-format": "https://esm.sh/v121/pretty-format@3.8.0"
+    "https://esm.sh/v124/": {
+      "@msgpack/msgpack": "https://esm.sh/v124/@msgpack/msgpack@2.8.0",
+      "pretty-format": "https://esm.sh/v124/pretty-format@3.8.0"
     }
   }
 }
