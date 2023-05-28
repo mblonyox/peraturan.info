@@ -59,9 +59,10 @@ export default function LayoutNavbar() {
             </li>
             <li className="nav-item">
               <a
-                className={"nav-link" + (pathname === "/new" ? " active" : "")}
-                aria-current={pathname === "/new" ? "page" : "false"}
-                href="/new"
+                className={"nav-link" +
+                  (pathname === "/terbaru" ? " active" : "")}
+                aria-current={pathname === "/terbaru" ? "page" : "false"}
+                href="/terbaru"
               >
                 Terbaru
               </a>

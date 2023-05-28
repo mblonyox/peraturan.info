@@ -20,10 +20,10 @@ import * as $13 from "./routes/_app.tsx";
 import * as $14 from "./routes/_middleware.tsx";
 import * as $15 from "./routes/api/autocomplete.ts";
 import * as $16 from "./routes/index.tsx";
-import * as $17 from "./routes/new.tsx";
-import * as $18 from "./routes/search.tsx";
-import * as $19 from "./routes/sitemap-[jenis]-[tahun].xml.ts";
-import * as $20 from "./routes/sitemap-[jenis].xml.ts";
+import * as $17 from "./routes/search.tsx";
+import * as $18 from "./routes/sitemap-[jenis]-[tahun].xml.ts";
+import * as $19 from "./routes/sitemap-[jenis].xml.ts";
+import * as $20 from "./routes/terbaru.tsx";
 import * as $$0 from "./islands/dark_mode_toggler.tsx";
 import * as $$1 from "./islands/print_button.tsx";
 import * as $$2 from "./islands/search_input.tsx";
@@ -49,10 +49,10 @@ const manifest = {
     "./routes/_middleware.tsx": $14,
     "./routes/api/autocomplete.ts": $15,
     "./routes/index.tsx": $16,
-    "./routes/new.tsx": $17,
-    "./routes/search.tsx": $18,
-    "./routes/sitemap-[jenis]-[tahun].xml.ts": $19,
-    "./routes/sitemap-[jenis].xml.ts": $20,
+    "./routes/search.tsx": $17,
+    "./routes/sitemap-[jenis]-[tahun].xml.ts": $18,
+    "./routes/sitemap-[jenis].xml.ts": $19,
+    "./routes/terbaru.tsx": $20,
   },
   islands: {
     "./islands/dark_mode_toggler.tsx": $$0,

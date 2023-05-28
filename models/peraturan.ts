@@ -191,3 +191,25 @@ export const getPeraturan = (
   if (row) return new Peraturan(row);
   return null;
 };
+
+export const getTanggalTerakhir = (
+  db: DB,
+) => {
+  return db.queryEntries<{ tanggal: string; jumlah: number }>(
+    `SELECT tanggal_diundangkan tanggal, count() jumlah FROM peraturan GROUP BY tanggal_diundangkan ORDER BY tanggal_diundangkan DESC LIMIT 5`,
+  );
+};
+
+export const getListPeraturanByTanggal = (
+  db: DB,
+  tanggal: string,
+) => {
+  const { whereClause, whereParams } = buildWhereClause({
+    tanggal_diundangkan: tanggal,
+  });
+  const rows = db.queryEntries<PeraturanRow>(
+    `SELECT * FROM peraturan ${whereClause}`,
+    { ...whereParams },
+  );
+  return rows.map((row) => new Peraturan(row));
+};
