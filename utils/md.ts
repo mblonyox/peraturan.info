@@ -152,8 +152,10 @@ const buku: marked.TokenizerAndRendererExtension = {
         raw: match[0],
         judul: match[1],
         nomor: match[2],
+        headers: [],
         tokens: [],
       };
+      this.lexer.inlineTokens(match[1].replaceAll("\n", "<br>"), token.headers);
       this.lexer.blockTokens(match[3], token.tokens);
       return token;
     }
@@ -161,7 +163,7 @@ const buku: marked.TokenizerAndRendererExtension = {
   renderer(token) {
     const id = this.parser.slugger.slug(token.nomor);
     return `<h2 id="${id}" class="buku">${
-      token.judul.replaceAll("\n", "<br>")
+      this.parser.parseInline(token.headers)
     }</h2><br>${this.parser.parse(token.tokens ?? [])}`;
   },
 };
@@ -179,8 +181,10 @@ const bab: marked.TokenizerAndRendererExtension = {
         raw: match[0],
         judul: match[1],
         nomor: match[2],
+        headers: [],
         tokens: [],
       };
+      this.lexer.inlineTokens(match[1].replaceAll("\n", "<br>"), token.headers);
       this.lexer.blockTokens(match[3], token.tokens);
       return token;
     }
@@ -188,7 +192,7 @@ const bab: marked.TokenizerAndRendererExtension = {
   renderer(token) {
     const id = this.parser.slugger.slug(token.nomor);
     return `<h3 id="${id}" class="bab">${
-      token.judul.replaceAll("\n", "<br>")
+      this.parser.parseInline(token.headers)
     }</h3><br>${this.parser.parse(token.tokens ?? [])}`;
   },
 };
@@ -206,8 +210,10 @@ const bagian: marked.TokenizerAndRendererExtension = {
         raw: match[0],
         judul: match[1],
         nomor: match[2],
+        headers: [],
         tokens: [],
       };
+      this.lexer.inlineTokens(match[1].replaceAll("\n", "<br>"), token.headers);
       this.lexer.blockTokens(match[3], token.tokens);
       return token;
     }
@@ -215,7 +221,7 @@ const bagian: marked.TokenizerAndRendererExtension = {
   renderer(token) {
     const id = this.parser.slugger.slug(token.nomor);
     return `<h4 id="${id}" class="bagian">${
-      token.judul.replaceAll("\n", "<br>")
+      this.parser.parseInline(token.headers)
     }</h4><br>${this.parser.parse(token.tokens ?? [])}`;
   },
 };
@@ -233,8 +239,10 @@ const paragraf: marked.TokenizerAndRendererExtension = {
         raw: match[0],
         judul: match[1],
         nomor: match[2],
+        headers: [],
         tokens: [],
       };
+      this.lexer.inlineTokens(match[1].replaceAll("\n", "<br>"), token.headers);
       this.lexer.blockTokens(match[3], token.tokens);
       return token;
     }
@@ -242,7 +250,7 @@ const paragraf: marked.TokenizerAndRendererExtension = {
   renderer(token) {
     const id = this.parser.slugger.slug(token.nomor);
     return `<h5 id="${id}" class="paragraf">${
-      token.judul.replaceAll("\n", "<br>")
+      this.parser.parseInline(token.headers)
     }</h5><br>${this.parser.parse(token.tokens ?? [])}`;
   },
 };
