@@ -10,7 +10,11 @@ export default function PrintButton() {
     d.print(el as HTMLElement, [asset("/peraturan.css")]);
   }, []);
   return (
-    <button className="btn btn-outline-secondary" onClick={onClickHandler}>
+    <button
+      className="btn btn-outline-secondary"
+      onClick={onClickHandler}
+      aria-label="Cetak"
+    >
       <svg
         xmlns="http://www.w3.org/2000/svg"
         width="16"

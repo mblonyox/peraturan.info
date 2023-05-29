@@ -39,7 +39,11 @@ export default function SearchInput({ initQuery }: Props) {
           value={query.value}
           onInput={(e) => query.value = e.currentTarget.value}
         />
-        <button className="btn btn-outline-secondary" type="submit">
+        <button
+          className="btn btn-outline-secondary"
+          type="submit"
+          aria-label="Cari"
+        >
           <svg
             xmlns="http://www.w3.org/2000/svg"
             width="16"

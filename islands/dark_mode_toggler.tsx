@@ -35,6 +35,7 @@ export default function DarkModeToggler(
         type="button"
         data-bs-toggle="dropdown"
         aria-expanded="false"
+        aria-label="Mode Terang/Gelap"
       >
         {theme === "light"
           ? sunIcon

@@ -34,6 +34,7 @@ export default function LayoutFooter() {
               href="https://github.com/mblonyox/peraturan.deno.dev"
               target="_blank"
               rel="noopener noreferrer"
+              aria-label="Github Repository"
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
