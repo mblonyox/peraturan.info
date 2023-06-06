@@ -8,32 +8,35 @@ import {
   RelasiPeraturan,
 } from "@/models/mod.ts";
 import { existsMd } from "@/utils/fs.ts";
-import { AppContextState } from "@/utils/app_context.tsx";
+import { AppContext } from "@/utils/app_context.tsx";
 import PeraturanLayout from "@/components/peraturan_layout.tsx";
 
-export const handler: Handler<TerkaitPeraturanPageProps, AppContextState> =
-  async (_req, ctx) => {
-    const { jenis, tahun, nomor } = ctx.params;
-    const db = await getDB();
-    const peraturan = getPeraturan(db, jenis, tahun, nomor);
-    if (!peraturan) return ctx.renderNotFound();
-    const hasMd = await existsMd({ jenis, tahun, nomor });
-    const relasi1 = getRelasiPeraturan1(db, jenis, tahun, nomor);
-    const relasi2 = getRelasiPeraturan2(db, jenis, tahun, nomor);
-    ctx.state.seo = {
-      title: `Peraturan Terkait | ${peraturan.rujukPanjang}`,
-      description:
-        `Peraturan Terkait (Dasar Hukum, Perubahan, Pencabutan, dll.) atas ${peraturan.rujukPanjang}`,
-    };
-    ctx.state.breadcrumbs = [...peraturan.breadcrumbs, {
-      name: "Peraturan Terkait",
-    }];
-    ctx.state.pageHeading = {
-      title: peraturan.judul,
-      description: peraturan.rujukPendek,
-    };
-    return ctx.render({ hasMd, relasi1, relasi2 });
+export const handler: Handler<TerkaitPeraturanPageProps, AppContext> = async (
+  _req,
+  ctx,
+) => {
+  const { jenis, tahun, nomor } = ctx.params;
+  const db = await getDB();
+  const peraturan = getPeraturan(db, jenis, tahun, nomor);
+  if (!peraturan) return ctx.renderNotFound();
+  const hasMd = await existsMd({ jenis, tahun, nomor });
+  const relasi1 = getRelasiPeraturan1(db, jenis, tahun, nomor);
+  const relasi2 = getRelasiPeraturan2(db, jenis, tahun, nomor);
+  const appContext: AppContext = {};
+  appContext.seo = {
+    title: `Peraturan Terkait | ${peraturan.rujukPanjang}`,
+    description:
+      `Peraturan Terkait (Dasar Hukum, Perubahan, Pencabutan, dll.) atas ${peraturan.rujukPanjang}`,
   };
+  appContext.breadcrumbs = [...peraturan.breadcrumbs, {
+    name: "Peraturan Terkait",
+  }];
+  appContext.pageHeading = {
+    title: peraturan.judul,
+    description: peraturan.rujukPendek,
+  };
+  return ctx.render({ hasMd, relasi1, relasi2, appContext });
+};
 
 interface TerkaitPeraturanPageProps {
   hasMd: boolean;
@@ -43,6 +46,7 @@ interface TerkaitPeraturanPageProps {
   relasi2: (Pick<RelasiPeraturan, "id" | "relasi" | "catatan"> & {
     peraturan: Peraturan;
   })[];
+  appContext: AppContext;
 }
 
 export default function TerkaitPeraturanPage(

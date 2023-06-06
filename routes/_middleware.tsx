@@ -1,31 +1,33 @@
 import { getCookies } from "$std/http/cookie.ts";
 import { MiddlewareHandler } from "$fresh/server.ts";
-import { AppContextState } from "@/utils/app_context.tsx";
 import { generateSocialImage } from "@/utils/social_image.ts";
 import { SEO_DESCRIPTION, SEO_TITLE } from "@/utils/const.ts";
 
-export const handler: MiddlewareHandler<AppContextState>[] = [
+type State = {
+  theme?: "dark" | "light";
+};
+
+export const handler: MiddlewareHandler<State>[] = [
   (req, ctx) => {
-    ctx.state.url = req.url;
     const cookies = getCookies(req.headers);
     if (cookies.theme === "dark" || cookies.theme === "light") {
       ctx.state.theme = cookies.theme;
     }
     return ctx.next();
   },
-  async (req, ctx) => {
-    const response = await ctx.next();
-    const url = req.url;
-    const socialImage = new URL(url).searchParams.get("social-image");
-    if (socialImage !== null) {
-      const seo = ctx.state.seo;
-      const title = seo?.title ?? SEO_TITLE;
-      const description = seo?.description ?? SEO_DESCRIPTION;
-      const image = await generateSocialImage({ title, description, url });
-      return new Response(image);
-    }
-    return response;
-  },
+  // async (req, ctx) => {
+  //   const response = await ctx.next();
+  //   const url = req.url;
+  //   const socialImage = new URL(url).searchParams.get("social-image");
+  //   if (socialImage !== null) {
+  //     const seo = ctx.state.seo;
+  //     const title = seo?.title ?? SEO_TITLE;
+  //     const description = seo?.description ?? SEO_DESCRIPTION;
+  //     const image = await generateSocialImage({ title, description, url });
+  //     return new Response(image);
+  //   }
+  //   return response;
+  // },
   async (_req, ctx) => {
     const resp = await ctx.next();
     if (

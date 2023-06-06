@@ -1,11 +1,11 @@
 import { Handler, PageProps } from "$fresh/server.ts";
-import { AppContextState } from "@/utils/app_context.tsx";
+import { AppContext } from "@/utils/app_context.tsx";
 import { search, SearchResult } from "@lyrasearch/lyra";
 import { formatNanoseconds } from "@lyrasearch/lyra/internals";
 import { getLyra, Schema } from "@/data/lyra.ts";
 import Pagination from "@/components/pagination.tsx";
 
-export const handler: Handler<SearchPageProps, AppContextState> = async (
+export const handler: Handler<SearchPageProps> = async (
   req,
   ctx,
 ) => {
@@ -29,24 +29,27 @@ export const handler: Handler<SearchPageProps, AppContextState> = async (
       formatNanoseconds(result.elapsed as bigint)
     }.`
     : "Pencarian tidak menemukan hasil.";
-  ctx.state.seo = {
+  const appContext: AppContext = {};
+  appContext.seo = {
     title,
     description,
   };
-  ctx.state.breadcrumbs = [{ name: "Pencarian" }];
-  ctx.state.pageHeading = {
+  appContext.breadcrumbs = [{ name: "Pencarian" }];
+  appContext.pageHeading = {
     title,
     description,
   };
   return ctx.render({
     result,
     paginationProps: { page, lastPage: Math.ceil(result.count / limit) },
+    appContext,
   });
 };
 
 type SearchPageProps = {
   result: SearchResult<Schema>;
   paginationProps: { page: number; lastPage: number };
+  appContext: AppContext;
 };
 
 export default function SearchPage(

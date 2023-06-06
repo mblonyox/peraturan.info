@@ -4,6 +4,7 @@ import { marked } from "marked";
 import { PartialToken, peraturan as peraturanExtension } from "@/utils/md.ts";
 import { getDB } from "@/data/db.ts";
 import { getPeraturan } from "@/models/mod.ts";
+import { AppContext } from "@/utils/app_context.tsx";
 import { readTextMd } from "@/utils/fs.ts";
 import { ellipsis } from "@/utils/string.ts";
 import PeraturanLayout from "@/components/peraturan_layout.tsx";
@@ -104,22 +105,24 @@ export const handler: Handler<PeraturanPartialPageProps> = async (req, ctx) => {
   });
   const judulPartial = breadcrumbs.slice(3).map(({ name }) => name).join(" ");
   const html = marked.parser([token as marked.Token]);
-  ctx.state.seo = {
+  const appContext: AppContext = {};
+  appContext.seo = {
     title: `${judulPartial} | ${peraturan.rujukPanjang}`,
     description: ellipsis(token.raw, 155),
   };
-  ctx.state.breadcrumbs = breadcrumbs;
-  ctx.state.pageHeading = {
+  appContext.breadcrumbs = breadcrumbs;
+  appContext.pageHeading = {
     title: peraturan.judul,
     description: peraturan.rujukPendek,
   };
-  return ctx.render({ prev, next, html });
+  return ctx.render({ prev, next, html, appContext });
 };
 
 interface PeraturanPartialPageProps {
+  html: string;
   prev?: { name: string; url: string };
   next?: { name: string; url: string };
-  html: string;
+  appContext: AppContext;
 }
 
 export default function PeraturanPartialPage(

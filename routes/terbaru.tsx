@@ -1,12 +1,12 @@
 import { Handler, PageProps } from "$fresh/server.ts";
-import { AppContextState } from "@/utils/app_context.tsx";
+import { AppContext } from "@/utils/app_context.tsx";
 import { getDB } from "@/data/db.ts";
 import {
   getListPeraturanByTanggal,
   getTanggalTerakhir,
   Peraturan,
 } from "@/models/peraturan.ts";
-export const handler: Handler<TerbaruPageProps, AppContextState> = async (
+export const handler: Handler<TerbaruPageProps> = async (
   req,
   ctx,
 ) => {
@@ -38,16 +38,18 @@ export const handler: Handler<TerbaruPageProps, AppContextState> = async (
       year: "numeric",
     },
   );
-  ctx.state.seo = {
+  const appContext: AppContext = {};
+  appContext.seo = {
     title: `Peraturan Terbaru - ${tanggalDipilihFmtd}`,
     description:
       `Tampilan ${listPeraturan.length} peraturan terbaru yang diundangkan pada tanggal ${tanggalDipilihFmtd}`,
   };
-  ctx.state.breadcrumbs = [{ name: "Peraturan Terbaru" }];
+  appContext.breadcrumbs = [{ name: "Peraturan Terbaru" }];
   return ctx.render({
     tanggalDipilih,
     tanggalTerakhir,
     listPeraturan,
+    appContext,
   });
 };
 
@@ -55,6 +57,7 @@ type TerbaruPageProps = {
   tanggalDipilih: string;
   tanggalTerakhir: { tanggal: string; jumlah: number }[];
   listPeraturan: Peraturan[];
+  appContext: AppContext;
 };
 
 export default function TerbaruPage(

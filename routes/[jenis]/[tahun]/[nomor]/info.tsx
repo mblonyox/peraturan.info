@@ -1,11 +1,11 @@
 import { Handler, PageProps } from "$fresh/server.ts";
 import { getDB } from "@/data/db.ts";
 import { getPeraturan, getSumberPeraturan, Peraturan } from "@/models/mod.ts";
+import { AppContext } from "@/utils/app_context.tsx";
 import { existsMd } from "@/utils/fs.ts";
-import { AppContextState } from "@/utils/app_context.tsx";
 import PeraturanLayout from "@/components/peraturan_layout.tsx";
 
-export const handler: Handler<InfoPeraturanPageProps, AppContextState> = async (
+export const handler: Handler<InfoPeraturanPageProps> = async (
   _req,
   ctx,
 ) => {
@@ -15,23 +15,25 @@ export const handler: Handler<InfoPeraturanPageProps, AppContextState> = async (
   if (!peraturan) return ctx.renderNotFound();
   const hasMd = await existsMd({ jenis, tahun, nomor });
   const sumber = getSumberPeraturan(db, jenis, tahun, nomor);
-  ctx.state.seo = {
+  const appContext: AppContext = {};
+  appContext.seo = {
     title: `Informasi | ${peraturan.rujukPanjang}`,
     description:
       `Informasi umum (Metadata, Sumber Peraturan, Abstrak) atas ${peraturan.rujukPanjang}`,
   };
-  ctx.state.breadcrumbs = [...peraturan.breadcrumbs, { name: "Informasi" }];
-  ctx.state.pageHeading = {
+  appContext.breadcrumbs = [...peraturan.breadcrumbs, { name: "Informasi" }];
+  appContext.pageHeading = {
     title: peraturan.judul,
     description: peraturan.rujukPendek,
   };
-  return ctx.render({ peraturan, hasMd, sumber });
+  return ctx.render({ peraturan, hasMd, sumber, appContext });
 };
 
 interface InfoPeraturanPageProps {
   peraturan: Peraturan;
   hasMd: boolean;
   sumber: { nama: string; url_page: string; url_pdf: string }[];
+  appContext: AppContext;
 }
 
 export default function InfoPeraturanPage(

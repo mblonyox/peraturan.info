@@ -1,6 +1,7 @@
 import { Handler, PageProps } from "$fresh/server.ts";
 import { getDB } from "@/data/db.ts";
-import { getPeraturan, Peraturan } from "@/models/mod.ts";
+import { getPeraturan } from "@/models/mod.ts";
+import { AppContext } from "@/utils/app_context.tsx";
 import { readTextMd } from "@/utils/fs.ts";
 import PeraturanLayout from "@/components/peraturan_layout.tsx";
 import PeraturanMarkdown from "@/components/peraturan_markdown.tsx";
@@ -12,20 +13,24 @@ export const handler: Handler<IsiPeraturanPageProps> = async (req, ctx) => {
   if (!peraturan) return ctx.renderNotFound();
   const md = await readTextMd({ jenis, tahun, nomor });
   if (!md) return ctx.renderNotFound();
-  ctx.state.seo = {
+  const appContext: AppContext = {};
+  appContext.seo = {
     title: `Isi Peraturan | ${peraturan.rujukPanjang}`,
     description: `Isi Peraturan penuh atas ${peraturan.rujukPanjang}`,
   };
-  ctx.state.breadcrumbs = [...peraturan.breadcrumbs, { name: "Isi Peraturan" }];
-  ctx.state.pageHeading = {
+  appContext.breadcrumbs = [...peraturan.breadcrumbs, {
+    name: "Isi Peraturan",
+  }];
+  appContext.pageHeading = {
     title: peraturan.judul,
     description: peraturan.rujukPendek,
   };
-  return ctx.render({ md });
+  return ctx.render({ md, appContext });
 };
 
 interface IsiPeraturanPageProps {
   md: string;
+  appContext: AppContext;
 }
 
 export default function IsiPeraturanPage(

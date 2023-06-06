@@ -19,7 +19,7 @@
     "preact": "https://esm.sh/v124/preact@10.14.1",
     "preact/": "https://esm.sh/v124/preact@10.14.1/",
     "printd": "https://esm.sh/v124/printd@1.6.0",
-    "$fresh/": "https://raw.githubusercontent.com/mblonyox/fresh/3142dbe199b578278c110669dfc367e355b454ce/"
+    "$fresh/": "https://raw.githubusercontent.com/denoland/fresh/cd760b90d4412172a0f3055dc12e5050cde3dc58/"
   },
   "scopes": {
     "https://esm.sh/v124/": {
