@@ -16,7 +16,7 @@ export default function LayoutNavbar() {
   const { pathname, searchParams } = new URL(url ?? "");
 
   return (
-    <nav className="navbar navbar-expand-lg bg-secondary-subtle">
+    <nav className="navbar navbar-expand-lg bg-body-tertiary bg-gradient">
       <div className="container gap-1">
         <button
           className="navbar-toggler"
