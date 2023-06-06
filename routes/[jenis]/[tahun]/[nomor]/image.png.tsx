@@ -76,7 +76,7 @@ export const handler: Handler = async (
           color: "#ffffff",
         }}
       >
-        {req.url.replaceAll("/image.jpg", "")}
+        {req.url.replaceAll("/image.png", "")}
       </div>
     </div>,
   );
