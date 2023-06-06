@@ -6,7 +6,7 @@ export default function SeoTags() {
   const { url, seo } = useAppContext();
   const title = seo?.title ?? SEO_TITLE;
   const description = seo?.description ?? SEO_DESCRIPTION;
-  const image = seo?.image ?? (url + "?social-image");
+  const image = seo?.image ?? (url?.origin + "/og-image.png");
 
   return (
     <Head>

@@ -17,7 +17,7 @@ export const config: RouteConfig = {
 };
 
 export const handler: Handler<PeraturanPartialPageProps> = async (
-  _req,
+  req,
   ctx,
 ) => {
   const { jenis, tahun, nomor, partial } = ctx.params;
@@ -60,6 +60,7 @@ export const handler: Handler<PeraturanPartialPageProps> = async (
       `${tokens.map((token) => token.raw).join("\n")}`,
       155,
     ),
+    image: `${new URL(req.url).origin}/${jenis}/${tahun}/${nomor}/image.png`,
   };
   appContext.breadcrumbs = breadcrumbs;
   appContext.pageHeading = {

@@ -12,7 +12,7 @@ import { AppContext } from "@/utils/app_context.tsx";
 import PeraturanLayout from "@/components/peraturan_layout.tsx";
 
 export const handler: Handler<TerkaitPeraturanPageProps, AppContext> = async (
-  _req,
+  req,
   ctx,
 ) => {
   const { jenis, tahun, nomor } = ctx.params;
@@ -27,6 +27,7 @@ export const handler: Handler<TerkaitPeraturanPageProps, AppContext> = async (
     title: `Peraturan Terkait | ${peraturan.rujukPanjang}`,
     description:
       `Peraturan Terkait (Dasar Hukum, Perubahan, Pencabutan, dll.) atas ${peraturan.rujukPanjang}`,
+    image: `${new URL(req.url).origin}/${jenis}/${tahun}/${nomor}/image.png`,
   };
   appContext.breadcrumbs = [...peraturan.breadcrumbs, {
     name: "Peraturan Terkait",

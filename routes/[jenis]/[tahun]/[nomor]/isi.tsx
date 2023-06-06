@@ -17,6 +17,7 @@ export const handler: Handler<IsiPeraturanPageProps> = async (req, ctx) => {
   appContext.seo = {
     title: `Isi Peraturan | ${peraturan.rujukPanjang}`,
     description: `Isi Peraturan penuh atas ${peraturan.rujukPanjang}`,
+    image: `${new URL(req.url).origin}/${jenis}/${tahun}/${nomor}/image.png`,
   };
   appContext.breadcrumbs = [...peraturan.breadcrumbs, {
     name: "Isi Peraturan",

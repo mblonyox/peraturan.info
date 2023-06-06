@@ -17,7 +17,7 @@ export const config: RouteConfig = {
 };
 
 export const handler: Handler<PeraturanPartialPageProps> = async (
-  _req,
+  req,
   ctx,
 ) => {
   const { jenis, tahun, nomor, buku, bab, bagian, paragraf } = ctx.params;
@@ -75,6 +75,7 @@ export const handler: Handler<PeraturanPartialPageProps> = async (
   appContext.seo = {
     title: `${judulPartial} | ${peraturan.rujukPanjang}`,
     description: ellipsis(token.raw, 155),
+    image: `${new URL(req.url).origin}/${jenis}/${tahun}/${nomor}/image.png`,
   };
   appContext.breadcrumbs = breadcrumbs;
   appContext.pageHeading = {

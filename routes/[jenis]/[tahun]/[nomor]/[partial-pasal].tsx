@@ -109,6 +109,7 @@ export const handler: Handler<PeraturanPartialPageProps> = async (req, ctx) => {
   appContext.seo = {
     title: `${judulPartial} | ${peraturan.rujukPanjang}`,
     description: ellipsis(token.raw, 155),
+    image: `${new URL(req.url).origin}/${jenis}/${tahun}/${nomor}/image.png`,
   };
   appContext.breadcrumbs = breadcrumbs;
   appContext.pageHeading = {

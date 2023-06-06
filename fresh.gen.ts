@@ -6,7 +6,7 @@ import * as $0 from "./routes/[jenis]/[tahun]/[nomor]/[partial-bab].tsx";
 import * as $1 from "./routes/[jenis]/[tahun]/[nomor]/[partial-buku].tsx";
 import * as $2 from "./routes/[jenis]/[tahun]/[nomor]/[partial-pasal].tsx";
 import * as $3 from "./routes/[jenis]/[tahun]/[nomor]/[partial].tsx";
-import * as $4 from "./routes/[jenis]/[tahun]/[nomor]/image.jpg.tsx";
+import * as $4 from "./routes/[jenis]/[tahun]/[nomor]/image.png.tsx";
 import * as $5 from "./routes/[jenis]/[tahun]/[nomor]/index.ts";
 import * as $6 from "./routes/[jenis]/[tahun]/[nomor]/info.tsx";
 import * as $7 from "./routes/[jenis]/[tahun]/[nomor]/isi.tsx";
@@ -36,7 +36,7 @@ const manifest = {
     "./routes/[jenis]/[tahun]/[nomor]/[partial-buku].tsx": $1,
     "./routes/[jenis]/[tahun]/[nomor]/[partial-pasal].tsx": $2,
     "./routes/[jenis]/[tahun]/[nomor]/[partial].tsx": $3,
-    "./routes/[jenis]/[tahun]/[nomor]/image.jpg.tsx": $4,
+    "./routes/[jenis]/[tahun]/[nomor]/image.png.tsx": $4,
     "./routes/[jenis]/[tahun]/[nomor]/index.ts": $5,
     "./routes/[jenis]/[tahun]/[nomor]/info.tsx": $6,
     "./routes/[jenis]/[tahun]/[nomor]/isi.tsx": $7,

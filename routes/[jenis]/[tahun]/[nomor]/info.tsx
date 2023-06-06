@@ -6,7 +6,7 @@ import { existsMd } from "@/utils/fs.ts";
 import PeraturanLayout from "@/components/peraturan_layout.tsx";
 
 export const handler: Handler<InfoPeraturanPageProps> = async (
-  _req,
+  req,
   ctx,
 ) => {
   const { jenis, tahun, nomor } = ctx.params;
@@ -20,6 +20,7 @@ export const handler: Handler<InfoPeraturanPageProps> = async (
     title: `Informasi | ${peraturan.rujukPanjang}`,
     description:
       `Informasi umum (Metadata, Sumber Peraturan, Abstrak) atas ${peraturan.rujukPanjang}`,
+    image: `${new URL(req.url).origin}/${jenis}/${tahun}/${nomor}/image.png`,
   };
   appContext.breadcrumbs = [...peraturan.breadcrumbs, { name: "Informasi" }];
   appContext.pageHeading = {

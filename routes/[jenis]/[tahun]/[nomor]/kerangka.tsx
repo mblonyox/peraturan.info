@@ -7,7 +7,7 @@ import PeraturanLayout from "@/components/peraturan_layout.tsx";
 import PeraturanOutline from "@/components/peraturan_outline.tsx";
 
 export const handler: Handler<KerangkaPeraturanPageProps> = async (
-  _req,
+  req,
   ctx,
 ) => {
   const { jenis, tahun, nomor } = ctx.params;
@@ -21,6 +21,7 @@ export const handler: Handler<KerangkaPeraturanPageProps> = async (
     title: `Kerangka | ${peraturan.rujukPanjang}`,
     description:
       `Kerangka / Daftar Isi / Outline atas ${peraturan.rujukPanjang}.`,
+    image: `${new URL(req.url).origin}/${jenis}/${tahun}/${nomor}/image.png`,
   };
   appContext.breadcrumbs = [...peraturan.breadcrumbs, { name: "Kerangka" }];
   appContext.pageHeading = {
