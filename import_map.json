@@ -5,6 +5,7 @@
     "$imagescript/": "https://deno.land/x/imagescript@1.2.15/",
     "$mock_file/": "https://deno.land/x/mock_file@v1.1.2/",
     "$sqlite/": "https://deno.land/x/sqlite@v3.7.2/",
+    "$og_edge/": "https://deno.land/x/og_edge@0.0.6/",
     "@lyrasearch/lyra": "https://esm.sh/v124/@lyrasearch/lyra@0.4.12",
     "@lyrasearch/lyra/": "https://esm.sh/v124/@lyrasearch/lyra@0.4.12/",
     "@lyrasearch/plugin-data-persistence": "https://esm.sh/v124/*@lyrasearch/plugin-data-persistence@0.1.1",
@@ -25,6 +26,9 @@
     "https://esm.sh/v124/": {
       "@msgpack/msgpack": "https://esm.sh/v124/@msgpack/msgpack@2.8.0",
       "pretty-format": "https://esm.sh/v124/pretty-format@3.8.0"
+    },
+    "https://deno.land/x/og_edge@0.0.6/": {
+      "https://esm.sh/react@18.2.0": "https://esm.sh/preact@10.14.1/compat"
     }
   }
 }

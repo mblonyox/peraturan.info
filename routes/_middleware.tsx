@@ -1,7 +1,5 @@
 import { getCookies } from "$std/http/cookie.ts";
 import { MiddlewareHandler } from "$fresh/server.ts";
-import { generateSocialImage } from "@/utils/social_image.ts";
-import { SEO_DESCRIPTION, SEO_TITLE } from "@/utils/const.ts";
 
 type State = {
   theme?: "dark" | "light";
@@ -15,19 +13,6 @@ export const handler: MiddlewareHandler<State>[] = [
     }
     return ctx.next();
   },
-  // async (req, ctx) => {
-  //   const response = await ctx.next();
-  //   const url = req.url;
-  //   const socialImage = new URL(url).searchParams.get("social-image");
-  //   if (socialImage !== null) {
-  //     const seo = ctx.state.seo;
-  //     const title = seo?.title ?? SEO_TITLE;
-  //     const description = seo?.description ?? SEO_DESCRIPTION;
-  //     const image = await generateSocialImage({ title, description, url });
-  //     return new Response(image);
-  //   }
-  //   return response;
-  // },
   async (_req, ctx) => {
     const resp = await ctx.next();
     if (
