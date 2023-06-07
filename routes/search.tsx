@@ -59,7 +59,15 @@ export default function SearchPage(
           <div className="col-lg-6 col-xl-4">
             <div className="card h-100">
               <div className="card-body">
-                <p className="card-title h5 fw-bold text-truncate d-block">
+                <p
+                  className="card-title h5 fw-bold"
+                  style={{
+                    "-webkit-line-clamp": "3",
+                    "-webkit-box-orient": "vertical",
+                    display: "-webkit-box",
+                    overflow: "hidden",
+                  }}
+                >
                   {hit.document.judul}
                 </p>
                 <p className="card-subtitle fw-light">
