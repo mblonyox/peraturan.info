@@ -1,4 +1,6 @@
-import { restoreFromFile } from "@orama/plugin-data-persistence/server";
+import { dirname, fromFileUrl, resolve } from "$std/path/mod.ts";
+import { create, load } from "@orama/orama";
+import * as dpack from "dpack";
 
 const schema = {
   path: "string",
@@ -12,6 +14,13 @@ const schema = {
 
 export type Schema = typeof schema;
 
-export function getOrama() {
-  return restoreFromFile<Schema>("dpack", "data/index.dpack", "deno");
+export async function getOrama() {
+  const file = resolve(dirname(fromFileUrl(import.meta.url)), "./index.dpack");
+  const data = await Deno.readTextFile(file);
+  const orama = await create({
+    schema,
+  });
+  const deserialized = dpack.parse(data);
+  await load(orama, deserialized);
+  return orama;
 }
