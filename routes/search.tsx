@@ -1,8 +1,7 @@
 import { Handler, PageProps } from "$fresh/server.ts";
 import { AppContext } from "@/utils/app_context.tsx";
-import { search, SearchResult } from "@lyrasearch/lyra";
-import { formatNanoseconds } from "@lyrasearch/lyra/internals";
-import { getLyra, Schema } from "@/data/lyra.ts";
+import { Results, search } from "@orama/orama";
+import { getOrama } from "@/data/orama.ts";
 import Pagination from "@/components/pagination.tsx";
 
 export const handler: Handler<SearchPageProps> = async (
@@ -14,7 +13,7 @@ export const handler: Handler<SearchPageProps> = async (
   const limit = parseInt(params.get("limit") ?? "12");
   const page = parseInt(params.get("page") ?? "1");
   const offset = (page - 1) * limit;
-  const index = await getLyra();
+  const index = await getOrama();
   const result = await search(index, {
     term: query,
     properties: ["jenis", "nomor", "judul"],
@@ -25,9 +24,7 @@ export const handler: Handler<SearchPageProps> = async (
   const description = result.hits.length
     ? `Pencarian dengan kata kunci "${query}" menampilkan ${offset + 1} s.d. ${
       offset + result.hits.length
-    } dari ${result.count} hasil dalam ${
-      formatNanoseconds(result.elapsed as bigint)
-    }.`
+    } dari ${result.count} hasil dalam ${result.elapsed.formatted}.`
     : "Pencarian tidak menemukan hasil.";
   const appContext: AppContext = {};
   appContext.seo = {
@@ -47,7 +44,7 @@ export const handler: Handler<SearchPageProps> = async (
 };
 
 type SearchPageProps = {
-  result: SearchResult<Schema>;
+  result: Results;
   paginationProps: { page: number; lastPage: number };
   appContext: AppContext;
 };
