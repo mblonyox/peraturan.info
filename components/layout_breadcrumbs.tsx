@@ -25,7 +25,7 @@ export default function LayoutBreadcrumbs() {
             </svg>
           </a>
         </li>
-        {breadcrumbs.map(({ name, url }) => (
+        {breadcrumbs.map(({ name, url }, index) => (
           url
             ? (
               <li
@@ -36,6 +36,7 @@ export default function LayoutBreadcrumbs() {
                 <a href={url} property="item" typeof="WebPage">
                   <span property="name">{name}</span>
                 </a>
+                <meta property="position" content={index + 1} />
               </li>
             )
             : (
