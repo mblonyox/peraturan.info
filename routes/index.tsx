@@ -1,9 +1,34 @@
-import { asset } from "$fresh/runtime.ts";
+import { asset, Head } from "$fresh/runtime.ts";
+import { PageProps } from "$fresh/server.ts";
+import { WebSite, WithContext } from "schema-dts";
 import { NAMA2_JENIS } from "@/models/mod.ts";
 
-export default function Home() {
+export default function Home({ url }: PageProps) {
+  const website: WithContext<WebSite> = {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    "url": url.toString(),
+    "potentialAction": {
+      "@type": "SearchAction",
+      "target": {
+        "@type": "EntryPoint",
+        "urlTemplate": url.origin +
+          "/search?query={search_term_string}",
+      },
+      "query-input": "required name=search_term_string",
+    },
+  };
+
   return (
     <>
+      <Head>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify(website),
+          }}
+        />
+      </Head>
       <div className="py-5 my-5 text-center">
         <img
           src={asset("/logo.webp")}
