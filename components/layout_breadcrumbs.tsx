@@ -5,7 +5,11 @@ export default function LayoutBreadcrumbs() {
   if (!breadcrumbs) return null;
   return (
     <nav aria-label="breadcrumb">
-      <ul className="breadcrumb">
+      <ol
+        className="breadcrumb"
+        vocab="https://schema.org/"
+        typeof="BreadcrumbList"
+      >
         <li className="breadcrumb-item">
           <a href="/" aria-label="Beranda">
             <svg
@@ -22,11 +26,25 @@ export default function LayoutBreadcrumbs() {
           </a>
         </li>
         {breadcrumbs.map(({ name, url }) => (
-          <li className={"breadcrumb-item" + (url ? "" : " active")}>
-            {url ? <a href={url}>{name}</a> : name}
-          </li>
+          url
+            ? (
+              <li
+                className="breadcrumb-item active"
+                property="itemListElement"
+                typeof="ListItem"
+              >
+                <a href={url} property="item" typeof="WebPage">
+                  <span property="name">{name}</span>
+                </a>
+              </li>
+            )
+            : (
+              <li className="breadcrumb-item">
+                {name}
+              </li>
+            )
         ))}
-      </ul>
+      </ol>
     </nav>
   );
 }
