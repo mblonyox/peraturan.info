@@ -2,9 +2,9 @@
   "tasks": {
     "start": "deno run -A --watch=static/,routes/ dev.ts",
     "indexing": "deno run -A indexing.ts",
-    "esm:add": "deno run -A https://esm.sh/v124 add",
-    "esm:update": "deno run -A https://esm.sh/v124 update",
-    "esm:remove": "deno run -A https://esm.sh/v124 remove"
+    "esm:add": "deno run -A https://esm.sh/v125 add",
+    "esm:update": "deno run -A https://esm.sh/v125 update",
+    "esm:remove": "deno run -A https://esm.sh/v125 remove"
   },
   "importMap": "./import_map.json",
   "compilerOptions": {
