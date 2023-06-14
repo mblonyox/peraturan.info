@@ -213,3 +213,10 @@ export const getListPeraturanByTanggal = (
   );
   return rows.map((row) => new Peraturan(row));
 };
+
+export const getFeedListPeraturan = (db: DB) => {
+  const rows = db.queryEntries<PeraturanRow>(
+    "SELECT * FROM peraturan ORDER BY created_at DESC, tanggal_diundangkan DESC LIMIT 15",
+  );
+  return rows.map((row) => new Peraturan(row));
+};
