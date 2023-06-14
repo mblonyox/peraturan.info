@@ -2,6 +2,11 @@ import { Peraturan } from "@/models/peraturan.ts";
 import { Feed } from "feed";
 
 export const createPeraturanFeed = (list: Peraturan[], origin: string) => {
+  const me = {
+    name: "Sukirno",
+    email: "mblonyox@gmail.com",
+    link: "https://mblonyox.com",
+  };
   const feed = new Feed({
     title: "Peraturan.deno.dev Feed",
     description: "Feed Peraturan Perundang-undangan terbaru " +
@@ -17,6 +22,7 @@ export const createPeraturanFeed = (list: Peraturan[], origin: string) => {
       json: origin + "/feed.json",
       rss: origin + "/rss.xml",
     },
+    author: me,
   });
   list.forEach((p) => {
     feed.addItem({
@@ -26,7 +32,9 @@ export const createPeraturanFeed = (list: Peraturan[], origin: string) => {
       content: p.rujukPanjang,
       link: origin + p.path,
       date: p.created_at,
-      author: [],
+      author: [
+        me,
+      ],
     });
   });
   return feed;
