@@ -1,5 +1,7 @@
 User-agent: *
+Disallow: /_frsh/*
 
+Sitemap: https://peraturan.deno.dev/atom.xml
 Sitemap: https://peraturan.deno.dev/sitemap.xml
 Sitemap: https://peraturan.deno.dev/sitemap-uu.xml
 Sitemap: https://peraturan.deno.dev/sitemap-perppu.xml
