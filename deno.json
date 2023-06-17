@@ -11,6 +11,7 @@
     "jsx": "react-jsx",
     "jsxImportSource": "preact"
   },
+  "lock": false,
   "imports": {
     "@/": "./",
     "$std/": "https://deno.land/std@0.191.0/",
