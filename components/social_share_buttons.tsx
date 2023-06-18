@@ -4,7 +4,7 @@ import WebShareButton from "@/islands/web_share_button.tsx";
 
 export default function SocialShareButtons() {
   const appContext = useAppContext();
-  const url = appContext.url ?? "";
+  const url = appContext.url?.toString() ?? "";
   const title = appContext.seo?.title ?? "";
   const description = appContext.seo?.description ?? "";
 

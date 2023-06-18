@@ -1,22 +1,26 @@
 import { asset, Head } from "$fresh/runtime.ts";
 import { PageProps } from "$fresh/server.ts";
-import { WebSite, WithContext } from "schema-dts";
+import { SearchAction, WebSite, WithContext } from "schema-dts";
 import { NAMA2_JENIS } from "@/models/mod.ts";
 
 export default function Home({ url }: PageProps) {
-  const website: WithContext<WebSite> = {
+  const searchAction: SearchAction & { "query-input": string } = {
+    "@type": "SearchAction",
+    "target": {
+      "@type": "EntryPoint",
+      "urlTemplate": url.origin +
+        "/search?query={search_term_string}",
+    },
+    "query-input": "required name=search_term_string",
+  };
+
+  const website: WithContext<
+    WebSite
+  > = {
     "@context": "https://schema.org",
     "@type": "WebSite",
     "url": url.toString(),
-    "potentialAction": {
-      "@type": "SearchAction",
-      "target": {
-        "@type": "EntryPoint",
-        "urlTemplate": url.origin +
-          "/search?query={search_term_string}",
-      },
-      "query-input": "required name=search_term_string",
-    },
+    "potentialAction": searchAction,
   };
 
   return (

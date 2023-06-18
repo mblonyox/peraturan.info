@@ -170,7 +170,9 @@ export default function Webmentions() {
   const comments = useSignal<WMEntry[]>([]);
   const counter = useSignal<WMCounter>({ count: 0, type: {} });
   const { url } = useAppContext();
-  const target = typeof document === "undefined" ? (url ?? "") : document.URL;
+  const target = typeof document === "undefined"
+    ? (url?.toString() ?? "")
+    : document.URL;
   useSignalEffect(() => {
     getComments(target).then((value) => comments.value = value);
     getCounter(target).then((value) => counter.value = value);

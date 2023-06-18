@@ -12,6 +12,9 @@
     "jsxImportSource": "preact"
   },
   "lock": false,
+  "fmt": {
+    "exclude": ["data/markdowns/"]
+  },
   "imports": {
     "@/": "./",
     "$std/": "https://deno.land/std@0.191.0/",

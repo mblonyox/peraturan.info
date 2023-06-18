@@ -68,14 +68,14 @@ export default function SearchPage(
                     overflow: "hidden",
                   }}
                 >
-                  {hit.document.judul}
+                  {hit.document.judul as string}
                 </p>
                 <p className="card-subtitle fw-light">
                   {hit.document.jenis} {hit.document.nomor}
                 </p>
-                <p className="card-text">{hit.document.teks}</p>
+                <p className="card-text">{hit.document.teks as string}</p>
                 <a
-                  href={hit.document.path}
+                  href={hit.document.path as string}
                   className="card-link btn btn-outline-secondary"
                 >
                   Buka
