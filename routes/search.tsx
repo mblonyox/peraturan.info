@@ -1,5 +1,6 @@
 import { Handler, PageProps } from "$fresh/server.ts";
 import { AppContext } from "@/utils/app_context.tsx";
+import { ellipsis } from "@/utils/string.ts";
 import { Results, search } from "@orama/orama";
 import { getOrama } from "@/data/orama.ts";
 import Pagination from "@/components/pagination.tsx";
@@ -73,7 +74,9 @@ export default function SearchPage(
                 <p className="card-subtitle fw-light">
                   {hit.document.jenis} {hit.document.nomor}
                 </p>
-                <p className="card-text">{hit.document.teks as string}</p>
+                <p className="card-text">
+                  {ellipsis(hit.document.teks as string)}
+                </p>
                 <a
                   href={hit.document.path as string}
                   className="card-link btn btn-outline-secondary"
