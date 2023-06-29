@@ -26,24 +26,20 @@ export default function LayoutBreadcrumbs() {
           </a>
         </li>
         {breadcrumbs.map(({ name, url }, index) => (
-          url
-            ? (
-              <li
-                className="breadcrumb-item active"
-                property="itemListElement"
-                typeof="ListItem"
-              >
+          <li
+            className="breadcrumb-item"
+            property="itemListElement"
+            typeof="ListItem"
+          >
+            {url
+              ? (
                 <a href={url} property="item" typeof="WebPage">
                   <span property="name">{name}</span>
                 </a>
-                <meta property="position" content={`${index + 1}`} />
-              </li>
-            )
-            : (
-              <li className="breadcrumb-item">
-                {name}
-              </li>
-            )
+              )
+              : <span property="name">{name}</span>}
+            <meta property="position" content={`${index + 1}`} />
+          </li>
         ))}
       </ol>
     </nav>
