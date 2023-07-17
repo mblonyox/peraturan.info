@@ -10,6 +10,7 @@ import SeoTags from "@/components/seo_tags.tsx";
 export default function App(
   { Component, data, url }: AppProps,
 ) {
+  const gTagId = Deno.env.get("GOOGLE_TAG_ID");
   return (
     <AppContextProvider value={{ url, ...data?.appContext }}>
       <Head>
@@ -86,6 +87,21 @@ export default function App(
                   if (registration.waiting) registration.waiting.postMessage("SKIP_WAITING");
                 });
               }`,
+          }}
+        />
+        <script
+          async
+          src={`https://www.googletagmanager.com/gtag/js?id=${gTagId}`}
+        />
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              window.dataLayer = window.dataLayer || [];
+              function gtag(){dataLayer.push(arguments);}
+              gtag('js', new Date());
+              
+              gtag('config', '${gTagId}');
+              `,
           }}
         />
       </Head>
