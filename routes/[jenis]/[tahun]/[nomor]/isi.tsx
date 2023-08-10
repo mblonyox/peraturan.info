@@ -3,7 +3,6 @@ import { getDB } from "@/data/db.ts";
 import { getPeraturan } from "@/models/mod.ts";
 import { AppContext } from "@/utils/app_context.tsx";
 import { readTextMd } from "@/utils/fs.ts";
-import PeraturanLayout from "@/components/peraturan_layout.tsx";
 import PeraturanMarkdown from "@/components/peraturan_markdown.tsx";
 
 export const handler: Handler<IsiPeraturanPageProps> = async (req, ctx) => {
@@ -43,9 +42,5 @@ export default function IsiPeraturanPage(
     IsiPeraturanPageProps
   >,
 ) {
-  return (
-    <PeraturanLayout activeTab="isi">
-      <PeraturanMarkdown md={md} />
-    </PeraturanLayout>
-  );
+  return <PeraturanMarkdown md={md} />;
 }

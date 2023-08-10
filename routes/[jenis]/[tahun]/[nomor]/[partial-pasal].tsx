@@ -7,7 +7,6 @@ import { getPeraturan } from "@/models/mod.ts";
 import { AppContext } from "@/utils/app_context.tsx";
 import { readTextMd } from "@/utils/fs.ts";
 import { ellipsis } from "@/utils/string.ts";
-import PeraturanLayout from "@/components/peraturan_layout.tsx";
 import PeraturanMarkdown from "@/components/peraturan_markdown.tsx";
 import PrintButton from "@/islands/print_button.tsx";
 
@@ -138,7 +137,7 @@ export default function PeraturanPartialPage(
   >,
 ) {
   return (
-    <PeraturanLayout activeTab="isi">
+    <>
       <div className="d-flex justify-content-between my-2">
         <a
           className={"btn btn-outline-secondary" + (!prev ? " disabled" : "")}
@@ -155,6 +154,6 @@ export default function PeraturanPartialPage(
         </a>
       </div>
       <PeraturanMarkdown html={html} />
-    </PeraturanLayout>
+    </>
   );
 }

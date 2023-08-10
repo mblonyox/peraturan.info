@@ -7,9 +7,7 @@ import {
   Peraturan,
   RelasiPeraturan,
 } from "@/models/mod.ts";
-import { existsMd } from "@/utils/fs.ts";
 import { AppContext } from "@/utils/app_context.tsx";
-import PeraturanLayout from "@/components/peraturan_layout.tsx";
 
 export const handler: Handler<TerkaitPeraturanPageProps, AppContext> = async (
   req,
@@ -19,7 +17,6 @@ export const handler: Handler<TerkaitPeraturanPageProps, AppContext> = async (
   const db = await getDB();
   const peraturan = getPeraturan(db, jenis, tahun, nomor);
   if (!peraturan) return ctx.renderNotFound();
-  const hasMd = await existsMd({ jenis, tahun, nomor });
   const relasi1 = getRelasiPeraturan1(db, jenis, tahun, nomor);
   const relasi2 = getRelasiPeraturan2(db, jenis, tahun, nomor);
   const appContext: AppContext = {};
@@ -36,11 +33,10 @@ export const handler: Handler<TerkaitPeraturanPageProps, AppContext> = async (
     title: peraturan.judul,
     description: peraturan.rujukPendek,
   };
-  return ctx.render({ hasMd, relasi1, relasi2, appContext });
+  return ctx.render({ relasi1, relasi2, appContext });
 };
 
 interface TerkaitPeraturanPageProps {
-  hasMd: boolean;
   relasi1: (Pick<RelasiPeraturan, "id" | "relasi" | "catatan"> & {
     peraturan: Peraturan;
   })[];
@@ -53,7 +49,6 @@ interface TerkaitPeraturanPageProps {
 export default function TerkaitPeraturanPage(
   {
     data: {
-      hasMd,
       relasi1,
       relasi2,
     },
@@ -101,40 +96,35 @@ export default function TerkaitPeraturanPage(
   ];
 
   return (
-    <PeraturanLayout
-      activeTab="terkait"
-      disabledTabs={!hasMd ? ["kerangka", "isi"] : []}
-    >
-      <div className="row">
-        {itemsTerkait.map(({ title, items }) => {
-          if (!items.length) return;
-          return (
-            <div className="col-12 col-md-6 col-xxl-4">
-              <h2>{title}:</h2>
-              <ul>
-                {items.map((
-                  { catatan, peraturan: { path, judul, rujukPendek } },
-                ) => (
-                  <li>
-                    <a
-                      className="h6"
-                      href={path}
-                    >
-                      {rujukPendek}
-                    </a>
-                    <p>{judul}</p>
-                    {catatan && (
-                      <p>
-                        <em>{catatan}</em>
-                      </p>
-                    )}
-                  </li>
-                ))}
-              </ul>
-            </div>
-          );
-        })}
-      </div>
-    </PeraturanLayout>
+    <div className="row">
+      {itemsTerkait.map(({ title, items }) => {
+        if (!items.length) return;
+        return (
+          <div className="col-12 col-md-6 col-xxl-4">
+            <h2>{title}:</h2>
+            <ul>
+              {items.map((
+                { catatan, peraturan: { path, judul, rujukPendek } },
+              ) => (
+                <li>
+                  <a
+                    className="h6"
+                    href={path}
+                  >
+                    {rujukPendek}
+                  </a>
+                  <p>{judul}</p>
+                  {catatan && (
+                    <p>
+                      <em>{catatan}</em>
+                    </p>
+                  )}
+                </li>
+              ))}
+            </ul>
+          </div>
+        );
+      })}
+    </div>
   );
 }

@@ -3,7 +3,6 @@ import { getDB } from "@/data/db.ts";
 import { getPeraturan, Peraturan } from "@/models/mod.ts";
 import { AppContext } from "@/utils/app_context.tsx";
 import { readTextMd } from "@/utils/fs.ts";
-import PeraturanLayout from "@/components/peraturan_layout.tsx";
 import PeraturanOutline from "@/components/peraturan_outline.tsx";
 
 export const handler: Handler<KerangkaPeraturanPageProps> = async (
@@ -50,9 +49,5 @@ export default function KerangkaPeraturanPage(
   const {
     path,
   } = peraturan;
-  return (
-    <PeraturanLayout activeTab="kerangka">
-      <PeraturanOutline {...{ md, path }} />
-    </PeraturanLayout>
-  );
+  return <PeraturanOutline {...{ md, path }} />;
 }
