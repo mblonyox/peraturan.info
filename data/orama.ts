@@ -14,11 +14,14 @@ const schema = {
 
 export type Schema = typeof schema;
 
+const filepath = resolve(
+  dirname(fromFileUrl(import.meta.url)),
+  "./index.dpack",
+);
 let orama: Orama | undefined;
 
 async function loadOrama() {
-  const file = resolve(dirname(fromFileUrl(import.meta.url)), "./index.dpack");
-  const data = await Deno.readTextFile(file);
+  const data = await Deno.readTextFile(filepath);
   const orama = await create({
     schema,
   });
