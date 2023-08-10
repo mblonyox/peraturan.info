@@ -7,7 +7,7 @@ import {
   Peraturan,
   RelasiPeraturan,
 } from "@/models/mod.ts";
-import { AppContext } from "@/utils/app_context.tsx";
+import { AppContext } from "@/utils/app_context.ts";
 
 export const handler: Handler<TerkaitPeraturanPageProps, AppContext> = async (
   req,
@@ -19,21 +19,20 @@ export const handler: Handler<TerkaitPeraturanPageProps, AppContext> = async (
   if (!peraturan) return ctx.renderNotFound();
   const relasi1 = getRelasiPeraturan1(db, jenis, tahun, nomor);
   const relasi2 = getRelasiPeraturan2(db, jenis, tahun, nomor);
-  const appContext: AppContext = {};
-  appContext.seo = {
+  ctx.state.seo = {
     title: `Peraturan Terkait | ${peraturan.rujukPanjang}`,
     description:
       `Peraturan Terkait (Dasar Hukum, Perubahan, Pencabutan, dll.) atas ${peraturan.rujukPanjang}`,
     image: `${new URL(req.url).origin}/${jenis}/${tahun}/${nomor}/image.png`,
   };
-  appContext.breadcrumbs = [...peraturan.breadcrumbs, {
+  ctx.state.breadcrumbs = [...peraturan.breadcrumbs, {
     name: "Peraturan Terkait",
   }];
-  appContext.pageHeading = {
+  ctx.state.pageHeading = {
     title: peraturan.judul,
     description: peraturan.rujukPendek,
   };
-  return ctx.render({ relasi1, relasi2, appContext });
+  return ctx.render({ relasi1, relasi2 });
 };
 
 interface TerkaitPeraturanPageProps {
@@ -43,7 +42,6 @@ interface TerkaitPeraturanPageProps {
   relasi2: (Pick<RelasiPeraturan, "id" | "relasi" | "catatan"> & {
     peraturan: Peraturan;
   })[];
-  appContext: AppContext;
 }
 
 export default function TerkaitPeraturanPage(

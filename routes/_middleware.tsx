@@ -1,15 +1,14 @@
 import { getCookies } from "$std/http/cookie.ts";
 import { MiddlewareHandler } from "$fresh/server.ts";
+import { AppContext } from "@/utils/app_context.ts";
 
-type State = {
-  theme?: "dark" | "light";
-};
-
-export const handler: MiddlewareHandler<State>[] = [
+export const handler: MiddlewareHandler<AppContext>[] = [
   (req, ctx) => {
-    const cookies = getCookies(req.headers);
-    if (cookies.theme === "dark" || cookies.theme === "light") {
-      ctx.state.theme = cookies.theme;
+    if (ctx.destination === "route") {
+      const cookies = getCookies(req.headers);
+      if (cookies.theme === "dark" || cookies.theme === "light") {
+        ctx.state.theme = cookies.theme;
+      }
     }
     return ctx.next();
   },

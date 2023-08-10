@@ -1,14 +1,14 @@
 import { AppProps } from "$fresh/server.ts";
 import { Head } from "$fresh/runtime.ts";
-import { AppContextProvider } from "@/utils/app_context.tsx";
 import SeoTags from "@/components/seo_tags.tsx";
+import { AppContext, AppContextProvider } from "@/utils/app_context.ts";
+import { GOOGLE_TAG_ID } from "@/utils/const.ts";
 
 export default function App(
-  { Component, data, url }: AppProps,
+  { Component, url, state }: AppProps<unknown, AppContext>,
 ) {
-  const gTagId = Deno.env.get("GOOGLE_TAG_ID");
   return (
-    <AppContextProvider value={{ url, ...data?.appContext }}>
+    <AppContextProvider value={{ url, ...state }}>
       <Head>
         <meta
           name="google-site-verification"
@@ -87,7 +87,7 @@ export default function App(
         />
         <script
           async
-          src={`https://www.googletagmanager.com/gtag/js?id=${gTagId}`}
+          src={`https://www.googletagmanager.com/gtag/js?id=${GOOGLE_TAG_ID}`}
         />
         <script
           dangerouslySetInnerHTML={{
@@ -96,7 +96,7 @@ export default function App(
               function gtag(){dataLayer.push(arguments);}
               gtag('js', new Date());
               
-              gtag('config', '${gTagId}');
+              gtag('config', '${GOOGLE_TAG_ID}');
               `,
           }}
         />

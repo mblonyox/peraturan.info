@@ -1,4 +1,4 @@
-import { useAppContext } from "@/utils/app_context.tsx";
+import { useAppContext } from "@/utils/app_context.ts";
 
 export default function LayoutBreadcrumbs() {
   const { breadcrumbs } = useAppContext();

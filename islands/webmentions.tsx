@@ -1,6 +1,6 @@
 import { asset } from "$fresh/runtime.ts";
 import { useSignal, useSignalEffect } from "@preact/signals";
-import { useAppContext } from "@/utils/app_context.tsx";
+import { useAppContext } from "@/utils/app_context.ts";
 import { ellipsis } from "@/utils/string.ts";
 
 declare global {

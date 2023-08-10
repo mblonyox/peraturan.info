@@ -1,5 +1,5 @@
 import { ellipsis } from "@/utils/string.ts";
-import { useAppContext } from "@/utils/app_context.tsx";
+import { useAppContext } from "@/utils/app_context.ts";
 import WebShareButton from "@/islands/web_share_button.tsx";
 
 export default function SocialShareButtons() {

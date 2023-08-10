@@ -1,5 +1,5 @@
 import { asset } from "$fresh/runtime.ts";
-import { useAppContext } from "@/utils/app_context.tsx";
+import { useAppContext } from "@/utils/app_context.ts";
 import DarkModeToggler from "@/islands/dark_mode_toggler.tsx";
 import SearchInput from "@/islands/search_input.tsx";
 

@@ -1,11 +1,11 @@
 import { Handler, PageProps } from "$fresh/server.ts";
-import { AppContext } from "@/utils/app_context.tsx";
+import { AppContext } from "@/utils/app_context.ts";
 import { ellipsis } from "@/utils/string.ts";
 import { Results, search } from "@orama/orama";
 import { getOrama } from "@/data/orama.ts";
 import Pagination from "@/components/pagination.tsx";
 
-export const handler: Handler<SearchPageProps> = async (
+export const handler: Handler<SearchPageProps, AppContext> = async (
   req,
   ctx,
 ) => {
@@ -27,27 +27,24 @@ export const handler: Handler<SearchPageProps> = async (
       offset + result.hits.length
     } dari ${result.count} hasil dalam ${result.elapsed.formatted}.`
     : "Pencarian tidak menemukan hasil.";
-  const appContext: AppContext = {};
-  appContext.seo = {
+  ctx.state.seo = {
     title,
     description,
   };
-  appContext.breadcrumbs = [{ name: "Pencarian" }];
-  appContext.pageHeading = {
+  ctx.state.breadcrumbs = [{ name: "Pencarian" }];
+  ctx.state.pageHeading = {
     title,
     description,
   };
   return ctx.render({
     result,
     paginationProps: { page, lastPage: Math.ceil(result.count / limit) },
-    appContext,
   });
 };
 
 type SearchPageProps = {
   result: Results;
   paginationProps: { page: number; lastPage: number };
-  appContext: AppContext;
 };
 
 export default function SearchPage(

@@ -4,7 +4,7 @@ import { marked } from "marked";
 import { PartialToken, peraturan as peraturanExtension } from "@/utils/md.ts";
 import { getDB } from "@/data/db.ts";
 import { getPeraturan } from "@/models/mod.ts";
-import { AppContext } from "@/utils/app_context.tsx";
+import { AppContext } from "@/utils/app_context.ts";
 import { readTextMd } from "@/utils/fs.ts";
 import { ellipsis } from "@/utils/string.ts";
 import PeraturanMarkdown from "@/components/peraturan_markdown.tsx";
@@ -70,25 +70,23 @@ export const handler: Handler<PeraturanPartialPageProps> = async (
   juduls.push(token.judul);
   const judulPartial = juduls.join(", ");
   const html = marked.parser([token as marked.Token]);
-  const appContext: AppContext = {};
-  appContext.seo = {
+  ctx.state.seo = {
     title: `${judulPartial} | ${peraturan.rujukPanjang}`,
     description: ellipsis(token.raw, 155),
     image: `${new URL(req.url).origin}/${jenis}/${tahun}/${nomor}/image.png`,
   };
-  appContext.breadcrumbs = breadcrumbs;
-  appContext.pageHeading = {
+  ctx.state.breadcrumbs = breadcrumbs;
+  ctx.state.pageHeading = {
     title: peraturan.judul,
     description: peraturan.rujukPendek,
   };
-  return ctx.render({ html, prev, next, appContext });
+  return ctx.render({ html, prev, next });
 };
 
 interface PeraturanPartialPageProps {
   html: string;
   prev?: { name: string; url: string };
   next?: { name: string; url: string };
-  appContext: AppContext;
 }
 
 export default function PeraturanPartialPage(

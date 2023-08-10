@@ -7,10 +7,10 @@ import {
   NAMA2_JENIS,
   Peraturan,
 } from "@/models/peraturan.ts";
-import { AppContext } from "@/utils/app_context.tsx";
+import { AppContext } from "@/utils/app_context.ts";
 import Pagination from "./pagination.tsx";
 
-export const handler: Handler<ListPeraturanPageProps> = async (
+export const handler: Handler<ListPeraturanPageProps, AppContext> = async (
   req,
   ctx,
 ) => {
@@ -40,25 +40,20 @@ export const handler: Handler<ListPeraturanPageProps> = async (
     } dari ${listPeraturan.total} peraturan.`
     : "";
 
-  const appContext: AppContext = {};
-
-  appContext.seo = {
+  ctx.state.seo = {
     title: `Daftar ${judul}, halaman #${page}.`,
     description: `Tampilan daftar ${judul}. ${range}`,
   };
-
-  appContext.breadcrumbs = [
+  ctx.state.breadcrumbs = [
     {
       name: (namaJenis || kodeJenis),
     },
   ];
-
   if (tahun) {
-    appContext.breadcrumbs[0].url = `/${kodeJenis}`;
-    appContext.breadcrumbs.push({ name: tahun });
+    ctx.state.breadcrumbs[0].url = `/${kodeJenis}`;
+    ctx.state.breadcrumbs.push({ name: tahun });
   }
-
-  appContext.pageHeading = {
+  ctx.state.pageHeading = {
     title: `Daftar Peraturan`,
     description: `${range}`,
   };
@@ -68,7 +63,6 @@ export const handler: Handler<ListPeraturanPageProps> = async (
     ...listPeraturan,
     filterByJenisProps: { data: filterByJenis, tahun },
     filterByTahunProps: { data: filterByTahun, jenis },
-    appContext,
   });
 };
 
@@ -80,7 +74,6 @@ interface ListPeraturanPageProps {
   pageSize: number;
   filterByJenisProps: FilterByJenisProps;
   filterByTahunProps: FilterByTahunProps;
-  appContext: AppContext;
 }
 
 export default function ListPeraturanPage({
