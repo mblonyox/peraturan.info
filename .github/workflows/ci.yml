@@ -24,11 +24,5 @@ jobs:
       - name: Setup Deno
         uses: denoland/setup-deno@v1
 
-      - name: Verify formatting
-        run: deno fmt --check
-
-      - name: Run linter
-        run: deno lint
-
-      - name: Check types
-        run: deno check main.ts dev.ts indexing.ts
+      - name: Check static analysis
+        run: deno task check
