@@ -1,15 +1,18 @@
-import { AppProps } from "$fresh/server.ts";
-import { Head } from "$fresh/runtime.ts";
-import SeoTags from "@/components/seo_tags.tsx";
-import { AppContext, AppContextProvider } from "@/utils/app_context.ts";
+import { defineApp } from "$fresh/src/server/defines.ts";
+import { getCookies } from "$std/http/cookie.ts";
 import { GOOGLE_TAG_ID } from "@/utils/const.ts";
+import { AppContext, AppContextProvider } from "@/utils/app_context.ts";
+import SeoTags from "@/components/seo_tags.tsx";
 
-export default function App(
-  { Component, url, state }: AppProps<unknown, AppContext>,
-) {
+export default defineApp<AppContext>((req, { Component, url, state }) => {
+  let theme: "dark" | "light" | undefined;
+  const cookies = getCookies(req.headers);
+  if (cookies.theme === "dark" || cookies.theme === "light") {
+    theme = cookies.theme;
+  }
   return (
-    <AppContextProvider value={{ url, ...state }}>
-      <Head>
+    <html lang="id" data-bs-theme={theme}>
+      <head>
         <meta
           name="google-site-verification"
           content="gDCSCeR4yYkod7yJBudB-0OZEo2y507Hz8iNuCeDgwU"
@@ -47,12 +50,6 @@ export default function App(
           integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM"
           crossOrigin="anonymous"
         />
-        <script
-          src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
-          integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz"
-          crossOrigin="anonymous"
-          defer
-        />
         <meta name="theme-color" content="#11191f" />
         <link
           rel="apple-touch-icon"
@@ -72,6 +69,12 @@ export default function App(
           href="/icons/favicon-16x16.png"
         />
         <link rel="manifest" href="/manifest.json" />
+      </head>
+      <body>
+        <AppContextProvider value={{ ...state, url, theme }}>
+          <SeoTags />
+          <Component />
+        </AppContextProvider>
         <script
           dangerouslySetInnerHTML={{
             __html: `if (
@@ -86,8 +89,14 @@ export default function App(
           }}
         />
         <script
-          async
+          src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
+          integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz"
+          crossOrigin="anonymous"
+          defer
+        />
+        <script
           src={`https://www.googletagmanager.com/gtag/js?id=${GOOGLE_TAG_ID}`}
+          defer
         />
         <script
           dangerouslySetInnerHTML={{
@@ -99,10 +108,9 @@ export default function App(
               gtag('config', '${GOOGLE_TAG_ID}');
               `,
           }}
+          defer
         />
-      </Head>
-      <SeoTags />
-      <Component />
-    </AppContextProvider>
+      </body>
+    </html>
   );
-}
+});

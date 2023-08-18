@@ -32,10 +32,10 @@
   },
   "imports": {
     "@/": "./",
-    "$std/": "https://deno.land/std@0.191.0/",
+    "$std/": "https://deno.land/std@0.198.0/",
     "$mock_file/": "https://deno.land/x/mock_file@v1.1.2/",
     "$og_edge/": "https://deno.land/x/og_edge@0.0.6/",
-    "$sqlite/": "https://deno.land/x/sqlite@v3.7.2/",
+    "$sqlite/": "https://deno.land/x/sqlite@v3.7.3/",
     "@orama/orama": "https://esm.sh/v131/@orama/orama@1.0.6",
     "@orama/orama/": "https://esm.sh/v131/@orama/orama@1.0.6/",
     "@orama/plugin-data-persistence": "https://esm.sh/v131/*@orama/plugin-data-persistence@1.0.6",
@@ -51,7 +51,7 @@
     "preact/": "https://esm.sh/preact@10.15.1/",
     "printd": "https://esm.sh/v131/printd@1.6.0",
     "schema-dts": "https://esm.sh/v131/*schema-dts@1.1.2",
-    "$fresh/": "https://deno.land/x/fresh@1.4.1/"
+    "$fresh/": "https://deno.land/x/fresh@1.4.2/"
   },
   "scopes": {
     "https://deno.land/x/og_edge@0.0.6/": {

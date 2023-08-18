@@ -19,16 +19,15 @@ import * as $13 from "./routes/_404.tsx";
 import * as $14 from "./routes/_500.tsx";
 import * as $15 from "./routes/_app.tsx";
 import * as $16 from "./routes/_layout.tsx";
-import * as $17 from "./routes/_middleware.tsx";
-import * as $18 from "./routes/api/autocomplete.ts";
-import * as $19 from "./routes/atom.xml.ts";
-import * as $20 from "./routes/feed.json.ts";
-import * as $21 from "./routes/index.tsx";
-import * as $22 from "./routes/rss.xml.ts";
-import * as $23 from "./routes/search.tsx";
-import * as $24 from "./routes/sitemap-[jenis]-[tahun].xml.ts";
-import * as $25 from "./routes/sitemap-[jenis].xml.ts";
-import * as $26 from "./routes/terbaru.tsx";
+import * as $17 from "./routes/api/autocomplete.ts";
+import * as $18 from "./routes/atom.xml.ts";
+import * as $19 from "./routes/feed.json.ts";
+import * as $20 from "./routes/index.tsx";
+import * as $21 from "./routes/rss.xml.ts";
+import * as $22 from "./routes/search.tsx";
+import * as $23 from "./routes/sitemap-[jenis]-[tahun].xml.ts";
+import * as $24 from "./routes/sitemap-[jenis].xml.ts";
+import * as $25 from "./routes/terbaru.tsx";
 import * as $$0 from "./islands/dark_mode_toggler.tsx";
 import * as $$1 from "./islands/print_button.tsx";
 import * as $$2 from "./islands/search_input.tsx";
@@ -54,16 +53,15 @@ const manifest = {
     "./routes/_500.tsx": $14,
     "./routes/_app.tsx": $15,
     "./routes/_layout.tsx": $16,
-    "./routes/_middleware.tsx": $17,
-    "./routes/api/autocomplete.ts": $18,
-    "./routes/atom.xml.ts": $19,
-    "./routes/feed.json.ts": $20,
-    "./routes/index.tsx": $21,
-    "./routes/rss.xml.ts": $22,
-    "./routes/search.tsx": $23,
-    "./routes/sitemap-[jenis]-[tahun].xml.ts": $24,
-    "./routes/sitemap-[jenis].xml.ts": $25,
-    "./routes/terbaru.tsx": $26,
+    "./routes/api/autocomplete.ts": $17,
+    "./routes/atom.xml.ts": $18,
+    "./routes/feed.json.ts": $19,
+    "./routes/index.tsx": $20,
+    "./routes/rss.xml.ts": $21,
+    "./routes/search.tsx": $22,
+    "./routes/sitemap-[jenis]-[tahun].xml.ts": $23,
+    "./routes/sitemap-[jenis].xml.ts": $24,
+    "./routes/terbaru.tsx": $25,
   },
   islands: {
     "./islands/dark_mode_toggler.tsx": $$0,
