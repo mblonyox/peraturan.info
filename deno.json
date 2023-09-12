@@ -52,7 +52,8 @@
     "preact/": "https://esm.sh/preact@10.15.1/",
     "printd": "https://esm.sh/v131/printd@1.6.0",
     "schema-dts": "https://esm.sh/v131/*schema-dts@1.1.2",
-    "$fresh/": "https://deno.land/x/fresh@1.4.2/"
+    "$fresh/": "https://deno.land/x/fresh@1.4.2/",
+    "pdfium": "https://gist.githubusercontent.com/mblonyox/57eee6e1d34e05c102975cd65b27ccb5/raw/1c25168f61c699caafcadf80f554ce927e33ee9e/pdfium.js"
   },
   "scopes": {
     "https://deno.land/x/og_edge@0.0.6/": {

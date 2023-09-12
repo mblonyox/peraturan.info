@@ -1,5 +1,5 @@
 // deno-lint-ignore-file no-unused-vars
-import PDFiumModule from "@/lib/pdfium/pdfium.js";
+import PDFiumModule from "pdfium";
 
 type TypedArrayConstructor =
   | Int8ArrayConstructor
