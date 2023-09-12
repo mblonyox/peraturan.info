@@ -33,6 +33,7 @@
   "imports": {
     "@/": "./",
     "$std/": "https://deno.land/std@0.198.0/",
+    "$canvas": "https://deno.land/x/canvas@v1.4.1/mod.ts",
     "$mock_file/": "https://deno.land/x/mock_file@v1.1.2/",
     "$og_edge/": "https://deno.land/x/og_edge@0.0.6/",
     "$sqlite/": "https://deno.land/x/sqlite@v3.7.3/",
