@@ -1,20 +1,29 @@
-const CACHE = "peraturan-cache-v1.0";
+/// <reference types="https://raw.githubusercontent.com/DefinitelyTyped/DefinitelyTyped/master/types/workbox-sw/index.d.ts" />
+/// <reference no-default-lib="true"/>
+/// <reference lib="webworker" />
 
 importScripts(
-  "https://storage.googleapis.com/workbox-cdn/releases/5.1.2/workbox-sw.js",
+  "https://storage.googleapis.com/workbox-cdn/releases/7.0.0/workbox-sw.js",
 );
-// import("https://esm.sh/workbox-sw@6.5.4");
 
-self.addEventListener("message", (event) => {
-  if (event.data && event.data.type === "SKIP_WAITING") {
-    caches.keys().then((cacheNames) => {
-      cacheNames.forEach((cacheName) => {
-        caches.delete(cacheName);
+const CACHE = "peraturan-cache-v1.0";
+(() => {
+  /**
+   * @type {ServiceWorkerGlobalScope}
+   */
+  const self = globalThis.self;
+
+  self.addEventListener("message", (event) => {
+    if (event.data && event.data.type === "SKIP_WAITING") {
+      caches.keys().then((cacheNames) => {
+        cacheNames.forEach((cacheName) => {
+          caches.delete(cacheName);
+        });
       });
-    });
-    self.skipWaiting();
-  }
-});
+      self.skipWaiting();
+    }
+  });
+})();
 
 workbox.routing.registerRoute(
   new RegExp("https://cdn\\.jsdelivr\\.net/(.*)"),

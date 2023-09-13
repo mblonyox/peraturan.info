@@ -75,19 +75,7 @@ export default defineApp<AppContext>((req, { Component, url, state }) => {
           <SeoTags />
           <Component />
         </AppContextProvider>
-        <script
-          dangerouslySetInnerHTML={{
-            __html: `if (
-                typeof navigator.serviceWorker !== "undefined" &&
-                location.hostname !== "localhost"
-              ) {
-                self.addEventListener("load", async () => {
-                  const registration = await navigator.serviceWorker.register("/sw.js");
-                  if (registration.waiting) registration.waiting.postMessage("SKIP_WAITING");
-                });
-              }`,
-          }}
-        />
+        <script src="/app.js" />
         <script
           src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
           integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz"
