@@ -1,41 +1,27 @@
 import { defineLayout } from "$fresh/src/server/defines.ts";
-import { existsMd } from "@/utils/fs.ts";
 import Webmentions from "@/islands/webmentions.tsx";
 import SocialShareButtons from "@/components/social_share_buttons.tsx";
 
-export default defineLayout(async (
+export default defineLayout((
   _req,
   { Component, route, params },
 ) => {
   const path = route.split("/").at(-1);
   const { jenis, tahun, nomor } = params;
-  const hasMd = await existsMd({ jenis, tahun, nomor });
   const tabs = [
-    {
-      name: "Kerangka",
-      url: `/${jenis}/${tahun}/${nomor}/kerangka`,
-      isActive: path === "kerangka",
-      disabled: !hasMd,
-    },
-    {
-      name: "Isi",
-      url: `/${jenis}/${tahun}/${nomor}/isi`,
-      isActive: path === "isi",
-      disabled: !hasMd,
-    },
-    {
-      name: "Terkait",
-      url: `/${jenis}/${tahun}/${nomor}/terkait`,
-      isActive: path === "terkait",
-      disabled: false,
-    },
     {
       name: "Info",
       url: `/${jenis}/${tahun}/${nomor}/info`,
       isActive: path === "info",
       disabled: false,
     },
-  ] as const;
+    {
+      name: "Isi",
+      url: `/${jenis}/${tahun}/${nomor}/isi`,
+      isActive: path !== "info",
+      disabled: false,
+    },
+  ];
   return (
     <>
       <SocialShareButtons />
