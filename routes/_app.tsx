@@ -70,7 +70,7 @@ export default defineApp<AppContext>((req, { Component, url, state }) => {
         />
         <link rel="manifest" href="/manifest.json" />
       </head>
-      <body>
+      <body style={{ overflowY: "scroll", overflowX: "hidden" }}>
         <AppContextProvider value={{ ...state, url, theme }}>
           <SeoTags />
           <Component />
