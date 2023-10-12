@@ -12,23 +12,22 @@ import * as $6 from "./routes/[jenis]/[tahun]/[nomor]/index.ts";
 import * as $7 from "./routes/[jenis]/[tahun]/[nomor]/info.tsx";
 import * as $8 from "./routes/[jenis]/[tahun]/[nomor]/isi.tsx";
 import * as $9 from "./routes/[jenis]/[tahun]/[nomor]/kerangka.tsx";
-import * as $10 from "./routes/[jenis]/[tahun]/[nomor]/terkait.tsx";
-import * as $11 from "./routes/[jenis]/[tahun]/index.tsx";
-import * as $12 from "./routes/[jenis]/index.tsx";
-import * as $13 from "./routes/_404.tsx";
-import * as $14 from "./routes/_500.tsx";
-import * as $15 from "./routes/_app.tsx";
-import * as $16 from "./routes/_layout.tsx";
-import * as $17 from "./routes/api/autocomplete.ts";
-import * as $18 from "./routes/api/pdf-preview.ts";
-import * as $19 from "./routes/atom.xml.ts";
-import * as $20 from "./routes/feed.json.ts";
-import * as $21 from "./routes/index.tsx";
-import * as $22 from "./routes/rss.xml.ts";
-import * as $23 from "./routes/search.tsx";
-import * as $24 from "./routes/sitemap-[jenis]-[tahun].xml.ts";
-import * as $25 from "./routes/sitemap-[jenis].xml.ts";
-import * as $26 from "./routes/terbaru.tsx";
+import * as $10 from "./routes/[jenis]/[tahun]/index.tsx";
+import * as $11 from "./routes/[jenis]/index.tsx";
+import * as $12 from "./routes/_404.tsx";
+import * as $13 from "./routes/_500.tsx";
+import * as $14 from "./routes/_app.tsx";
+import * as $15 from "./routes/_layout.tsx";
+import * as $16 from "./routes/api/autocomplete.ts";
+import * as $17 from "./routes/api/pdf-preview.ts";
+import * as $18 from "./routes/atom.xml.ts";
+import * as $19 from "./routes/feed.json.ts";
+import * as $20 from "./routes/index.tsx";
+import * as $21 from "./routes/rss.xml.ts";
+import * as $22 from "./routes/search.tsx";
+import * as $23 from "./routes/sitemap-[jenis]-[tahun].xml.ts";
+import * as $24 from "./routes/sitemap-[jenis].xml.ts";
+import * as $25 from "./routes/terbaru.tsx";
 import * as $$0 from "./islands/dark_mode_toggler.tsx";
 import * as $$1 from "./islands/print_button.tsx";
 import * as $$2 from "./islands/search_input.tsx";
@@ -47,23 +46,22 @@ const manifest = {
     "./routes/[jenis]/[tahun]/[nomor]/info.tsx": $7,
     "./routes/[jenis]/[tahun]/[nomor]/isi.tsx": $8,
     "./routes/[jenis]/[tahun]/[nomor]/kerangka.tsx": $9,
-    "./routes/[jenis]/[tahun]/[nomor]/terkait.tsx": $10,
-    "./routes/[jenis]/[tahun]/index.tsx": $11,
-    "./routes/[jenis]/index.tsx": $12,
-    "./routes/_404.tsx": $13,
-    "./routes/_500.tsx": $14,
-    "./routes/_app.tsx": $15,
-    "./routes/_layout.tsx": $16,
-    "./routes/api/autocomplete.ts": $17,
-    "./routes/api/pdf-preview.ts": $18,
-    "./routes/atom.xml.ts": $19,
-    "./routes/feed.json.ts": $20,
-    "./routes/index.tsx": $21,
-    "./routes/rss.xml.ts": $22,
-    "./routes/search.tsx": $23,
-    "./routes/sitemap-[jenis]-[tahun].xml.ts": $24,
-    "./routes/sitemap-[jenis].xml.ts": $25,
-    "./routes/terbaru.tsx": $26,
+    "./routes/[jenis]/[tahun]/index.tsx": $10,
+    "./routes/[jenis]/index.tsx": $11,
+    "./routes/_404.tsx": $12,
+    "./routes/_500.tsx": $13,
+    "./routes/_app.tsx": $14,
+    "./routes/_layout.tsx": $15,
+    "./routes/api/autocomplete.ts": $16,
+    "./routes/api/pdf-preview.ts": $17,
+    "./routes/atom.xml.ts": $18,
+    "./routes/feed.json.ts": $19,
+    "./routes/index.tsx": $20,
+    "./routes/rss.xml.ts": $21,
+    "./routes/search.tsx": $22,
+    "./routes/sitemap-[jenis]-[tahun].xml.ts": $23,
+    "./routes/sitemap-[jenis].xml.ts": $24,
+    "./routes/terbaru.tsx": $25,
   },
   islands: {
     "./islands/dark_mode_toggler.tsx": $$0,
