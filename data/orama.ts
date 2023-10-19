@@ -18,7 +18,7 @@ const filepath = resolve(
   dirname(fromFileUrl(import.meta.url)),
   "./index.dpack",
 );
-let orama: Orama | undefined;
+let orama: Orama<Schema> | undefined;
 
 async function loadOrama() {
   const data = await Deno.readTextFile(filepath);

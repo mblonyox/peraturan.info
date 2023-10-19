@@ -32,7 +32,7 @@ try {
       teks:
         await readTextMd({ jenis: p.jenis, tahun: p.tahun, nomor: p.nomor }) ??
           "",
-    });
+    } as never);
   }
   persistToFile(index, "dpack", "data/index.dpack", "deno");
 } catch (error) {

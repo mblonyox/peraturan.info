@@ -1,7 +1,7 @@
 import { Handler, PageProps } from "$fresh/server.ts";
 import { AppContext } from "@/utils/app_context.ts";
 import { ellipsis } from "@/utils/string.ts";
-import { Results, search } from "@orama/orama";
+import { Results, search, TypedDocument } from "@orama/orama";
 import { getOrama } from "@/data/orama.ts";
 import Pagination from "@/components/pagination.tsx";
 
@@ -15,17 +15,17 @@ export const handler: Handler<SearchPageProps, AppContext> = async (
   const page = parseInt(params.get("page") ?? "1");
   const offset = (page - 1) * limit;
   const index = await getOrama();
-  const result = await search(index, {
+  const results = await search(index, {
     term: query,
     properties: ["jenis", "nomor", "judul"],
     offset,
     limit,
   });
   const title = "Hasil Pencarian";
-  const description = result.hits.length
+  const description = results.hits.length
     ? `Pencarian dengan kata kunci "${query}" menampilkan ${offset + 1} s.d. ${
-      offset + result.hits.length
-    } dari ${result.count} hasil dalam ${result.elapsed.formatted}.`
+      offset + results.hits.length
+    } dari ${results.count} hasil dalam ${results.elapsed.formatted}.`
     : "Pencarian tidak menemukan hasil.";
   ctx.state.seo = {
     title,
@@ -37,23 +37,23 @@ export const handler: Handler<SearchPageProps, AppContext> = async (
     description,
   };
   return ctx.render({
-    result,
-    paginationProps: { page, lastPage: Math.ceil(result.count / limit) },
+    results,
+    paginationProps: { page, lastPage: Math.ceil(results.count / limit) },
   });
 };
 
 type SearchPageProps = {
-  result: Results;
+  results: Results<TypedDocument<Awaited<ReturnType<typeof getOrama>>>>;
   paginationProps: { page: number; lastPage: number };
 };
 
 export default function SearchPage(
-  { data: { result, paginationProps } }: PageProps<SearchPageProps>,
+  { data: { results, paginationProps } }: PageProps<SearchPageProps>,
 ) {
   return (
     <>
       <div className="row my-3 my-lg-5 column-gap-0 row-gap-3">
-        {result.hits.map((hit) => (
+        {results.hits.map((hit) => (
           <div className="col-lg-6 col-xl-4">
             <div className="card h-100">
               <div className="card-body">
