@@ -3,9 +3,11 @@ import { getDB } from "@/data/db.ts";
 import { getPeraturan } from "@/models/mod.ts";
 import { AppContext } from "@/utils/app_context.ts";
 import { readTextMd } from "@/utils/fs.ts";
-import PeraturanMarkdown from "@/components/peraturan_markdown.tsx";
+import { peraturan as peraturanExtension } from "@/utils/md.ts";
+import { marked } from "marked";
+import PeraturanIsi from "@/components/peraturan_isi.tsx";
 
-export const handler: Handler<IsiPeraturanPageProps> = async (req, ctx) => {
+export const handler: Handler<IsiPeraturanPageData> = async (req, ctx) => {
   const { jenis, tahun, nomor } = ctx.params;
   const db = await getDB();
   const peraturan = getPeraturan(db, jenis, tahun, nomor);
@@ -24,21 +26,22 @@ export const handler: Handler<IsiPeraturanPageProps> = async (req, ctx) => {
     title: peraturan.judul,
     description: peraturan.rujukPendek,
   };
-  return ctx.render({ md });
+  const path = `/${jenis}/${tahun}/${nomor}`;
+  marked.use(peraturanExtension);
+  const html = marked.parse(md);
+  return ctx.render({ path, md, html });
 };
 
-interface IsiPeraturanPageProps {
+interface IsiPeraturanPageData {
+  path: string;
   md: string;
+  html: string;
+  prev?: { name: string; url: string };
+  next?: { name: string; url: string };
 }
 
 export default function IsiPeraturanPage(
-  {
-    data: {
-      md,
-    },
-  }: PageProps<
-    IsiPeraturanPageProps
-  >,
+  { data }: PageProps<IsiPeraturanPageData>,
 ) {
-  return <PeraturanMarkdown md={md} />;
+  return <PeraturanIsi {...data} />;
 }

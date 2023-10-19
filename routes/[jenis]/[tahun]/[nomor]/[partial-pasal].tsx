@@ -7,14 +7,13 @@ import { getPeraturan } from "@/models/mod.ts";
 import { AppContext } from "@/utils/app_context.ts";
 import { readTextMd } from "@/utils/fs.ts";
 import { ellipsis } from "@/utils/string.ts";
-import PeraturanMarkdown from "@/components/peraturan_markdown.tsx";
-import PrintButton from "@/islands/print_button.tsx";
+import PeraturanIsi from "@/components/peraturan_isi.tsx";
 
 export const config: RouteConfig = {
   routeOverride: "/:jenis/:tahun/:nomor/:pasal(pasal-\\d+){/ayat-:ayat(\\d+)}?",
 };
 
-export const handler: Handler<PeraturanPartialPageProps> = async (req, ctx) => {
+export const handler: Handler<PeraturanPartialPageData> = async (req, ctx) => {
   const { jenis, tahun, nomor, pasal, ayat } = ctx.params;
   const db = await getDB();
   const peraturan = getPeraturan(db, jenis, tahun, nomor);
@@ -114,44 +113,20 @@ export const handler: Handler<PeraturanPartialPageProps> = async (req, ctx) => {
     title: peraturan.judul,
     description: peraturan.rujukPendek,
   };
-  return ctx.render({ prev, next, html });
+  const path = `/${jenis}/${tahun}/${nomor}`;
+  return ctx.render({ path, md, html, prev, next });
 };
 
-interface PeraturanPartialPageProps {
+interface PeraturanPartialPageData {
+  path: string;
+  md: string;
   html: string;
   prev?: { name: string; url: string };
   next?: { name: string; url: string };
 }
 
 export default function PeraturanPartialPage(
-  {
-    data: {
-      html,
-      prev,
-      next,
-    },
-  }: PageProps<
-    PeraturanPartialPageProps
-  >,
+  { data }: PageProps<PeraturanPartialPageData>,
 ) {
-  return (
-    <>
-      <div className="d-flex justify-content-between my-2">
-        <a
-          className={"btn btn-outline-secondary" + (!prev ? " disabled" : "")}
-          href={prev?.url}
-        >
-          &lt;&lt; {prev?.name}
-        </a>
-        <PrintButton />
-        <a
-          className={"btn btn-outline-secondary" + (!next ? " disabled" : "")}
-          href={next?.url}
-        >
-          {next?.name} &gt;&gt;
-        </a>
-      </div>
-      <PeraturanMarkdown html={html} />
-    </>
-  );
+  return <PeraturanIsi {...data} />;
 }
