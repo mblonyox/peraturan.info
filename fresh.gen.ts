@@ -11,14 +11,14 @@ import * as $5 from "./routes/[jenis]/[tahun]/[nomor]/image.png.tsx";
 import * as $6 from "./routes/[jenis]/[tahun]/[nomor]/index.ts";
 import * as $7 from "./routes/[jenis]/[tahun]/[nomor]/info.tsx";
 import * as $8 from "./routes/[jenis]/[tahun]/[nomor]/isi.tsx";
-import * as $9 from "./routes/[jenis]/[tahun]/index.tsx";
-import * as $10 from "./routes/[jenis]/index.tsx";
-import * as $11 from "./routes/_404.tsx";
-import * as $12 from "./routes/_500.tsx";
-import * as $13 from "./routes/_app.tsx";
-import * as $14 from "./routes/_layout.tsx";
-import * as $15 from "./routes/api/autocomplete.ts";
-import * as $16 from "./routes/api/pdf-preview.ts";
+import * as $9 from "./routes/[jenis]/[tahun]/[nomor]/preview.png.tsx";
+import * as $10 from "./routes/[jenis]/[tahun]/index.tsx";
+import * as $11 from "./routes/[jenis]/index.tsx";
+import * as $12 from "./routes/_404.tsx";
+import * as $13 from "./routes/_500.tsx";
+import * as $14 from "./routes/_app.tsx";
+import * as $15 from "./routes/_layout.tsx";
+import * as $16 from "./routes/api/autocomplete.ts";
 import * as $17 from "./routes/atom.xml.ts";
 import * as $18 from "./routes/feed.json.ts";
 import * as $19 from "./routes/index.tsx";
@@ -45,14 +45,14 @@ const manifest = {
     "./routes/[jenis]/[tahun]/[nomor]/index.ts": $6,
     "./routes/[jenis]/[tahun]/[nomor]/info.tsx": $7,
     "./routes/[jenis]/[tahun]/[nomor]/isi.tsx": $8,
-    "./routes/[jenis]/[tahun]/index.tsx": $9,
-    "./routes/[jenis]/index.tsx": $10,
-    "./routes/_404.tsx": $11,
-    "./routes/_500.tsx": $12,
-    "./routes/_app.tsx": $13,
-    "./routes/_layout.tsx": $14,
-    "./routes/api/autocomplete.ts": $15,
-    "./routes/api/pdf-preview.ts": $16,
+    "./routes/[jenis]/[tahun]/[nomor]/preview.png.tsx": $9,
+    "./routes/[jenis]/[tahun]/index.tsx": $10,
+    "./routes/[jenis]/index.tsx": $11,
+    "./routes/_404.tsx": $12,
+    "./routes/_500.tsx": $13,
+    "./routes/_app.tsx": $14,
+    "./routes/_layout.tsx": $15,
+    "./routes/api/autocomplete.ts": $16,
     "./routes/atom.xml.ts": $17,
     "./routes/feed.json.ts": $18,
     "./routes/index.tsx": $19,

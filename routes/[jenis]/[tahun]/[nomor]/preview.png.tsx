@@ -1,31 +1,42 @@
 import { createCanvas } from "$canvas";
 import { Handlers } from "$fresh/server.ts";
 import { Document } from "@/lib/pdfium/mod.ts";
+import { getDB } from "@/data/db.ts";
+import { getSumberPeraturan } from "@/models/mod.ts";
 
 export const handler: Handlers = {
-  GET: async (req, _ctx) => {
-    const url = new URL(req.url).searchParams.get("url");
-    if (!url) throw new Error("Parameter 'url' not provided.");
+  GET: async (_req, ctx) => {
+    const { jenis, tahun, nomor } = ctx.params;
+    const db = await getDB();
+    const sumber = getSumberPeraturan(db, jenis, tahun, nomor);
+    const url = sumber.at(0)?.url_pdf;
+    if (!url) return ctx.renderNotFound();
     const pdfData = await getPdfData(url);
     const imageData = getPdfFirstPageImage(pdfData);
     const png = convertImageData(imageData);
     return new Response(png, {
       headers: {
         "Content-Type": "image/png",
+        "Cache-Control": "public, max-age=31536000, immutable",
       },
     });
   },
 };
 
 async function getPdfData(url: string) {
-  const data = await fetch(url).then((res) => {
-    if (!res.ok) throw new Error(`Invalid url: ${res.statusText}`);
-    const contentType = res.headers.get("Content-Type");
-    if (contentType !== "application/pdf") {
-      throw new Error("Not a pdf document.");
-    }
-    return res.arrayBuffer();
-  });
+  const data = await fetch(url).then(
+    (res) => {
+      if (!res.ok) throw new Error(`Invalid url: ${res.statusText}`);
+      const contentType = res.headers.get("Content-Type");
+      if (
+        contentType !== "application/pdf" &&
+        contentType !== "application/octet-stream"
+      ) {
+        throw new Error("Not a pdf document.");
+      }
+      return res.arrayBuffer();
+    },
+  );
   return new Uint8Array(data);
 }
 

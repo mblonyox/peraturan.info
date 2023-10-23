@@ -1,6 +1,6 @@
 import { Handler } from "$fresh/server.ts";
 import { ImageResponse } from "$og_edge/mod.ts";
-import { encode } from "$std/encoding/base64.ts";
+import { encodeBase64 } from "$std/encoding/base64.ts";
 import { dirname, fromFileUrl, resolve } from "$std/path/mod.ts";
 import { getDB } from "@/data/db.ts";
 import { getPeraturan } from "@/models/mod.ts";
@@ -14,7 +14,7 @@ const getLogo = async () => {
     ),
   );
   return "data:image/png;base64," +
-    encode(buffer);
+    encodeBase64(buffer);
 };
 
 export const handler: Handler = async (

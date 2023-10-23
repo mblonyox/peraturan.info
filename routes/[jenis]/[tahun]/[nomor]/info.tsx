@@ -64,7 +64,15 @@ export default function InfoPeraturanPage(
         <div className="col-12 col-lg-6 col-xxl-4">
           <Metadata peraturan={peraturan} />
         </div>
-        <div className="col-12 col-lg-6 col-xxl-8">
+        <div className="col-12 col-lg-6 col-xxl-4">
+          <h2>Tampilan</h2>
+          <img
+            src={peraturan.path + "/preview.png"}
+            alt={peraturan.rujukPendek}
+            className="img-thumbnail rounded"
+          />
+        </div>
+        <div className="col-12 col-lg-6 col-xxl-4">
           <Sumber sumber={sumber} />
         </div>
       </div>
