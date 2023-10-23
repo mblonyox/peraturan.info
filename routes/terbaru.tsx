@@ -80,7 +80,7 @@ export default function TerbaruPage(
             width="16"
             height="16"
             fill="currentColor"
-            class="bi bi-rss"
+            className="bi bi-rss"
             viewBox="0 0 16 16"
             aria-hidden="true"
           >
@@ -98,7 +98,7 @@ export default function TerbaruPage(
             width="16"
             height="16"
             fill="currentColor"
-            class="bi bi-rss-fill"
+            className="bi bi-rss-fill"
             viewBox="0 0 16 16"
             aria-hidden="true"
           >
@@ -115,7 +115,7 @@ export default function TerbaruPage(
             width="16"
             height="16"
             fill="currentColor"
-            class="bi bi-filetype-json"
+            className="bi bi-filetype-json"
             viewBox="0 0 16 16"
             aria-hidden="true"
           >
@@ -149,7 +149,7 @@ export default function TerbaruPage(
         <div className="card-body">
           {!listPeraturan.length
             ? (
-              <div class="alert alert-info" role="alert">
+              <div className="alert alert-info" role="alert">
                 Tidak ada peraturan pada tanggal yang ditentukan.
               </div>
             )

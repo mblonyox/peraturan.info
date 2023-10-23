@@ -123,7 +123,7 @@ function CommentCard({ entry }: { entry: WMEntry }) {
         >
           <img
             src={entry.author.photo || asset("/logo.webp")}
-            class="rounded-circle me-2"
+            className="rounded-circle me-2"
             loading="lazy"
             decoding="async"
             alt={who}

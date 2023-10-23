@@ -17,7 +17,7 @@ export default function PeraturanOutlineToggler() {
           width="16"
           height="16"
           fill="currentColor"
-          class="bi bi-list-nested"
+          className="bi bi-list-nested"
           viewBox="0 0 16 16"
         >
           <path
@@ -36,7 +36,7 @@ export default function PeraturanOutlineToggler() {
           width="16"
           height="16"
           fill="currentColor"
-          class="bi bi-list-nested"
+          className="bi bi-list-nested"
           viewBox="0 0 16 16"
         >
           <path
