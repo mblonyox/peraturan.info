@@ -43,12 +43,6 @@ export const handler: Handlers = {
         changefreq: "yearly",
         priority: 0.5,
       });
-      urls.push({
-        loc: origin + p.path + "/terkait",
-        lastmod,
-        changefreq: "yearly",
-        priority: 0.9,
-      });
       const md = await readTextMd({
         jenis,
         tahun,
@@ -92,7 +86,6 @@ export const handler: Handlers = {
 
 const getPartialPaths = (md: string): string[] => {
   const paths = [
-    "/kerangka",
     "/isi",
     "/judul",
     "/pembukaan",
