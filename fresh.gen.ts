@@ -2,75 +2,82 @@
 // This file SHOULD be checked into source version control.
 // This file is automatically updated during development when running `dev.ts`.
 
-import * as $0 from "./routes/[jenis]/[tahun]/[nomor]/[partial-bab].tsx";
-import * as $1 from "./routes/[jenis]/[tahun]/[nomor]/[partial-buku].tsx";
-import * as $2 from "./routes/[jenis]/[tahun]/[nomor]/[partial-pasal].tsx";
-import * as $3 from "./routes/[jenis]/[tahun]/[nomor]/[partial].tsx";
-import * as $4 from "./routes/[jenis]/[tahun]/[nomor]/_layout.tsx";
-import * as $5 from "./routes/[jenis]/[tahun]/[nomor]/image.png.tsx";
-import * as $6 from "./routes/[jenis]/[tahun]/[nomor]/index.ts";
-import * as $7 from "./routes/[jenis]/[tahun]/[nomor]/info.tsx";
-import * as $8 from "./routes/[jenis]/[tahun]/[nomor]/isi.tsx";
-import * as $9 from "./routes/[jenis]/[tahun]/[nomor]/preview.png.tsx";
-import * as $10 from "./routes/[jenis]/[tahun]/index.tsx";
-import * as $11 from "./routes/[jenis]/index.tsx";
-import * as $12 from "./routes/_404.tsx";
-import * as $13 from "./routes/_500.tsx";
-import * as $14 from "./routes/_app.tsx";
-import * as $15 from "./routes/_layout.tsx";
-import * as $16 from "./routes/api/autocomplete.ts";
-import * as $17 from "./routes/atom.xml.ts";
-import * as $18 from "./routes/feed.json.ts";
-import * as $19 from "./routes/index.tsx";
-import * as $20 from "./routes/rss.xml.ts";
-import * as $21 from "./routes/search.tsx";
-import * as $22 from "./routes/sitemap-[jenis]-[tahun].xml.ts";
-import * as $23 from "./routes/sitemap-[jenis].xml.ts";
-import * as $24 from "./routes/terbaru.tsx";
-import * as $$0 from "./islands/dark_mode_toggler.tsx";
-import * as $$1 from "./islands/peraturan_outline_toggler.tsx";
-import * as $$2 from "./islands/print_button.tsx";
-import * as $$3 from "./islands/search_input.tsx";
-import * as $$4 from "./islands/web_share_button.tsx";
-import * as $$5 from "./islands/webmentions.tsx";
+import * as $_jenis_tahun_nomor_partial_bab_ from "./routes/[jenis]/[tahun]/[nomor]/[partial-bab].tsx";
+import * as $_jenis_tahun_nomor_partial_buku_ from "./routes/[jenis]/[tahun]/[nomor]/[partial-buku].tsx";
+import * as $_jenis_tahun_nomor_partial_pasal_ from "./routes/[jenis]/[tahun]/[nomor]/[partial-pasal].tsx";
+import * as $_jenis_tahun_nomor_partial_ from "./routes/[jenis]/[tahun]/[nomor]/[partial].tsx";
+import * as $_jenis_tahun_nomor_layout from "./routes/[jenis]/[tahun]/[nomor]/_layout.tsx";
+import * as $_jenis_tahun_nomor_image_png from "./routes/[jenis]/[tahun]/[nomor]/image.png.tsx";
+import * as $_jenis_tahun_nomor_index from "./routes/[jenis]/[tahun]/[nomor]/index.ts";
+import * as $_jenis_tahun_nomor_info from "./routes/[jenis]/[tahun]/[nomor]/info.tsx";
+import * as $_jenis_tahun_nomor_isi from "./routes/[jenis]/[tahun]/[nomor]/isi.tsx";
+import * as $_jenis_tahun_nomor_preview_png from "./routes/[jenis]/[tahun]/[nomor]/preview.png.tsx";
+import * as $_jenis_tahun_index from "./routes/[jenis]/[tahun]/index.tsx";
+import * as $_jenis_index from "./routes/[jenis]/index.tsx";
+import * as $_404 from "./routes/_404.tsx";
+import * as $_500 from "./routes/_500.tsx";
+import * as $_app from "./routes/_app.tsx";
+import * as $_layout from "./routes/_layout.tsx";
+import * as $api_autocomplete from "./routes/api/autocomplete.ts";
+import * as $atom_xml from "./routes/atom.xml.ts";
+import * as $feed_json from "./routes/feed.json.ts";
+import * as $index from "./routes/index.tsx";
+import * as $rss_xml from "./routes/rss.xml.ts";
+import * as $search from "./routes/search.tsx";
+import * as $sitemap_jenis_tahun_xml from "./routes/sitemap-[jenis]-[tahun].xml.ts";
+import * as $sitemap_jenis_xml from "./routes/sitemap-[jenis].xml.ts";
+import * as $terbaru from "./routes/terbaru.tsx";
+import * as $dark_mode_toggler from "./islands/dark_mode_toggler.tsx";
+import * as $peraturan_outline_toggler from "./islands/peraturan_outline_toggler.tsx";
+import * as $print_button from "./islands/print_button.tsx";
+import * as $search_input from "./islands/search_input.tsx";
+import * as $web_share_button from "./islands/web_share_button.tsx";
+import * as $webmentions from "./islands/webmentions.tsx";
+import { type Manifest } from "$fresh/server.ts";
 
 const manifest = {
   routes: {
-    "./routes/[jenis]/[tahun]/[nomor]/[partial-bab].tsx": $0,
-    "./routes/[jenis]/[tahun]/[nomor]/[partial-buku].tsx": $1,
-    "./routes/[jenis]/[tahun]/[nomor]/[partial-pasal].tsx": $2,
-    "./routes/[jenis]/[tahun]/[nomor]/[partial].tsx": $3,
-    "./routes/[jenis]/[tahun]/[nomor]/_layout.tsx": $4,
-    "./routes/[jenis]/[tahun]/[nomor]/image.png.tsx": $5,
-    "./routes/[jenis]/[tahun]/[nomor]/index.ts": $6,
-    "./routes/[jenis]/[tahun]/[nomor]/info.tsx": $7,
-    "./routes/[jenis]/[tahun]/[nomor]/isi.tsx": $8,
-    "./routes/[jenis]/[tahun]/[nomor]/preview.png.tsx": $9,
-    "./routes/[jenis]/[tahun]/index.tsx": $10,
-    "./routes/[jenis]/index.tsx": $11,
-    "./routes/_404.tsx": $12,
-    "./routes/_500.tsx": $13,
-    "./routes/_app.tsx": $14,
-    "./routes/_layout.tsx": $15,
-    "./routes/api/autocomplete.ts": $16,
-    "./routes/atom.xml.ts": $17,
-    "./routes/feed.json.ts": $18,
-    "./routes/index.tsx": $19,
-    "./routes/rss.xml.ts": $20,
-    "./routes/search.tsx": $21,
-    "./routes/sitemap-[jenis]-[tahun].xml.ts": $22,
-    "./routes/sitemap-[jenis].xml.ts": $23,
-    "./routes/terbaru.tsx": $24,
+    "./routes/[jenis]/[tahun]/[nomor]/[partial-bab].tsx":
+      $_jenis_tahun_nomor_partial_bab_,
+    "./routes/[jenis]/[tahun]/[nomor]/[partial-buku].tsx":
+      $_jenis_tahun_nomor_partial_buku_,
+    "./routes/[jenis]/[tahun]/[nomor]/[partial-pasal].tsx":
+      $_jenis_tahun_nomor_partial_pasal_,
+    "./routes/[jenis]/[tahun]/[nomor]/[partial].tsx":
+      $_jenis_tahun_nomor_partial_,
+    "./routes/[jenis]/[tahun]/[nomor]/_layout.tsx": $_jenis_tahun_nomor_layout,
+    "./routes/[jenis]/[tahun]/[nomor]/image.png.tsx":
+      $_jenis_tahun_nomor_image_png,
+    "./routes/[jenis]/[tahun]/[nomor]/index.ts": $_jenis_tahun_nomor_index,
+    "./routes/[jenis]/[tahun]/[nomor]/info.tsx": $_jenis_tahun_nomor_info,
+    "./routes/[jenis]/[tahun]/[nomor]/isi.tsx": $_jenis_tahun_nomor_isi,
+    "./routes/[jenis]/[tahun]/[nomor]/preview.png.tsx":
+      $_jenis_tahun_nomor_preview_png,
+    "./routes/[jenis]/[tahun]/index.tsx": $_jenis_tahun_index,
+    "./routes/[jenis]/index.tsx": $_jenis_index,
+    "./routes/_404.tsx": $_404,
+    "./routes/_500.tsx": $_500,
+    "./routes/_app.tsx": $_app,
+    "./routes/_layout.tsx": $_layout,
+    "./routes/api/autocomplete.ts": $api_autocomplete,
+    "./routes/atom.xml.ts": $atom_xml,
+    "./routes/feed.json.ts": $feed_json,
+    "./routes/index.tsx": $index,
+    "./routes/rss.xml.ts": $rss_xml,
+    "./routes/search.tsx": $search,
+    "./routes/sitemap-[jenis]-[tahun].xml.ts": $sitemap_jenis_tahun_xml,
+    "./routes/sitemap-[jenis].xml.ts": $sitemap_jenis_xml,
+    "./routes/terbaru.tsx": $terbaru,
   },
   islands: {
-    "./islands/dark_mode_toggler.tsx": $$0,
-    "./islands/peraturan_outline_toggler.tsx": $$1,
-    "./islands/print_button.tsx": $$2,
-    "./islands/search_input.tsx": $$3,
-    "./islands/web_share_button.tsx": $$4,
-    "./islands/webmentions.tsx": $$5,
+    "./islands/dark_mode_toggler.tsx": $dark_mode_toggler,
+    "./islands/peraturan_outline_toggler.tsx": $peraturan_outline_toggler,
+    "./islands/print_button.tsx": $print_button,
+    "./islands/search_input.tsx": $search_input,
+    "./islands/web_share_button.tsx": $web_share_button,
+    "./islands/webmentions.tsx": $webmentions,
   },
   baseUrl: import.meta.url,
-};
+} satisfies Manifest;
 
 export default manifest;

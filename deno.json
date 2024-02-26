@@ -7,46 +7,58 @@
     "build": "deno run -A dev.ts build",
     "preview": "deno run -A main.ts",
     "indexing": "deno run -A indexing.ts",
-    "esm:add": "deno run -A https://esm.sh/v133 add",
-    "esm:update": "deno run -A https://esm.sh/v133 update",
-    "esm:remove": "deno run -A https://esm.sh/v133 remove"
+    "esm:add": "deno run -A https://esm.sh/v135 add",
+    "esm:update": "deno run -A https://esm.sh/v135 update",
+    "esm:remove": "deno run -A https://esm.sh/v135 remove"
   },
-  "compilerOptions": { "jsx": "react-jsx", "jsxImportSource": "preact" },
-  "lint": { "rules": { "tags": ["fresh", "recommended"] } },
+  "compilerOptions": {
+    "jsx": "react-jsx",
+    "jsxImportSource": "preact"
+  },
+  "lint": {
+    "rules": {
+      "tags": [
+        "fresh",
+        "recommended"
+      ]
+    }
+  },
   "imports": {
     "@/": "./",
     "$std/": "https://deno.land/std@0.204.0/",
     "$canvas": "https://deno.land/x/canvas@v1.4.1/mod.ts",
+    "$fresh/": "https://deno.land/x/fresh@1.6.5/",
     "$mock_file/": "https://deno.land/x/mock_file@v1.1.2/",
     "$og_edge/": "https://deno.land/x/og_edge@0.0.6/",
     "$sqlite/": "https://deno.land/x/sqlite@v3.8/",
-    "@orama/orama": "https://esm.sh/v133/@orama/orama@1.2.11",
-    "@orama/orama/": "https://esm.sh/v133/@orama/orama@1.2.11/",
-    "@orama/plugin-data-persistence": "https://esm.sh/v133/*@orama/plugin-data-persistence@1.2.11",
-    "@orama/plugin-data-persistence/": "https://esm.sh/v133/*@orama/plugin-data-persistence@1.2.11/",
-    "@preact/signals-core": "https://esm.sh/*@preact/signals-core@1.5.0",
-    "@preact/signals": "https://esm.sh/*@preact/signals@1.2.1",
-    "dpack": "https://esm.sh/v133/dpack@0.6.22",
-    "feed": "https://esm.sh/v133/*feed@4.2.2",
-    "marked": "https://esm.sh/v133/marked@5.1.2",
-    "marked/": "https://esm.sh/v133/marked@5.1.2/",
-    "preact-render-to-string": "https://esm.sh/*preact-render-to-string@6.2.2",
-    "preact": "https://esm.sh/preact@10.18.1",
-    "preact/": "https://esm.sh/preact@10.18.1/",
-    "printd": "https://esm.sh/v133/printd@1.6.0",
-    "schema-dts": "https://esm.sh/v133/*schema-dts@1.1.2",
-    "$fresh/": "https://deno.land/x/fresh@1.5.2/",
+    "@orama/orama": "https://esm.sh/v135/@orama/orama@1.2.11",
+    "@orama/orama/": "https://esm.sh/v135/@orama/orama@1.2.11/",
+    "@orama/plugin-data-persistence": "https://esm.sh/v135/*@orama/plugin-data-persistence@1.2.11",
+    "@orama/plugin-data-persistence/": "https://esm.sh/v135/*@orama/plugin-data-persistence@1.2.11/",
+    "@preact/signals-core": "https://esm.sh/v135/@preact/signals-core@1.5.1",
+    "@preact/signals": "https://esm.sh/v135/*@preact/signals@1.2.2",
+    "dpack": "https://esm.sh/v135/dpack@0.6.22",
+    "feed": "https://esm.sh/v135/*feed@4.2.2",
+    "marked": "https://esm.sh/v135/marked@5.1.2",
+    "marked/": "https://esm.sh/v135/marked@5.1.2/",
+    "preact": "https://esm.sh/v135/preact@10.19.6",
+    "preact/": "https://esm.sh/v135/preact@10.19.6/",
+    "printd": "https://esm.sh/v135/printd@1.6.0",
+    "schema-dts": "https://esm.sh/v135/*schema-dts@1.1.2",
     "pdfium": "https://gist.githubusercontent.com/mblonyox/57eee6e1d34e05c102975cd65b27ccb5/raw/1c25168f61c699caafcadf80f554ce927e33ee9e/pdfium.js"
   },
   "scopes": {
     "https://deno.land/x/og_edge@0.0.6/": {
       "https://esm.sh/react@18.2.0": "https://esm.sh/preact@10.14.1/compat"
     },
-    "https://esm.sh/v133/": {
-      "@msgpack/msgpack": "https://esm.sh/v133/@msgpack/msgpack@2.8.0",
-      "pretty-format": "https://esm.sh/v133/pretty-format@3.8.0",
-      "xml-js": "https://esm.sh/v133/xml-js@1.6.11"
+    "https://esm.sh/v135/": {
+      "@msgpack/msgpack": "https://esm.sh/v135/@msgpack/msgpack@2.8.0",
+      "pretty-format": "https://esm.sh/v135/pretty-format@3.8.0",
+      "xml-js": "https://esm.sh/v135/xml-js@1.6.11"
     }
   },
-  "exclude": ["**/_fresh/*", "data/markdowns/"]
+  "exclude": [
+    "**/_fresh/*",
+    "data/markdowns/"
+  ]
 }
