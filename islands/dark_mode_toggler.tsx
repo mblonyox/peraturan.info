@@ -1,4 +1,8 @@
+import { IS_BROWSER } from "$fresh/runtime.ts";
 import { useEffect, useState } from "preact/hooks";
+
+const preferDark = () =>
+  IS_BROWSER && globalThis.matchMedia("(prefers-color-scheme: dark)").matches;
 
 export default function DarkModeToggler(
   { initTheme }: { initTheme?: "dark" | "light" },
@@ -19,9 +23,7 @@ export default function DarkModeToggler(
 
   useEffect(() => {
     if (!theme) return;
-    const isDark = theme === "dark" ||
-      (theme === "system" &&
-        window.matchMedia("(prefers-color-scheme: dark)").matches);
+    const isDark = theme === "dark" || (theme === "system" && preferDark());
     const bsTheme = isDark ? "dark" : "light";
     document.documentElement.setAttribute("data-bs-theme", bsTheme);
     document.cookie = `theme=${bsTheme}; Max-Age=1707109200; Path=/`;
