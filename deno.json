@@ -2,10 +2,12 @@
   "lock": false,
   "tasks": {
     "check": "deno fmt --check && deno lint && deno check **/*.ts && deno check **/*.tsx",
+    "cli": "echo \"import '\\$fresh/src/dev/cli.ts'\" | deno run --unstable -A -",
+    "manifest": "deno task cli manifest $(pwd)",
     "start": "deno run -A --watch=static/,routes/ dev.ts",
-    "update": "deno run -A -r https://fresh.deno.dev/update .",
     "build": "deno run -A dev.ts build",
     "preview": "deno run -A main.ts",
+    "update": "deno run -A -r https://fresh.deno.dev/update .",
     "indexing": "deno run -A indexing.ts",
     "esm:add": "deno run -A https://esm.sh/v135 add",
     "esm:update": "deno run -A https://esm.sh/v135 update",
@@ -25,7 +27,7 @@
   },
   "imports": {
     "@/": "./",
-    "$std/": "https://deno.land/std@0.204.0/",
+    "$std/": "https://deno.land/std@0.217.0/",
     "$canvas": "https://deno.land/x/canvas@v1.4.1/mod.ts",
     "$fresh/": "https://deno.land/x/fresh@1.6.5/",
     "$mock_file/": "https://deno.land/x/mock_file@v1.1.2/",
