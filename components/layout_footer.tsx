@@ -31,7 +31,7 @@ export default function LayoutFooter() {
           </div>
           <div>
             <a
-              href="https://github.com/mblonyox/peraturan.deno.dev"
+              href="https://github.com/mblonyox/peraturan.info"
               target="_blank"
               rel="noopener noreferrer"
               aria-label="Github Repository"

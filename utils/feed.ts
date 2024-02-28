@@ -8,9 +8,9 @@ export const createPeraturanFeed = (list: Peraturan[], origin: string) => {
     link: "https://mblonyox.com",
   };
   const feed = new Feed({
-    title: "Peraturan.deno.dev Feed",
+    title: "Peraturan.Info Feed",
     description: "Feed Peraturan Perundang-undangan terbaru " +
-      "yang tersedia di peraturan.deno.dev.",
+      "yang tersedia di peraturan.info.",
     id: origin + "/",
     link: origin,
     image: origin + "/og-image.png",

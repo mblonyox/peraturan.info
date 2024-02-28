@@ -32,7 +32,7 @@ export default function LayoutNavbar() {
         <a href="/" className="navbar-brand">
           <img
             src={asset("/logo.webp")}
-            alt="Logo Peraturan.deno.dev"
+            alt="Logo Peraturan.Info"
             width={32}
             height={32}
           />

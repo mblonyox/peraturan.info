@@ -25,7 +25,7 @@ export default function SeoTags() {
       <meta property="og:title" content={title} />
       <meta property="og:description" content={description} />
       <meta property="og:url" content={url?.toString()} />
-      <meta property="og:site_name" content="Peraturan.deno.dev" />
+      <meta property="og:site_name" content="Peraturan.Info" />
       <meta property="og:image" content={image} />
     </Head>
   );

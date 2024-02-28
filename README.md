@@ -1,13 +1,13 @@
-# peraturan.deno.dev
+# peraturan.info
 
-peraturan.deno.dev adalah upaya untuk meningkatkan cara penyajian peraturan
+peraturan.info adalah upaya untuk meningkatkan cara penyajian peraturan
 perundang-undangan di Indonesia sehingga lebih user-friendly yang terinspirasi
 dari legislation.gov.uk.
 
 ## Dibuat dengan
 
 - Deno Fresh
-- Pico CSS
+- Bootstrap CSS 5.3
 
 ## Pengembangan
 

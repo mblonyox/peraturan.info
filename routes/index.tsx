@@ -36,19 +36,17 @@ export default function Home({ url }: PageProps) {
       <div className="py-5 my-5 text-center">
         <img
           src={asset("/logo.webp")}
-          alt="Logo Peraturan.deno.dev"
+          alt="Logo Peraturan.Info"
           className="d-block mx-auto"
           width={256}
           height={256}
         />
         <h1 className="display-5 fw-bold">
-          Peraturan<span className="text-muted">
-            .deno.dev
-          </span>
+          Peraturan<span className="text-muted">.Info</span>
         </h1>
         <div className="col-lg-6 mx-auto">
           <p>
-            Peraturan.deno.dev adalah upaya untuk meningkatkan cara penyajian
+            Peraturan.Info adalah upaya untuk meningkatkan cara penyajian
             peraturan perundang-undangan di Indonesia sehingga lebih
             user-friendly yang terinspirasi dari layanan{" "}
             <a

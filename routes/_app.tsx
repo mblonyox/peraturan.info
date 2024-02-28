@@ -22,11 +22,11 @@ export default defineApp<AppContext>((req, { Component, url, state }) => {
         <link rel="me" href="mailto:mblonyox@gmail.com" />
         <link
           rel="webmention"
-          href="https://webmention.io/peraturan.deno.dev/webmention"
+          href="https://webmention.io/peraturan.info/webmention"
         />
         <link
           rel="pingback"
-          href="https://webmention.io/peraturan.deno.dev/xmlrpc"
+          href="https://webmention.io/peraturan.info/xmlrpc"
         />
         <link
           rel="alternate"

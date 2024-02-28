@@ -1,10 +1,10 @@
 User-agent: *
 Disallow: /_frsh/*
 
-Sitemap: https://peraturan.deno.dev/atom.xml
-Sitemap: https://peraturan.deno.dev/sitemap.xml
-Sitemap: https://peraturan.deno.dev/sitemap-uu.xml
-Sitemap: https://peraturan.deno.dev/sitemap-perppu.xml
-Sitemap: https://peraturan.deno.dev/sitemap-pp.xml
-Sitemap: https://peraturan.deno.dev/sitemap-perpres.xml
-Sitemap: https://peraturan.deno.dev/sitemap-permenkeu.xml
+Sitemap: https://peraturan.info/atom.xml
+Sitemap: https://peraturan.info/sitemap.xml
+Sitemap: https://peraturan.info/sitemap-uu.xml
+Sitemap: https://peraturan.info/sitemap-perppu.xml
+Sitemap: https://peraturan.info/sitemap-pp.xml
+Sitemap: https://peraturan.info/sitemap-perpres.xml
+Sitemap: https://peraturan.info/sitemap-permenkeu.xml
