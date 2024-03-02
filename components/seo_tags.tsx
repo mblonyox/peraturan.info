@@ -1,6 +1,10 @@
 import { Head } from "$fresh/runtime.ts";
 import { useAppContext } from "@/utils/app_context.ts";
-import { SEO_DESCRIPTION, SEO_TITLE } from "@/utils/const.ts";
+
+const SEO_TITLE = "Peraturan.Info";
+const SEO_DESCRIPTION = "Peraturan.Info adalah upaya untuk meningkatkan " +
+  "cara penyajian peraturan perundang-undangan di Indonesia sehingga lebih " +
+  "user-friendly yang terinspirasi dari legislation.gov.uk.";
 
 export default function SeoTags() {
   const { url, seo } = useAppContext();

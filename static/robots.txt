@@ -2,6 +2,7 @@ User-agent: *
 Disallow: /_frsh/*
 
 Sitemap: https://peraturan.info/atom.xml
+Sitemap: https://peraturan.info/rss.xml
 Sitemap: https://peraturan.info/sitemap.xml
 Sitemap: https://peraturan.info/sitemap-uu.xml
 Sitemap: https://peraturan.info/sitemap-perppu.xml
