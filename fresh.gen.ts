@@ -18,6 +18,7 @@ import * as $_404 from "./routes/_404.tsx";
 import * as $_500 from "./routes/_500.tsx";
 import * as $_app from "./routes/_app.tsx";
 import * as $_layout from "./routes/_layout.tsx";
+import * as $_middleware from "./routes/_middleware.ts";
 import * as $api_autocomplete from "./routes/api/autocomplete.ts";
 import * as $atom_xml from "./routes/atom.xml.ts";
 import * as $feed_json from "./routes/feed.json.ts";
@@ -59,6 +60,7 @@ const manifest = {
     "./routes/_500.tsx": $_500,
     "./routes/_app.tsx": $_app,
     "./routes/_layout.tsx": $_layout,
+    "./routes/_middleware.ts": $_middleware,
     "./routes/api/autocomplete.ts": $api_autocomplete,
     "./routes/atom.xml.ts": $atom_xml,
     "./routes/feed.json.ts": $feed_json,

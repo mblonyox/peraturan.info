@@ -1,9 +1,16 @@
-import { useCallback } from "preact/hooks";
+import { IS_BROWSER } from "$fresh/runtime.ts";
+import { useEffect } from "preact/hooks";
 
 export default function PeraturanOutlineToggler() {
-  const onClickHandler = useCallback(() => {
+  const onClickHandler = () => {
     const sidenav = document.getElementById("outline-sidenav");
     sidenav?.classList.toggle("d-xl-block");
+  };
+  useEffect(() => {
+    if (!IS_BROWSER) return;
+    document.querySelectorAll<HTMLDetailsElement>(
+      "details:has(a[aria-current='page'])",
+    ).forEach((el) => el.open = true);
   }, []);
   return (
     <>
