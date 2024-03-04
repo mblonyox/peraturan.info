@@ -1,6 +1,6 @@
 import { defineApp } from "$fresh/src/server/defines.ts";
 import { getCookies } from "$std/http/cookie.ts";
-import { GOOGLE_TAG_ID } from "@/utils/const.ts";
+import { GOOGLE_TAG_ID, HOSTNAME } from "@/utils/const.ts";
 import { AppContext, AppContextProvider } from "@/utils/app_context.ts";
 import SeoTags from "@/components/seo_tags.tsx";
 
@@ -10,11 +10,16 @@ export default defineApp<AppContext>((req, { Component, url, state }) => {
   if (cookies.theme === "dark" || cookies.theme === "light") {
     theme = cookies.theme;
   }
+  const canonicalUrl = new URL(url);
+  canonicalUrl.protocol = "https";
+  canonicalUrl.searchParams.sort();
+  if (HOSTNAME) canonicalUrl.hostname = HOSTNAME;
   return (
     <html lang="id" data-bs-theme={theme}>
       <head>
         <meta charSet="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <link rel="canonical" href={canonicalUrl.toString()} />
         <link rel="me" href="mailto:mblonyox@gmail.com" />
         <link
           rel="webmention"
