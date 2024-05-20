@@ -14,14 +14,18 @@ try {
       judul: "string",
       tanggal: "number",
       teks: "string",
-    },
+    } as const,
     language: "indonesian",
   });
 
   const db = await getDB();
-  const { hasil } = await getListPeraturan(db, { pageSize: 20000 });
-
+  const { hasil } = getListPeraturan(db, { pageSize: 20000 });
   for (const p of hasil) {
+    const md = await readTextMd({
+      jenis: p.jenis,
+      tahun: p.tahun,
+      nomor: p.nomor,
+    });
     await insert(index, {
       path: p.path,
       jenis: p.namaJenisPanjang,
@@ -29,12 +33,11 @@ try {
       judul: p.judul,
       tahun: p.tahun,
       tanggal: p.tanggal_ditetapkan.getTime(),
-      teks:
-        await readTextMd({ jenis: p.jenis, tahun: p.tahun, nomor: p.nomor }) ??
-          "",
-    } as never);
+      teks: md ?? "",
+    });
   }
-  persistToFile(index, "dpack", "data/index.dpack", "deno");
+
+  await persistToFile(index, "dpack", "data/index.dpack");
 } catch (error) {
   console.error(error);
 }
