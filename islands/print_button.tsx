@@ -3,7 +3,7 @@ import { useCallback } from "preact/hooks";
 
 export default function PrintButton() {
   const onClickHandler = useCallback(async () => {
-    const { default: Printd } = await import("printd");
+    const { Printd } = await import("https://esm.sh/printd@1.6.0");
     const d = new Printd();
     const el = document.querySelector(".peraturan");
     if (!el) return;
