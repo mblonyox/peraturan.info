@@ -1,10 +1,9 @@
 import { Handler, PageProps } from "$fresh/server.ts";
 import { RouteConfig } from "$fresh/server.ts";
-import { marked } from "marked";
+import { Token, Tokens, use } from "marked";
 import { PartialToken, peraturan as peraturanExtension } from "@/utils/md.ts";
 import { getDB } from "@/data/db.ts";
 import { getPeraturan } from "@/models/mod.ts";
-import { AppContext } from "@/utils/app_context.ts";
 import { readTextMd } from "@/utils/fs.ts";
 import { ellipsis } from "@/utils/string.ts";
 import PeraturanIsi from "@/components/peraturan_isi.tsx";
@@ -20,10 +19,10 @@ export const handler: Handler<PeraturanPartialPageData> = async (req, ctx) => {
   if (!peraturan) return ctx.renderNotFound();
   const md = await readTextMd({ jenis, tahun, nomor });
   if (!md) return ctx.renderNotFound();
-  marked.use(peraturanExtension);
+  const marked = use(peraturanExtension);
   const tokens = marked.lexer(md);
   const getPasals = (
-    tokens: marked.Tokens.Generic[],
+    tokens: Tokens.Generic[],
   ): PartialToken[] =>
     tokens.map((token) =>
       token.type === "pasal"
@@ -35,7 +34,7 @@ export const handler: Handler<PeraturanPartialPageData> = async (req, ctx) => {
   const breadcrumbs: { name: string; url?: string }[] = [
     ...peraturan.breadcrumbs,
   ];
-  token = pasals.find((token: marked.Tokens.Generic) => {
+  token = pasals.find((token: Tokens.Generic) => {
     const slug = token.nomor.toLowerCase().replace(" ", "-");
     return slug === pasal;
   });
@@ -102,7 +101,7 @@ export const handler: Handler<PeraturanPartialPageData> = async (req, ctx) => {
     name: (token.type === "ayat" ? `ayat ` : "") + token?.nomor,
   });
   const judulPartial = breadcrumbs.slice(3).map(({ name }) => name).join(" ");
-  const html = marked.parser([token as marked.Token]);
+  const html = marked.parser([token as Token]);
   ctx.state.seo = {
     title: `${judulPartial} | ${peraturan.rujukPanjang}`,
     description: ellipsis(token.raw, 155),

@@ -1,10 +1,9 @@
 import { Handler, PageProps } from "$fresh/server.ts";
+import { use } from "marked";
 import { getDB } from "@/data/db.ts";
 import { getPeraturan } from "@/models/mod.ts";
-import { AppContext } from "@/utils/app_context.ts";
 import { readTextMd } from "@/utils/fs.ts";
 import { peraturan as peraturanExtension } from "@/utils/md.ts";
-import { marked } from "marked";
 import PeraturanIsi from "@/components/peraturan_isi.tsx";
 
 export const handler: Handler<IsiPeraturanPageData> = async (req, ctx) => {
@@ -27,8 +26,8 @@ export const handler: Handler<IsiPeraturanPageData> = async (req, ctx) => {
     description: peraturan.rujukPendek,
   };
   const path = `/${jenis}/${tahun}/${nomor}`;
-  marked.use(peraturanExtension);
-  const html = marked.parse(md);
+  const marked = use(peraturanExtension);
+  const html = await marked.parse(md);
   return ctx.render({ path, md, html });
 };
 

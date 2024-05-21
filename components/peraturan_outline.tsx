@@ -1,4 +1,4 @@
-import { marked } from "marked";
+import { Tokens, use } from "marked";
 import { peraturan } from "@/utils/md.ts";
 import { ellipsis } from "@/utils/string.ts";
 
@@ -10,8 +10,8 @@ interface PeraturanOutlineProps {
 export default function PeraturanOutline(
   { md, path }: PeraturanOutlineProps,
 ) {
-  marked.use(peraturan);
-  const tokens = marked.lexer(md) as marked.Tokens.Generic[];
+  const marked = use(peraturan);
+  const tokens = marked.lexer(md) as Tokens.Generic[];
   const judul = tokens.find((token) => token.type === "judul");
   const konsideran = tokens.find((token) => token.type === "konsideran");
   const dasarHukum = tokens.find((token) => token.type === "dasar-hukum");
@@ -42,7 +42,7 @@ export default function PeraturanOutline(
                 </div>
               </summary>
               <ul>
-                {konsideran?.tokens?.map((token: marked.Tokens.Generic) =>
+                {konsideran?.tokens?.map((token: Tokens.Generic) =>
                   (token.type === "list" || token.type === "butir-list")
                     ? token.items
                     : (token.tokens ?? [token])
@@ -60,7 +60,7 @@ export default function PeraturanOutline(
                 </div>
               </summary>
               <ul>
-                {dasarHukum?.tokens?.map((token: marked.Tokens.Generic) =>
+                {dasarHukum?.tokens?.map((token: Tokens.Generic) =>
                   (token.type === "list" || token.type === "butir-list")
                     ? token.items
                     : (token.tokens ?? [token])
@@ -93,7 +93,7 @@ export default function PeraturanOutline(
 
 function BatangTubuhToken(
   { token, basePath, path }: {
-    token: marked.Tokens.Generic;
+    token: Tokens.Generic;
     basePath: string;
     path: string;
   },

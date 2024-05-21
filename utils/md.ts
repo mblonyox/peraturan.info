@@ -1,15 +1,23 @@
-import { marked } from "marked";
+import {
+  MarkedExtension,
+  RendererExtension,
+  Token,
+  TokenizerAndRendererExtension,
+  Tokens,
+  TokensList,
+} from "marked";
+import { slug } from "github-slugger";
 
-export type PartialToken = marked.Tokens.Generic & {
+export type PartialToken = Tokens.Generic & {
   nomor: string;
   judul: string;
   tokens?: PartialToken[];
 };
 
-const judul: marked.TokenizerAndRendererExtension = {
+const judul: TokenizerAndRendererExtension = {
   name: "judul",
   level: "block",
-  tokenizer(src, _tokens: marked.Token[] | marked.TokensList) {
+  tokenizer(src, _tokens: Token[] | TokensList) {
     const match = src.match(
       /^(([\s\S]+?)\nNOMOR +(.+)\nTENTANG\n([\s\S]+?))(?:\n{2,}|$)/,
     );
@@ -32,10 +40,10 @@ const judul: marked.TokenizerAndRendererExtension = {
   },
 };
 
-const frasaJabatan: marked.TokenizerAndRendererExtension = {
+const frasaJabatan: TokenizerAndRendererExtension = {
   name: "frasa-jabatan",
   level: "block",
-  tokenizer(src, _tokens: marked.Token[] | marked.TokensList) {
+  tokenizer(src, _tokens: Token[] | TokensList) {
     const match = src.match(
       /^DENGAN RAHMAT TUHAN YANG MAHA ESA\n\n([\s\S]+?,)(?:\n{2,}|$)/,
     );
@@ -56,10 +64,10 @@ const frasaJabatan: marked.TokenizerAndRendererExtension = {
   },
 };
 
-const konsideran: marked.TokenizerAndRendererExtension = {
+const konsideran: TokenizerAndRendererExtension = {
   name: "konsideran",
   level: "block",
-  tokenizer(src: string, _tokens: marked.Token[] | marked.TokensList) {
+  tokenizer(src: string, _tokens: Token[] | TokensList) {
     const match = src.match(/^Menimbang[ \t]*:[ \t]*\n([\s\S]+?\n)(?:\n+|$)/);
     if (match) {
       const token = {
@@ -78,10 +86,10 @@ const konsideran: marked.TokenizerAndRendererExtension = {
   },
 };
 
-const dasarHukum: marked.TokenizerAndRendererExtension = {
+const dasarHukum: TokenizerAndRendererExtension = {
   name: "dasar-hukum",
   level: "block",
-  tokenizer(src: string, _tokens: marked.Token[] | marked.TokensList) {
+  tokenizer(src: string, _tokens: Token[] | TokensList) {
     const match = src.match(/^Mengingat[ \t]*:[ \t]*\n([\s\S]+?\n)(?:\n+|$)/);
     if (match) {
       const token = {
@@ -100,10 +108,10 @@ const dasarHukum: marked.TokenizerAndRendererExtension = {
   },
 };
 
-const diktum: marked.TokenizerAndRendererExtension = {
+const diktum: TokenizerAndRendererExtension = {
   name: "diktum",
   level: "block",
-  tokenizer(src, _tokens: marked.Token[] | marked.TokensList) {
+  tokenizer(src, _tokens: Token[] | TokensList) {
     const match = src.match(
       /^(Dengan[\s\S]+\n)?MEMUTUSKAN:\n(?:Mencabut[ \t]*:[ \t]*\n([\s\S]+?\n)\n)?Menetapkan[ \t]*:[ \t]*\n([\s\S]+?\n)(?:\n+|$)/,
     );
@@ -139,10 +147,10 @@ const diktum: marked.TokenizerAndRendererExtension = {
   },
 };
 
-const buku: marked.TokenizerAndRendererExtension = {
+const buku: TokenizerAndRendererExtension = {
   name: "buku",
   level: "block",
-  tokenizer(src: string, _tokens: marked.Token[] | marked.TokensList) {
+  tokenizer(src: string, _tokens: Token[] | TokensList) {
     const match = src.match(
       /^((BUKU [A-Z ]+)\n[\s\S]*?)\n\n([\s\S]+?\n)(?=BUKU [A-Z ]+\n|\n{2,}|$)/,
     );
@@ -161,17 +169,17 @@ const buku: marked.TokenizerAndRendererExtension = {
     }
   },
   renderer(token) {
-    const id = this.parser.slugger.slug(token.nomor);
+    const id = slug(token.nomor);
     return `<h2 id="${id}" class="buku">${
       this.parser.parseInline(token.headers)
     }</h2><br>${this.parser.parse(token.tokens ?? [])}`;
   },
 };
 
-const bab: marked.TokenizerAndRendererExtension = {
+const bab: TokenizerAndRendererExtension = {
   name: "bab",
   level: "block",
-  tokenizer(src: string, _tokens: marked.Token[] | marked.TokensList) {
+  tokenizer(src: string, _tokens: Token[] | TokensList) {
     const match = src.match(
       /^((BAB [MDCLXVI]+)\n[\s\S]*?)\n\n([\s\S]+?\n)(?=BAB [MDCLXVI]+\n|\n{2,}|$)/,
     );
@@ -190,17 +198,17 @@ const bab: marked.TokenizerAndRendererExtension = {
     }
   },
   renderer(token) {
-    const id = this.parser.slugger.slug(token.nomor);
+    const id = slug(token.nomor);
     return `<h3 id="${id}" class="bab">${
       this.parser.parseInline(token.headers)
     }</h3><br>${this.parser.parse(token.tokens ?? [])}`;
   },
 };
 
-const bagian: marked.TokenizerAndRendererExtension = {
+const bagian: TokenizerAndRendererExtension = {
   name: "bagian",
   level: "block",
-  tokenizer(src: string, _tokens: marked.Token[] | marked.TokensList) {
+  tokenizer(src: string, _tokens: Token[] | TokensList) {
     const match = src.match(
       /^((Bagian .+?)\n[\s\S]+?)\n\n([\s\S]+?\n)(?=Bagian [\s\w]+?\n|\n{2,}|$)/,
     );
@@ -219,17 +227,17 @@ const bagian: marked.TokenizerAndRendererExtension = {
     }
   },
   renderer(token) {
-    const id = this.parser.slugger.slug(token.nomor);
+    const id = slug(token.nomor);
     return `<h4 id="${id}" class="bagian">${
       this.parser.parseInline(token.headers)
     }</h4><br>${this.parser.parse(token.tokens ?? [])}`;
   },
 };
 
-const paragraf: marked.TokenizerAndRendererExtension = {
+const paragraf: TokenizerAndRendererExtension = {
   name: "paragraf",
   level: "block",
-  tokenizer(src: string, _tokens: marked.Token[] | marked.TokensList) {
+  tokenizer(src: string, _tokens: Token[] | TokensList) {
     const match = src.match(
       /^((Paragraf \d+)\n[\s\S]+?)\n\n([\s\S]+?\n)(?=Paragraf \d+\n|\n{2,}|$)/,
     );
@@ -248,17 +256,17 @@ const paragraf: marked.TokenizerAndRendererExtension = {
     }
   },
   renderer(token) {
-    const id = this.parser.slugger.slug(token.nomor);
+    const id = slug(token.nomor);
     return `<h5 id="${id}" class="paragraf">${
       this.parser.parseInline(token.headers)
     }</h5><br>${this.parser.parse(token.tokens ?? [])}`;
   },
 };
 
-const pasal: marked.TokenizerAndRendererExtension = {
+const pasal: TokenizerAndRendererExtension = {
   name: "pasal",
   level: "block",
-  tokenizer(src: string, _tokens: marked.Token[] | marked.TokensList) {
+  tokenizer(src: string, _tokens: Token[] | TokensList) {
     const match = src.match(
       /^(Pasal \d+)\n([\s\S]+?\n)(?=Pasal \d+\n|\n{2,}|$)/,
     );
@@ -279,17 +287,17 @@ const pasal: marked.TokenizerAndRendererExtension = {
     }
   },
   renderer(token) {
-    const id = this.parser.slugger.slug(token.nomor);
+    const id = slug(token.nomor);
     return `<h6 id="${id}" class="pasal">${token.nomor}</h6><div class="isi-pasal">${
       this.parser.parse(token.tokens ?? [])
     }</div><br>`;
   },
 };
 
-const ayat: marked.TokenizerAndRendererExtension = {
+const ayat: TokenizerAndRendererExtension = {
   name: "ayat",
   level: "block",
-  tokenizer(src: string, _tokens: marked.Token[] | marked.TokensList) {
+  tokenizer(src: string, _tokens: Token[] | TokensList) {
     const match = src.match(
       /^(\(\d+\))[ \t]([\s\S]+?\n)(?=\(\d+\)[ \t]|\n+|$)/,
     );
@@ -307,7 +315,7 @@ const ayat: marked.TokenizerAndRendererExtension = {
     }
   },
   renderer(token) {
-    const id = this.parser.slugger.slug(
+    const id = slug(
       `${token.nomorPasal} ayat ${token.nomor}`,
     );
     return `<div id="${id}" class="ayat"><span>${token.nomor}</span>${
@@ -316,10 +324,10 @@ const ayat: marked.TokenizerAndRendererExtension = {
   },
 };
 
-const butirList: marked.TokenizerAndRendererExtension = {
+const butirList: TokenizerAndRendererExtension = {
   name: "butir-list",
   level: "block",
-  tokenizer(src: string, _tokens: marked.Token[] | marked.TokensList) {
+  tokenizer(src: string, _tokens: Token[] | TokensList) {
     const match = src.match(
       /^( {0,6})((?:\d{1,2}|[a-z]{1,2})[\)\.])[ \t].+?(?=\n|$)/,
     );
@@ -365,14 +373,14 @@ const butirList: marked.TokenizerAndRendererExtension = {
   childTokens: ["items"],
 };
 
-const butirItem: marked.RendererExtension = {
+const butirItem: RendererExtension = {
   name: "butir-item",
   renderer(token) {
     return `<li>${this.parser.parse(token.tokens ?? [])}</li>`;
   },
 };
 
-export const peraturan: marked.MarkedExtension = {
+export const peraturan: MarkedExtension = {
   extensions: [
     judul,
     frasaJabatan,

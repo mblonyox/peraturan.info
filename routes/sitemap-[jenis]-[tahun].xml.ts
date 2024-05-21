@@ -3,7 +3,7 @@ import { RouteConfig } from "$fresh/server.ts";
 import { getDB } from "@/data/db.ts";
 import { getListPeraturan } from "@/models/peraturan.ts";
 import { lastModMd, readTextMd } from "@/utils/fs.ts";
-import { marked } from "marked";
+import { use } from "marked";
 import { PartialToken, peraturan as peraturanExtension } from "@/utils/md.ts";
 
 type UrlTag = {
@@ -93,7 +93,7 @@ const getPartialPaths = (md: string): string[] => {
     "/dasar-hukum",
     "/batang-tubuh",
   ];
-  marked.use(peraturanExtension);
+  const marked = use(peraturanExtension);
   const rootTokens = [...marked.lexer(md)] as PartialToken[];
   const getSubPaths = (token: PartialToken, path = ""): string[] => {
     if (["buku", "bab", "bagian", "paragraf"].includes(token.type)) {
