@@ -1,9 +1,9 @@
 name: Deploy
 on:
   push:
-    branches: [master]
+    branches: master
   pull_request:
-    branches: [master]
+    branches: master
 
 jobs:
   deploy:
@@ -11,12 +11,12 @@ jobs:
     runs-on: ubuntu-latest
 
     permissions:
-      id-token: write
-      contents: read
+      id-token: write # Needed for auth with Deno Deploy
+      contents: read # Needed to clone the repository
 
     steps:
       - name: Clone repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Install Deno
         uses: denoland/setup-deno@v1
@@ -24,10 +24,11 @@ jobs:
           deno-version: v1.x
 
       - name: Build step
-        run: deno task build
+        run: "deno task build"
 
       - name: Upload to Deno Deploy
         uses: denoland/deployctl@v1
         with:
-          project: peraturan
-          entrypoint: ./main.ts
+          project: "peraturan"
+          entrypoint: "main.ts"
+          root: "."
