@@ -2,7 +2,7 @@ import { Handler, PageProps } from "$fresh/server.ts";
 import { AppContext } from "@/utils/app_context.ts";
 import { ellipsis } from "@/utils/string.ts";
 import { Results, search, TypedDocument } from "@orama/orama";
-import { getOrama } from "@/data/orama.ts";
+import { getOrama } from "@/lib/orama/mod.ts";
 import Pagination from "@/components/pagination.tsx";
 
 export const handler: Handler<SearchPageProps, AppContext> = async (

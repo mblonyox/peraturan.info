@@ -1,7 +1,7 @@
 import { createCanvas } from "$canvas";
 import { Handlers } from "$fresh/server.ts";
 import { Document } from "@/lib/pdfium/mod.ts";
-import { getDB } from "@/data/db.ts";
+import { getDB } from "@/lib/db/mod.ts";
 import { getSumberPeraturan } from "@/models/mod.ts";
 
 export const handler: Handlers = {

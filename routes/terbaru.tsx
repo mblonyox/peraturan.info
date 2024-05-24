@@ -1,6 +1,6 @@
 import { Handler, PageProps } from "$fresh/server.ts";
 import { AppContext } from "@/utils/app_context.ts";
-import { getDB } from "@/data/db.ts";
+import { getDB } from "@/lib/db/mod.ts";
 import {
   getListPeraturanByTanggal,
   getTanggalTerakhir,

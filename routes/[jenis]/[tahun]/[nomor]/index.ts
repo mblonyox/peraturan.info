@@ -1,5 +1,5 @@
 import { Handlers } from "$fresh/server.ts";
-import { getDB } from "@/data/db.ts";
+import { getDB } from "@/lib/db/mod.ts";
 import { getPeraturan } from "@/models/mod.ts";
 import { existsMd } from "@/utils/fs.ts";
 

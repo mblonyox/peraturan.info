@@ -1,6 +1,6 @@
 import { create, insert } from "@orama/orama";
 import { persistToFile } from "@orama/plugin-data-persistence/server";
-import { getDB } from "@/data/db.ts";
+import { getDB } from "@/lib/db/mod.ts";
 import { getListPeraturan } from "@/models/peraturan.ts";
 import { readTextMd } from "@/utils/fs.ts";
 

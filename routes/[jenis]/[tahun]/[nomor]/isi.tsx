@@ -1,6 +1,6 @@
 import { Handler, PageProps } from "$fresh/server.ts";
 import { use } from "marked";
-import { getDB } from "@/data/db.ts";
+import { getDB } from "@/lib/db/mod.ts";
 import { getPeraturan } from "@/models/mod.ts";
 import { readTextMd } from "@/utils/fs.ts";
 import { peraturan as peraturanExtension } from "@/utils/md.ts";

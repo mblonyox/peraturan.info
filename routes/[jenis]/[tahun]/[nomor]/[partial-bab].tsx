@@ -1,7 +1,7 @@
 import { Handler, PageProps } from "$fresh/server.ts";
 import { RouteConfig } from "$fresh/server.ts";
 import { Token, use } from "marked";
-import { getDB } from "@/data/db.ts";
+import { getDB } from "@/lib/db/mod.ts";
 import { getPeraturan } from "@/models/mod.ts";
 import { PartialToken, peraturan as peraturanExtension } from "@/utils/md.ts";
 import { readTextMd } from "@/utils/fs.ts";

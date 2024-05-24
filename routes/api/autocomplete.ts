@@ -1,7 +1,7 @@
 import { Handlers } from "$fresh/server.ts";
 import { search } from "@orama/orama";
 import { boundedLevenshtein } from "@orama/orama/internals";
-import { getOrama } from "@/data/orama.ts";
+import { getOrama } from "@/lib/orama/mod.ts";
 
 export const handler: Handlers = {
   GET: async (req, _ctx) => {

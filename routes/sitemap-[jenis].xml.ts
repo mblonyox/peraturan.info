@@ -1,6 +1,6 @@
 import { Handlers } from "$fresh/server.ts";
 import { RouteConfig } from "$fresh/server.ts";
-import { getDB, lastModDB } from "@/data/db.ts";
+import { getDB, lastModDB } from "@/lib/db/mod.ts";
 import { getFilterByTahunCount } from "@/models/peraturan.ts";
 
 export const config: RouteConfig = {

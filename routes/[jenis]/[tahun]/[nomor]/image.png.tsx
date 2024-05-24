@@ -2,7 +2,7 @@ import { Handler } from "$fresh/server.ts";
 import { ImageResponse } from "$og_edge/mod.ts";
 import { encodeBase64 } from "$std/encoding/base64.ts";
 import { dirname, fromFileUrl, resolve } from "$std/path/mod.ts";
-import { getDB } from "@/data/db.ts";
+import { getDB } from "@/lib/db/mod.ts";
 import { getPeraturan } from "@/models/mod.ts";
 import { ellipsis } from "@/utils/string.ts";
 
