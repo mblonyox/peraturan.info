@@ -43,5 +43,5 @@
       "xml-js": "https://esm.sh/v135/xml-js@1.6.11"
     }
   },
-  "exclude": ["**/_fresh/*", "data/markdowns/"]
+  "exclude": ["**/_fresh/*", "data"]
 }

@@ -1,5 +1,5 @@
 import { Handler, PageProps } from "$fresh/server.ts";
-import { getDB } from "@/data/db.ts";
+import { getDB } from "@/lib/db/mod.ts";
 import {
   getPeraturan,
   getRelasiPeraturan1,

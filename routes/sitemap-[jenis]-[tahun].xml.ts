@@ -1,6 +1,6 @@
 import { Handlers } from "$fresh/server.ts";
 import { RouteConfig } from "$fresh/server.ts";
-import { getDB } from "@/data/db.ts";
+import { getDB } from "@/lib/db/mod.ts";
 import { getListPeraturan } from "@/models/peraturan.ts";
 import { lastModMd, readTextMd } from "@/utils/fs.ts";
 import { use } from "marked";

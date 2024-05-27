@@ -1,12 +1,12 @@
-import { dirname, fromFileUrl, join } from "$std/path/mod.ts";
+import { dirname, fromFileUrl, resolve } from "$std/path/mod.ts";
 
-export const rootPath = join(dirname(fromFileUrl(import.meta.url)), "..");
+export const rootPath = resolve(dirname(fromFileUrl(import.meta.url)), "..");
 
 const getMdFilePath = (
   jenis: string,
   tahun: string | number,
   nomor: string | number,
-) => join(rootPath, "data", "markdowns", `${jenis}-${tahun}-${nomor}.md`);
+) => resolve(rootPath, "data", `${jenis}/${tahun}/${nomor}.md`);
 
 export const existsMd = async (
   { jenis, tahun, nomor }: { jenis: string; tahun: string; nomor: string },
