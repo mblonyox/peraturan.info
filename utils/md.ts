@@ -1,10 +1,8 @@
-import {
+import type {
   MarkedExtension,
   RendererExtension,
-  Token,
   TokenizerAndRendererExtension,
   Tokens,
-  TokensList,
 } from "marked";
 import { slug } from "github-slugger";
 
@@ -17,7 +15,7 @@ export type PartialToken = Tokens.Generic & {
 const judul: TokenizerAndRendererExtension = {
   name: "judul",
   level: "block",
-  tokenizer(src, _tokens: Token[] | TokensList) {
+  tokenizer(src) {
     const match = src.match(
       /^(([\s\S]+?)\nNOMOR +(.+)\nTENTANG\n([\s\S]+?))(?:\n{2,}|$)/,
     );
@@ -43,7 +41,7 @@ const judul: TokenizerAndRendererExtension = {
 const frasaJabatan: TokenizerAndRendererExtension = {
   name: "frasa-jabatan",
   level: "block",
-  tokenizer(src, _tokens: Token[] | TokensList) {
+  tokenizer(src) {
     const match = src.match(
       /^DENGAN RAHMAT TUHAN YANG MAHA ESA\n\n([\s\S]+?,)(?:\n{2,}|$)/,
     );
@@ -67,7 +65,7 @@ const frasaJabatan: TokenizerAndRendererExtension = {
 const konsideran: TokenizerAndRendererExtension = {
   name: "konsideran",
   level: "block",
-  tokenizer(src: string, _tokens: Token[] | TokensList) {
+  tokenizer(src: string) {
     const match = src.match(/^Menimbang[ \t]*:[ \t]*\n([\s\S]+?\n)(?:\n+|$)/);
     if (match) {
       const token = {
@@ -89,7 +87,7 @@ const konsideran: TokenizerAndRendererExtension = {
 const dasarHukum: TokenizerAndRendererExtension = {
   name: "dasar-hukum",
   level: "block",
-  tokenizer(src: string, _tokens: Token[] | TokensList) {
+  tokenizer(src: string) {
     const match = src.match(/^Mengingat[ \t]*:[ \t]*\n([\s\S]+?\n)(?:\n+|$)/);
     if (match) {
       const token = {
@@ -111,7 +109,7 @@ const dasarHukum: TokenizerAndRendererExtension = {
 const diktum: TokenizerAndRendererExtension = {
   name: "diktum",
   level: "block",
-  tokenizer(src, _tokens: Token[] | TokensList) {
+  tokenizer(src) {
     const match = src.match(
       /^(Dengan[\s\S]+\n)?MEMUTUSKAN:\n(?:Mencabut[ \t]*:[ \t]*\n([\s\S]+?\n)\n)?Menetapkan[ \t]*:[ \t]*\n([\s\S]+?\n)(?:\n+|$)/,
     );
@@ -130,27 +128,29 @@ const diktum: TokenizerAndRendererExtension = {
     }
   },
   renderer(token) {
-    return (token.persetujuan.length
-      ? `<p class="persetujuan">${
-        this.parser.parseInline(token.persetujuan ?? [])
-      }</p>`
-      : "") +
-      '<p class="kata-memutuskan">MEMUTUSKAN:</p>' +
-      (token.mencabut.length
+    return [
+      token.persetujuan.length
+        ? `<p class="persetujuan">${
+          this.parser.parseInline(token.persetujuan ?? [])
+        }</p>`
+        : "",
+      '<p class="kata-memutuskan">MEMUTUSKAN:</p>',
+      token.mencabut.length
         ? `<table><tbody><tr><th><p>Mencabut</p></th><td>:</td><td><p>${
           this.parser.parseInline(token.mencabut ?? [])
         }</p></td></tr></tbody></table><br/>`
-        : "") +
+        : "",
       `<table><tbody><tr><th><p>Menetapkan</p></th><td>:</td><td><p>${
         this.parser.parseInline(token.menetapkan ?? [])
-      }</p></td></tr></tbody></table><br/>`;
+      }</p></td></tr></tbody></table><br/>`,
+    ].join("");
   },
 };
 
 const buku: TokenizerAndRendererExtension = {
   name: "buku",
   level: "block",
-  tokenizer(src: string, _tokens: Token[] | TokensList) {
+  tokenizer(src: string) {
     const match = src.match(
       /^((BUKU [A-Z ]+)\n[\s\S]*?)\n\n([\s\S]+?\n)(?=BUKU [A-Z ]+\n|\n{2,}|$)/,
     );
@@ -179,7 +179,7 @@ const buku: TokenizerAndRendererExtension = {
 const bab: TokenizerAndRendererExtension = {
   name: "bab",
   level: "block",
-  tokenizer(src: string, _tokens: Token[] | TokensList) {
+  tokenizer(src: string) {
     const match = src.match(
       /^((BAB [MDCLXVI]+)\n[\s\S]*?)\n\n([\s\S]+?\n)(?=BAB [MDCLXVI]+\n|\n{2,}|$)/,
     );
@@ -208,7 +208,7 @@ const bab: TokenizerAndRendererExtension = {
 const bagian: TokenizerAndRendererExtension = {
   name: "bagian",
   level: "block",
-  tokenizer(src: string, _tokens: Token[] | TokensList) {
+  tokenizer(src: string) {
     const match = src.match(
       /^((Bagian .+?)\n[\s\S]+?)\n\n([\s\S]+?\n)(?=Bagian [\s\w]+?\n|\n{2,}|$)/,
     );
@@ -237,7 +237,7 @@ const bagian: TokenizerAndRendererExtension = {
 const paragraf: TokenizerAndRendererExtension = {
   name: "paragraf",
   level: "block",
-  tokenizer(src: string, _tokens: Token[] | TokensList) {
+  tokenizer(src: string) {
     const match = src.match(
       /^((Paragraf \d+)\n[\s\S]+?)\n\n([\s\S]+?\n)(?=Paragraf \d+\n|\n{2,}|$)/,
     );
@@ -266,7 +266,7 @@ const paragraf: TokenizerAndRendererExtension = {
 const pasal: TokenizerAndRendererExtension = {
   name: "pasal",
   level: "block",
-  tokenizer(src: string, _tokens: Token[] | TokensList) {
+  tokenizer(src: string) {
     const match = src.match(
       /^(Pasal \d+)\n([\s\S]+?\n)(?=Pasal \d+\n|\n{2,}|$)/,
     );
@@ -297,7 +297,7 @@ const pasal: TokenizerAndRendererExtension = {
 const ayat: TokenizerAndRendererExtension = {
   name: "ayat",
   level: "block",
-  tokenizer(src: string, _tokens: Token[] | TokensList) {
+  tokenizer(src: string) {
     const match = src.match(
       /^(\(\d+\))[ \t]([\s\S]+?\n)(?=\(\d+\)[ \t]|\n+|$)/,
     );
@@ -327,7 +327,7 @@ const ayat: TokenizerAndRendererExtension = {
 const butirList: TokenizerAndRendererExtension = {
   name: "butir-list",
   level: "block",
-  tokenizer(src: string, _tokens: Token[] | TokensList) {
+  tokenizer(src: string) {
     const match = src.match(
       /^( {0,6})((?:\d{1,2}|[a-z]{1,2})[\)\.])[ \t].+?(?=\n|$)/,
     );
