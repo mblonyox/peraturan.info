@@ -1,6 +1,10 @@
 name: CI
 
-on: [push, pull_request]
+on:
+  push:
+    branches: [master]
+  pull_request:
+    branches: [master]
 
 jobs:
   ci:
@@ -9,9 +13,16 @@ jobs:
       fail-fast: false
       matrix:
         os:
-          - ubuntu-22.04
-          - windows-2022
-          - macOS-12
+          - ubuntu-latest
+          - macos-latest
+          - windows-latest
+        include:
+        - os: ubuntu-latest
+          cache_path: ~/.cache/deno/
+        - os: macos-latest
+          cache_path: ~/Library/Caches/deno/
+        - os: windows-latest
+          cache_path: ~\AppData\Local\deno\
 
     steps:
       - name: Setup repo
@@ -22,5 +33,13 @@ jobs:
         with:
           deno-version: v1.x
 
-      - name: Check static analysis
-        run: deno task check
+      - name: Verify formatting
+        if: startsWith(matrix.os, 'ubuntu')
+        run: deno fmt --check
+
+      - name: Run linter
+        if: startsWith(matrix.os, 'ubuntu')
+        run: deno lint
+
+      - name: Type check
+        run: deno check */**.ts */**.tsx
