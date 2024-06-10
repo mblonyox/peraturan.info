@@ -1,7 +1,6 @@
 import { Handler, PageProps } from "$fresh/server.ts";
 import { RouteConfig } from "$fresh/server.ts";
-import { Token, Tokens, use } from "marked";
-import { peraturan as peraturanExtension } from "@/utils/md.ts";
+import { createMarked, PeraturanToken } from "@/utils/md.ts";
 import { getDB } from "@/lib/db/mod.ts";
 import { getPeraturan } from "@/models/mod.ts";
 import { readTextMd } from "@/utils/fs.ts";
@@ -23,12 +22,12 @@ export const handler: Handler<PeraturanPartialPageData> = async (
   if (!peraturan) return ctx.renderNotFound();
   const md = await readTextMd({ jenis, tahun, nomor });
   if (!md) return ctx.renderNotFound();
-  const marked = use(peraturanExtension);
+  const marked = createMarked();
   const rootTokens = marked.lexer(md);
   const breadcrumbs: { name: string; url?: string }[] = [
     ...peraturan.breadcrumbs,
   ];
-  let tokens: Tokens.Generic[] | undefined;
+  let tokens: PeraturanToken[] | undefined;
   if (partial === "pembukaan") {
     tokens = rootTokens.filter((token) =>
       ["frasa-jabatan", "konsideran", "dasar-hukum", "diktum"].includes(
@@ -49,7 +48,7 @@ export const handler: Handler<PeraturanPartialPageData> = async (
   ).join(" ");
   breadcrumbs.push({ name: judulPartial });
   if (!tokens || !tokens.length) return ctx.renderNotFound();
-  const html = marked.parser(tokens as Token[]);
+  const html = marked.parser(tokens as PeraturanToken[]);
   ctx.state.seo = {
     title: `${judulPartial} | ${peraturan.rujukPanjang}`,
     description: ellipsis(

@@ -1,7 +1,6 @@
 import { Handler, PageProps } from "$fresh/server.ts";
 import { RouteConfig } from "$fresh/server.ts";
-import { Token, use } from "marked";
-import { PartialToken, peraturan as peraturanExtension } from "@/utils/md.ts";
+import { createMarked, PeraturanToken } from "@/utils/md.ts";
 import { getDB } from "@/lib/db/mod.ts";
 import { getPeraturan } from "@/models/mod.ts";
 import { readTextMd } from "@/utils/fs.ts";
@@ -23,21 +22,21 @@ export const handler: Handler<PeraturanPartialPageData> = async (
   if (!peraturan) return ctx.renderNotFound();
   const md = await readTextMd({ jenis, tahun, nomor });
   if (!md) return ctx.renderNotFound();
-  const marked = use(peraturanExtension);
+  const marked = createMarked();
   const rootTokens = marked.lexer(md);
   const breadcrumbs: { name: string; url?: string }[] = [
     ...peraturan.breadcrumbs,
   ];
   const juduls = [];
-  let tokens = [...rootTokens] as PartialToken[];
+  let tokens = [...rootTokens] as PeraturanToken[];
   let token, prev, next;
   for (const [k, v] of Object.entries({ buku, bab, bagian, paragraf })) {
     if (!v) continue;
     tokens = tokens.filter((token) => token.type === k);
     token = tokens.find((token) =>
-      token.nomor.toLowerCase().replace(" ", "-") === v
+      token.nomor?.toLowerCase().replace(" ", "-") === v
     );
-    if (!token) return ctx.renderNotFound();
+    if (!token?.nomor) return ctx.renderNotFound();
     const path = breadcrumbs.at(-1)?.url + "/";
     breadcrumbs.push({
       name: token.nomor,
@@ -47,27 +46,31 @@ export const handler: Handler<PeraturanPartialPageData> = async (
     const index = tokens.indexOf(token);
     if (index > 0) {
       const prevToken = tokens[index - 1];
-      prev = {
-        name: prevToken.nomor,
-        url: path + prevToken.nomor.toLowerCase().replace(" ", "-"),
-      };
+      if (prevToken.nomor) {
+        prev = {
+          name: prevToken.nomor,
+          url: path + prevToken.nomor.toLowerCase().replace(" ", "-"),
+        };
+      }
     }
     if (index < tokens.length - 1) {
       const nextToken = tokens[index + 1];
-      next = {
-        name: nextToken.nomor,
-        url: path + nextToken.nomor.toLowerCase().replace(" ", "-"),
-      };
+      if (nextToken.nomor) {
+        next = {
+          name: nextToken.nomor,
+          url: path + nextToken.nomor.toLowerCase().replace(" ", "-"),
+        };
+      }
     }
     tokens = token.tokens!;
   }
-  if (!token) return ctx.renderNotFound();
+  if (!token?.nomor) return ctx.renderNotFound();
   breadcrumbs.pop();
   breadcrumbs.push({ name: token.nomor });
   juduls.pop();
   juduls.push(token.judul);
   const judulPartial = juduls.join(", ");
-  const html = marked.parser([token as Token]);
+  const html = marked.parser([token as PeraturanToken]);
   ctx.state.seo = {
     title: `${judulPartial} | ${peraturan.rujukPanjang}`,
     description: ellipsis(token.raw, 155),

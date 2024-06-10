@@ -3,8 +3,7 @@ import { RouteConfig } from "$fresh/server.ts";
 import { getDB } from "@/lib/db/mod.ts";
 import { getListPeraturan } from "@/models/peraturan.ts";
 import { lastModMd, readTextMd } from "@/utils/fs.ts";
-import { use } from "marked";
-import { PartialToken, peraturan as peraturanExtension } from "@/utils/md.ts";
+import { createMarked, PeraturanToken } from "@/utils/md.ts";
 
 type UrlTag = {
   loc: string;
@@ -93,30 +92,32 @@ const getPartialPaths = (md: string): string[] => {
     "/dasar-hukum",
     "/batang-tubuh",
   ];
-  const marked = use(peraturanExtension);
-  const rootTokens = [...marked.lexer(md)] as PartialToken[];
-  const getSubPaths = (token: PartialToken, path = ""): string[] => {
+  const marked = createMarked();
+  const rootTokens = [...marked.lexer(md)] as PeraturanToken[];
+  const getSubPaths = (token: PeraturanToken, path = ""): string[] => {
     if (["buku", "bab", "bagian", "paragraf"].includes(token.type)) {
-      path += "/" + token.nomor.toLowerCase().replace(" ", "-");
+      path += "/" + token.nomor?.toLowerCase().replace(" ", "-");
       return [
         path,
         ...token.tokens!.map((token) =>
-          getSubPaths(token as PartialToken, path)
-        ).flat(),
+          getSubPaths(token as PeraturanToken, path)
+        )
+          .flat(),
       ];
     }
     if (token.type === "pasal") {
-      path = "/" + token.nomor.toLowerCase().replace(" ", "-");
+      path = "/" + token.nomor?.toLowerCase().replace(" ", "-");
       return [
         path,
         ...token.tokens!.map((token) =>
-          getSubPaths(token as PartialToken, path)
-        ).flat(),
+          getSubPaths(token as PeraturanToken, path)
+        )
+          .flat(),
       ];
     }
     if (token.type === "ayat") {
       return [
-        path + "/ayat-" + token.nomor.toLowerCase().replaceAll(
+        path + "/ayat-" + token.nomor?.toLowerCase().replaceAll(
           /[\(\)]/g,
           "",
         ),

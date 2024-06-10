@@ -4,12 +4,13 @@ import type {
   TokenizerAndRendererExtension,
   Tokens,
 } from "marked";
+import { use } from "marked";
 import { slug } from "github-slugger";
 
-export type PartialToken = Tokens.Generic & {
-  nomor: string;
-  judul: string;
-  tokens?: PartialToken[];
+export type PeraturanToken = Tokens.Generic & {
+  nomor?: string;
+  judul?: string;
+  tokens?: PeraturanToken[];
 };
 
 const judul: TokenizerAndRendererExtension = {
@@ -380,7 +381,7 @@ const butirItem: RendererExtension = {
   },
 };
 
-export const peraturan: MarkedExtension = {
+const extension: MarkedExtension = {
   extensions: [
     judul,
     frasaJabatan,
@@ -397,3 +398,5 @@ export const peraturan: MarkedExtension = {
     butirItem,
   ],
 };
+
+export const createMarked = () => use(extension);

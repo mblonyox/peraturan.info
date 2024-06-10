@@ -1,5 +1,4 @@
-import { Tokens, use } from "marked";
-import { peraturan } from "@/utils/md.ts";
+import { createMarked, PeraturanToken } from "@/utils/md.ts";
 import { ellipsis } from "@/utils/string.ts";
 
 interface PeraturanOutlineProps {
@@ -10,8 +9,8 @@ interface PeraturanOutlineProps {
 export default function PeraturanOutline(
   { md, path }: PeraturanOutlineProps,
 ) {
-  const marked = use(peraturan);
-  const tokens = marked.lexer(md) as Tokens.Generic[];
+  const marked = createMarked();
+  const tokens = marked.lexer(md) as PeraturanToken[];
   const judul = tokens.find((token) => token.type === "judul");
   const konsideran = tokens.find((token) => token.type === "konsideran");
   const dasarHukum = tokens.find((token) => token.type === "dasar-hukum");
@@ -42,7 +41,7 @@ export default function PeraturanOutline(
                 </div>
               </summary>
               <ul>
-                {konsideran?.tokens?.map((token: Tokens.Generic) =>
+                {konsideran?.tokens?.map((token: PeraturanToken) =>
                   (token.type === "list" || token.type === "butir-list")
                     ? token.items
                     : (token.tokens ?? [token])
@@ -60,7 +59,7 @@ export default function PeraturanOutline(
                 </div>
               </summary>
               <ul>
-                {dasarHukum?.tokens?.map((token: Tokens.Generic) =>
+                {dasarHukum?.tokens?.map((token: PeraturanToken) =>
                   (token.type === "list" || token.type === "butir-list")
                     ? token.items
                     : (token.tokens ?? [token])
@@ -93,7 +92,7 @@ export default function PeraturanOutline(
 
 function BatangTubuhToken(
   { token, basePath, path }: {
-    token: Tokens.Generic;
+    token: PeraturanToken;
     basePath: string;
     path: string;
   },
@@ -112,7 +111,7 @@ function BatangTubuhToken(
   const preview = (token.type === "pasal" && !subTokens?.length)
     ? ellipsis(token.raw?.substring(judul.length))
     : (token.type === "ayat")
-    ? ellipsis(token.raw?.substring(token.nomor.length))
+    ? ellipsis(token.raw?.substring(token.nomor?.length ?? 0))
     : "";
   return (
     <li className="list-group-item">
