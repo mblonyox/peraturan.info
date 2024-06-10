@@ -1,4 +1,2 @@
 * text eol=lf
 *.png binary
-*.dpack binary
-*.sqlite binary
