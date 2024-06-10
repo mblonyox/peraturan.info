@@ -7,6 +7,7 @@
     "build": "deno run -A dev.ts build",
     "preview": "deno run -A main.ts",
     "update": "deno run -A -r https://fresh.deno.dev/update .",
+    "check:types": "deno check **/*.ts **/*.tsx",
     "indexing": "deno run -A indexing.ts"
   },
   "compilerOptions": { "jsx": "react-jsx", "jsxImportSource": "preact" },
