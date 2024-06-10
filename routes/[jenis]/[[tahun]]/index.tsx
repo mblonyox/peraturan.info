@@ -8,7 +8,7 @@ import {
   Peraturan,
 } from "@/models/peraturan.ts";
 import { AppContext } from "@/utils/app_context.ts";
-import Pagination from "./pagination.tsx";
+import Pagination from "@/components/pagination.tsx";
 
 export const handler: Handler<ListPeraturanPageProps, AppContext> = async (
   req,

@@ -2,6 +2,7 @@
 // This file SHOULD be checked into source version control.
 // This file is automatically updated during development when running `dev.ts`.
 
+import * as $_jenis_tahun_index from "./routes/[jenis]/[[tahun]]/index.tsx";
 import * as $_jenis_tahun_nomor_partial_bab_ from "./routes/[jenis]/[tahun]/[nomor]/[partial-bab].tsx";
 import * as $_jenis_tahun_nomor_partial_buku_ from "./routes/[jenis]/[tahun]/[nomor]/[partial-buku].tsx";
 import * as $_jenis_tahun_nomor_partial_pasal_ from "./routes/[jenis]/[tahun]/[nomor]/[partial-pasal].tsx";
@@ -12,8 +13,6 @@ import * as $_jenis_tahun_nomor_index from "./routes/[jenis]/[tahun]/[nomor]/ind
 import * as $_jenis_tahun_nomor_info from "./routes/[jenis]/[tahun]/[nomor]/info.tsx";
 import * as $_jenis_tahun_nomor_isi from "./routes/[jenis]/[tahun]/[nomor]/isi.tsx";
 import * as $_jenis_tahun_nomor_preview_png from "./routes/[jenis]/[tahun]/[nomor]/preview.png.tsx";
-import * as $_jenis_tahun_index from "./routes/[jenis]/[tahun]/index.tsx";
-import * as $_jenis_index from "./routes/[jenis]/index.tsx";
 import * as $_404 from "./routes/_404.tsx";
 import * as $_500 from "./routes/_500.tsx";
 import * as $_app from "./routes/_app.tsx";
@@ -38,6 +37,7 @@ import { type Manifest } from "$fresh/server.ts";
 
 const manifest = {
   routes: {
+    "./routes/[jenis]/[[tahun]]/index.tsx": $_jenis_tahun_index,
     "./routes/[jenis]/[tahun]/[nomor]/[partial-bab].tsx":
       $_jenis_tahun_nomor_partial_bab_,
     "./routes/[jenis]/[tahun]/[nomor]/[partial-buku].tsx":
@@ -54,8 +54,6 @@ const manifest = {
     "./routes/[jenis]/[tahun]/[nomor]/isi.tsx": $_jenis_tahun_nomor_isi,
     "./routes/[jenis]/[tahun]/[nomor]/preview.png.tsx":
       $_jenis_tahun_nomor_preview_png,
-    "./routes/[jenis]/[tahun]/index.tsx": $_jenis_tahun_index,
-    "./routes/[jenis]/index.tsx": $_jenis_index,
     "./routes/_404.tsx": $_404,
     "./routes/_500.tsx": $_500,
     "./routes/_app.tsx": $_app,
