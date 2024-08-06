@@ -1,39 +1,29 @@
 <template>
-  <Menubar :model="items">
-    <template #item="{ item, props, hasSubmenu }">
-      <router-link v-if="item.route" v-slot="{ href, navigate }" :to="item.route" custom>
-        <a v-ripple :href="href" v-bind="props.action" @click="navigate">
-          <span :class="item.icon" />
-          <span>{{ item.label }}</span>
-        </a>
-      </router-link>
-      <a v-else v-ripple :href="item.url" :target="item.target" v-bind="props.action">
-        <span :class="item.icon" />
-        <span>{{ item.label }}</span>
-        <span v-if="hasSubmenu" class="pi pi-fw pi-angle-down" />
-      </a>
-    </template>
-  </Menubar>
+  <header class="border-b border-gray-200 dark:border-gray-800">
+    <UContainer class="flex items-center justify-between">
+      <ULink :to="localePath('/')">
+        <UIcon name="i-hugeicons-home-06" class="me-1" />
+        <span class="text-lg text-primary font-bold">Peraturan</span>
+        <span class="text-sm text-gray-500">.info</span>
+      </ULink>
+      <UHorizontalNavigation :links="links" :ui="{ wrapper: 'relative w-auto' }" />
+      <div class="flex gap-2">
+        <SelectLanguage />
+        <ToggleDarkMode />
+      </div>
+    </UContainer>
+  </header>
 </template>
 
 <script setup lang="ts">
-import type { MenuItem } from 'primevue/menuitem';
+import type { HorizontalNavigationLink } from "#ui/types";
 
-const items: Ref<MenuItem[]> = ref([
-  { label: "Beranda", icon: "pi pi-home", route: "/" },
-  { label: "Terbaru", icon: "pi pi-sparkles", route: "/terbaru" },
-  {
-    label: "Peraturan", icon: "", items: [
-      { label: "Undang-undang", route: "/uu" },
-      { label: "PERPPU", route: "/perppu" },
-      { label: "Peraturan Pemerintah", route: "/pp" }
-    ]
-  }
+const localePath = useLocalePath();
+const { t } = useI18n();
+const links = computed<HorizontalNavigationLink[]>(() => [
+  { label: t("new"), icon: "i-hugeicons-news-01", to: localePath("/new") },
+  { label: t("regulations"), icon: "i-hugeicons-legal-document-01", to: localePath("regulations") },
+  { label: t("court-rulings"), icon: "i-hugeicons-legal-document-02", to: localePath("court-rulings") },
+  { label: t("definitions"), icon: "i-hugeicons-left-to-right-list-star", to: localePath("definitions") },
 ])
 </script>
-
-<style scoped>
-span:not(:first-child) {
-  margin-left: .5rem;
-}
-</style>
