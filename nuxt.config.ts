@@ -6,13 +6,13 @@ export default defineNuxtConfig({
   devtools: { enabled: true },
   modules: [
     "@nuxt/fonts",
-    '@nuxt/image',
+    "@nuxt/image",
     "@nuxt/ui",
-    '@nuxtjs/i18n',
-    "@nuxtjs/seo"
+    "@nuxtjs/i18n",
+    "@nuxtjs/seo",
   ],
-  ui: {
-    icons: ['hugeicons']
+  ogImage: {
+    enabled: false,
   },
   i18n: {
     langDir: "./languages",

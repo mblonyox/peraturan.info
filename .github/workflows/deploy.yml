@@ -1,0 +1,27 @@
+name: deno-deploy
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+jobs:
+  deploy:
+    steps:
+      - uses: actions/checkout@v3
+      - run: corepack enable
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 18
+          cache: pnpm
+      - run: pnpm install
+      - run: pnpm build
+        env:
+          NITRO_PRESET: deno_deploy
+      - name: Deploy to Deno Deploy
+        uses: denoland/deployctl@v1
+        with:
+          project: peraturan
+          entrypoint: server/index.ts
+          root: .output
