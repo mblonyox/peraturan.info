@@ -1,55 +1,68 @@
-import { Scale, Menu, Search, CircleUser } from "lucide-react";
-import { DropdownMenu, DropdownMenuTrigger, DropdownMenuContent, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuItem } from "@radix-ui/react-dropdown-menu";
-import { Button } from "./ui/button";
-import { Input } from "./ui/input";
-import { Sheet, SheetTrigger, SheetContent } from "./ui/sheet";
+import React from "react"
+import { Button } from "@/components/ui/button";
+import {
+  DropdownMenu,
+  DropdownMenuTrigger,
+  DropdownMenuContent,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuItem
+} from "@/components/ui/dropdown-menu";
+import { Input } from "@/components/ui/input";
+import {
+  Sheet,
+  SheetTrigger,
+  SheetContent
+} from "@/components/ui/sheet";
+import {
+  NavigationMenu,
+  NavigationMenuContent,
+  NavigationMenuIndicator,
+  NavigationMenuItem,
+  NavigationMenuLink,
+  NavigationMenuList,
+  NavigationMenuTrigger,
+  NavigationMenuViewport,
+  navigationMenuTriggerStyle
+} from "@/components/ui/navigation-menu"
+import { cn } from "@/lib/utils"
+import { MagnifyingGlassIcon, HamburgerMenuIcon, PersonIcon } from "@radix-ui/react-icons";
+
+const peraturans = [
+  { title: "UU", description: "Undang-Undang Republik Indonesia", href: "/uu" },
+  { title: "PERPPU", description: "Peraturan Pemerintah Pengganti Undang-Undang", href: "/perppu" },
+  { title: "PP", description: "Peraturan Pemerintah", href: "/pp" },
+  { title: "PERPRES", description: "Peraturan Presiden", href: "/perpres" },
+];
+
 
 export default function BaseHeader() {
-  const links = [
-    {title: "Beranda", href: "/"},
-    {title: "Peraturan", href: "/"},
-    {title: "Beranda", href: "/"},
-  ]
-  return (<header className="sticky top-0 flex h-16 items-center gap-4 border-b bg-background px-4 md:px-6">
-    <nav className="hidden flex-col gap-6 text-lg font-medium md:flex md:flex-row md:items-center md:gap-5 md:text-sm lg:gap-6">
-      <a
-        href="#"
-        className="flex items-center gap-2 text-lg font-semibold md:text-base"
-      >
-        <Scale className="h-6 w-6" />
-        <span className="sr-only">Peraturan.info</span>
-      </a>
-      <a
-        href="#"
-        className="text-muted-foreground transition-colors hover:text-foreground"
-      >
-        Dashboard
-      </a>
-      <a
-        href="#"
-        className="text-muted-foreground transition-colors hover:text-foreground"
-      >
-        Orders
-      </a>
-      <a
-        href="#"
-        className="text-muted-foreground transition-colors hover:text-foreground"
-      >
-        Products
-      </a>
-      <a
-        href="#"
-        className="text-muted-foreground transition-colors hover:text-foreground"
-      >
-        Customers
-      </a>
-      <a
-        href="#"
-        className="text-foreground transition-colors hover:text-foreground"
-      >
-        Settings
-      </a>
-    </nav>
+  return (<header className="sticky top-0 h-16 px-4 md:px-6 flex items-center gap-4 border-b bg-background">
+    <NavigationMenu className="hidden md:flex">
+      <NavigationMenuList>
+        <NavigationMenuItem>
+          <NavigationMenuLink href="/terbaru" className={navigationMenuTriggerStyle()}>
+            Terbaru
+          </NavigationMenuLink>
+        </NavigationMenuItem>
+        <NavigationMenuItem>
+          <NavigationMenuTrigger>Peraturan</NavigationMenuTrigger>
+          <NavigationMenuContent>
+            <ul className="grid grid-cols-2 gap-3 p-4 w-[500px] lg:w-[600px]">
+              {peraturans.map(({ title, description, href }) => <ListItem
+                key={title}
+                title={title}
+                href={href}
+              >
+                {description}
+              </ListItem>)}
+            </ul>
+          </NavigationMenuContent>
+        </NavigationMenuItem>
+        <NavigationMenuIndicator />
+      </NavigationMenuList>
+      <NavigationMenuViewport />
+    </NavigationMenu>
     <Sheet>
       <SheetTrigger asChild>
         <Button
@@ -57,53 +70,42 @@ export default function BaseHeader() {
           size="icon"
           className="shrink-0 md:hidden"
         >
-          <Menu className="h-5 w-5" />
+          <HamburgerMenuIcon className="h-5 w-5" />
           <span className="sr-only">Toggle navigation menu</span>
         </Button>
       </SheetTrigger>
       <SheetContent side="left">
-        <nav className="grid gap-6 text-lg font-medium">
-          <a
-            href="#"
-            className="flex items-center gap-2 text-lg font-semibold"
-          >
-            <Scale className="h-6 w-6" />
-            <span className="sr-only">Acme Inc</span>
-          </a>
-          <a
-            href="#"
-            className="text-muted-foreground hover:text-foreground"
-          >
-            Dashboard
-          </a>
-          <a
-            href="#"
-            className="text-muted-foreground hover:text-foreground"
-          >
-            Orders
-          </a>
-          <a
-            href="#"
-            className="text-muted-foreground hover:text-foreground"
-          >
-            Products
-          </a>
-          <a
-            href="#"
-            className="text-muted-foreground hover:text-foreground"
-          >
-            Customers
-          </a>
-          <a href="#" className="hover:text-foreground">
-            Settings
-          </a>
-        </nav>
+        <NavigationMenu orientation="vertical">
+          <NavigationMenuList className="flex-col items-start space-x-0 space-y-1">
+            <NavigationMenuItem>
+              <NavigationMenuLink href="/terbaru" className={navigationMenuTriggerStyle()}>
+                Terbaru
+              </NavigationMenuLink>
+            </NavigationMenuItem>
+            <NavigationMenuItem>
+              <NavigationMenuTrigger>Peraturan</NavigationMenuTrigger>
+              <NavigationMenuContent >
+                <ul className="grid w-[400px] gap-3 p-4">
+                  {peraturans.map(({ title, description, href }) => <ListItem
+                    key={title}
+                    title={title}
+                    href={href}
+                  >
+                    {description}
+                  </ListItem>)}
+                </ul>
+              </NavigationMenuContent>
+            </NavigationMenuItem>
+            <NavigationMenuIndicator />
+          </NavigationMenuList>
+          <NavigationMenuViewport />
+        </NavigationMenu>
       </SheetContent>
     </Sheet>
     <div className="flex w-full items-center gap-4 md:ml-auto md:gap-2 lg:gap-4">
       <form className="ml-auto flex-1 sm:flex-initial">
         <div className="relative">
-          <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
+          <MagnifyingGlassIcon className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
           <Input
             type="search"
             placeholder="Search products..."
@@ -114,7 +116,7 @@ export default function BaseHeader() {
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
           <Button variant="secondary" size="icon" className="rounded-full">
-            <CircleUser className="h-5 w-5" />
+            <PersonIcon className="h-5 w-5" />
             <span className="sr-only">Toggle user menu</span>
           </Button>
         </DropdownMenuTrigger>
@@ -130,3 +132,30 @@ export default function BaseHeader() {
     </div>
   </header>)
 }
+
+
+const ListItem = React.forwardRef<
+  React.ElementRef<"a">,
+  React.ComponentPropsWithoutRef<"a">
+>(({ className, title, children, ...props }, ref) => {
+  return (
+    <li>
+      <NavigationMenuLink asChild>
+        <a
+          ref={ref}
+          className={cn(
+            "block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground",
+            className
+          )}
+          {...props}
+        >
+          <div className="text-sm font-medium leading-none">{title}</div>
+          <p className="line-clamp-2 text-sm leading-snug text-muted-foreground">
+            {children}
+          </p>
+        </a>
+      </NavigationMenuLink>
+    </li>
+  )
+})
+ListItem.displayName = "ListItem"
