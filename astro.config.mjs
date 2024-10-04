@@ -5,6 +5,10 @@ import tailwind from "@astrojs/tailwind";
 
 // https://astro.build/config
 export default defineConfig({
+  i18n: {
+    defaultLocale: "id",
+    locales: ["id", "en"]
+  },
   integrations: [react(), tailwind({ applyBaseStyles: false })],
   output: 'server',
   adapter: deno()

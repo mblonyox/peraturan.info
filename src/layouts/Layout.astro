@@ -2,18 +2,20 @@
 import "@/styles/globals.css";
 
 interface Props {
-	title: string;
+	title?: string;
 	description?: string;
 }
 
 import BaseFooter from "@/components/base-footer";
 import BaseHeader from "@/components/base-header";
 
-const { title, description } = Astro.props;
+const props = Astro.props;
+const title = [props.title, "Peraturan.Info"].filter(Boolean).join(" - ");
+const description = props.description ?? ""
 ---
 
 <!doctype html>
-<html lang="en">
+<html lang={Astro.currentLocale}>
 	<head>
 		<meta charset="UTF-8" />
 		<title>{title}</title>
