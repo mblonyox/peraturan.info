@@ -13,7 +13,7 @@
   "compilerOptions": { "jsx": "react-jsx", "jsxImportSource": "preact" },
   "lint": { "rules": { "tags": ["fresh", "recommended"] } },
   "imports": {
-    "$canvas": "https://deno.land/x/canvas@v1.4.1/mod.ts",
+    "$canvas": "https://deno.land/x/canvas@v1.4.2/mod.ts",
     "$fresh/": "https://deno.land/x/fresh@1.6.8/",
     "$mock_file/": "https://deno.land/x/mock_file@v1.1.2/",
     "$og_edge/": "https://deno.land/x/og_edge@0.0.6/",
