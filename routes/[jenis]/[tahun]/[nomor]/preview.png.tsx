@@ -1,6 +1,6 @@
+import { createCanvas } from "$canvas";
 import { Handlers } from "$fresh/server.ts";
-import { PDFiumLibrary } from "@hyzyla/pdfium";
-import sharp from "sharp";
+import { PDFiumLibrary, type PDFiumPageRenderOptions } from "@hyzyla/pdfium";
 import { getDB } from "@/lib/db/mod.ts";
 import { getSumberPeraturan } from "@/models/mod.ts";
 
@@ -44,11 +44,18 @@ async function getPdfFirstPageImage(data: Uint8Array) {
   const doc = await pdfium.loadDocument(data);
   const page = doc.getPage(0);
   const image = page.render({
-    scale: 2,
-    render: ({ data, width, height }) =>
-      sharp(data, { raw: { width: width, height: height, channels: 4 } }).png()
-        .toBuffer(),
+    scale: 1,
+    render: renderPage,
   });
   doc.destroy();
   return image;
+}
+
+function renderPage({ data, width, height }: PDFiumPageRenderOptions) {
+  const canvas = createCanvas(width, height);
+  const ctx = canvas.getContext("2d");
+  const image = ctx.createImageData(width, height);
+  data.forEach((v, i) => image.data[i] = v);
+  ctx.putImageData(image, 0, 0);
+  return Promise.resolve(canvas.toBuffer());
 }
