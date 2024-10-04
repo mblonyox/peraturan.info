@@ -1,6 +1,6 @@
-import { createCanvas } from "$canvas";
 import { Handlers } from "$fresh/server.ts";
-import { Document } from "@/lib/pdfium/mod.ts";
+import { PDFiumLibrary } from "@hyzyla/pdfium";
+import sharp from "sharp";
 import { getDB } from "@/lib/db/mod.ts";
 import { getSumberPeraturan } from "@/models/mod.ts";
 
@@ -12,9 +12,8 @@ export const handler: Handlers = {
     const url = sumber.at(0)?.url_pdf;
     if (!url) return ctx.renderNotFound();
     const pdfData = await getPdfData(url);
-    const imageData = getPdfFirstPageImage(pdfData);
-    const png = convertImageData(imageData);
-    return new Response(png, {
+    const png = await getPdfFirstPageImage(pdfData);
+    return new Response(png.data, {
       headers: {
         "Content-Type": "image/png",
         "Cache-Control": "public, max-age=31536000, immutable",
@@ -40,21 +39,16 @@ async function getPdfData(url: string) {
   return new Uint8Array(data);
 }
 
-function getPdfFirstPageImage(data: Uint8Array) {
-  const doc = new Document(data);
+async function getPdfFirstPageImage(data: Uint8Array) {
+  const pdfium = await PDFiumLibrary.init();
+  const doc = await pdfium.loadDocument(data);
   const page = doc.getPage(0);
-  const imageData = page?.getImageData();
-  page?.destroy();
+  const image = page.render({
+    scale: 2,
+    render: ({ data, width, height }) =>
+      sharp(data, { raw: { width: width, height: height, channels: 4 } }).png()
+        .toBuffer(),
+  });
   doc.destroy();
-  if (!imageData) throw new Error("No Image found.");
-  return imageData;
-}
-
-function convertImageData(
-  imageData: ImageData,
-) {
-  const canvas = createCanvas(imageData.width, imageData.height);
-  const ctx = canvas.getContext("2d");
-  ctx.putImageData(imageData, 0, 0);
-  return canvas.toBuffer();
+  return image;
 }

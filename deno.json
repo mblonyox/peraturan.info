@@ -13,13 +13,13 @@
   "compilerOptions": { "jsx": "react-jsx", "jsxImportSource": "preact" },
   "lint": { "rules": { "tags": ["fresh", "recommended"] } },
   "imports": {
-    "$canvas": "https://deno.land/x/canvas@v1.4.2/mod.ts",
     "$fresh/": "https://deno.land/x/fresh@1.6.8/",
     "$mock_file/": "https://deno.land/x/mock_file@v1.1.2/",
     "$og_edge/": "https://deno.land/x/og_edge@0.0.6/",
     "$sqlite/": "https://deno.land/x/sqlite@v3.8/",
     "$std/": "https://deno.land/std@0.224.0/",
     "@/": "./",
+    "@hyzyla/pdfium": "npm:@hyzyla/pdfium@^2.1.2",
     "@orama/orama": "npm:@orama/orama@^2.0.18",
     "@orama/plugin-data-persistence": "npm:@orama/plugin-data-persistence@^2.0.18",
     "@preact/signals": "https://esm.sh/*@preact/signals@1.2.2",
@@ -28,10 +28,10 @@
     "feed": "npm:feed@^4.2.2",
     "github-slugger": "npm:github-slugger@^2.0.0",
     "marked": "npm:marked@^12.0.2",
-    "pdfium": "https://gist.githubusercontent.com/mblonyox/57eee6e1d34e05c102975cd65b27ccb5/raw/1c25168f61c699caafcadf80f554ce927e33ee9e/pdfium.js",
     "preact": "https://esm.sh/preact@10.19.6",
     "preact/": "https://esm.sh/preact@10.19.6/",
-    "schema-dts": "https://esm.sh/v135/*schema-dts@1.1.2"
+    "schema-dts": "https://esm.sh/v135/*schema-dts@1.1.2",
+    "sharp": "npm:sharp@^0.33.5"
   },
   "scopes": {
     "https://deno.land/x/og_edge@0.0.6/": {
