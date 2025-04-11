@@ -25,7 +25,7 @@ const whenExternalScripts = (items: (() => AstroIntegration) | (() => AstroInteg
 export default defineConfig({
   adapter: deno(),
 
-  output: 'static',
+  output: 'server',
 
   integrations: [
     tailwind({
