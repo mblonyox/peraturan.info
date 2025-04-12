@@ -31,4 +31,7 @@ jobs:
 
       - name: Upload to Deno Deploy
         uses: denoland/deployctl@v1
+        with:
+          project: peraturan
+          entrypoint: dist/server/entry.mjs
 
