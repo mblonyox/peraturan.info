@@ -1,0 +1,27 @@
+{
+  "imports": {
+    "@astrojs/internal-helpers": "npm:@astrojs/internal-helpers",
+    "@atproto/api": "npm:@atproto/api",
+    "@iconify/utils": "npm:@iconify/utils",
+    "@oslojs/encoding": "npm:@oslojs/encoding",
+    "clsx": "npm:clsx",
+    "cookie": "npm:cookie",
+    "cssesc": "npm:cssesc",
+    "devalue": "npm:devalue",
+    "es-module-lexer": "npm:es-module-lexer",
+    "html-escaper": "npm:html-escaper",
+    "kleur": "npm:kleur",
+    "linkedom": "npm:linkedom",
+    "mrmime": "npm:mrmime",
+    "neotraverse": "npm:neotraverse",
+    "p-limit": "npm:p-limit",
+    "ts-pattern": "npm:ts-pattern",
+    "unstorage": "npm:unstorage"
+  },
+  "deploy": {
+    "project": "f7465be3-cdab-4513-8401-024b9042c6a7",
+    "exclude": ["**/node_modules"],
+    "include": ["deno.json", "package.json", "dist"],
+    "entrypoint": "dist/server/entry.mjs"
+  }
+}
