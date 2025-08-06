@@ -1,4 +1,4 @@
-import { Peraturan } from "@/models/peraturan.ts";
+import type { Peraturan } from "~/models/peraturan.ts";
 import { Feed } from "feed";
 
 export const createPeraturanFeed = (list: Peraturan[], origin: string) => {
