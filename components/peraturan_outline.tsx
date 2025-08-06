@@ -1,5 +1,5 @@
-import { createMarked, PeraturanToken } from "@/utils/md.ts";
-import { ellipsis } from "@/utils/string.ts";
+import { createMarked, PeraturanToken } from "~/utils/md.ts";
+import { ellipsis } from "~/utils/string.ts";
 
 interface PeraturanOutlineProps {
   md: string;
@@ -46,7 +46,7 @@ export default function PeraturanOutline(
                     ? token.items
                     : (token.tokens ?? [token])
                 ).flat().map(
-                  (token) => <li>{ellipsis(token.raw)}</li>,
+                  (token) => <li key={token}>{ellipsis(token.raw)}</li>,
                 )}
               </ul>
             </details>
@@ -64,7 +64,7 @@ export default function PeraturanOutline(
                     ? token.items
                     : (token.tokens ?? [token])
                 ).flat().map(
-                  (token) => <li>{ellipsis(token.raw)}</li>,
+                  (token) => <li key={token}>{ellipsis(token.raw)}</li>,
                 )}
               </ul>
             </details>

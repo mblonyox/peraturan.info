@@ -1,68 +1,67 @@
-import { Handler, PageProps } from "$fresh/server.ts";
-import { AppContext } from "@/utils/app_context.ts";
-import { getDB } from "@/lib/db/mod.ts";
+import { getDB } from "~/lib/db/mod.ts";
 import {
   getListPeraturanByTanggal,
   getTanggalTerakhir,
-  Peraturan,
-} from "@/models/peraturan.ts";
-export const handler: Handler<TerbaruPageProps, AppContext> = async (
-  req,
-  ctx,
-) => {
-  const tanggalParam = new URL(req.url).searchParams.get("tanggal");
-  if (tanggalParam) {
-    if (
-      !/^\d{4}-\d{2}-\d{2}$/.test(tanggalParam) ||
-      isNaN(Date.parse(tanggalParam))
-    ) {
-      throw new Error("Tanggal tidak valid.");
-    }
-  }
-  const db = await getDB();
-  const tanggalTerakhir = getTanggalTerakhir(db);
-  const tanggalDipilih = tanggalParam ?? tanggalTerakhir.at(0)!.tanggal;
-  const listPeraturan = getListPeraturanByTanggal(db, tanggalDipilih);
-  if (!tanggalTerakhir.map(({ tanggal }) => tanggal).includes(tanggalDipilih)) {
-    tanggalTerakhir.push({
-      tanggal: tanggalDipilih,
-      jumlah: listPeraturan.length,
-    });
-    tanggalTerakhir.sort((a, b) => a.tanggal < b.tanggal ? 1 : -1);
-  }
-  const tanggalDipilihFmtd = new Date(tanggalDipilih).toLocaleDateString(
-    "id-ID",
-    {
-      day: "numeric",
-      month: "long",
-      year: "numeric",
-    },
-  );
-  ctx.state.seo = {
-    title: `Peraturan Terbaru - ${tanggalDipilihFmtd}`,
-    description:
-      `Tampilan ${listPeraturan.length} peraturan terbaru yang diundangkan pada tanggal ${tanggalDipilihFmtd}`,
-  };
-  ctx.state.breadcrumbs = [{ name: "Peraturan Terbaru" }];
-  return ctx.render({
-    tanggalDipilih,
-    tanggalTerakhir,
-    listPeraturan,
-  });
-};
+  type Peraturan,
+} from "~/models/peraturan.ts";
+import { define } from "~/utils/define.ts";
 
-type TerbaruPageProps = {
+interface Data {
   tanggalDipilih: string;
   tanggalTerakhir: { tanggal: string; jumlah: number }[];
   listPeraturan: Peraturan[];
-};
+}
 
-export default function TerbaruPage(
-  { data: { tanggalDipilih, tanggalTerakhir, listPeraturan } }: PageProps<
-    TerbaruPageProps
-  >,
-) {
-  return (
+export const handler = define.handlers<Data>({
+  GET: async (ctx) => {
+    const tanggalParam = new URL(ctx.req.url).searchParams.get("tanggal");
+    if (tanggalParam) {
+      if (
+        !/^\d{4}-\d{2}-\d{2}$/.test(tanggalParam) ||
+        isNaN(Date.parse(tanggalParam))
+      ) {
+        throw new Error("Tanggal tidak valid.");
+      }
+    }
+    const db = await getDB();
+    const tanggalTerakhir = getTanggalTerakhir(db);
+    const tanggalDipilih = tanggalParam ?? tanggalTerakhir.at(0)!.tanggal;
+    const listPeraturan = getListPeraturanByTanggal(db, tanggalDipilih);
+    if (
+      !tanggalTerakhir.map(({ tanggal }) => tanggal).includes(tanggalDipilih)
+    ) {
+      tanggalTerakhir.push({
+        tanggal: tanggalDipilih,
+        jumlah: listPeraturan.length,
+      });
+      tanggalTerakhir.sort((a, b) => a.tanggal < b.tanggal ? 1 : -1);
+    }
+    const tanggalDipilihFmtd = new Date(tanggalDipilih).toLocaleDateString(
+      "id-ID",
+      {
+        day: "numeric",
+        month: "long",
+        year: "numeric",
+      },
+    );
+    ctx.state.seo = {
+      title: `Peraturan Terbaru - ${tanggalDipilihFmtd}`,
+      description:
+        `Tampilan ${listPeraturan.length} peraturan terbaru yang diundangkan pada tanggal ${tanggalDipilihFmtd}`,
+    };
+    ctx.state.breadcrumbs = [{ name: "Peraturan Terbaru" }];
+    return {
+      data: {
+        tanggalDipilih,
+        tanggalTerakhir,
+        listPeraturan,
+      },
+    };
+  },
+});
+
+export default define.page<typeof handler>(
+  ({ data: { tanggalDipilih, tanggalTerakhir, listPeraturan } }) => (
     <div>
       <h1>Peraturan Terbaru</h1>
       <p>
@@ -194,5 +193,5 @@ export default function TerbaruPage(
         </div>
       </div>
     </div>
-  );
-}
+  ),
+);

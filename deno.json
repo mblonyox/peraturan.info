@@ -1,46 +1,38 @@
 {
-  "lock": false,
   "tasks": {
-    "cli": "echo \"import '\\$fresh/src/dev/cli.ts'\" | deno run --unstable -A -",
-    "manifest": "deno task cli manifest $(pwd)",
-    "start": "deno run -A --watch=static/,routes/ dev.ts",
+    "check": "deno fmt --check . && deno lint . && deno check",
+    "dev": "deno run -A --watch=static/,routes/ dev.ts",
     "build": "deno run -A dev.ts build",
-    "preview": "deno run -A main.ts",
-    "update": "deno run -A -r https://fresh.deno.dev/update .",
-    "check:types": "deno check **/*.ts **/*.tsx",
+    "preview": "deno serve -A _fresh/server.js",
+    "update": "deno run -A -r jsr:@fresh/update .",
     "indexing": "deno run -A indexing.ts"
   },
   "compilerOptions": { "jsx": "react-jsx", "jsxImportSource": "preact" },
   "lint": { "rules": { "tags": ["fresh", "recommended"] } },
   "imports": {
     "$canvas": "https://deno.land/x/canvas@v1.4.2/mod.ts",
-    "$fresh/": "https://deno.land/x/fresh@1.6.8/",
-    "$mock_file/": "https://deno.land/x/mock_file@v1.1.2/",
-    "$og_edge/": "https://deno.land/x/og_edge@0.0.6/",
-    "$sqlite/": "https://deno.land/x/sqlite@v3.8/",
-    "$std/": "https://deno.land/std@0.224.0/",
-    "@/": "./",
+    "$mock_file": "https://deno.land/x/mock_file@v1.1.2/mod.ts",
+    "$og_edge": "https://deno.land/x/og_edge@0.0.6/mod.ts",
+    "$sqlite": "https://deno.land/x/sqlite@v3.8/mod.ts",
     "@hyzyla/pdfium": "npm:@hyzyla/pdfium@^2.1.2",
     "@orama/orama": "npm:@orama/orama@^2.0.18",
     "@orama/plugin-data-persistence": "npm:@orama/plugin-data-persistence@^2.0.18",
-    "@preact/signals": "https://esm.sh/*@preact/signals@1.2.2",
-    "@preact/signals-core": "https://esm.sh/*@preact/signals-core@1.5.1",
+    "@preact/signals": "npm:@preact/signals@^2.2.1",
+    "@std/encoding": "jsr:@std/encoding@^1.0.10",
+    "@std/http": "jsr:@std/http@^1.0.20",
+    "@std/path": "jsr:@std/path@^1.1.1",
+    "~/": "./",
     "dpack": "npm:dpack@^0.6.22",
     "feed": "npm:feed@^4.2.2",
+    "fresh": "jsr:@fresh/core@^2.0.0-alpha.54",
     "github-slugger": "npm:github-slugger@^2.0.0",
     "marked": "npm:marked@^12.0.2",
-    "preact": "https://esm.sh/preact@10.19.6",
-    "preact/": "https://esm.sh/preact@10.19.6/",
-    "schema-dts": "https://esm.sh/v135/*schema-dts@1.1.2"
+    "preact": "npm:preact@^10.27.0",
+    "schema-dts": "npm:schema-dts@^1.1.2"
   },
   "scopes": {
     "https://deno.land/x/og_edge@0.0.6/": {
-      "https://esm.sh/react@18.2.0": "https://esm.sh/preact@10.14.1/compat"
-    },
-    "https://esm.sh/v135/": {
-      "@msgpack/msgpack": "https://esm.sh/v135/@msgpack/msgpack@2.8.0",
-      "pretty-format": "https://esm.sh/v135/pretty-format@3.8.0",
-      "xml-js": "https://esm.sh/v135/xml-js@1.6.11"
+      "https://esm.sh/react@18.2.0": "https://esm.sh/preact@10.27.0/compat"
     }
   },
   "exclude": ["**/_fresh/*", "data"]

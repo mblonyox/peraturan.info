@@ -1,12 +1,11 @@
-import { defineLayout } from "$fresh/src/server/defines.ts";
-import Webmentions from "@/islands/webmentions.tsx";
-import SocialShareButtons from "@/components/social_share_buttons.tsx";
+import Webmentions from "~/islands/webmentions.tsx";
+import SocialShareButtons from "~/components/social_share_buttons.tsx";
+import { define } from "~/utils/define.ts";
 
-export default defineLayout((
-  _req,
-  { Component, route, params },
+export default define.page((
+  { Component, url, params },
 ) => {
-  const path = route.split("/").at(-1);
+  const path = url.pathname.split("/").at(-1);
   const { jenis, tahun, nomor } = params;
   const tabs = [
     {

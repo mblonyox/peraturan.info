@@ -1,4 +1,4 @@
-import { DB } from "$sqlite/mod.ts";
+import { DB } from "$sqlite";
 import { Peraturan, PeraturanRow, PuuRef } from "./peraturan.ts";
 
 export const JENIS2_RELASI = [

@@ -1,4 +1,4 @@
-import { DB } from "$sqlite/mod.ts";
+import { DB } from "$sqlite";
 import { PuuRef } from "./peraturan.ts";
 
 export type SumberPeraturan = {

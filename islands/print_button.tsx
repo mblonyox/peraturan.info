@@ -1,4 +1,4 @@
-import { asset } from "$fresh/runtime.ts";
+import { asset } from "fresh/runtime";
 import { useCallback } from "preact/hooks";
 
 export default function PrintButton() {
@@ -11,6 +11,7 @@ export default function PrintButton() {
   }, []);
   return (
     <button
+      type="button"
       className="btn btn-outline-secondary"
       onClick={onClickHandler}
       aria-label="Cetak"

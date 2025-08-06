@@ -1,10 +1,11 @@
-import { Handlers } from "$fresh/server.ts";
 import { search } from "@orama/orama";
 import { boundedLevenshtein } from "@orama/orama/internals";
-import { getOrama } from "@/lib/orama/mod.ts";
 
-export const handler: Handlers = {
-  GET: async (req, _ctx) => {
+import { getOrama } from "~/lib/orama/mod.ts";
+import { define } from "~/utils/define.ts";
+
+export const handler = define.handlers({
+  GET: async ({ req }) => {
     try {
       const query = new URL(req.url).searchParams.get("query")?.trim();
       if (!query || query.length < 3) return new Response(JSON.stringify([]));
@@ -33,7 +34,7 @@ export const handler: Handlers = {
       return new Response(`Internal Server Error: ${error}`, { status: 500 });
     }
   },
-};
+});
 
 async function findNearestWordIndex(
   words: string[],

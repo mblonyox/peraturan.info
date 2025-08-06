@@ -1,11 +1,13 @@
-import { FreshContext } from "$fresh/server.ts";
-import { HOSTNAME } from "../utils/const.ts";
+import { HOSTNAME } from "~/utils/const.ts";
+import { define } from "~/utils/define.ts";
 
-export const handler = (_req: Request, ctx: FreshContext) => {
+const redirectHostname = define.middleware((ctx) => {
   if (HOSTNAME && ctx.url.hostname !== HOSTNAME) {
     const url = new URL(ctx.url);
     url.hostname = HOSTNAME;
     return Response.redirect(url, 301);
   }
   return ctx.next();
-};
+});
+
+export const handler = [redirectHostname];

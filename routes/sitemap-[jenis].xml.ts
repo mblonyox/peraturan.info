@@ -1,7 +1,7 @@
-import { Handlers } from "$fresh/server.ts";
-import { RouteConfig } from "$fresh/server.ts";
-import { getDB, lastModDB } from "@/lib/db/mod.ts";
-import { getFilterByTahunCount } from "@/models/peraturan.ts";
+import { RouteConfig } from "fresh";
+import { getDB, lastModDB } from "~/lib/db/mod.ts";
+import { getFilterByTahunCount } from "~/models/peraturan.ts";
+import { Handlers } from "fresh/compat";
 
 export const config: RouteConfig = {
   routeOverride: "/sitemap-:jenis.xml",
@@ -13,7 +13,8 @@ type SitemapTag = {
 };
 
 export const handler: Handlers = {
-  GET: async (req, ctx) => {
+  GET: async (ctx) => {
+    const req = ctx.req;
     const origin = new URL(req.url).origin;
     const { jenis } = ctx.params;
     const db = await getDB();

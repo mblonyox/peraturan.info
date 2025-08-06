@@ -1,9 +1,9 @@
-import { Handlers } from "$fresh/server.ts";
-import { RouteConfig } from "$fresh/server.ts";
-import { getDB } from "@/lib/db/mod.ts";
-import { getListPeraturan } from "@/models/peraturan.ts";
-import { lastModMd, readTextMd } from "@/utils/fs.ts";
-import { createMarked, PeraturanToken } from "@/utils/md.ts";
+import { RouteConfig } from "fresh";
+import { getDB } from "~/lib/db/mod.ts";
+import { getListPeraturan } from "~/models/peraturan.ts";
+import { lastModMd, readTextMd } from "~/utils/fs.ts";
+import { createMarked, PeraturanToken } from "~/utils/md.ts";
+import { Handlers } from "fresh/compat";
 
 type UrlTag = {
   loc: string;
@@ -24,7 +24,8 @@ export const config: RouteConfig = {
 };
 
 export const handler: Handlers = {
-  GET: async (req, ctx) => {
+  GET: async (ctx) => {
+    const req = ctx.req;
     const origin = new URL(req.url).origin;
     const { jenis, tahun } = ctx.params;
     const db = await getDB();

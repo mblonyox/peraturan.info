@@ -1,4 +1,4 @@
-import { IS_BROWSER } from "$fresh/runtime.ts";
+import { IS_BROWSER } from "fresh/runtime";
 import { useEffect } from "preact/hooks";
 
 export default function PeraturanOutlineToggler() {
@@ -35,6 +35,7 @@ export default function PeraturanOutlineToggler() {
         Kerangka
       </a>
       <button
+        type="button"
         className="btn btn-outline-secondary d-none d-xl-block"
         onClick={onClickHandler}
       >

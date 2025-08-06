@@ -1,10 +1,7 @@
-import { PageProps } from "$fresh/server.ts";
+import type { PageProps } from "fresh";
 
-export default function Error500Page(
-  { error, remoteAddr: { hostname, port, transport }, url }: PageProps,
-) {
+export default function Error500Page({ error, url }: PageProps) {
   const message = (error as Error).message ?? "Unknow error";
-  const remoteAddr = `${transport}://${hostname}:${port}`;
   return (
     <article className="text-center card">
       <div className="card-body">
@@ -18,7 +15,6 @@ export default function Error500Page(
               <div className="card-body">
                 <samp>
                   URL : {url.toString()} <br />
-                  Remote Address : {remoteAddr} <br />
                   Time : {new Date().toISOString()}
                 </samp>
               </div>

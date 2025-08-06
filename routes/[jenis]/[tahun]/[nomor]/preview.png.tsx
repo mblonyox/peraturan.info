@@ -1,16 +1,18 @@
+import { HttpError } from "fresh";
 import { createCanvas } from "$canvas";
-import { Handlers } from "$fresh/server.ts";
 import { PDFiumLibrary, type PDFiumPageRenderOptions } from "@hyzyla/pdfium";
-import { getDB } from "@/lib/db/mod.ts";
-import { getSumberPeraturan } from "@/models/mod.ts";
 
-export const handler: Handlers = {
-  GET: async (_req, ctx) => {
-    const { jenis, tahun, nomor } = ctx.params;
+import { getDB } from "~/lib/db/mod.ts";
+import { getSumberPeraturan } from "~/models/mod.ts";
+import { define } from "~/utils/define.ts";
+
+export const handler = define.handlers({
+  GET: async ({ params }) => {
+    const { jenis, tahun, nomor } = params;
     const db = await getDB();
     const sumber = getSumberPeraturan(db, jenis, tahun, nomor);
     const url = sumber.at(0)?.url_pdf;
-    if (!url) return ctx.renderNotFound();
+    if (!url) throw new HttpError(404);
     const pdfData = await getPdfData(url);
     const png = await getPdfFirstPageImage(pdfData);
     return new Response(png.data, {
@@ -20,7 +22,7 @@ export const handler: Handlers = {
       },
     });
   },
-};
+});
 
 async function getPdfData(url: string) {
   const data = await fetch(url).then(

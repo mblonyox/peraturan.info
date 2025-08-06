@@ -1,27 +1,33 @@
-import { Handler, PageProps } from "$fresh/server.ts";
-import { RouteConfig } from "$fresh/server.ts";
-import { getDB } from "@/lib/db/mod.ts";
-import { getPeraturan } from "@/models/mod.ts";
-import { createMarked, PeraturanToken } from "@/utils/md.ts";
-import { readTextMd } from "@/utils/fs.ts";
-import { ellipsis } from "@/utils/string.ts";
-import PeraturanIsi from "@/components/peraturan_isi.tsx";
+import { HttpError, type RouteConfig } from "fresh";
+
+import PeraturanIsi from "~/components/peraturan_isi.tsx";
+import { getDB } from "~/lib/db/mod.ts";
+import { getPeraturan } from "~/models/mod.ts";
+import { define } from "~/utils/define.ts";
+import { readTextMd } from "~/utils/fs.ts";
+import { createMarked, PeraturanToken } from "~/utils/md.ts";
+import { ellipsis } from "~/utils/string.ts";
+
+interface Data {
+  path: string;
+  md: string;
+  html: string;
+  prev?: { name: string; url: string };
+  next?: { name: string; url: string };
+}
 
 export const config: RouteConfig = {
   routeOverride:
     "/:jenis/:tahun/:nomor/:bab(bab-[mdclxvi]+){/:bagian(bagian-\\w+)}?{/:paragraf(paragraf-\\d+)}?",
 };
 
-export const handler: Handler<PeraturanPartialPageData> = async (
-  req,
-  ctx,
-) => {
+export const handler = define.handlers<Data>(async (ctx) => {
   const { jenis, tahun, nomor, bab, bagian, paragraf } = ctx.params;
   const db = await getDB();
   const peraturan = getPeraturan(db, jenis, tahun, nomor);
-  if (!peraturan) return ctx.renderNotFound();
+  if (!peraturan) throw new HttpError(404);
   const md = await readTextMd({ jenis, tahun, nomor });
-  if (!md) return ctx.renderNotFound();
+  if (!md) throw new HttpError(404);
   const marked = createMarked();
   const rootTokens = marked.lexer(md);
   const breadcrumbs: { name: string; url?: string }[] = [
@@ -36,7 +42,7 @@ export const handler: Handler<PeraturanPartialPageData> = async (
     token = tokens.find((token) =>
       token.nomor?.toLowerCase().replace(" ", "-") === v
     );
-    if (!token?.nomor) return ctx.renderNotFound();
+    if (!token?.nomor) throw new HttpError(404);
     const path = breadcrumbs.at(-1)?.url + "/";
     breadcrumbs.push({
       name: token.nomor,
@@ -64,7 +70,7 @@ export const handler: Handler<PeraturanPartialPageData> = async (
     }
     tokens = token.tokens!;
   }
-  if (!token?.nomor) return ctx.renderNotFound();
+  if (!token?.nomor) throw new HttpError(404);
   breadcrumbs.pop();
   breadcrumbs.push({ name: token.nomor });
   juduls.pop();
@@ -74,7 +80,7 @@ export const handler: Handler<PeraturanPartialPageData> = async (
   ctx.state.seo = {
     title: `${judulPartial} | ${peraturan.rujukPanjang}`,
     description: ellipsis(token.raw),
-    image: `${new URL(req.url).origin}/${jenis}/${tahun}/${nomor}/image.png`,
+    image: `${ctx.url.origin}/${jenis}/${tahun}/${nomor}/image.png`,
   };
   ctx.state.breadcrumbs = breadcrumbs;
   ctx.state.pageHeading = {
@@ -82,19 +88,9 @@ export const handler: Handler<PeraturanPartialPageData> = async (
     description: peraturan.rujukPendek,
   };
   const path = `/${jenis}/${tahun}/${nomor}`;
-  return ctx.render({ path, md, html, prev, next });
-};
+  return { data: { path, md, html, prev, next } };
+});
 
-interface PeraturanPartialPageData {
-  path: string;
-  md: string;
-  html: string;
-  prev?: { name: string; url: string };
-  next?: { name: string; url: string };
-}
-
-export default function PeraturanPartialPage(
-  { data }: PageProps<PeraturanPartialPageData>,
-) {
-  return <PeraturanIsi {...data} />;
-}
+export default define.page<typeof handler>(({ data }) => (
+  <PeraturanIsi {...data} />
+));

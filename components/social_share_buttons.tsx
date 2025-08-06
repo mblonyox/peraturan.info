@@ -1,6 +1,6 @@
-import { ellipsis } from "@/utils/string.ts";
-import { useAppContext } from "@/utils/app_context.ts";
-import WebShareButton from "@/islands/web_share_button.tsx";
+import { ellipsis } from "~/utils/string.ts";
+import { useAppContext } from "~/utils/app_context.ts";
+import WebShareButton from "~/islands/web_share_button.tsx";
 
 export default function SocialShareButtons() {
   const appContext = useAppContext();

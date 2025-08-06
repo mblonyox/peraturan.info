@@ -1,4 +1,4 @@
-import { dirname, fromFileUrl, resolve } from "$std/path/mod.ts";
+import { dirname, fromFileUrl, resolve } from "@std/path";
 import { create, load, Orama } from "@orama/orama";
 import * as dpack from "dpack";
 

@@ -1,8 +1,10 @@
 #!/usr/bin/env -S deno run -A --watch=static/,routes/
+import { Builder } from "fresh/dev";
 
-import dev from "$fresh/dev.ts";
-import config from "./fresh.config.ts";
+const builder = new Builder({ target: "safari12" });
 
-import "$std/dotenv/load.ts";
-
-await dev(import.meta.url, "./main.ts", config);
+if (Deno.args.includes("build")) {
+  await builder.build();
+} else {
+  await builder.listen(() => import("./main.ts"));
+}

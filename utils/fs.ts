@@ -1,4 +1,4 @@
-import { dirname, fromFileUrl, resolve } from "$std/path/mod.ts";
+import { dirname, fromFileUrl, resolve } from "@std/path";
 
 export const rootPath = resolve(dirname(fromFileUrl(import.meta.url)), "..");
 

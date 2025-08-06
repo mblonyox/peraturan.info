@@ -1,5 +1,5 @@
 .peraturan * {
-  font-family: 'Bookman Old Style', 'EB Garamond', serif;
+  font-family: "Bookman Old Style", "EB Garamond", serif;
   font-size: 12pt;
   font-weight: normal;
   color: black;
@@ -15,7 +15,7 @@
     margin: auto;
     padding: 25mm;
     background-color: white;
-    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;;
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
   }
 }
 .peraturan .judul,
@@ -98,18 +98,18 @@
   margin-bottom: 0;
 }
 
-.peraturan ol.butir.number  {
+.peraturan ol.butir.number {
   list-style: decimal;
 }
-.peraturan ol.butir.lower-latin  {
+.peraturan ol.butir.lower-latin {
   list-style: lower-latin;
 }
-.peraturan ol.butir.kurung  {
+.peraturan ol.butir.kurung {
   list-style: none;
 }
-.peraturan ol.butir.number.kurung > li::marker  {
+.peraturan ol.butir.number.kurung > li::marker {
   content: counter(list-item, decimal) ") ";
 }
-.peraturan ol.butir.lower-latin.kurung > li::marker  {
+.peraturan ol.butir.lower-latin.kurung > li::marker {
   content: counter(list-item, lower-latin) ") ";
 }

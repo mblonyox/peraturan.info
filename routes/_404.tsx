@@ -1,4 +1,4 @@
-import { PageProps } from "$fresh/server.ts";
+import { PageProps } from "fresh";
 
 export default function NotFoundPage({ url }: PageProps) {
   return (

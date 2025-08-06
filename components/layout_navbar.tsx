@@ -1,7 +1,7 @@
-import { asset } from "$fresh/runtime.ts";
-import { useAppContext } from "@/utils/app_context.ts";
-import DarkModeToggler from "@/islands/dark_mode_toggler.tsx";
-import SearchInput from "@/islands/search_input.tsx";
+import { asset } from "fresh/runtime";
+import { useAppContext } from "~/utils/app_context.ts";
+import DarkModeToggler from "~/islands/dark_mode_toggler.tsx";
+import SearchInput from "~/islands/search_input.tsx";
 
 const menus = [
   { path: "/uu", teks: "Undang\u2011Undang" },

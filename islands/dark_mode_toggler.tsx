@@ -1,4 +1,4 @@
-import { IS_BROWSER } from "$fresh/runtime.ts";
+import { IS_BROWSER } from "fresh/runtime";
 import { useEffect, useState } from "preact/hooks";
 
 const preferDark = () =>

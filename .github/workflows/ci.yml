@@ -17,12 +17,12 @@ jobs:
           - macos-latest
           - windows-latest
         include:
-        - os: ubuntu-latest
-          cache_path: ~/.cache/deno/
-        - os: macos-latest
-          cache_path: ~/Library/Caches/deno/
-        - os: windows-latest
-          cache_path: ~\AppData\Local\deno\
+          - os: ubuntu-latest
+            cache_path: ~/.cache/deno/
+          - os: macos-latest
+            cache_path: ~/Library/Caches/deno/
+          - os: windows-latest
+            cache_path: ~\AppData\Local\deno\
 
     steps:
       - name: Setup repo

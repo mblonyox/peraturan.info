@@ -1,10 +1,11 @@
-import { defineApp } from "$fresh/src/server/defines.ts";
-import { getCookies } from "$std/http/cookie.ts";
-import { GOOGLE_TAG_ID, HOSTNAME } from "@/utils/const.ts";
-import { AppContext, AppContextProvider } from "@/utils/app_context.ts";
-import SeoTags from "@/components/seo_tags.tsx";
+import { getCookies } from "@std/http";
 
-export default defineApp<AppContext>((req, { Component, url, state }) => {
+import { GOOGLE_TAG_ID, HOSTNAME } from "~/utils/const.ts";
+import SeoTags from "~/components/seo_tags.tsx";
+import { define } from "~/utils/define.ts";
+import { AppContextProvider } from "~/utils/app_context.ts";
+
+export default define.page(({ Component, url, state, req }) => {
   let theme: "dark" | "light" | undefined;
   const cookies = getCookies(req.headers);
   if (cookies.theme === "dark" || cookies.theme === "light") {
@@ -15,10 +16,13 @@ export default defineApp<AppContext>((req, { Component, url, state }) => {
   canonicalUrl.searchParams.sort();
   if (HOSTNAME) canonicalUrl.hostname = HOSTNAME;
   return (
-    <html lang="id" data-bs-theme={theme}>
+    <html lang="id" data-bs-theme={state.theme}>
       <head>
         <meta charSet="utf-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta
+          name="viewport"
+          content="width=device-width, initial-scale=1.0"
+        />
         <link rel="canonical" href={canonicalUrl.toString()} />
         <link rel="me" href="mailto:mblonyox@gmail.com" />
         <link
@@ -72,10 +76,10 @@ export default defineApp<AppContext>((req, { Component, url, state }) => {
           href="/icons/favicon-16x16.png"
         />
         <link rel="manifest" href="/manifest.json" />
+        <SeoTags url={url} {...state.seo} />
       </head>
       <body style={{ overflowY: "scroll", overflowX: "hidden" }}>
         <AppContextProvider value={{ ...state, url, theme }}>
-          <SeoTags />
           <Component />
         </AppContextProvider>
         <script
@@ -89,6 +93,7 @@ export default defineApp<AppContext>((req, { Component, url, state }) => {
           defer
         />
         <script
+          // deno-lint-ignore react-no-danger
           dangerouslySetInnerHTML={{
             __html: `
               window.dataLayer = window.dataLayer || [];

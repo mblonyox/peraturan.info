@@ -1,4 +1,4 @@
-import { useAppContext } from "@/utils/app_context.ts";
+import { useAppContext } from "~/utils/app_context.ts";
 
 type PaginationProps =
   & {
@@ -51,8 +51,7 @@ export default function Pagination({
         <li className={"page-item" + (page === 1 ? " disabled" : "")}>
           <a
             className="page-link"
-            href={pageUrl(page - 1)}
-            disabled={page === 1}
+            href={page === 1 ? "#" : pageUrl(page - 1)}
           >
             &lt;
           </a>
@@ -100,8 +99,7 @@ export default function Pagination({
         <li className={"page-item" + (page === lastPage ? " disabled" : "")}>
           <a
             className="page-link"
-            href={pageUrl(page + 1)}
-            disabled={page === lastPage}
+            href={page === lastPage ? "#" : pageUrl(page + 1)}
           >
             &gt;
           </a>

@@ -4,7 +4,7 @@ import type {
   TokenizerAndRendererExtension,
   Tokens,
 } from "marked";
-import { use } from "marked";
+import { use as markedUse } from "marked";
 import { slug } from "github-slugger";
 
 export type PeraturanToken = Tokens.Generic & {
@@ -399,4 +399,4 @@ const extension: MarkedExtension = {
   ],
 };
 
-export const createMarked = () => use(extension);
+export const createMarked = () => markedUse(extension);

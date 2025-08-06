@@ -1,41 +1,17 @@
-import { Handler, PageProps } from "$fresh/server.ts";
-import { getDB } from "@/lib/db/mod.ts";
+import { HttpError } from "fresh";
+
+import { getDB } from "~/lib/db/mod.ts";
 import {
   getPeraturan,
   getRelasiPeraturan1,
   getRelasiPeraturan2,
   getSumberPeraturan,
-  Peraturan,
+  type Peraturan,
   RelasiPeraturan,
-} from "@/models/mod.ts";
-import { AppContext } from "@/utils/app_context.ts";
+} from "~/models/mod.ts";
+import { define } from "~/utils/define.ts";
 
-export const handler: Handler<InfoPeraturanPageProps, AppContext> = async (
-  req,
-  ctx,
-) => {
-  const { jenis, tahun, nomor } = ctx.params;
-  const db = await getDB();
-  const peraturan = getPeraturan(db, jenis, tahun, nomor);
-  if (!peraturan) return ctx.renderNotFound();
-  const sumber = getSumberPeraturan(db, jenis, tahun, nomor);
-  const relasi1 = getRelasiPeraturan1(db, jenis, tahun, nomor);
-  const relasi2 = getRelasiPeraturan2(db, jenis, tahun, nomor);
-  ctx.state.seo = {
-    title: `Informasi | ${peraturan.rujukPanjang}`,
-    description:
-      `Informasi umum (Metadata, Sumber Peraturan, Abstrak) atas ${peraturan.rujukPanjang}`,
-    image: `${new URL(req.url).origin}/${jenis}/${tahun}/${nomor}/image.png`,
-  };
-  ctx.state.breadcrumbs = [...peraturan.breadcrumbs, { name: "Informasi" }];
-  ctx.state.pageHeading = {
-    title: peraturan.judul,
-    description: peraturan.rujukPendek,
-  };
-  return ctx.render({ peraturan, sumber, relasi1, relasi2 });
-};
-
-interface InfoPeraturanPageProps {
+interface Data {
   peraturan: Peraturan;
   sumber: { nama: string; url_page: string; url_pdf: string }[];
   relasi1: (Pick<RelasiPeraturan, "id" | "relasi" | "catatan"> & {
@@ -46,40 +22,53 @@ interface InfoPeraturanPageProps {
   })[];
 }
 
-export default function InfoPeraturanPage(
-  {
-    data: {
-      peraturan,
-      sumber,
-      relasi1,
-      relasi2,
-    },
-  }: PageProps<
-    InfoPeraturanPageProps
-  >,
-) {
-  return (
-    <>
-      <div className="row">
-        <div className="col-12 col-lg-6 col-xxl-4">
-          <Metadata peraturan={peraturan} />
-        </div>
-        <div className="col-12 col-lg-6 col-xxl-4">
-          <h2>Tampilan</h2>
-          <img
-            src={peraturan.path + "/preview.png"}
-            alt={peraturan.rujukPendek}
-            className="img-thumbnail rounded"
-          />
-        </div>
-        <div className="col-12 col-lg-6 col-xxl-4">
-          <Sumber sumber={sumber} />
-        </div>
+export const handler = define.handlers<Data>({
+  GET: async (ctx) => {
+    const { jenis, tahun, nomor } = ctx.params;
+    const db = await getDB();
+    const peraturan = getPeraturan(db, jenis, tahun, nomor);
+    if (!peraturan) throw new HttpError(404);
+    const sumber = getSumberPeraturan(db, jenis, tahun, nomor);
+    const relasi1 = getRelasiPeraturan1(db, jenis, tahun, nomor);
+    const relasi2 = getRelasiPeraturan2(db, jenis, tahun, nomor);
+    ctx.state.seo = {
+      title: `Informasi | ${peraturan.rujukPanjang}`,
+      description:
+        `Informasi umum (Metadata, Sumber Peraturan, Abstrak) atas ${peraturan.rujukPanjang}`,
+      image: `${ctx.url.origin}/${jenis}/${tahun}/${nomor}/image.png`,
+    };
+    ctx.state.breadcrumbs = [...peraturan.breadcrumbs, { name: "Informasi" }];
+    ctx.state.pageHeading = {
+      title: peraturan.judul,
+      description: peraturan.rujukPendek,
+    };
+    return { data: { peraturan, sumber, relasi1, relasi2 } };
+  },
+});
+
+export default define.page<typeof handler>((
+  { data: { peraturan, sumber, relasi1, relasi2 } },
+) => (
+  <>
+    <div className="row">
+      <div className="col-12 col-lg-6 col-xxl-4">
+        <Metadata peraturan={peraturan} />
       </div>
-      <Relasi relasi1={relasi1} relasi2={relasi2} />
-    </>
-  );
-}
+      <div className="col-12 col-lg-6 col-xxl-4">
+        <h2>Tampilan</h2>
+        <img
+          src={peraturan.path + "/preview.png"}
+          alt={peraturan.rujukPendek}
+          className="img-thumbnail rounded"
+        />
+      </div>
+      <div className="col-12 col-lg-6 col-xxl-4">
+        <Sumber sumber={sumber} />
+      </div>
+    </div>
+    <Relasi relasi1={relasi1} relasi2={relasi2} />
+  </>
+));
 
 function Metadata({ peraturan }: { peraturan: Peraturan }) {
   const {

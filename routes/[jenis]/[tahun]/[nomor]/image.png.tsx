@@ -1,10 +1,12 @@
-import { Handler } from "$fresh/server.ts";
-import { ImageResponse } from "$og_edge/mod.ts";
-import { encodeBase64 } from "$std/encoding/base64.ts";
-import { dirname, fromFileUrl, resolve } from "$std/path/mod.ts";
-import { getDB } from "@/lib/db/mod.ts";
-import { getPeraturan } from "@/models/mod.ts";
-import { ellipsis } from "@/utils/string.ts";
+import { encodeBase64 } from "@std/encoding/base64";
+import { dirname, fromFileUrl, resolve } from "@std/path";
+import { ImageResponse } from "$og_edge";
+import { HttpError } from "fresh";
+
+import { getDB } from "~/lib/db/mod.ts";
+import { getPeraturan } from "~/models/mod.ts";
+import { define } from "~/utils/define.ts";
+import { ellipsis } from "~/utils/string.ts";
 
 const getLogo = async () => {
   const buffer = await Deno.readFile(
@@ -17,14 +19,11 @@ const getLogo = async () => {
     encodeBase64(buffer);
 };
 
-export const handler: Handler = async (
-  req,
-  ctx,
-) => {
+export const handler = define.handlers(async (ctx) => {
   const { jenis, tahun, nomor } = ctx.params;
   const db = await getDB();
   const peraturan = getPeraturan(db, jenis, tahun, nomor);
-  if (!peraturan) return ctx.renderNotFound();
+  if (!peraturan) throw new HttpError(404);
   const response = new ImageResponse(
     <div
       style={{
@@ -76,9 +75,9 @@ export const handler: Handler = async (
           color: "#ffffff",
         }}
       >
-        {req.url.replaceAll("/image.png", "")}
+        {ctx.req.url.replaceAll("/image.png", "")}
       </div>
     </div>,
   );
   return response;
-};
+});

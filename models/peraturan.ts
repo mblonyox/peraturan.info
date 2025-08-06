@@ -1,4 +1,4 @@
-import { DB } from "$sqlite/mod.ts";
+import { DB } from "$sqlite";
 
 export const JENIS2_PERATURAN = [
   "uu",

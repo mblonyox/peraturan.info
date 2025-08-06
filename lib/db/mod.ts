@@ -1,6 +1,6 @@
-import { dirname, fromFileUrl, resolve } from "$std/path/mod.ts";
-import { DB } from "$sqlite/mod.ts";
-import { prepareLocalFile, prepareVirtualFile } from "$mock_file/mod.ts";
+import { dirname, fromFileUrl, resolve } from "@std/path";
+import { DB } from "$sqlite";
+import { prepareLocalFile, prepareVirtualFile } from "$mock_file";
 
 const filepath = resolve(
   dirname(fromFileUrl(import.meta.url)),

@@ -1,9 +1,10 @@
-import { asset, Head } from "$fresh/runtime.ts";
-import { PageProps } from "$fresh/server.ts";
-import { SearchAction, WebSite, WithContext } from "schema-dts";
-import { NAMA2_JENIS } from "@/models/mod.ts";
+import { asset } from "fresh/runtime";
+import type { SearchAction, WebSite, WithContext } from "schema-dts";
 
-export default function Home({ url }: PageProps) {
+import { NAMA2_JENIS } from "~/models/mod.ts";
+import { define } from "~/utils/define.ts";
+
+export default define.page(({ url }) => {
   const searchAction: SearchAction & { "query-input": string } = {
     "@type": "SearchAction",
     "target": {
@@ -25,14 +26,15 @@ export default function Home({ url }: PageProps) {
 
   return (
     <>
-      <Head>
+      <head>
         <script
           type="application/ld+json"
+          // deno-lint-ignore react-no-danger
           dangerouslySetInnerHTML={{
             __html: JSON.stringify(website),
           }}
         />
-      </Head>
+      </head>
       <div className="py-5 my-5 text-center">
         <img
           src={asset("/logo.webp")}
@@ -73,4 +75,4 @@ export default function Home({ url }: PageProps) {
       </div>
     </>
   );
-}
+});

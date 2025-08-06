@@ -1,7 +1,8 @@
-import { asset } from "$fresh/runtime.ts";
+import { asset } from "fresh/runtime";
 import { useSignal, useSignalEffect } from "@preact/signals";
-import { useAppContext } from "@/utils/app_context.ts";
-import { ellipsis } from "@/utils/string.ts";
+import { useAppContext } from "~/utils/app_context.ts";
+import { ellipsis } from "~/utils/string.ts";
+import { useRef } from "preact/hooks";
 
 declare global {
   // deno-lint-ignore no-explicit-any
@@ -74,12 +75,12 @@ const reactionEmoji: Record<string, string> = {
 };
 
 function ReactionCounter({ counter }: { counter: WMCounter }) {
-  const elRef = useSignal<HTMLDivElement | null>(null);
+  const elRef = useRef<HTMLDivElement>(null);
   useSignalEffect(() => {
     if (typeof document === "undefined" || typeof bootstrap === "undefined") {
       return;
     }
-    const containerEl = elRef.value;
+    const containerEl = elRef.current;
     if (!containerEl) return;
     const tooltipTriggerList = containerEl.querySelectorAll(
       '[data-bs-toggle="tooltip"]',
@@ -93,7 +94,7 @@ function ReactionCounter({ counter }: { counter: WMCounter }) {
   return (
     <div
       className="d-flex align-items-center gap-1 my-1"
-      ref={(el) => elRef.value = el}
+      ref={elRef}
     >
       <h3>Tanggapan ({counter.count}):</h3>
       {Object.entries(counter.type).map(([type, count]) => (
@@ -198,7 +199,9 @@ export default function Webmentions() {
             Tulis tanggapan.
           </a>
         </div>
-        {comments.value.map((comment) => <CommentCard entry={comment} />)}
+        {comments.value.map((comment) => (
+          <CommentCard key={comment["wm-id"]} entry={comment} />
+        ))}
       </div>
     </div>
   );
