@@ -653,6 +653,7 @@
     "https://esm.sh/preact@10.27.0/denonext/hooks.mjs": "634b5ae7db24f00c67f9f6f26f62c3ffaf5e97136f15f92aea78049f13b5fc97",
     "https://esm.sh/preact@10.27.0/denonext/preact.mjs": "7c0a67d0152259c63d2afea05ce8791f6f4e38ef355fdab8a2c71989cf590c3d",
     "https://esm.sh/printd@1.6.0": "d8eff7996d0d1799349c15d321ca35ba1bf40646e1bb5fb36081df40a388931e",
+    "https://esm.sh/printd@1.6.0/denonext/printd.mjs": "ddd82db2c5cb54dd02f302857e53e3c9ddede82f6f604a4131f8e5d95a6e229e",
     "https://esm.sh/satori@0.4.0": "6eed8482f73a5fd2d0b558a704517a21f28a7960f78e614781338e92be02dce5",
     "https://esm.sh/satori@0.4.0/denonext/satori.mjs": "604d717ae4e184554a6f08bdde23357dfe0a6209a861a4a96d2d0e10c8b73e00",
     "https://esm.sh/satori@0.4.0/denonext/wasm.mjs": "4c2cccd7b7369c1257067020748e86130de46a6c7bbe123db4c81a506057e508",

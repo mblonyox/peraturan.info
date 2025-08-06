@@ -1,6 +1,6 @@
 type PaginationProps =
   & {
-    url?: URL;
+    url: URL;
     page: number;
     maxItems?: number;
   }
@@ -22,7 +22,7 @@ export default function Pagination({
   lastPage,
   maxItems,
 }: PaginationProps) {
-  const searchParams = new URLSearchParams(new URL(url ?? "").search);
+  const searchParams = new URLSearchParams(url.search);
   lastPage ??= Math.ceil((total ?? 0) / (pageSize ?? 10));
   const itemsSize = maxItems ?? 5;
 

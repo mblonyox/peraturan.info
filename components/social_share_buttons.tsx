@@ -2,29 +2,29 @@ import { ellipsis } from "~/utils/string.ts";
 import WebShareButton from "~/islands/web_share_button.tsx";
 
 interface Props {
-  url?: URL;
+  url: URL;
   seo?: { title: string; description: string; image?: string };
 }
 
-export default function SocialShareButtons({ url: _url, seo }: Props) {
-  const url = _url?.toString() ?? "";
+export default function SocialShareButtons({ url, seo }: Props) {
+  const urlString = url.toString();
   const title = seo?.title ?? "";
   const description = seo?.description ?? "";
 
   return (
     <div className="row gap-1 my-2 my-lg-3">
       <div className="col-12 col-lg d-grid">
-        <TwitterShareButton {...{ url, title, description }} />
+        <TwitterShareButton {...{ url: urlString, title, description }} />
       </div>
       <div className="col-12 col-lg d-grid">
-        <WhatsAppShareButton {...{ url, title, description }} />
+        <WhatsAppShareButton {...{ url: urlString, title, description }} />
       </div>
       <div className="col-12 col-lg d-grid">
-        <LinkedInShareButton {...{ url, title, description }} />
+        <LinkedInShareButton {...{ url: urlString, title, description }} />
       </div>
       <div className="col-12 col-lg d-grid">
         <WebShareButton
-          {...{ url, title, description }}
+          {...{ url: urlString, title, description }}
         />
       </div>
     </div>

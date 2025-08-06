@@ -12,12 +12,12 @@ const menus = [
 ];
 
 interface Props {
-  url?: URL;
+  url: URL;
   theme?: "dark" | "light";
 }
 
 export default function LayoutNavbar({ url, theme }: Props) {
-  const { pathname, searchParams } = new URL(url ?? "");
+  const { pathname, searchParams } = url;
 
   return (
     <nav className="navbar navbar-expand-lg bg-body-tertiary bg-gradient">

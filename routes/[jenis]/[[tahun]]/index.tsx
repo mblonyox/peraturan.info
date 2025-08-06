@@ -94,6 +94,7 @@ export default define.page<typeof handler>(
         filterByJenisProps,
         filterByTahunProps,
       },
+      url,
     },
   ) => {
     const startIndex = ((page - 1) * pageSize) + 1;
@@ -180,7 +181,7 @@ export default define.page<typeof handler>(
               ))}
             </tbody>
           </table>
-          <Pagination {...{ total, page, pageSize }} />
+          <Pagination {...{ url, total, page, pageSize }} />
         </div>
       </div>
     );

@@ -168,15 +168,13 @@ async function getCounter(target: string): Promise<WMCounter> {
 }
 
 interface Props {
-  url?: URL;
+  url: URL;
 }
 
 export default function Webmentions({ url }: Props) {
   const comments = useSignal<WMEntry[]>([]);
   const counter = useSignal<WMCounter>({ count: 0, type: {} });
-  const target = typeof document === "undefined"
-    ? (url?.toString() ?? "")
-    : document.URL;
+  const target = url.toString();
   useSignalEffect(() => {
     getComments(target).then((value) => comments.value = value);
     getCounter(target).then((value) => counter.value = value);
