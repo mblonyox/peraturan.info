@@ -1,7 +1,11 @@
-import { useAppContext } from "~/utils/app_context.ts";
+interface Props {
+  pageHeading?: {
+    title: string;
+    description: string;
+  };
+}
 
-export default function LayoutPageHeading() {
-  const { pageHeading } = useAppContext();
+export default function LayoutPageHeading({ pageHeading }: Props) {
   if (!pageHeading) return null;
   return (
     <hgroup className="mb-2 mb-lg-3">

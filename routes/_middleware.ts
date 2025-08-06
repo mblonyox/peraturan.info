@@ -1,3 +1,5 @@
+import { getCookies } from "@std/http/cookie";
+
 import { HOSTNAME } from "~/utils/const.ts";
 import { define } from "~/utils/define.ts";
 
@@ -10,4 +12,14 @@ const redirectHostname = define.middleware((ctx) => {
   return ctx.next();
 });
 
-export const handler = [redirectHostname];
+const setTheme = define.middleware((ctx) => {
+  let theme: "dark" | "light" | undefined;
+  const cookies = getCookies(ctx.req.headers);
+  if (cookies.theme === "dark" || cookies.theme === "light") {
+    theme = cookies.theme;
+  }
+  ctx.state.theme = theme;
+  return ctx.next();
+});
+
+export const handler = [redirectHostname, setTheme];

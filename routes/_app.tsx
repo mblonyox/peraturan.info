@@ -1,16 +1,8 @@
-import { getCookies } from "@std/http";
-
-import { GOOGLE_TAG_ID, HOSTNAME } from "~/utils/const.ts";
 import SeoTags from "~/components/seo_tags.tsx";
+import { GOOGLE_TAG_ID, HOSTNAME } from "~/utils/const.ts";
 import { define } from "~/utils/define.ts";
-import { AppContextProvider } from "~/utils/app_context.ts";
 
-export default define.page(({ Component, url, state, req }) => {
-  let theme: "dark" | "light" | undefined;
-  const cookies = getCookies(req.headers);
-  if (cookies.theme === "dark" || cookies.theme === "light") {
-    theme = cookies.theme;
-  }
+export default define.page(({ Component, url, state }) => {
   const canonicalUrl = new URL(url);
   canonicalUrl.protocol = "https";
   canonicalUrl.searchParams.sort();
@@ -79,9 +71,7 @@ export default define.page(({ Component, url, state, req }) => {
         <SeoTags url={url} {...state.seo} />
       </head>
       <body style={{ overflowY: "scroll", overflowX: "hidden" }}>
-        <AppContextProvider value={{ ...state, url, theme }}>
-          <Component />
-        </AppContextProvider>
+        <Component />
         <script
           src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
           integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz"

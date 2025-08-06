@@ -1,5 +1,5 @@
 import { asset } from "fresh/runtime";
-import { useAppContext } from "~/utils/app_context.ts";
+
 import DarkModeToggler from "~/islands/dark_mode_toggler.tsx";
 import SearchInput from "~/islands/search_input.tsx";
 
@@ -11,8 +11,12 @@ const menus = [
   { path: "/permenkeu", teks: "Peraturan Menteri Keuangan" },
 ];
 
-export default function LayoutNavbar() {
-  const { theme, url } = useAppContext();
+interface Props {
+  url?: URL;
+  theme?: "dark" | "light";
+}
+
+export default function LayoutNavbar({ url, theme }: Props) {
   const { pathname, searchParams } = new URL(url ?? "");
 
   return (

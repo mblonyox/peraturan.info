@@ -1,8 +1,8 @@
-import { asset } from "fresh/runtime";
 import { useSignal, useSignalEffect } from "@preact/signals";
-import { useAppContext } from "~/utils/app_context.ts";
-import { ellipsis } from "~/utils/string.ts";
+import { asset } from "fresh/runtime";
 import { useRef } from "preact/hooks";
+
+import { ellipsis } from "~/utils/string.ts";
 
 declare global {
   // deno-lint-ignore no-explicit-any
@@ -167,10 +167,13 @@ async function getCounter(target: string): Promise<WMCounter> {
   return response.json();
 }
 
-export default function Webmentions() {
+interface Props {
+  url?: URL;
+}
+
+export default function Webmentions({ url }: Props) {
   const comments = useSignal<WMEntry[]>([]);
   const counter = useSignal<WMCounter>({ count: 0, type: {} });
-  const { url } = useAppContext();
   const target = typeof document === "undefined"
     ? (url?.toString() ?? "")
     : document.URL;

@@ -3,7 +3,7 @@ import SocialShareButtons from "~/components/social_share_buttons.tsx";
 import { define } from "~/utils/define.ts";
 
 export default define.page((
-  { Component, url, params },
+  { Component, url, params, state },
 ) => {
   const path = url.pathname.split("/").at(-1);
   const { jenis, tahun, nomor } = params;
@@ -23,7 +23,7 @@ export default define.page((
   ];
   return (
     <>
-      <SocialShareButtons />
+      <SocialShareButtons url={url} seo={state.seo} />
       <div className="card mb-2 mb-lg-3">
         <div className="card-header">
           <ul className="nav nav-tabs nav-fill card-header-tabs justify-content-around">
@@ -45,7 +45,7 @@ export default define.page((
           <Component />
         </div>
       </div>
-      <Webmentions />
+      <Webmentions url={url} />
     </>
   );
 });

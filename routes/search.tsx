@@ -51,7 +51,7 @@ export const handler = define.handlers<Data>({
 });
 
 export default define.page<typeof handler>(
-  ({ data: { results, paginationProps } }) => (
+  ({ data: { results, paginationProps }, url }) => (
     <>
       <div className="row my-3 my-lg-5 column-gap-0 row-gap-3">
         {results.hits.map((hit) => (
@@ -87,6 +87,7 @@ export default define.page<typeof handler>(
         ))}
       </div>
       <Pagination
+        url={url}
         page={paginationProps.page}
         lastPage={paginationProps.lastPage}
       />

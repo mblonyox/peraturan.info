@@ -1,12 +1,15 @@
 import { ellipsis } from "~/utils/string.ts";
-import { useAppContext } from "~/utils/app_context.ts";
 import WebShareButton from "~/islands/web_share_button.tsx";
 
-export default function SocialShareButtons() {
-  const appContext = useAppContext();
-  const url = appContext.url?.toString() ?? "";
-  const title = appContext.seo?.title ?? "";
-  const description = appContext.seo?.description ?? "";
+interface Props {
+  url?: URL;
+  seo?: { title: string; description: string; image?: string };
+}
+
+export default function SocialShareButtons({ url: _url, seo }: Props) {
+  const url = _url?.toString() ?? "";
+  const title = seo?.title ?? "";
+  const description = seo?.description ?? "";
 
   return (
     <div className="row gap-1 my-2 my-lg-3">

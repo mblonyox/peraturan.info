@@ -4,13 +4,13 @@ import LayoutBreadcrumbs from "~/components/layout_breadcrumbs.tsx";
 import LayoutPageHeading from "~/components/layout_page_heading.tsx";
 import { define } from "~/utils/define.ts";
 
-export default define.page(({ Component }) => (
+export default define.page(({ Component, url, state }) => (
   <>
-    <LayoutNavbar />
+    <LayoutNavbar url={url} theme={state.theme} />
     <main className="py-2 py-lg-3">
       <div className="container">
-        <LayoutBreadcrumbs />
-        <LayoutPageHeading />
+        <LayoutBreadcrumbs breadcrumbs={state.breadcrumbs} />
+        <LayoutPageHeading pageHeading={state.pageHeading} />
         <Component></Component>
       </div>
     </main>

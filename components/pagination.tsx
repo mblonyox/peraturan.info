@@ -1,7 +1,6 @@
-import { useAppContext } from "~/utils/app_context.ts";
-
 type PaginationProps =
   & {
+    url?: URL;
     page: number;
     maxItems?: number;
   }
@@ -16,13 +15,13 @@ type PaginationProps =
   });
 
 export default function Pagination({
+  url,
   total,
   page,
   pageSize,
   lastPage,
   maxItems,
 }: PaginationProps) {
-  const { url } = useAppContext();
   const searchParams = new URLSearchParams(new URL(url ?? "").search);
   lastPage ??= Math.ceil((total ?? 0) / (pageSize ?? 10));
   const itemsSize = maxItems ?? 5;

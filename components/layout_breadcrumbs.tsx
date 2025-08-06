@@ -1,7 +1,8 @@
-import { useAppContext } from "~/utils/app_context.ts";
+interface Props {
+  breadcrumbs?: { name: string; url?: string }[];
+}
 
-export default function LayoutBreadcrumbs() {
-  const { breadcrumbs } = useAppContext();
+export default function LayoutBreadcrumbs({ breadcrumbs }: Props) {
   if (!breadcrumbs) return null;
   return (
     <nav aria-label="breadcrumb">
