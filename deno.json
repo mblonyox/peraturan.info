@@ -26,7 +26,7 @@
     "feed": "npm:feed@^5.1.0",
     "fresh": "jsr:@fresh/core@^2.0.0-alpha.57",
     "github-slugger": "npm:github-slugger@^2.0.0",
-    "marked": "npm:marked@^12.0.2",
+    "marked": "npm:marked@^16.1.2",
     "preact": "npm:preact@^10.27.0",
     "schema-dts": "npm:schema-dts@^1.1.2"
   },
