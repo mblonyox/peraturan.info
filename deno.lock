@@ -29,7 +29,7 @@
     "npm:dpack@~0.6.22": "0.6.22",
     "npm:esbuild-wasm@0.25.7": "0.25.7",
     "npm:esbuild@0.25.7": "0.25.7",
-    "npm:feed@^4.2.2": "4.2.2",
+    "npm:feed@^5.1.0": "5.1.0",
     "npm:github-slugger@2": "2.0.0",
     "npm:marked@^12.0.2": "12.0.2",
     "npm:preact-render-to-string@^6.5.11": "6.5.13_preact@10.27.0",
@@ -464,8 +464,8 @@
       "scripts": true,
       "bin": true
     },
-    "feed@4.2.2": {
-      "integrity": "sha512-u5/sxGfiMfZNtJ3OvQpXcvotFpYkL0n9u9mM2vkui2nGo8b4wvDkJ8gAkYqbA8QpGyFCv3RK0Z+Iv+9veCS9bQ==",
+    "feed@5.1.0": {
+      "integrity": "sha512-qGNhgYygnefSkAHHrNHqC7p3R8J0/xQDS/cYUud8er/qD9EFGWyCdUDfULHTJQN1d3H3WprzVwMc9MfB4J50Wg==",
       "dependencies": [
         "xml-js"
       ]
@@ -620,7 +620,7 @@
       "npm:@orama/plugin-data-persistence@^2.0.18",
       "npm:@preact/signals@^2.2.1",
       "npm:dpack@~0.6.22",
-      "npm:feed@^4.2.2",
+      "npm:feed@^5.1.0",
       "npm:github-slugger@2",
       "npm:marked@^12.0.2",
       "npm:preact@^10.27.0",
