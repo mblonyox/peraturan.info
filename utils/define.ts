@@ -1,4 +1,5 @@
 import { createDefine } from "fresh";
+import { JSX } from "preact/compat/jsx-dev-runtime";
 
 export interface State {
   theme?: "dark" | "light";
@@ -8,6 +9,7 @@ export interface State {
     title: string;
     description: string;
   };
+  heads?: JSX.Element;
 }
 
 export const define = createDefine<State>();

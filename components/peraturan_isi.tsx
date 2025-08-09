@@ -15,22 +15,14 @@ type Props = {
 export default function PeraturanIsi({ md, path, html, prev, next }: Props) {
   return (
     <>
-      <head>
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link
-          rel="preconnect"
-          href="https://fonts.gstatic.com"
-          crossOrigin="anonymous"
-        />
-        <link
-          href="https://fonts.googleapis.com/css2?family=EB+Garamond&display=swap"
-          rel="stylesheet"
-        />
-        <link
-          href={asset("/peraturan.css")}
-          rel="stylesheet"
-        />
-      </head>
+      <link
+        href="https://fonts.googleapis.com/css2?family=EB+Garamond&display=swap"
+        rel="stylesheet"
+      />
+      <link
+        href={asset("/peraturan.css")}
+        rel="stylesheet"
+      />
       <div className="row vh-100">
         <div
           className="offcanvas offcanvas-start d-xl-none"

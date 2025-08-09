@@ -49,6 +49,16 @@ export default define.page(({ Component, url, state }) => {
           integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM"
           crossOrigin="anonymous"
         />
+        <link
+          rel="preconnect"
+          href="https://fonts.googleapis.com"
+          crossOrigin="anonymous"
+        />
+        <link
+          rel="preconnect"
+          href="https://fonts.gstatic.com"
+          crossOrigin="anonymous"
+        />
         <meta name="theme-color" content="#11191f" />
         <link
           rel="apple-touch-icon"
@@ -69,6 +79,7 @@ export default define.page(({ Component, url, state }) => {
         />
         <link rel="manifest" href="/manifest.json" />
         <SeoTags url={url} {...state.seo} />
+        {state.heads}
       </head>
       <body style={{ overflowY: "scroll", overflowX: "hidden" }}>
         <Component />
