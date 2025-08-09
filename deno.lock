@@ -3,29 +3,22 @@
   "specifiers": {
     "jsr:@deno/esbuild-plugin@^1.1.5": "1.1.5",
     "jsr:@deno/loader@~0.3.3": "0.3.3",
-    "jsr:@fresh/core@^2.0.0-alpha.54": "2.0.0-alpha.54",
+    "jsr:@fresh/build-id@1": "1.0.0",
+    "jsr:@fresh/core@^2.0.0-alpha.57": "2.0.0-alpha.57",
     "jsr:@std/bytes@^1.0.6": "1.0.6",
-    "jsr:@std/cli@^1.0.21": "1.0.21",
     "jsr:@std/encoding@1": "1.0.10",
     "jsr:@std/encoding@^1.0.10": "1.0.10",
-    "jsr:@std/fmt@^1.0.7": "1.0.8",
     "jsr:@std/fmt@^1.0.8": "1.0.8",
     "jsr:@std/fs@1": "1.0.19",
-    "jsr:@std/fs@^1.0.19": "1.0.19",
     "jsr:@std/html@1": "1.0.4",
-    "jsr:@std/html@^1.0.4": "1.0.4",
     "jsr:@std/http@^1.0.15": "1.0.20",
     "jsr:@std/http@^1.0.20": "1.0.20",
     "jsr:@std/internal@^1.0.9": "1.0.10",
-    "jsr:@std/json@^1.0.2": "1.0.2",
     "jsr:@std/jsonc@1": "1.0.2",
     "jsr:@std/media-types@1": "1.1.0",
-    "jsr:@std/media-types@^1.1.0": "1.1.0",
-    "jsr:@std/net@^1.0.4": "1.0.4",
     "jsr:@std/path@1": "1.1.1",
     "jsr:@std/path@^1.1.1": "1.1.1",
     "jsr:@std/semver@1": "1.0.5",
-    "jsr:@std/streams@^1.0.10": "1.0.10",
     "jsr:@std/uuid@^1.0.7": "1.0.9",
     "npm:@hyzyla/pdfium@^2.1.2": "2.1.9",
     "npm:@opentelemetry/api@^1.9.0": "1.9.0",
@@ -36,7 +29,6 @@
     "npm:dpack@~0.6.22": "0.6.22",
     "npm:esbuild-wasm@0.25.7": "0.25.7",
     "npm:esbuild@0.25.7": "0.25.7",
-    "npm:esbuild@~0.25.5": "0.25.8",
     "npm:feed@^4.2.2": "4.2.2",
     "npm:github-slugger@2": "2.0.0",
     "npm:marked@^12.0.2": "12.0.2",
@@ -49,40 +41,42 @@
       "integrity": "c9cde95990b97802a0da6c73c26ab4a48f30d286818845e365dddcd8297abd7d",
       "dependencies": [
         "jsr:@deno/loader",
-        "jsr:@std/path@^1.1.1",
-        "npm:esbuild@~0.25.5"
+        "jsr:@std/path@^1.1.1"
       ]
     },
     "@deno/loader@0.3.3": {
       "integrity": "983a2b3694e0acecadd6825531ec9dd8b2f92ea0ef0db45c221dda4c81aa5925"
     },
-    "@fresh/core@2.0.0-alpha.54": {
-      "integrity": "599c79bb291a473e0eebe2256ee6fbaab89ddc2edf5da4e7cf9a6c19ebc34969",
+    "@fresh/build-id@1.0.0": {
+      "integrity": "c42a1dab0b0b8bcddf93657edf03f404d537ba8e1d44144b3c749727c5671d5a",
+      "dependencies": [
+        "jsr:@std/encoding@^1.0.10"
+      ]
+    },
+    "@fresh/core@2.0.0-alpha.57": {
+      "integrity": "2de0656d32fe327482138a2b585d4560db05ed979bf20c071da2969a4a759550",
       "dependencies": [
         "jsr:@deno/esbuild-plugin",
+        "jsr:@fresh/build-id",
         "jsr:@std/encoding@1",
-        "jsr:@std/fmt@^1.0.7",
-        "jsr:@std/fs@1",
-        "jsr:@std/html@1",
+        "jsr:@std/fmt",
+        "jsr:@std/fs",
+        "jsr:@std/html",
         "jsr:@std/http@^1.0.15",
         "jsr:@std/jsonc",
-        "jsr:@std/media-types@1",
+        "jsr:@std/media-types",
         "jsr:@std/path@1",
         "jsr:@std/semver",
         "jsr:@std/uuid",
         "npm:@opentelemetry/api",
-        "npm:@preact/signals",
+        "npm:esbuild",
         "npm:esbuild-wasm",
-        "npm:esbuild@0.25.7",
         "npm:preact",
         "npm:preact-render-to-string"
       ]
     },
     "@std/bytes@1.0.6": {
       "integrity": "f6ac6adbd8ccd99314045f5703e23af0a68d7f7e58364b47d2c7f408aeb5820a"
-    },
-    "@std/cli@1.0.21": {
-      "integrity": "cd25b050bdf6282e321854e3822bee624f07aca7636a3a76d95f77a3a919ca2a"
     },
     "@std/encoding@1.0.10": {
       "integrity": "8783c6384a2d13abd5e9e87a7ae0520a30e9f56aeeaa3bdf910a3eaaf5c811a1"
@@ -102,34 +96,17 @@
     "@std/http@1.0.20": {
       "integrity": "b5cc33fc001bccce65ed4c51815668c9891c69ccd908295997e983d8f56070a1",
       "dependencies": [
-        "jsr:@std/cli",
-        "jsr:@std/encoding@^1.0.10",
-        "jsr:@std/fmt@^1.0.8",
-        "jsr:@std/fs@^1.0.19",
-        "jsr:@std/html@^1.0.4",
-        "jsr:@std/media-types@^1.1.0",
-        "jsr:@std/net",
-        "jsr:@std/path@^1.1.1",
-        "jsr:@std/streams"
+        "jsr:@std/encoding@^1.0.10"
       ]
     },
     "@std/internal@1.0.10": {
       "integrity": "e3be62ce42cab0e177c27698e5d9800122f67b766a0bea6ca4867886cbde8cf7"
     },
-    "@std/json@1.0.2": {
-      "integrity": "d9e5497801c15fb679f55a2c01c7794ad7a5dfda4dd1bebab5e409cb5e0d34d4"
-    },
     "@std/jsonc@1.0.2": {
-      "integrity": "909605dae3af22bd75b1cbda8d64a32cf1fd2cf6efa3f9e224aba6d22c0f44c7",
-      "dependencies": [
-        "jsr:@std/json"
-      ]
+      "integrity": "909605dae3af22bd75b1cbda8d64a32cf1fd2cf6efa3f9e224aba6d22c0f44c7"
     },
     "@std/media-types@1.1.0": {
       "integrity": "c9d093f0c05c3512932b330e3cc1fe1d627b301db33a4c2c2185c02471d6eaa4"
-    },
-    "@std/net@1.0.4": {
-      "integrity": "2f403b455ebbccf83d8a027d29c5a9e3a2452fea39bb2da7f2c04af09c8bc852"
     },
     "@std/path@1.1.1": {
       "integrity": "fe00026bd3a7e6a27f73709b83c607798be40e20c81dde655ce34052fd82ec76",
@@ -139,9 +116,6 @@
     },
     "@std/semver@1.0.5": {
       "integrity": "529f79e83705714c105ad0ba55bec0f9da0f24d2f726b6cc1c15e505cc2c0624"
-    },
-    "@std/streams@1.0.10": {
-      "integrity": "75c0b1431873cd0d8b3d679015220204d36d3c7420d93b60acfc379eb0dc30af"
     },
     "@std/uuid@1.0.9": {
       "integrity": "44b627bf2d372fe1bd099e2ad41b2be41a777fc94e62a3151006895a037f1642",
@@ -490,39 +464,6 @@
       "scripts": true,
       "bin": true
     },
-    "esbuild@0.25.8": {
-      "integrity": "sha512-vVC0USHGtMi8+R4Kz8rt6JhEWLxsv9Rnu/lGYbPR8u47B+DCBksq9JarW0zOO7bs37hyOK1l2/oqtbciutL5+Q==",
-      "optionalDependencies": [
-        "@esbuild/aix-ppc64@0.25.8",
-        "@esbuild/android-arm@0.25.8",
-        "@esbuild/android-arm64@0.25.8",
-        "@esbuild/android-x64@0.25.8",
-        "@esbuild/darwin-arm64@0.25.8",
-        "@esbuild/darwin-x64@0.25.8",
-        "@esbuild/freebsd-arm64@0.25.8",
-        "@esbuild/freebsd-x64@0.25.8",
-        "@esbuild/linux-arm@0.25.8",
-        "@esbuild/linux-arm64@0.25.8",
-        "@esbuild/linux-ia32@0.25.8",
-        "@esbuild/linux-loong64@0.25.8",
-        "@esbuild/linux-mips64el@0.25.8",
-        "@esbuild/linux-ppc64@0.25.8",
-        "@esbuild/linux-riscv64@0.25.8",
-        "@esbuild/linux-s390x@0.25.8",
-        "@esbuild/linux-x64@0.25.8",
-        "@esbuild/netbsd-arm64@0.25.8",
-        "@esbuild/netbsd-x64@0.25.8",
-        "@esbuild/openbsd-arm64@0.25.8",
-        "@esbuild/openbsd-x64@0.25.8",
-        "@esbuild/openharmony-arm64@0.25.8",
-        "@esbuild/sunos-x64@0.25.8",
-        "@esbuild/win32-arm64@0.25.8",
-        "@esbuild/win32-ia32@0.25.8",
-        "@esbuild/win32-x64@0.25.8"
-      ],
-      "scripts": true,
-      "bin": true
-    },
     "feed@4.2.2": {
       "integrity": "sha512-u5/sxGfiMfZNtJ3OvQpXcvotFpYkL0n9u9mM2vkui2nGo8b4wvDkJ8gAkYqbA8QpGyFCv3RK0Z+Iv+9veCS9bQ==",
       "dependencies": [
@@ -670,7 +611,7 @@
   },
   "workspace": {
     "dependencies": [
-      "jsr:@fresh/core@^2.0.0-alpha.54",
+      "jsr:@fresh/core@^2.0.0-alpha.57",
       "jsr:@std/encoding@^1.0.10",
       "jsr:@std/http@^1.0.20",
       "jsr:@std/path@^1.1.1",

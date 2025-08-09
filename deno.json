@@ -24,7 +24,7 @@
     "~/": "./",
     "dpack": "npm:dpack@^0.6.22",
     "feed": "npm:feed@^4.2.2",
-    "fresh": "jsr:@fresh/core@^2.0.0-alpha.54",
+    "fresh": "jsr:@fresh/core@^2.0.0-alpha.57",
     "github-slugger": "npm:github-slugger@^2.0.0",
     "marked": "npm:marked@^12.0.2",
     "preact": "npm:preact@^10.27.0",

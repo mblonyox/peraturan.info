@@ -1,3 +1,4 @@
+import { asset } from "fresh/runtime";
 import { useCallback } from "preact/hooks";
 
 export default function PrintButton() {
@@ -6,7 +7,7 @@ export default function PrintButton() {
     const d = new Printd();
     const el = document.querySelector(".peraturan");
     if (!el) return;
-    d.print(el as HTMLElement, ["/peraturan.css"]);
+    d.print(el as HTMLElement, [asset("/peraturan.css")]);
   }, []);
   return (
     <button
