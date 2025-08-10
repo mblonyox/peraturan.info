@@ -1,8 +1,9 @@
 import Webmentions from "~/islands/webmentions.tsx";
 import SocialShareButtons from "~/components/social_share_buttons.tsx";
 import { define } from "~/utils/define.ts";
+import { clsx } from "clsx";
 
-export default define.page((
+export default define.layout((
   { Component, url, params, state },
 ) => {
   const path = url.pathname.split("/").at(-1);
@@ -22,30 +23,32 @@ export default define.page((
     },
   ];
   return (
-    <>
+    <div className="container">
       <SocialShareButtons url={url} seo={state.seo} />
-      <div className="card mb-2 mb-lg-3">
-        <div className="card-header">
-          <ul className="nav nav-tabs nav-fill card-header-tabs justify-content-around">
-            {tabs.map(({ name, url, isActive, disabled }) => (
-              <li className="nav-item">
-                <a
-                  href={url}
-                  className={"nav-link" +
-                    (isActive ? " active" : "") +
-                    (disabled ? " disabled" : "")}
-                >
-                  {name}
-                </a>
-              </li>
-            ))}
-          </ul>
-        </div>
-        <div className="card-body">
-          <Component />
-        </div>
+      <div className="tabs tabs-lift bg-base-200 p-2 rounded-box">
+        {tabs.map(({ name, url, isActive, disabled }) => (
+          <>
+            <a
+              role="tab"
+              href={url}
+              className={clsx(
+                "tab flex-1",
+                isActive && "tab-active",
+                disabled && "tab-disabled",
+              )}
+            >
+              {name}
+            </a>
+            {isActive &&
+              (
+                <div className="tab-content bg-base-100 border-base-300">
+                  <Component />
+                </div>
+              )}
+          </>
+        ))}
       </div>
       <Webmentions url={url} />
-    </>
+    </div>
   );
 });

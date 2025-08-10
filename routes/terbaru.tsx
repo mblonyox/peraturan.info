@@ -116,14 +116,14 @@ export default define.page<typeof handler>(
           JSON Feed
         </a>
       </div>
-      <div className="tabs tabs-box">
+      <div className="tabs tabs-lift bg-base-200 p-2 rounded-box">
         {tanggalTerakhir.map(({ tanggal, jumlah }) => (
           <>
             <a
               role="tab"
               href={`?tanggal=${tanggal}`}
               className={clsx(
-                "tab",
+                "tab flex-1",
                 tanggal === tanggalDipilih && "tab-active",
               )}
             >
@@ -133,7 +133,7 @@ export default define.page<typeof handler>(
               })} ({jumlah})
             </a>
             {tanggal === tanggalDipilih && (
-              <div className="tab-content bg-base-100">
+              <div className="tab-content bg-base-100 border-base-300">
                 {!listPeraturan.length
                   ? (
                     <div className="alert alert-info" role="alert">
