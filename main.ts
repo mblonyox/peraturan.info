@@ -1,9 +1,10 @@
 /// <reference lib="dom" />
 
-import { App, staticFiles } from "fresh";
+import { App, staticFiles, trailingSlashes } from "fresh";
 
 import type { State } from "~/utils/define.ts";
 
 export const app = new App<State>()
   .use(staticFiles())
+  .use(trailingSlashes("never"))
   .fsRoutes();
