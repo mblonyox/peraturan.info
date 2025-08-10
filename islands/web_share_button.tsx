@@ -27,7 +27,7 @@ export default function WebShareButton({ title, description, url }: Props) {
       }`}
       target="_blank"
       rel="noopener noreferrer"
-      className="btn btn-secondary"
+      className="btn btn-block btn-secondary text-neutral-content"
       onClick={onClickShare}
     >
       <svg

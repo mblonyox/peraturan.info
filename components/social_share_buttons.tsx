@@ -12,17 +12,17 @@ export default function SocialShareButtons({ url, seo }: Props) {
   const description = seo?.description ?? "";
 
   return (
-    <div className="row gap-1 my-2 my-lg-3">
-      <div className="col-12 col-lg d-grid">
+    <div className="flex flex-col md:flex-row gap-1 my-2 lg:my-3">
+      <div className="flex-1">
         <TwitterShareButton {...{ url: urlString, title, description }} />
       </div>
-      <div className="col-12 col-lg d-grid">
+      <div className="flex-1">
         <WhatsAppShareButton {...{ url: urlString, title, description }} />
       </div>
-      <div className="col-12 col-lg d-grid">
+      <div className="flex-1">
         <LinkedInShareButton {...{ url: urlString, title, description }} />
       </div>
-      <div className="col-12 col-lg d-grid">
+      <div className="flex-1">
         <WebShareButton
           {...{ url: urlString, title, description }}
         />
@@ -45,18 +45,17 @@ function TwitterShareButton(
       }&url=${encodeURI(url)}`}
       target="_blank"
       rel="noopener noreferrer"
-      className="btn btn-secondary"
-      style={{ backgroundColor: "#1DA1F2" }}
+      className="btn btn-block bg-[#15202b] text-neutral-content"
     >
       <svg
         xmlns="http://www.w3.org/2000/svg"
-        width="24"
-        height="24"
+        width="16"
+        height="16"
         fill="currentColor"
-        className="bi bi-twitter mx-2"
+        class="bi bi-twitter-x"
         viewBox="0 0 16 16"
       >
-        <path d="M5.026 15c6.038 0 9.341-5.003 9.341-9.334 0-.14 0-.282-.006-.422A6.685 6.685 0 0 0 16 3.542a6.658 6.658 0 0 1-1.889.518 3.301 3.301 0 0 0 1.447-1.817 6.533 6.533 0 0 1-2.087.793A3.286 3.286 0 0 0 7.875 6.03a9.325 9.325 0 0 1-6.767-3.429 3.289 3.289 0 0 0 1.018 4.382A3.323 3.323 0 0 1 .64 6.575v.045a3.288 3.288 0 0 0 2.632 3.218 3.203 3.203 0 0 1-.865.115 3.23 3.23 0 0 1-.614-.057 3.283 3.283 0 0 0 3.067 2.277A6.588 6.588 0 0 1 .78 13.58a6.32 6.32 0 0 1-.78-.045A9.344 9.344 0 0 0 5.026 15z" />
+        <path d="M12.6.75h2.454l-5.36 6.142L16 15.25h-4.937l-3.867-5.07-4.425 5.07H.316l5.733-6.57L0 .75h5.063l3.495 4.633L12.601.75Zm-.86 13.028h1.36L4.323 2.145H2.865z" />
       </svg>
       Tweet
     </a>
@@ -75,8 +74,7 @@ function WhatsAppShareButton({ url, title, description }: {
       }%20${encodeURI(url)}`}
       target="_blank"
       rel="noopener noreferrer"
-      className="btn btn-secondary"
-      style={{ backgroundColor: "#25D366" }}
+      className="btn btn-block bg-[#25D366] text-neutral-content"
     >
       <svg
         xmlns="http://www.w3.org/2000/svg"
@@ -105,8 +103,7 @@ function LinkedInShareButton({ url }: {
       }`}
       target="_blank"
       rel="noopener noreferrer"
-      className="btn btn-secondary"
-      style={{ backgroundColor: "#0e76a8" }}
+      className="btn btn-block bg-[#0e76a8] text-neutral-content"
     >
       <svg
         xmlns="http://www.w3.org/2000/svg"
