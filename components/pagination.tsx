@@ -1,3 +1,5 @@
+import { clsx } from "clsx";
+
 type PaginationProps =
   & {
     url: URL;
@@ -25,6 +27,7 @@ export default function Pagination({
   const searchParams = new URLSearchParams(url.search);
   lastPage ??= Math.ceil((total ?? 0) / (pageSize ?? 10));
   const itemsSize = maxItems ?? 5;
+  if (!lastPage || page < 1 || page > lastPage) return null;
 
   const items = [page];
   let i = 1;
@@ -45,65 +48,73 @@ export default function Pagination({
   };
 
   return (
-    <nav aria-label="Laman-laman hasil pencarian">
-      <ul className="pagination justify-content-center">
-        <li className={"page-item" + (page === 1 ? " disabled" : "")}>
-          <a
-            className="page-link"
-            href={page === 1 ? "#" : pageUrl(page - 1)}
-          >
-            &lt;
-          </a>
-        </li>
+    <nav
+      aria-label="Laman-laman hasil pencarian"
+      className="flex justify-center"
+    >
+      <div className="join join-horizontal">
+        {page === 1
+          ? (
+            <button type="button" className="join-item btn" disabled>
+              <span>&lt;</span>
+            </button>
+          )
+          : (
+            <a
+              className={clsx("join-item btn", page === 1 && "disabled")}
+              href={pageUrl(page - 1)}
+            >
+              &lt;
+            </a>
+          )}
+
         {!items.includes(1) && (
           <>
-            <li className="page-item">
-              <a
-                className="page-link"
-                href={pageUrl(1)}
-              >
-                {1}
-              </a>
-            </li>
-            <li className="page-item">
-              <span className="page-link">&#8230;</span>
-            </li>
+            <a href={pageUrl(1)} className="join-item btn">{1}</a>
+            {Math.min(...items) > 2 &&
+              (
+                <button type="button" className="join-item btn">
+                  <span>&#8230;</span>
+                </button>
+              )}
           </>
         )}
         {items.map((i) => (
-          <li className={"page-item" + (page === i ? " active" : "")}>
-            <a
-              className="page-link"
-              href={pageUrl(i)}
-            >
-              {i}
-            </a>
-          </li>
+          <a
+            className={clsx("join-item btn", page === i && "btn-active")}
+            href={pageUrl(i)}
+          >
+            {i}
+          </a>
         ))}
         {!items.includes(lastPage) && (
           <>
-            <li className="page-item">
-              <span className="page-link">&#8230;</span>
-            </li>
-            <li className="page-item">
-              <a
-                className="page-link"
-                href={pageUrl(lastPage)}
-              >
-                {lastPage}
-              </a>
-            </li>
+            {Math.max(...items) < lastPage - 1 &&
+              (
+                <button type="button" className="join-item btn">
+                  <span>&#8230;</span>
+                </button>
+              )}
+            <a className="join-item btn" href={pageUrl(lastPage)}>
+              {lastPage}
+            </a>
           </>
         )}
-        <li className={"page-item" + (page === lastPage ? " disabled" : "")}>
-          <a
-            className="page-link"
-            href={page === lastPage ? "#" : pageUrl(page + 1)}
-          >
-            &gt;
-          </a>
-        </li>
-      </ul>
+        {page === lastPage
+          ? (
+            <button type="button" className="join-item btn" disabled>
+              <span>&gt;</span>
+            </button>
+          )
+          : (
+            <a
+              className="join-item btn"
+              href={pageUrl(page + 1)}
+            >
+              &gt;
+            </a>
+          )}
+      </div>
     </nav>
   );
 }

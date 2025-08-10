@@ -8,9 +8,11 @@ interface Props {
 export default function LayoutPageHeading({ pageHeading }: Props) {
   if (!pageHeading) return null;
   return (
-    <hgroup className="mb-2 mb-lg-3">
-      <h1>{pageHeading.title}</h1>
-      <p>{pageHeading.description}</p>
-    </hgroup>
+    <div className="container my-5">
+      <hgroup>
+        <h1 className="text-4xl font-bold">{pageHeading.title}</h1>
+        <p>{pageHeading.description}</p>
+      </hgroup>
+    </div>
   );
 }

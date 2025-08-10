@@ -2,7 +2,13 @@ import { createDefine } from "fresh";
 import { JSX } from "preact/compat/jsx-dev-runtime";
 
 export interface State {
-  theme?: "dark" | "light";
+  theme?:
+    | "light"
+    | "dark"
+    | "retro"
+    | "cyberpunk"
+    | "valentine"
+    | "aqua";
   seo?: { title: string; description: string; image?: string };
   breadcrumbs?: { name: string; url?: string }[];
   pageHeading?: {

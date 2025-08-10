@@ -26,12 +26,26 @@ export default function SearchInput({ initQuery }: Props) {
     return () => clearTimeout(debounceId.peek());
   });
   return (
-    <form className="d-flex mx-lg-2" role="search" action="/search">
-      <div className="input-group">
+    <form role="search" action="/search">
+      <label className="input">
+        <svg
+          class="h-[1em] opacity-50"
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 24 24"
+        >
+          <g
+            stroke-linejoin="round"
+            stroke-linecap="round"
+            stroke-width="2.5"
+            fill="none"
+            stroke="currentColor"
+          >
+            <circle cx="11" cy="11" r="8"></circle>
+            <path d="m21 21-4.3-4.3"></path>
+          </g>
+        </svg>
         <input
           name="query"
-          className="form-control border-secondary border-end-0"
-          style={{ width: 0 }}
           type="search"
           list="autocomplete-list"
           placeholder="Pencarian..."
@@ -39,23 +53,8 @@ export default function SearchInput({ initQuery }: Props) {
           value={query.value}
           onInput={(e) => query.value = e.currentTarget.value}
         />
-        <button
-          className="btn btn-outline-secondary"
-          type="submit"
-          aria-label="Cari"
-        >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="16"
-            height="16"
-            fill="currentColor"
-            className="bi bi-search"
-            viewBox="0 0 16 16"
-          >
-            <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z" />
-          </svg>
-        </button>
-      </div>
+        <kbd className="kbd kbd-sm p-3">⌘ K</kbd>
+      </label>
       <datalist id="autocomplete-list">
         {options.value.map((value) => <option value={value} key={value} />)}
       </datalist>

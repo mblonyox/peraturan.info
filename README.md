@@ -7,7 +7,8 @@ dari legislation.gov.uk.
 ## Dibuat dengan
 
 - Deno Fresh
-- Bootstrap CSS 5.3
+- Tailwind
+- DaisyUI
 
 ## Pengembangan
 

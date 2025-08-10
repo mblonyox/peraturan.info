@@ -7,12 +7,10 @@ import { define } from "~/utils/define.ts";
 export default define.page(({ Component, url, state }) => (
   <>
     <LayoutNavbar url={url} theme={state.theme} />
-    <main className="py-2 py-lg-3">
-      <div className="container">
-        <LayoutBreadcrumbs breadcrumbs={state.breadcrumbs} />
-        <LayoutPageHeading pageHeading={state.pageHeading} />
-        <Component></Component>
-      </div>
+    <main className="min-h-screen">
+      <LayoutBreadcrumbs breadcrumbs={state.breadcrumbs} />
+      <LayoutPageHeading pageHeading={state.pageHeading} />
+      <Component />
     </main>
     <LayoutFooter />
   </>

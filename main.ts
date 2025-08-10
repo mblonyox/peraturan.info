@@ -1,3 +1,5 @@
+/// <reference lib="dom" />
+
 import { App, staticFiles } from "fresh";
 
 import type { State } from "~/utils/define.ts";

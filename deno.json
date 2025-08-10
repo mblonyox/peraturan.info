@@ -14,6 +14,7 @@
     "$mock_file": "https://deno.land/x/mock_file@v1.1.2/mod.ts",
     "$og_edge": "https://deno.land/x/og_edge@0.0.6/mod.ts",
     "$sqlite": "https://deno.land/x/sqlite@v3.8/mod.ts",
+    "@fresh/plugin-tailwind": "jsr:@fresh/plugin-tailwind@^0.0.1-alpha.9",
     "@hyzyla/pdfium": "npm:@hyzyla/pdfium@^2.1.2",
     "@orama/orama": "npm:@orama/orama@^2.0.18",
     "@orama/plugin-data-persistence": "npm:@orama/plugin-data-persistence@^2.0.18",
@@ -21,6 +22,11 @@
     "@std/encoding": "jsr:@std/encoding@^1.0.10",
     "@std/http": "jsr:@std/http@^1.0.20",
     "@std/path": "jsr:@std/path@^1.1.1",
+    "@tailwindcss/postcss": "npm:@tailwindcss/postcss@^4.1.11",
+    "clsx": "npm:clsx@^2.1.1",
+    "daisyui": "npm:daisyui@^5.0.50",
+    "postcss": "npm:postcss@^8.5.6",
+    "tailwindcss": "npm:tailwindcss@^4.1.11",
     "~/": "./",
     "dpack": "npm:dpack@^0.6.22",
     "feed": "npm:feed@^5.1.0",
@@ -30,6 +36,7 @@
     "preact": "npm:preact@^10.27.0",
     "schema-dts": "npm:schema-dts@^1.1.2"
   },
+  "nodeModulesDir": "auto",
   "scopes": {
     "https://deno.land/x/og_edge@0.0.6/": {
       "https://esm.sh/react@18.2.0": "https://esm.sh/preact@10.27.0/compat"

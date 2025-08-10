@@ -8,7 +8,7 @@ export default define.page(({ Component, url, state }) => {
   canonicalUrl.searchParams.sort();
   if (HOSTNAME) canonicalUrl.hostname = HOSTNAME;
   return (
-    <html lang="id" data-bs-theme={state.theme}>
+    <html lang="id" data-theme={state.theme}>
       <head>
         <meta charSet="utf-8" />
         <meta
@@ -44,12 +44,6 @@ export default define.page(({ Component, url, state }) => {
           title="JSON Feed"
         />
         <link
-          href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
-          rel="stylesheet"
-          integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM"
-          crossOrigin="anonymous"
-        />
-        <link
           rel="preconnect"
           href="https://fonts.googleapis.com"
           crossOrigin="anonymous"
@@ -78,17 +72,12 @@ export default define.page(({ Component, url, state }) => {
           href="/icons/favicon-16x16.png"
         />
         <link rel="manifest" href="/manifest.json" />
+        <link rel="stylesheet" href="/styles.css" />
         <SeoTags url={url} {...state.seo} />
         {state.heads}
       </head>
-      <body style={{ overflowY: "scroll", overflowX: "hidden" }}>
+      <body className="min-w-xs">
         <Component />
-        <script
-          src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
-          integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz"
-          crossOrigin="anonymous"
-          defer
-        />
         <script
           src={`https://www.googletagmanager.com/gtag/js?id=${GOOGLE_TAG_ID}`}
           defer
