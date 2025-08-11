@@ -19,26 +19,20 @@ export default function PeraturanOutline(
   );
 
   return (
-    <ul className="list-group">
-      <li className="list-group-item">
-        <div className="d-flex flex-column gap-2">
-          <a href={path + "/judul"}>
-            JUDUL
-          </a>
+    <ul className="menu w-full bg-base-200 border border-base-300 rounded-box">
+      <li>
+        <div className="flex flex-col gap-2">
+          <a href={path + "/judul"}>JUDUL</a>
           <cite>{judul?.raw}</cite>
         </div>
       </li>
-      <li className="list-group-item">
-        <a href={path + "/pembukaan"}>
-          PEMBUKAAN
-        </a>
-        <ul className="list-group list-group-flush">
-          <li className="list-group-item">
+      <li>
+        <a href={path + "/pembukaan"}>PEMBUKAAN</a>
+        <ul>
+          <li>
             <details>
               <summary>
-                <div className="d-inline-flex w-75 ms-2">
-                  <a href={path + "/konsideran"}>Konsideran (Menimbang)</a>
-                </div>
+                <a href={path + "/konsideran"}>Konsideran (Menimbang)</a>
               </summary>
               <ul>
                 {konsideran?.tokens?.map((token: PeraturanToken) =>
@@ -46,17 +40,19 @@ export default function PeraturanOutline(
                     ? token.items
                     : (token.tokens ?? [token])
                 ).flat().map(
-                  (token) => <li key={token}>{ellipsis(token.raw)}</li>,
+                  (token) => (
+                    <li key={token}>
+                      <span>{ellipsis(token.raw)}</span>
+                    </li>
+                  ),
                 )}
               </ul>
             </details>
           </li>
-          <li className="list-group-item">
+          <li>
             <details>
               <summary>
-                <div className="d-inline-flex w-75 ms-2">
-                  <a href={path + "/dasar-hukum"}>Dasar Hukum (Mengingat)</a>
-                </div>
+                <a href={path + "/dasar-hukum"}>Dasar Hukum (Mengingat)</a>
               </summary>
               <ul>
                 {dasarHukum?.tokens?.map((token: PeraturanToken) =>
@@ -64,18 +60,20 @@ export default function PeraturanOutline(
                     ? token.items
                     : (token.tokens ?? [token])
                 ).flat().map(
-                  (token) => <li key={token}>{ellipsis(token.raw)}</li>,
+                  (token) => (
+                    <li key={token}>
+                      <span>{ellipsis(token.raw)}</span>
+                    </li>
+                  ),
                 )}
               </ul>
             </details>
           </li>
         </ul>
       </li>
-      <li className="list-group-item">
-        <a href={path + "/batang-tubuh"}>
-          BATANG TUBUH
-        </a>
-        <ul className="list-group list-group-flush">
+      <li>
+        <a href={path + "/batang-tubuh"}>BATANG TUBUH</a>
+        <ul>
           {batangTubuh.map((token) => (
             <BatangTubuhToken
               token={token}
@@ -85,7 +83,7 @@ export default function PeraturanOutline(
           ))}
         </ul>
       </li>
-      <li className="list-group-item">PENUTUP</li>
+      <li>PENUTUP</li>
     </ul>
   );
 }
@@ -114,16 +112,14 @@ function BatangTubuhToken(
     ? ellipsis(token.raw?.substring(token.nomor?.length ?? 0))
     : "";
   return (
-    <li className="list-group-item">
+    <li>
       {subTokens?.length
         ? (
           <details open={token.type === "pasal"}>
             <summary>
-              <div className="d-inline-flex w-75 ms-2">
-                <a href={path}>{judul}</a>
-              </div>
+              <a href={path}>{judul}</a>
             </summary>
-            <ul className="list-group list-group-flush">
+            <ul>
               {subTokens.map((token) => (
                 <BatangTubuhToken
                   token={token}
@@ -135,12 +131,13 @@ function BatangTubuhToken(
           </details>
         )
         : (
-          <div className="d-flex gap-2 w-100 ms-2">
-            <a className="text-nowrap" href={path}>
-              {judul}
-            </a>
-            {preview &&
-              <cite>{preview}</cite>}
+          <div className="flex flex-col gap-2">
+            <a className="text-nowrap" href={path}>{judul}</a>
+            {preview && (
+              <a href={path}>
+                <cite>{preview}</cite>
+              </a>
+            )}
           </div>
         )}
     </li>

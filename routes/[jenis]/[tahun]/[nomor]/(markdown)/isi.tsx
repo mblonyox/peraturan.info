@@ -1,10 +1,6 @@
-import { HttpError } from "fresh";
-
 import PeraturanIsi from "~/components/peraturan_isi.tsx";
-import { getDB } from "~/lib/db/mod.ts";
-import { getPeraturan } from "~/models/mod.ts";
+import type { Peraturan } from "~/models/mod.ts";
 import { define } from "~/utils/define.ts";
-import { readTextMd } from "~/utils/fs.ts";
 import { createMarked } from "~/utils/md.ts";
 
 interface Data {
@@ -17,11 +13,8 @@ interface Data {
 
 export const handler = define.handlers<Data>(async (ctx) => {
   const { jenis, tahun, nomor } = ctx.params;
-  const db = await getDB();
-  const peraturan = getPeraturan(db, jenis, tahun, nomor);
-  if (!peraturan) throw new HttpError(404);
-  const md = await readTextMd({ jenis, tahun, nomor });
-  if (!md) throw new HttpError(404);
+  const peraturan = ctx.state.peraturan as Peraturan;
+  const md = ctx.state.md as string;
   ctx.state.seo = {
     title: `Isi Peraturan | ${peraturan.rujukPanjang}`,
     description: `Isi Peraturan penuh atas ${peraturan.rujukPanjang}`,
@@ -40,6 +33,6 @@ export const handler = define.handlers<Data>(async (ctx) => {
   return { data: { path, md, html } };
 });
 
-export default define.page<typeof handler>(
-  ({ data }) => <PeraturanIsi {...data} />,
-);
+export default define.page<typeof handler>(({ data }) => (
+  <PeraturanIsi {...data} />
+));

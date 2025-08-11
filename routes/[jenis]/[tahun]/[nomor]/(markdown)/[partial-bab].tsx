@@ -1,11 +1,9 @@
 import { HttpError, type RouteConfig } from "fresh";
 
 import PeraturanIsi from "~/components/peraturan_isi.tsx";
-import { getDB } from "~/lib/db/mod.ts";
-import { getPeraturan } from "~/models/mod.ts";
+import type { Peraturan } from "~/models/mod.ts";
 import { define } from "~/utils/define.ts";
-import { readTextMd } from "~/utils/fs.ts";
-import { createMarked, PeraturanToken } from "~/utils/md.ts";
+import { createMarked, type PeraturanToken } from "~/utils/md.ts";
 import { ellipsis } from "~/utils/string.ts";
 
 interface Data {
@@ -21,13 +19,10 @@ export const config: RouteConfig = {
     "/:jenis/:tahun/:nomor/:bab(bab-[mdclxvi]+){/:bagian(bagian-\\w+)}?{/:paragraf(paragraf-\\d+)}?",
 };
 
-export const handler = define.handlers<Data>(async (ctx) => {
+export const handler = define.handlers<Data>((ctx) => {
   const { jenis, tahun, nomor, bab, bagian, paragraf } = ctx.params;
-  const db = await getDB();
-  const peraturan = getPeraturan(db, jenis, tahun, nomor);
-  if (!peraturan) throw new HttpError(404);
-  const md = await readTextMd({ jenis, tahun, nomor });
-  if (!md) throw new HttpError(404);
+  const peraturan = ctx.state.peraturan as Peraturan;
+  const md = ctx.state.md as string;
   const marked = createMarked();
   const rootTokens = marked.lexer(md);
   const breadcrumbs: { name: string; url?: string }[] = [
