@@ -1,10 +1,8 @@
 import { encodeBase64 } from "@std/encoding/base64";
 import { dirname, fromFileUrl, resolve } from "@std/path";
 import { ImageResponse } from "$og_edge";
-import { HttpError } from "fresh";
 
-import { getDB } from "~/lib/db/mod.ts";
-import { getPeraturan } from "~/models/mod.ts";
+import type { Peraturan } from "~/models/mod.ts";
 import { define } from "~/utils/define.ts";
 import { ellipsis } from "~/utils/string.ts";
 
@@ -20,10 +18,7 @@ const getLogo = async () => {
 };
 
 export const handler = define.handlers(async (ctx) => {
-  const { jenis, tahun, nomor } = ctx.params;
-  const db = await getDB();
-  const peraturan = getPeraturan(db, jenis, tahun, nomor);
-  if (!peraturan) throw new HttpError(404);
+  const peraturan = ctx.state.peraturan as Peraturan;
   const response = new ImageResponse(
     <div
       style={{
