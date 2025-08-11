@@ -16,6 +16,7 @@ export interface State {
     description: string;
   };
   heads?: JSX.Element;
+  [k: string]: unknown;
 }
 
 export const define = createDefine<State>();

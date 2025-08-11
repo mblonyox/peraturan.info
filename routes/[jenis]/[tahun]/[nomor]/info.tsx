@@ -1,73 +1,32 @@
-import { HttpError } from "fresh";
-
-import { getDB } from "~/lib/db/mod.ts";
-import {
-  getPeraturan,
-  getRelasiPeraturan1,
-  getRelasiPeraturan2,
-  getSumberPeraturan,
-  type Peraturan,
-  RelasiPeraturan,
-} from "~/models/mod.ts";
+import type { Peraturan } from "~/models/mod.ts";
 import { define } from "~/utils/define.ts";
 
 interface Data {
   peraturan: Peraturan;
-  sumber: { nama: string; url_page: string; url_pdf: string }[];
-  relasi1: (Pick<RelasiPeraturan, "id" | "relasi" | "catatan"> & {
-    peraturan: Peraturan;
-  })[];
-  relasi2: (Pick<RelasiPeraturan, "id" | "relasi" | "catatan"> & {
-    peraturan: Peraturan;
-  })[];
 }
 
-export const handler = define.handlers<Data>({
-  GET: async (ctx) => {
-    const { jenis, tahun, nomor } = ctx.params;
-    const db = await getDB();
-    const peraturan = getPeraturan(db, jenis, tahun, nomor);
-    if (!peraturan) throw new HttpError(404);
-    const sumber = getSumberPeraturan(db, jenis, tahun, nomor);
-    const relasi1 = getRelasiPeraturan1(db, jenis, tahun, nomor);
-    const relasi2 = getRelasiPeraturan2(db, jenis, tahun, nomor);
-    ctx.state.seo = {
-      title: `Informasi | ${peraturan.rujukPanjang}`,
-      description:
-        `Informasi umum (Metadata, Sumber Peraturan, Abstrak) atas ${peraturan.rujukPanjang}`,
-      image: `${ctx.url.origin}/${jenis}/${tahun}/${nomor}/image.png`,
-    };
-    ctx.state.breadcrumbs = [...peraturan.breadcrumbs, { name: "Informasi" }];
-    ctx.state.pageHeading = {
-      title: peraturan.judul,
-      description: peraturan.rujukPendek,
-    };
-    return { data: { peraturan, sumber, relasi1, relasi2 } };
-  },
+export const handler = define.handlers<Data>((ctx) => {
+  const { jenis, tahun, nomor } = ctx.params;
+  const peraturan = ctx.state.peraturan as Peraturan;
+  ctx.state.seo = {
+    title: `Informasi | ${peraturan.rujukPanjang}`,
+    description:
+      `Informasi umum (Metadata, Sumber Peraturan, Abstrak) atas ${peraturan.rujukPanjang}`,
+    image: `${ctx.url.origin}/${jenis}/${tahun}/${nomor}/image.png`,
+  };
+  ctx.state.breadcrumbs = [...peraturan.breadcrumbs, { name: "Informasi" }];
+  ctx.state.pageHeading = {
+    title: peraturan.judul,
+    description: peraturan.rujukPendek,
+  };
+  return { data: { peraturan } };
 });
 
-export default define.page<typeof handler>((
-  { data: { peraturan, sumber, relasi1, relasi2 } },
-) => (
-  <>
-    <div className="row">
-      <div className="col-12 col-lg-6 col-xxl-4">
-        <Metadata peraturan={peraturan} />
-      </div>
-      <div className="col-12 col-lg-6 col-xxl-4">
-        <h2>Tampilan</h2>
-        <img
-          src={peraturan.path + "/preview.png"}
-          alt={peraturan.rujukPendek}
-          className="img-thumbnail rounded"
-        />
-      </div>
-      <div className="col-12 col-lg-6 col-xxl-4">
-        <Sumber sumber={sumber} />
-      </div>
-    </div>
-    <Relasi relasi1={relasi1} relasi2={relasi2} />
-  </>
+export default define.page<typeof handler>(({ data: { peraturan } }) => (
+  <div className="grid grid-cols-1 lg:grid-cols-2 gap-2">
+    <Metadata peraturan={peraturan} />
+    <Preview peraturan={peraturan} />
+  </div>
 ));
 
 function Metadata({ peraturan }: { peraturan: Peraturan }) {
@@ -81,9 +40,9 @@ function Metadata({ peraturan }: { peraturan: Peraturan }) {
     tanggal_berlaku,
   } = peraturan;
   return (
-    <>
-      <h2>Metadata</h2>
-      <table className="table table-striped">
+    <div>
+      <h2 className="text-2xl mb-2">Metadata</h2>
+      <table className="table table-zebra">
         <tbody>
           <tr>
             <td>Jenis</td>
@@ -140,150 +99,19 @@ function Metadata({ peraturan }: { peraturan: Peraturan }) {
           </tr>
         </tbody>
       </table>
-    </>
+    </div>
   );
 }
 
-function Sumber(
-  { sumber }: { sumber: { nama: string; url_page: string; url_pdf: string }[] },
-) {
+function Preview({ peraturan }: { peraturan: Peraturan }) {
   return (
-    <>
-      <h2>Sumber</h2>
-      <div className="accordion" id="accordion-sumber">
-        {sumber.map(({ nama, url_page, url_pdf }, index) => (
-          <div className="accordion-item">
-            <h3 className="accordion-header" id={"heading-sumber-" + index}>
-              <button
-                className="accordion-button collapsed"
-                type="button"
-                data-bs-toggle="collapse"
-                data-bs-target={"#collapse-sumber-" + index}
-                aria-expanded="false"
-                aria-controls={"collapse-sumber-" + index}
-              >
-                {nama}
-              </button>
-            </h3>
-            <div
-              className="accordion-collapse collapse"
-              id={"collapse-sumber-" + index}
-              aria-labelledby={"heading-sumber-" + index}
-              data-bs-parent="#accordion-sumber"
-            >
-              <div className="accordion-body">
-                <p>
-                  <a
-                    href={url_page}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    style={{
-                      display: "inline-block",
-                      width: "100%",
-                      overflow: "hidden",
-                      whiteSpace: "nowrap",
-                      textOverflow: "ellipsis",
-                    }}
-                  >
-                    {"🌐 "}
-                    {url_page}
-                  </a>
-                </p>
-                {url_pdf && (
-                  <iframe
-                    name={nama}
-                    loading="lazy"
-                    src={`https://docs.google.com/gview?url=${url_pdf}&embedded=true`}
-                    style={{ width: "100%", aspectRatio: "1" }}
-                  >
-                  </iframe>
-                )}
-              </div>
-            </div>
-          </div>
-        ))}
-      </div>
-    </>
-  );
-}
-
-function Relasi({ relasi1, relasi2 }: {
-  relasi1: (Pick<RelasiPeraturan, "id" | "relasi" | "catatan"> & {
-    peraturan: Peraturan;
-  })[];
-  relasi2: (Pick<RelasiPeraturan, "id" | "relasi" | "catatan"> & {
-    peraturan: Peraturan;
-  })[];
-}) {
-  const itemsTerkait = [
-    {
-      title: "Dicabut dengan",
-      items: relasi2.filter((r) => r.relasi === "cabut"),
-    },
-    {
-      title: "Dicabut sebagian dengan",
-      items: relasi2.filter((r) => r.relasi === "cabut_sebagian"),
-    },
-    {
-      title: "Diubah dengan",
-      items: relasi2.filter((r) => r.relasi === "ubah"),
-    },
-    {
-      title: "Ditetapkan dengan",
-      items: relasi2.filter((r) => r.relasi === "tetapkan"),
-    },
-
-    {
-      title: "Menetapkan",
-      items: relasi1.filter((r) => r.relasi === "tetapkan"),
-    },
-
-    { title: "Mencabut", items: relasi1.filter((r) => r.relasi === "cabut") },
-    {
-      title: "Mencabut sebagian",
-      items: relasi1.filter((r) => r.relasi === "cabut_sebagian"),
-    },
-    { title: "Mengubah", items: relasi1.filter((r) => r.relasi === "ubah") },
-    {
-      title: "Dasar Hukum",
-      items: relasi1.filter((r) => r.relasi === "dasar_hukum"),
-    },
-    {
-      title: "Dijadikan Dasar Hukum berlakunya",
-      items: relasi2.filter((r) => r.relasi === "dasar_hukum"),
-    },
-  ];
-
-  return (
-    <div className="row">
-      {itemsTerkait.map(({ title, items }) => {
-        if (!items.length) return;
-        return (
-          <div className="col-12 col-md-6 col-xxl-4">
-            <h2>{title}:</h2>
-            <ul>
-              {items.map((
-                { catatan, peraturan: { path, judul, rujukPendek } },
-              ) => (
-                <li>
-                  <a
-                    className="h6"
-                    href={path}
-                  >
-                    {rujukPendek}
-                  </a>
-                  <p>{judul}</p>
-                  {catatan && (
-                    <p>
-                      <em>{catatan}</em>
-                    </p>
-                  )}
-                </li>
-              ))}
-            </ul>
-          </div>
-        );
-      })}
+    <div>
+      <h2 className="text-2xl mb-2">Tampilan</h2>
+      <img
+        src={peraturan.path + "/preview.png"}
+        alt={peraturan.rujukPendek}
+        className="rounded"
+      />
     </div>
   );
 }

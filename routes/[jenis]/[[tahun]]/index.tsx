@@ -21,66 +21,64 @@ interface Data {
   filterByTahunProps: FilterByTahunProps;
 }
 
-export const handler = define.handlers<Data>({
-  GET: async (ctx) => {
-    const { jenis: kodeJenis, tahun } = ctx.params;
-    const namaJenis = NAMA2_JENIS[kodeJenis]?.panjang ??
-      (kodeJenis === "all" && "semua peraturan");
-    if (kodeJenis !== "all" && !namaJenis) throw new HttpError(404);
-    if (tahun?.length && (tahun?.length !== 4 || isNaN(parseInt(tahun)))) {
-      throw new HttpError(404);
-    }
-    const searchParams = ctx.url.searchParams;
-    const page = parseInt(searchParams.get("page") ?? "1");
-    const pageSize = parseInt(searchParams.get("pageSize") ?? "10");
+export const handler = define.handlers<Data>(async (ctx) => {
+  const { jenis: kodeJenis, tahun } = ctx.params;
+  const namaJenis = NAMA2_JENIS[kodeJenis]?.panjang ??
+    (kodeJenis === "all" && "semua peraturan");
+  if (kodeJenis !== "all" && !namaJenis) throw new HttpError(404);
+  if (tahun?.length && (tahun?.length !== 4 || isNaN(parseInt(tahun)))) {
+    throw new HttpError(404);
+  }
+  const searchParams = ctx.url.searchParams;
+  const page = parseInt(searchParams.get("page") ?? "1");
+  const pageSize = parseInt(searchParams.get("pageSize") ?? "10");
 
-    const db = await getDB();
-    const jenis = kodeJenis === "all" ? undefined : kodeJenis;
-    const listPeraturan = getListPeraturan(db, {
-      jenis,
-      tahun,
-      page,
-      pageSize,
-    });
-    const filterByJenis = getFilterByJenisCount(db, { jenis, tahun });
-    const filterByTahun = getFilterByTahunCount(db, { jenis, tahun });
+  const db = await getDB();
+  const jenis = kodeJenis === "all" ? undefined : kodeJenis;
+  const listPeraturan = getListPeraturan(db, {
+    jenis,
+    tahun,
+    page,
+    pageSize,
+  });
+  const filterByJenis = getFilterByJenisCount(db, { jenis, tahun });
+  const filterByTahun = getFilterByTahunCount(db, { jenis, tahun });
 
-    const judul = (namaJenis || kodeJenis) + (
-      tahun ? ` pada tahun ${tahun}` : ""
-    );
-    const range = listPeraturan.hasil.length
-      ? `Menampilkan ${(page - 1) * pageSize + 1} s.d. ${
-        (page - 1) * pageSize + listPeraturan.hasil.length
-      } dari ${listPeraturan.total} peraturan.`
-      : "";
+  const judul = (namaJenis || kodeJenis) + (
+    tahun ? ` pada tahun ${tahun}` : ""
+  );
+  const range = listPeraturan.hasil.length
+    ? `Menampilkan ${(page - 1) * pageSize + 1} s.d. ${
+      (page - 1) * pageSize + listPeraturan.hasil.length
+    } dari ${listPeraturan.total} peraturan.`
+    : "";
 
-    ctx.state.seo = {
-      title: `Daftar ${judul}, halaman #${page}.`,
-      description: `Tampilan daftar ${judul}. ${range}`,
-    };
-    ctx.state.breadcrumbs = [
-      {
-        name: (namaJenis || kodeJenis),
-      },
-    ];
-    if (tahun) {
-      ctx.state.breadcrumbs[0].url = `/${kodeJenis}`;
-      ctx.state.breadcrumbs.push({ name: tahun });
-    }
-    ctx.state.pageHeading = {
-      title: `Daftar Peraturan`,
-      description: `${range}`,
-    };
+  ctx.state.seo = {
+    title: `Daftar ${judul}, halaman #${page}.`,
+    description: `Tampilan daftar ${judul}. ${range}`,
+  };
+  ctx.state.breadcrumbs = [
+    {
+      name: (namaJenis || kodeJenis),
+    },
+  ];
+  if (tahun) {
+    ctx.state.breadcrumbs[0].url = `/${kodeJenis}`;
+    ctx.state.breadcrumbs.push({ name: tahun });
+  }
+  ctx.state.pageHeading = {
+    title: `Daftar Peraturan`,
+    description: `${range}`,
+  };
 
-    return {
-      data: {
-        judul,
-        ...listPeraturan,
-        filterByJenisProps: { data: filterByJenis, tahun },
-        filterByTahunProps: { data: filterByTahun, jenis },
-      },
-    };
-  },
+  return {
+    data: {
+      judul,
+      ...listPeraturan,
+      filterByJenisProps: { data: filterByJenis, tahun },
+      filterByTahunProps: { data: filterByTahun, jenis },
+    },
+  };
 });
 
 export default define.page<typeof handler>(

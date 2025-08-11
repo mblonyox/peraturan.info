@@ -18,7 +18,13 @@ export default define.layout((
     {
       name: "Isi",
       url: `/${jenis}/${tahun}/${nomor}/isi`,
-      isActive: path !== "info",
+      isActive: path === "isi" || (path !== "info" && path !== "terkait"),
+      disabled: false,
+    },
+    {
+      name: "Terkait",
+      url: `/${jenis}/${tahun}/${nomor}/terkait`,
+      isActive: path === "terkait",
       disabled: false,
     },
   ];
@@ -41,7 +47,7 @@ export default define.layout((
             </a>
             {isActive &&
               (
-                <div className="tab-content bg-base-100 border-base-300">
+                <div className="tab-content bg-base-100 border-base-300 p-2">
                   <Component />
                 </div>
               )}
