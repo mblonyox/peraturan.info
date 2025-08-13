@@ -57,24 +57,54 @@ export default function PeraturanIsi({ md, path, html, prev, next }: Props) {
                   fill-rule="evenodd"
                   d="M4.5 11.5A.5.5 0 0 1 5 11h10a.5.5 0 0 1 0 1H5a.5.5 0 0 1-.5-.5zm-2-4A.5.5 0 0 1 3 7h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm-2-4A.5.5 0 0 1 1 3h10a.5.5 0 0 1 0 1H1a.5.5 0 0 1-.5-.5z"
                 />
-              </svg>{" "}
-              Kerangka
+              </svg>
+              <span className="hidden md:inline">
+                Outline
+              </span>
             </label>
             <span className="text-center">
-              <a
-                className={"btn btn-outline-secondary mx-2" +
-                  (!prev ? " disabled" : "")}
-                href={prev?.url}
-              >
-                &lt;&lt; {prev?.name}
-              </a>
-              <a
-                className={"btn btn-outline-secondary mx-2" +
-                  (!next ? " disabled" : "")}
-                href={next?.url}
-              >
-                {next?.name} &gt;&gt;
-              </a>
+              {!prev
+                ? (
+                  <button
+                    type="button"
+                    disabled
+                    className="btn btn-outline mx-2"
+                  >
+                    &lt;&lt;
+                  </button>
+                )
+                : (
+                  <a
+                    className="btn btn-outline mx-2"
+                    href={prev.url}
+                  >
+                    &lt;&lt;
+                    <span className="hidden md:inline">
+                      {prev.name}
+                    </span>
+                  </a>
+                )}
+              {!next
+                ? (
+                  <button
+                    type="button"
+                    disabled
+                    className="btn btn-outline mx-2"
+                  >
+                    &gt;&gt;
+                  </button>
+                )
+                : (
+                  <a
+                    className="btn btn-outline mx-2"
+                    href={next.url}
+                  >
+                    &gt;&gt;
+                    <span className="hidden md:inline">
+                      {next.name}
+                    </span>
+                  </a>
+                )}
             </span>
             <PrintButton />
           </div>
