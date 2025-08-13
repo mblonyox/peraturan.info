@@ -31,26 +31,25 @@ export default define.layout((
   return (
     <div className="container">
       <SocialShareButtons url={url} seo={state.seo} />
-      <div className="tabs tabs-lift bg-base-200 p-2 rounded-box">
+      <div className="tabs tabs-lift bg-base-200 rounded-box">
         {tabs.map(({ name, url, isActive, disabled }) => (
           <>
             <a
               role="tab"
               href={url}
               className={clsx(
-                "tab flex-1",
+                "tab flex-1 z-1",
                 isActive && "tab-active",
                 disabled && "tab-disabled",
               )}
+              aria-selected={isActive}
+              aria-disabled={disabled}
             >
               {name}
             </a>
-            {isActive &&
-              (
-                <div className="tab-content bg-base-100 border-base-300 p-2">
-                  <Component />
-                </div>
-              )}
+            <div className="tab-content bg-base-100 border-base-300 p-2 rounded-t-none">
+              {isActive && <Component />}
+            </div>
           </>
         ))}
       </div>

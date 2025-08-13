@@ -116,70 +116,73 @@ export default define.page<typeof handler>(
           JSON Feed
         </a>
       </div>
-      <div className="tabs tabs-lift bg-base-200 p-2 rounded-box">
+      <div className="tabs tabs-lift bg-base-200 rounded-box">
         {tanggalTerakhir.map(({ tanggal, jumlah }) => (
           <>
             <a
               role="tab"
               href={`?tanggal=${tanggal}`}
               className={clsx(
-                "tab flex-1",
+                "tab flex-1 z-1",
                 tanggal === tanggalDipilih && "tab-active",
               )}
+              aria-selected={tanggal === tanggalDipilih}
             >
               {new Date(tanggal).toLocaleDateString("id-ID", {
                 day: "2-digit",
                 month: "short",
               })} ({jumlah})
             </a>
-            {tanggal === tanggalDipilih && (
-              <div className="tab-content bg-base-100 border-base-300">
-                {!listPeraturan.length
-                  ? (
-                    <div className="alert alert-info" role="alert">
-                      Tidak ada peraturan pada tanggal yang ditentukan.
-                    </div>
-                  )
-                  : (
-                    <table className="table table-striped table-responsive table-hover">
-                      <thead>
-                        <tr>
-                          <th scope="col">#</th>
-                          <th scope="col">Judul</th>
-                          <th scope="col">Nomor dan Tahun</th>
-                          <th scope="col">Bentuk</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        {listPeraturan.map((
-                          {
-                            path,
-                            judul,
-                            nomorPendek,
-                            namaJenisPanjang,
-                          },
-                          index,
-                        ) => (
-                          <tr key={judul}>
-                            <th scope="row">{index + 1}</th>
-                            <td>
-                              {judul}
-                            </td>
-                            <td>
-                              <a className="link" href={path}>
-                                {nomorPendek}
-                              </a>
-                            </td>
-                            <td>
-                              {namaJenisPanjang}
-                            </td>
+            <div className="tab-content bg-base-100 border-base-300 rounded-t-none">
+              {tanggal === tanggalDipilih && (
+                <>
+                  {!listPeraturan.length
+                    ? (
+                      <div className="alert alert-info" role="alert">
+                        Tidak ada peraturan pada tanggal yang ditentukan.
+                      </div>
+                    )
+                    : (
+                      <table className="table table-striped table-responsive table-hover">
+                        <thead>
+                          <tr>
+                            <th scope="col">#</th>
+                            <th scope="col">Judul</th>
+                            <th scope="col">Nomor dan Tahun</th>
+                            <th scope="col">Bentuk</th>
                           </tr>
-                        ))}
-                      </tbody>
-                    </table>
-                  )}
-              </div>
-            )}
+                        </thead>
+                        <tbody>
+                          {listPeraturan.map((
+                            {
+                              path,
+                              judul,
+                              nomorPendek,
+                              namaJenisPanjang,
+                            },
+                            index,
+                          ) => (
+                            <tr key={judul}>
+                              <th scope="row">{index + 1}</th>
+                              <td>
+                                {judul}
+                              </td>
+                              <td>
+                                <a className="link" href={path}>
+                                  {nomorPendek}
+                                </a>
+                              </td>
+                              <td>
+                                {namaJenisPanjang}
+                              </td>
+                            </tr>
+                          ))}
+                        </tbody>
+                      </table>
+                    )}
+                </>
+              )}
+            </div>
           </>
         ))}
       </div>
