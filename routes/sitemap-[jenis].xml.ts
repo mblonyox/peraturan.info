@@ -1,7 +1,8 @@
-import { RouteConfig } from "fresh";
+import type { RouteConfig } from "fresh";
+
 import { getDB, lastModDB } from "~/lib/db/mod.ts";
 import { getFilterByTahunCount } from "~/models/peraturan.ts";
-import { Handlers } from "fresh/compat";
+import { define } from "~/utils/define.ts";
 
 export const config: RouteConfig = {
   routeOverride: "/sitemap-:jenis.xml",
@@ -12,7 +13,7 @@ type SitemapTag = {
   lastmod?: Date;
 };
 
-export const handler: Handlers = {
+export const handler = define.handlers({
   GET: async (ctx) => {
     const req = ctx.req;
     const origin = new URL(req.url).origin;
@@ -37,4 +38,4 @@ export const handler: Handlers = {
       { headers: { "Content-Type": "text/xml" } },
     );
   },
-};
+});

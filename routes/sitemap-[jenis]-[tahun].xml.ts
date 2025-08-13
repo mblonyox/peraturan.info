@@ -1,9 +1,10 @@
-import { RouteConfig } from "fresh";
+import type { RouteConfig } from "fresh";
+
 import { getDB } from "~/lib/db/mod.ts";
 import { getListPeraturan } from "~/models/peraturan.ts";
+import { define } from "~/utils/define.ts";
 import { lastModMd, readTextMd } from "~/utils/fs.ts";
 import { createMarked, PeraturanToken } from "~/utils/md.ts";
-import { Handlers } from "fresh/compat";
 
 type UrlTag = {
   loc: string;
@@ -23,7 +24,7 @@ export const config: RouteConfig = {
   routeOverride: "/sitemap-:jenis-:tahun.xml",
 };
 
-export const handler: Handlers = {
+export const handler = define.handlers({
   GET: async (ctx) => {
     const req = ctx.req;
     const origin = new URL(req.url).origin;
@@ -82,7 +83,7 @@ export const handler: Handlers = {
       { headers: { "Content-Type": "text/xml" } },
     );
   },
-};
+});
 
 const getPartialPaths = (md: string): string[] => {
   const paths = [
