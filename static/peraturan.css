@@ -1,8 +1,113 @@
-.peraturan * {
-  font-family: "Bookman Old Style", "EB Garamond", serif;
-  font-size: 12pt;
-  font-weight: normal;
-  color: black;
+.peraturan {
+  * {
+    font-family: "Bookman Old Style", "EB Garamond", serif;
+    font-size: 12pt;
+    font-weight: normal;
+    color: black;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6,
+  p {
+    margin-top: 0;
+    margin-bottom: 0;
+  }
+
+  .judul,
+  .frasa-drtyme,
+  .jabatan-pembentuk,
+  .persetujuan,
+  .kata-memutuskan,
+  .buku,
+  .bab,
+  .bagian,
+  .paragraf,
+  .pasal {
+    text-align: center;
+  }
+
+  .buku,
+  .bab,
+  .bagian,
+  .paragraf,
+  .pasal,
+  .isi-pasal,
+  .ayat {
+    margin-left: 35mm;
+  }
+
+  .isi-pasal > .ayat {
+    margin-left: 0;
+  }
+
+  .ayat {
+    position: relative;
+    padding-left: 10mm;
+    & > span:first-child {
+      top: 0;
+      left: 0;
+      position: absolute;
+    }
+  }
+
+  table,
+  th,
+  td {
+    margin: 0;
+    padding: 0;
+    border: 0;
+  }
+
+  th,
+  td {
+    vertical-align: top;
+  }
+
+  th:first-child {
+    width: 30mm;
+  }
+  td:nth-child(2) {
+    width: 5mm;
+  }
+  td:nth-child(3) {
+    width: 125mm;
+  }
+
+  :not(center, center > *) {
+    text-align: justify;
+  }
+
+  ol {
+    margin-bottom: 0;
+    padding-inline-start: 5mm;
+    li {
+      padding-inline-start: 5mm;
+    }
+  }
+
+  ol.butir.number {
+    list-style: decimal outside;
+  }
+
+  ol.butir.lower-latin {
+    list-style: lower-latin outside;
+  }
+
+  ol.butir.kurung {
+    list-style: none;
+  }
+
+  ol.butir.number.kurung > li::marker {
+    content: counter(list-item, decimal) ") ";
+  }
+
+  ol.butir.lower-latin.kurung > li::marker {
+    content: counter(list-item, lower-latin) ") ";
+  }
 }
 @media screen {
   .peraturan.wadah {
@@ -17,99 +122,4 @@
     background-color: white;
     box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
   }
-}
-.peraturan .judul,
-.peraturan .frasa-drtyme,
-.peraturan .jabatan-pembentuk,
-.peraturan .persetujuan,
-.peraturan .kata-memutuskan,
-.peraturan .buku,
-.peraturan .bab,
-.peraturan .bagian,
-.peraturan .paragraf,
-.peraturan .pasal {
-  text-align: center;
-}
-
-.peraturan .buku,
-.peraturan .bab,
-.peraturan .bagian,
-.peraturan .paragraf,
-.peraturan .pasal,
-.peraturan .isi-pasal,
-.peraturan .ayat {
-  margin-left: 35mm;
-}
-
-.peraturan .isi-pasal > .ayat {
-  margin-left: 0;
-}
-
-.peraturan .ayat {
-  position: relative;
-  padding-left: 10mm;
-}
-
-.peraturan .ayat > span:first-child {
-  top: 0;
-  left: 0;
-  position: absolute;
-}
-
-.peraturan h1,
-.peraturan h2,
-.peraturan h3,
-.peraturan h4,
-.peraturan h5,
-.peraturan h6,
-.peraturan p {
-  margin-top: 0;
-  margin-bottom: 0;
-}
-
-.peraturan table,
-.peraturan th,
-.peraturan td {
-  margin: 0;
-  padding: 0;
-  border: 0;
-}
-
-.peraturan th,
-.peraturan td {
-  vertical-align: top;
-}
-
-.peraturan th:first-child {
-  width: 30mm;
-}
-.peraturan td:nth-child(2) {
-  width: 5mm;
-}
-.peraturan td:nth-child(3) {
-  width: 125mm;
-}
-
-.peraturan :not(center, center > *) {
-  text-align: justify;
-}
-
-.peraturan ol {
-  margin-bottom: 0;
-}
-
-.peraturan ol.butir.number {
-  list-style: decimal;
-}
-.peraturan ol.butir.lower-latin {
-  list-style: lower-latin;
-}
-.peraturan ol.butir.kurung {
-  list-style: none;
-}
-.peraturan ol.butir.number.kurung > li::marker {
-  content: counter(list-item, decimal) ") ";
-}
-.peraturan ol.butir.lower-latin.kurung > li::marker {
-  content: counter(list-item, lower-latin) ") ";
 }
