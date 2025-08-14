@@ -137,7 +137,7 @@ export default define.page<typeof handler>(
               <FilterByJenis {...filterByJenisProps} />
               <FilterByTahun {...filterByTahunProps} />
             </div>
-            <div className="divider divider-horizontal hidden lg:block"></div>
+            <div className="divider divider-horizontal hidden lg:flex"></div>
             <div className="flex-1 overflow-x-auto">
               <table className="table border-t-2 border-t-base-300">
                 <thead>

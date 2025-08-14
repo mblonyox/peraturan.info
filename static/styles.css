@@ -11,8 +11,5 @@
 
 @utility container {
   margin-inline: auto;
-  padding-inline: 2rem;
-  @variant max-md {
-    padding-inline: 0.5rem;
-  }
+  padding-inline: 0.5rem;
 }
