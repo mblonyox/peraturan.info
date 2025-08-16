@@ -50,7 +50,7 @@ export default function Pagination({
   return (
     <nav
       aria-label="Laman-laman hasil pencarian"
-      className="flex justify-center"
+      className="flex justify-center my-2"
     >
       <div className="join join-horizontal">
         {page === 1

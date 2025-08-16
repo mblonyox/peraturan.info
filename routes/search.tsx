@@ -52,32 +52,24 @@ export const handler = define.handlers<Data>({
 
 export default define.page<typeof handler>(
   ({ data: { results, paginationProps }, url }) => (
-    <>
-      <div className="row my-3 my-lg-5 column-gap-0 row-gap-3">
+    <div className="container">
+      <div className="grid grid-cols-2 xl:grid-cols-3 gap-2">
         {results.hits.map((hit) => (
-          <div className="col-lg-6 col-xl-4">
-            <div className="card h-100">
-              <div className="card-body">
-                <p
-                  className="card-title h5 fw-bold"
-                  style={{
-                    "-webkit-line-clamp": "3",
-                    "-webkit-box-orient": "vertical",
-                    display: "-webkit-box",
-                    overflow: "hidden",
-                  }}
-                >
-                  {hit.document.judul as string}
-                </p>
-                <p className="card-subtitle fw-light">
-                  {hit.document.jenis} {hit.document.nomor}
-                </p>
-                <p className="card-text">
-                  {ellipsis(hit.document.teks as string)}
-                </p>
+          <div className="card card-border shadow-sm">
+            <div className="card-body">
+              <p className="card-title line-clamp-3 text-xl font-bold">
+                {hit.document.judul as string}
+              </p>
+              <p className="font-light">
+                {hit.document.jenis} {hit.document.nomor}
+              </p>
+              <p>
+                {ellipsis(hit.document.teks as string)}
+              </p>
+              <div className="card-actions justify-end">
                 <a
                   href={hit.document.path as string}
-                  className="card-link btn btn-outline-secondary"
+                  className="btn btn-outline"
                 >
                   Buka
                 </a>
@@ -91,6 +83,6 @@ export default define.page<typeof handler>(
         page={paginationProps.page}
         lastPage={paginationProps.lastPage}
       />
-    </>
+    </div>
   ),
 );
