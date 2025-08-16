@@ -1,5 +1,6 @@
 import type { Peraturan } from "~/models/mod.ts";
 import { define } from "~/utils/define.ts";
+import Image from "../../../../islands/image.tsx";
 
 interface Data {
   peraturan: Peraturan;
@@ -107,10 +108,10 @@ function Preview({ peraturan }: { peraturan: Peraturan }) {
   return (
     <div>
       <h2 className="text-2xl mb-2">Tampilan</h2>
-      <img
+      <Image
         src={peraturan.path + "/preview.png"}
         alt={peraturan.rujukPendek}
-        className="rounded"
+        className="rounded-box"
       />
     </div>
   );
