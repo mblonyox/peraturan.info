@@ -1,7 +1,8 @@
-import Webmentions from "~/islands/webmentions.tsx";
-import SocialShareButtons from "~/components/social_share_buttons.tsx";
-import { define } from "~/utils/define.ts";
 import { clsx } from "clsx";
+
+import SocialShareButtons from "~/components/social_share_buttons.tsx";
+import EmojiReactions from "~/islands/emoji_reactions.tsx";
+import { define } from "~/utils/define.ts";
 
 export default define.layout((
   { Component, url, params, state },
@@ -53,7 +54,7 @@ export default define.layout((
           </>
         ))}
       </div>
-      <Webmentions url={url} />
+      <EmojiReactions path={`/${jenis}/${tahun}/${nomor}`} />
     </div>
   );
 });

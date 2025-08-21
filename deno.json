@@ -35,6 +35,7 @@
     "github-slugger": "npm:github-slugger@^2.0.0",
     "marked": "npm:marked@^16.2.0",
     "preact": "npm:preact@^10.27.1",
+    "react": "npm:preact@^10.27.1/compat",
     "schema-dts": "npm:schema-dts@^1.1.5"
   },
   "nodeModulesDir": "auto",
@@ -43,5 +44,6 @@
       "https://esm.sh/react@18.2.0": "https://esm.sh/preact@10.27.1/compat"
     }
   },
-  "exclude": ["**/_fresh/*", "data"]
+  "exclude": ["**/_fresh/*", "data"],
+  "unstable": ["kv"]
 }

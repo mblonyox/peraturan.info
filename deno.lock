@@ -892,6 +892,7 @@
     }
   },
   "redirects": {
+    "https://esm.sh/*@charkour/react-reactions": "https://esm.sh/*@charkour/react-reactions@0.11.0",
     "https://esm.sh/@types/camelize@~1.0.1/index.d.ts": "https://esm.sh/@types/camelize@1.0.1/index.d.ts",
     "https://esm.sh/@types/react@~19.0.7/index.d.ts": "https://esm.sh/@types/react@19.0.14/index.d.ts",
     "https://esm.sh/@types/unicode-trie@~2.0.3/index.d.ts": "https://esm.sh/@types/unicode-trie@2.0.3/index.d.ts",

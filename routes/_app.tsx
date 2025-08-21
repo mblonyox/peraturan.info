@@ -10,6 +10,7 @@ export default define.page(({ Component, url, state }) => {
   return (
     <html lang="id" data-theme={state.theme}>
       <head>
+        <base href="/" />
         <meta charSet="utf-8" />
         <meta
           name="viewport"
