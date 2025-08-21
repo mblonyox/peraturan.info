@@ -24,7 +24,6 @@ export default function Pagination({
   lastPage,
   maxItems,
 }: PaginationProps) {
-  const searchParams = new URLSearchParams(url.search);
   lastPage ??= Math.ceil((total ?? 0) / (pageSize ?? 10));
   const itemsSize = maxItems ?? 5;
   if (!lastPage || page < 1 || page > lastPage) return null;
@@ -42,9 +41,9 @@ export default function Pagination({
   }
 
   const pageUrl = (page: number) => {
-    const params = new URLSearchParams(searchParams);
-    params.set("page", `${page}`);
-    return `?${params.toString()}`;
+    const p = new URL(url);
+    p.searchParams.set("page", `${page}`);
+    return p.href;
   };
 
   return (
