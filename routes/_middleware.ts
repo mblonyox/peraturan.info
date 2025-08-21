@@ -1,4 +1,5 @@
-import { getCookies } from "@std/http/cookie";
+import { getCookies, setCookie } from "@std/http/cookie";
+import { regexes } from "zod";
 
 import { HOSTNAME } from "~/utils/const.ts";
 import { define } from "~/utils/define.ts";
@@ -19,4 +20,28 @@ const setTheme = define.middleware((ctx) => {
   return ctx.next();
 });
 
-export const handler = [redirectHostname, setTheme];
+const setSessionId = define.middleware(async (ctx) => {
+  const cookies = getCookies(ctx.req.headers);
+  let sessionId = cookies["sessionId"];
+  if (!sessionId || !regexes.uuid4.test(sessionId)) {
+    sessionId = crypto.randomUUID();
+  }
+  ctx.state.sessionId = sessionId;
+  const response = await ctx.next();
+  const headers = new Headers(response.headers);
+  setCookie(headers, {
+    name: "sessionId",
+    value: sessionId,
+    path: "/",
+    httpOnly: true,
+    secure: true,
+    maxAge: 31536000,
+  });
+  return new Response(response.body, {
+    status: response.status,
+    statusText: response.statusText,
+    headers,
+  });
+});
+
+export const handler = [redirectHostname, setTheme, setSessionId];

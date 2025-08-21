@@ -18,7 +18,7 @@
     "@hyzyla/pdfium": "npm:@hyzyla/pdfium@^2.1.9",
     "@orama/orama": "npm:@orama/orama@^2.1.1",
     "@orama/plugin-data-persistence": "npm:@orama/plugin-data-persistence@^2.1.1",
-    "@preact/signals": "npm:@preact/signals@^2.2.1",
+    "@preact/signals": "npm:@preact/signals@^2.3.1",
     "@std/encoding": "jsr:@std/encoding@^1.0.10",
     "@std/http": "jsr:@std/http@^1.0.20",
     "@std/path": "jsr:@std/path@^1.1.2",
@@ -27,19 +27,20 @@
     "daisyui": "npm:daisyui@^5.0.50",
     "postcss": "npm:postcss@^8.5.6",
     "tailwindcss": "npm:tailwindcss@^4.1.12",
+    "zod": "npm:zod@^4.0.17",
     "~/": "./",
     "dpack": "npm:dpack@^0.6.22",
     "feed": "npm:feed@^5.1.0",
-    "fresh": "jsr:@fresh/core@^2.0.0-alpha.58",
+    "fresh": "jsr:@fresh/core@^2.0.0-alpha.59",
     "github-slugger": "npm:github-slugger@^2.0.0",
-    "marked": "npm:marked@^16.1.2",
-    "preact": "npm:preact@^10.27.0",
+    "marked": "npm:marked@^16.2.0",
+    "preact": "npm:preact@^10.27.1",
     "schema-dts": "npm:schema-dts@^1.1.5"
   },
   "nodeModulesDir": "auto",
   "scopes": {
     "https://deno.land/x/og_edge@0.0.6/": {
-      "https://esm.sh/react@18.2.0": "https://esm.sh/preact@10.27.0/compat"
+      "https://esm.sh/react@18.2.0": "https://esm.sh/preact@10.27.1/compat"
     }
   },
   "exclude": ["**/_fresh/*", "data"]

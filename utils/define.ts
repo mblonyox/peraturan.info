@@ -2,6 +2,7 @@ import { createDefine } from "fresh";
 import { JSX } from "preact/compat/jsx-dev-runtime";
 
 export interface State {
+  sessionId?: string;
   theme?:
     | "light"
     | "dark"
