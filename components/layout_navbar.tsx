@@ -134,7 +134,7 @@ export default function LayoutNavbar({ url, theme }: Props) {
           ))}
         </ul>
       </div>
-      <div className="nabar-center">
+      <div className="navbar-center">
         <SearchInput initQuery={searchParams.get("query")?.trim()} />
       </div>
       <div className="navbar-end">
