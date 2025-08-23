@@ -2,6 +2,7 @@ import { z } from "zod";
 
 import { define } from "~/utils/define.ts";
 import { kv } from "~/lib/kv/mod.ts";
+import { getReaksi, setReaksi } from "~/models/reaksi.ts";
 
 const getReactionsSchema = z.object({
   path: z.string(),
@@ -23,12 +24,7 @@ export const handler = define.handlers({
         status: 400,
       });
     }
-    const entries = kv.list({ prefix: ["reactions", data.path] });
-    const map = new Map<string, number>();
-    for await (const { value } of entries) {
-      map.set(value as string, (map.get(value as string) ?? 0) + 1);
-    }
-    const result = Array.from(map.entries()).sort((a, b) => b[1] - a[1]);
+    const result = await getReaksi(kv, data.path);
     return Response.json(result);
   },
   POST: async (ctx) => {
@@ -43,7 +39,7 @@ export const handler = define.handlers({
       });
     }
     const { path, emoji } = data;
-    const result = await kv.set(["reactions", path, sessionId], emoji);
+    const result = await setReaksi(kv, path, sessionId, emoji);
     return Response.json(result);
   },
 });

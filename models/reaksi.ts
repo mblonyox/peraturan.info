@@ -6,3 +6,10 @@ export const getReaksi = async (kv: Deno.Kv, path: string) => {
   }
   return Array.from(map.entries()).sort((a, b) => b[1] - a[1]);
 };
+
+export const setReaksi = (
+  kv: Deno.Kv,
+  path: string,
+  id: string,
+  emoji: string,
+) => kv.set(["reactions", path, id], emoji);
