@@ -2,9 +2,11 @@ import { clsx } from "clsx";
 
 import SocialShareButtons from "~/components/social_share_buttons.tsx";
 import EmojiReactions from "~/islands/emoji_reactions.tsx";
+import { kv } from "~/lib/kv/mod.ts";
+import { getReaksi } from "~/models/reaksi.ts";
 import { define } from "~/utils/define.ts";
 
-export default define.layout((
+export default define.layout(async (
   { Component, url, params, state },
 ) => {
   const path = url.pathname.split("/").at(-1);
@@ -29,6 +31,8 @@ export default define.layout((
       disabled: false,
     },
   ];
+  const counters = await getReaksi(kv, `/${jenis}/${tahun}/${nomor}`);
+
   return (
     <div className="container">
       <SocialShareButtons url={url} seo={state.seo} />
@@ -54,7 +58,10 @@ export default define.layout((
           </>
         ))}
       </div>
-      <EmojiReactions path={`/${jenis}/${tahun}/${nomor}`} />
+      <EmojiReactions
+        counters={counters}
+        path={`/${jenis}/${tahun}/${nomor}`}
+      />
     </div>
   );
 });

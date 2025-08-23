@@ -1,14 +1,17 @@
-import { SlackSelector } from "https://esm.sh/*@charkour/react-reactions";
-import { useSignal, useSignalEffect } from "@preact/signals";
+import { SlackSelector } from "@charkour/react-reactions";
+import { useSignal } from "@preact/signals";
 import { useCallback, useRef } from "preact/hooks";
 
 interface Props {
+  counters: [string, number][];
   path: string;
 }
 
-export default function EmojiReactions({ path }: Props) {
+export default function EmojiReactions(
+  { counters: initCounters, path }: Props,
+) {
   const dropdownRef = useRef<HTMLDivElement>(null);
-  const counters = useSignal<[string, number][]>([]);
+  const counters = useSignal(initCounters);
   const getEmojis = useCallback(async () => {
     const resp = await fetch("/api/reactions?path=" + encodeURIComponent(path));
     if (!resp.ok) return;
@@ -27,9 +30,6 @@ export default function EmojiReactions({ path }: Props) {
     if (!resp.ok) return;
     await getEmojis();
   }, [path]);
-  useSignalEffect(() => {
-    getEmojis();
-  });
 
   return (
     <div className="card card-border my-2 lg:my-3">
