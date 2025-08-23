@@ -5,7 +5,7 @@ import { getFilterByTahunCount } from "~/models/peraturan.ts";
 import { define } from "~/utils/define.ts";
 
 export const config: RouteConfig = {
-  routeOverride: "/sitemap-:jenis.xml",
+  routeOverride: "/sitemap-:jenis(\\w+).xml",
 };
 
 type SitemapTag = {

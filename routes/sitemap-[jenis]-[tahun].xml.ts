@@ -21,7 +21,7 @@ type UrlTag = {
 };
 
 export const config: RouteConfig = {
-  routeOverride: "/sitemap-:jenis-:tahun.xml",
+  routeOverride: "/sitemap-:jenis(\\w+)-:tahun(\\d+).xml",
 };
 
 export const handler = define.handlers({
