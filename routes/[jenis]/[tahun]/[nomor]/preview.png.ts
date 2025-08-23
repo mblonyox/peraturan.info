@@ -1,43 +1,43 @@
 import { HttpError } from "fresh";
 import { createCanvas } from "$canvas";
-import { PDFiumLibrary, type PDFiumPageRenderOptions } from "@hyzyla/pdfium";
+import { PDFiumLibrary } from "@hyzyla/pdfium";
 
 import { getDB } from "~/lib/db/mod.ts";
 import { getSumberPeraturan } from "~/models/mod.ts";
 import { define } from "~/utils/define.ts";
 
 export const handler = define.handlers({
-  GET: async ({ params }) => {
+  GET: async ({ params, url }) => {
+    const cache = await caches.open("preview");
+    const cachedContent = await cache.match(url);
+    if (cachedContent) return cachedContent;
     const { jenis, tahun, nomor } = params;
     const db = await getDB();
     const sumber = getSumberPeraturan(db, jenis, tahun, nomor);
-    const url = sumber.at(0)?.url_pdf;
-    if (!url) throw new HttpError(404);
-    const pdfData = await getPdfData(url);
+    const urlPdf = sumber.at(0)?.url_pdf;
+    if (!urlPdf) throw new HttpError(404);
+    const pdfData = await getPdfData(urlPdf);
     const png = await getPdfFirstPageImage(pdfData);
-    return new Response(png.data, {
+    const response = new Response(png.data, {
       headers: {
         "Content-Type": "image/png",
         "Cache-Control": "public, max-age=31536000, immutable",
       },
     });
+    await cache.put(url, response.clone());
+    return response;
   },
 });
 
 async function getPdfData(url: string) {
-  const data = await fetch(url).then(
-    (res) => {
-      if (!res.ok) throw new Error(`Invalid url: ${res.statusText}`);
-      const contentType = res.headers.get("Content-Type");
-      if (
-        contentType !== "application/pdf" &&
-        contentType !== "application/octet-stream"
-      ) {
-        throw new Error("Not a pdf document.");
-      }
-      return res.arrayBuffer();
-    },
-  );
+  const res = await fetch(url);
+  if (!res.ok) throw new Error(`Invalid url: ${res.statusText}`);
+  const contentType = res.headers.get("Content-Type");
+  if (
+    contentType !== "application/pdf" &&
+    contentType !== "application/octet-stream"
+  ) throw new Error("Not a pdf document.");
+  const data = await res.arrayBuffer();
   return new Uint8Array(data);
 }
 
@@ -47,17 +47,15 @@ async function getPdfFirstPageImage(data: Uint8Array) {
   const page = doc.getPage(0);
   const image = page.render({
     scale: 1,
-    render: renderPage,
+    render: ({ data, width, height }) => {
+      const canvas = createCanvas(width, height);
+      const ctx = canvas.getContext("2d");
+      const image = ctx.createImageData(width, height);
+      data.forEach((v, i) => image.data[i] = v);
+      ctx.putImageData(image, 0, 0);
+      return Promise.resolve(canvas.toBuffer());
+    },
   });
   doc.destroy();
   return image;
-}
-
-function renderPage({ data, width, height }: PDFiumPageRenderOptions) {
-  const canvas = createCanvas(width, height);
-  const ctx = canvas.getContext("2d");
-  const image = ctx.createImageData(width, height);
-  data.forEach((v, i) => image.data[i] = v);
-  ctx.putImageData(image, 0, 0);
-  return Promise.resolve(canvas.toBuffer());
 }
