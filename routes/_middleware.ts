@@ -28,20 +28,23 @@ const setSessionId = define.middleware(async (ctx) => {
   }
   ctx.state.sessionId = sessionId;
   const response = await ctx.next();
-  const headers = new Headers(response.headers);
-  setCookie(headers, {
-    name: "sessionId",
-    value: sessionId,
-    path: "/",
-    httpOnly: true,
-    secure: true,
-    maxAge: 31536000,
-  });
-  return new Response(response.body, {
-    status: response.status,
-    statusText: response.statusText,
-    headers,
-  });
+  if (response.headers.get("Content-Type") === "text/html") {
+    const headers = new Headers(response.headers);
+    setCookie(headers, {
+      name: "sessionId",
+      value: sessionId,
+      path: "/",
+      httpOnly: true,
+      secure: true,
+      maxAge: 31536000,
+    });
+    return new Response(response.body, {
+      status: response.status,
+      statusText: response.statusText,
+      headers,
+    });
+  }
+  return response;
 });
 
 export const handler = [redirectHostname, setTheme, setSessionId];
