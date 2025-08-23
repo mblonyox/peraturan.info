@@ -1,6 +1,6 @@
 #!/usr/bin/env -S deno run -A --watch=static/,routes/
-import { Builder } from "fresh/dev";
 import { tailwind } from "@fresh/plugin-tailwind";
+import { Builder } from "fresh/dev";
 
 const builder = new Builder();
 tailwind(builder);

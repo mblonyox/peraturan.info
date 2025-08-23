@@ -1,7 +1,7 @@
 import { getDB } from "~/lib/db/mod.ts";
 import { getFeedListPeraturan } from "~/models/mod.ts";
-import { createPeraturanFeed } from "~/utils/feed.ts";
 import { define } from "~/utils/define.ts";
+import { createPeraturanFeed } from "~/utils/feed.ts";
 
 export const handler = define.handlers({
   GET: async ({ url }) => {

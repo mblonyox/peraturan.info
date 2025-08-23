@@ -1,6 +1,6 @@
 import { dirname, fromFileUrl, resolve } from "@std/path";
-import { DB } from "$sqlite";
 import { prepareLocalFile, prepareVirtualFile } from "$mock_file";
+import { DB } from "$sqlite";
 
 const filepath = resolve(
   dirname(fromFileUrl(import.meta.url)),

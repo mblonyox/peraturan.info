@@ -1,5 +1,5 @@
 import { createDefine } from "fresh";
-import { JSX } from "preact/compat/jsx-dev-runtime";
+import type { JSX } from "preact";
 
 export interface State {
   sessionId?: string;

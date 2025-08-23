@@ -1,5 +1,5 @@
-import { useEffect, useState } from "preact/hooks";
 import { type ThemeOption, themeOptions } from "~/utils/theme.ts";
+import { useEffect, useState } from "preact/hooks";
 
 interface Props {
   initTheme?: ThemeOption;

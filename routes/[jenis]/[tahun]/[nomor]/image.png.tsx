@@ -1,10 +1,9 @@
 import { encodeBase64 } from "@std/encoding/base64";
 import { dirname, fromFileUrl, resolve } from "@std/path";
-import { ImageResponse } from "$og_edge";
-
 import type { Peraturan } from "~/models/mod.ts";
 import { define } from "~/utils/define.ts";
 import { ellipsis } from "~/utils/string.ts";
+import { ImageResponse } from "$og_edge";
 
 const getLogo = async () => {
   const buffer = await Deno.readFile(

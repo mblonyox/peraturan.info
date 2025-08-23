@@ -1,10 +1,9 @@
-import { clsx } from "clsx";
-
 import SocialShareButtons from "~/components/social_share_buttons.tsx";
 import EmojiReactions from "~/islands/emoji_reactions.tsx";
 import { kv } from "~/lib/kv/mod.ts";
 import { getReaksi } from "~/models/reaksi.ts";
 import { define } from "~/utils/define.ts";
+import { clsx } from "clsx";
 
 export default define.layout(async (
   { Component, url, params, state },

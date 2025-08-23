@@ -1,9 +1,8 @@
 import { getCookies, setCookie } from "@std/http/cookie";
-import { regexes } from "zod";
-
 import { HOSTNAME } from "~/utils/const.ts";
 import { define } from "~/utils/define.ts";
 import { isValidTheme } from "~/utils/theme.ts";
+import { regexes } from "zod";
 
 const redirectHostname = define.middleware((ctx) => {
   if (HOSTNAME && ctx.url.hostname !== HOSTNAME) {

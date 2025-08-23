@@ -1,10 +1,9 @@
-import { HttpError, type RouteConfig } from "fresh";
-
 import PeraturanIsi from "~/components/peraturan_isi.tsx";
 import type { Peraturan } from "~/models/mod.ts";
 import { define } from "~/utils/define.ts";
 import { createMarked, type PeraturanToken } from "~/utils/md.ts";
 import { ellipsis } from "~/utils/string.ts";
+import { HttpError, type RouteConfig } from "fresh";
 
 interface Data {
   path: string;

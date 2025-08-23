@@ -1,4 +1,4 @@
-import { createMarked, PeraturanToken } from "~/utils/md.ts";
+import { createMarked, type PeraturanToken } from "~/utils/md.ts";
 import { ellipsis } from "~/utils/string.ts";
 
 interface PeraturanOutlineProps {

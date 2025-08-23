@@ -1,5 +1,5 @@
-import { DB } from "$sqlite";
-import { Peraturan, PeraturanRow, PuuRef } from "./peraturan.ts";
+import type { DB } from "$sqlite";
+import { Peraturan, type PeraturanRow, type PuuRef } from "./peraturan.ts";
 
 export const JENIS2_RELASI = [
   "cabut",
@@ -24,8 +24,8 @@ export const getRelasiPeraturan1 = (
   jenis: string,
   tahun: string,
   nomor: string,
-) => {
-  return db.queryEntries<RelasiPeraturan & PeraturanRow>(
+) =>
+  db.queryEntries<RelasiPeraturan & PeraturanRow>(
     `SELECT * FROM relasi LEFT JOIN peraturan ON relasi.puu2 = peraturan.jenis || '/' || peraturan.tahun || '/' || peraturan.nomor WHERE puu1 = :key`,
     [`${jenis}/${tahun}/${nomor}`],
   ).map(({ id, relasi, catatan, ...row }) => ({
@@ -34,15 +34,14 @@ export const getRelasiPeraturan1 = (
     catatan,
     peraturan: new Peraturan(row),
   }));
-};
 
 export const getRelasiPeraturan2 = (
   db: DB,
   jenis: string,
   tahun: string,
   nomor: string,
-) => {
-  return db.queryEntries<RelasiPeraturan & PeraturanRow>(
+) =>
+  db.queryEntries<RelasiPeraturan & PeraturanRow>(
     `SELECT * FROM relasi LEFT JOIN peraturan ON relasi.puu1 = peraturan.jenis || '/' || peraturan.tahun || '/' || peraturan.nomor WHERE puu2 = :key`,
     [`${jenis}/${tahun}/${nomor}`],
   ).map(({ id, relasi, catatan, ...row }) => ({
@@ -51,4 +50,3 @@ export const getRelasiPeraturan2 = (
     catatan,
     peraturan: new Peraturan(row),
   }));
-};

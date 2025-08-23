@@ -1,6 +1,6 @@
-import { useEffect, useRef, useState } from "preact/hooks";
-import { ComponentProps } from "preact";
 import clsx from "clsx";
+import type { ComponentProps } from "preact";
+import { useEffect, useRef, useState } from "preact/hooks";
 
 type Props = ComponentProps<"img">;
 

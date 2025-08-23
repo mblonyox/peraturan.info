@@ -1,9 +1,8 @@
-import { asset } from "fresh/runtime";
-import { clsx } from "clsx";
-
-import ThemeSwitcher from "~/islands/theme_switcher.tsx";
 import SearchInput from "~/islands/search_input.tsx";
+import ThemeSwitcher from "~/islands/theme_switcher.tsx";
 import type { ThemeOption } from "~/utils/theme.ts";
+import { clsx } from "clsx";
+import { asset } from "fresh/runtime";
 
 const menus = [
   { href: "/", text: "Beranda" },

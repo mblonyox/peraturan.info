@@ -1,5 +1,5 @@
+import { create, load, type Orama } from "@orama/orama";
 import { dirname, fromFileUrl, resolve } from "@std/path";
-import { create, load, Orama } from "@orama/orama";
 import * as dpack from "dpack";
 
 const schema = {

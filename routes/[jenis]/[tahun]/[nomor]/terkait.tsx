@@ -4,7 +4,7 @@ import {
   getRelasiPeraturan2,
   getSumberPeraturan,
   type Peraturan,
-  RelasiPeraturan,
+  type RelasiPeraturan,
 } from "~/models/mod.ts";
 import { define } from "~/utils/define.ts";
 

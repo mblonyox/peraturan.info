@@ -1,9 +1,8 @@
 import { type Results, search, type TypedDocument } from "@orama/orama";
-
-import { getOrama } from "~/lib/orama/mod.ts";
-import { ellipsis } from "~/utils/string.ts";
-import { define } from "~/utils/define.ts";
 import Pagination from "~/components/pagination.tsx";
+import { getOrama } from "~/lib/orama/mod.ts";
+import { define } from "~/utils/define.ts";
+import { ellipsis } from "~/utils/string.ts";
 
 interface Data {
   results: Results<TypedDocument<Awaited<ReturnType<typeof getOrama>>>>;

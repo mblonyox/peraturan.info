@@ -1,5 +1,5 @@
-import { ellipsis } from "~/utils/string.ts";
 import WebShareButton from "~/islands/web_share_button.tsx";
+import { ellipsis } from "~/utils/string.ts";
 
 interface Props {
   url: URL;

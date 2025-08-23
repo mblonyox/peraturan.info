@@ -1,7 +1,6 @@
-import { asset } from "fresh/runtime";
-
 import PeraturanOutline from "~/components/peraturan_outline.tsx";
 import PrintButton from "~/islands/print_button.tsx";
+import { asset } from "fresh/runtime";
 
 type Props = {
   md: string;

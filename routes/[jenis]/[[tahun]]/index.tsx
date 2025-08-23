@@ -1,5 +1,3 @@
-import { HttpError } from "fresh";
-
 import Pagination from "~/components/pagination.tsx";
 import { getDB } from "~/lib/db/mod.ts";
 import {
@@ -10,6 +8,7 @@ import {
   type Peraturan,
 } from "~/models/peraturan.ts";
 import { define } from "~/utils/define.ts";
+import { HttpError } from "fresh";
 
 interface Data {
   judul: string;

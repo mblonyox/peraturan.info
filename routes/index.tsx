@@ -1,7 +1,6 @@
+import { define } from "~/utils/define.ts";
 import { asset } from "fresh/runtime";
 import type { SearchAction, WebSite, WithContext } from "schema-dts";
-
-import { define } from "~/utils/define.ts";
 
 export const handler = define.handlers((ctx) => {
   const searchAction: SearchAction & { "query-input": string } = {

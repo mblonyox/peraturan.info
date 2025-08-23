@@ -1,8 +1,7 @@
 /// <reference lib="dom" />
 
-import { App, staticFiles, trailingSlashes } from "fresh";
-
 import type { State } from "~/utils/define.ts";
+import { App, staticFiles, trailingSlashes } from "fresh";
 
 export const app = new App<State>()
   .use(staticFiles())

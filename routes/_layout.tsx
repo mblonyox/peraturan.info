@@ -1,6 +1,6 @@
-import LayoutNavbar from "~/components/layout_navbar.tsx";
-import LayoutFooter from "~/components/layout_footer.tsx";
 import LayoutBreadcrumbs from "~/components/layout_breadcrumbs.tsx";
+import LayoutFooter from "~/components/layout_footer.tsx";
+import LayoutNavbar from "~/components/layout_navbar.tsx";
 import LayoutPageHeading from "~/components/layout_page_heading.tsx";
 import { define } from "~/utils/define.ts";
 

@@ -1,8 +1,7 @@
 import { useSignal, useSignalEffect } from "@preact/signals";
+import { ellipsis } from "~/utils/string.ts";
 import { asset } from "fresh/runtime";
 import { useRef } from "preact/hooks";
-
-import { ellipsis } from "~/utils/string.ts";
 
 declare global {
   // deno-lint-ignore no-explicit-any

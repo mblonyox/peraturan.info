@@ -1,8 +1,7 @@
-import { HttpError } from "fresh";
-
-import { define } from "~/utils/define.ts";
 import { getDB } from "~/lib/db/mod.ts";
 import { getPeraturan } from "~/models/mod.ts";
+import { define } from "~/utils/define.ts";
+import { HttpError } from "fresh";
 
 export const handler = define.middleware(async (ctx) => {
   const { jenis, tahun, nomor } = ctx.params;

@@ -1,3 +1,4 @@
+import { slug } from "github-slugger";
 import type {
   MarkedExtension,
   RendererExtension,
@@ -5,7 +6,6 @@ import type {
   Tokens,
 } from "marked";
 import { use as markedUse } from "marked";
-import { slug } from "github-slugger";
 
 export type PeraturanToken = Tokens.Generic & {
   nomor?: string;

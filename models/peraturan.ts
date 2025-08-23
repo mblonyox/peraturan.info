@@ -1,4 +1,4 @@
-import { DB } from "$sqlite";
+import type { DB } from "$sqlite";
 
 export const JENIS2_PERATURAN = [
   "uu",
@@ -192,13 +192,10 @@ export const getPeraturan = (
   return null;
 };
 
-export const getTanggalTerakhir = (
-  db: DB,
-) => {
-  return db.queryEntries<{ tanggal: string; jumlah: number }>(
+export const getTanggalTerakhir = (db: DB) =>
+  db.queryEntries<{ tanggal: string; jumlah: number }>(
     `SELECT tanggal_diundangkan tanggal, count() jumlah FROM peraturan GROUP BY tanggal_diundangkan ORDER BY tanggal_diundangkan DESC LIMIT 5`,
   );
-};
 
 export const getListPeraturanByTanggal = (
   db: DB,

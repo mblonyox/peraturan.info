@@ -1,8 +1,7 @@
-import type { RouteConfig } from "fresh";
-
 import { getDB, lastModDB } from "~/lib/db/mod.ts";
 import { getFilterByTahunCount } from "~/models/peraturan.ts";
 import { define } from "~/utils/define.ts";
+import type { RouteConfig } from "fresh";
 
 export const config: RouteConfig = {
   routeOverride: "/sitemap-:jenis(\\w+).xml",

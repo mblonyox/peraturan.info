@@ -1,4 +1,4 @@
-import { PageProps } from "fresh";
+import type { PageProps } from "fresh";
 
 export default function NotFoundPage({ url }: PageProps) {
   return (

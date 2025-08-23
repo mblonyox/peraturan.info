@@ -8,7 +8,12 @@
     "indexing": "deno run -A indexing.ts"
   },
   "compilerOptions": { "jsx": "react-jsx", "jsxImportSource": "preact" },
-  "lint": { "rules": { "tags": ["fresh", "recommended"] } },
+  "lint": {
+    "rules": { "tags": ["fresh", "recommended", "react", "jsr"] },
+    "plugins": [
+      "jsr:@ayk/lint-import-order"
+    ]
+  },
   "imports": {
     "~/": "./",
     "$canvas": "https://deno.land/x/canvas@v1.4.2/mod.ts",

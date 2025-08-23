@@ -1,10 +1,9 @@
-import type { RouteConfig } from "fresh";
-
 import { getDB } from "~/lib/db/mod.ts";
 import { getListPeraturan } from "~/models/peraturan.ts";
 import { define } from "~/utils/define.ts";
 import { lastModMd, readTextMd } from "~/utils/fs.ts";
-import { createMarked, PeraturanToken } from "~/utils/md.ts";
+import { createMarked, type PeraturanToken } from "~/utils/md.ts";
+import type { RouteConfig } from "fresh";
 
 type UrlTag = {
   loc: string;

@@ -1,7 +1,6 @@
-import { HttpError } from "fresh";
-
 import { define } from "~/utils/define.ts";
 import { readTextMd } from "~/utils/fs.ts";
+import { HttpError } from "fresh";
 
 export const handler = define.middleware(async (ctx) => {
   const { jenis, tahun, nomor } = ctx.params;
