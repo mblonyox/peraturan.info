@@ -28,7 +28,7 @@ const setSessionId = define.middleware(async (ctx) => {
   }
   ctx.state.sessionId = sessionId;
   const response = await ctx.next();
-  if (response.headers.get("Content-Type") === "text/html") {
+  if (response.headers.get("Content-Type")?.includes("text/html")) {
     const headers = new Headers(response.headers);
     setCookie(headers, {
       name: "sessionId",
