@@ -25,10 +25,9 @@ export const config: RouteConfig = {
 };
 
 export const handler = define.handlers({
-  GET: async (ctx) => {
-    const req = ctx.req;
-    const origin = new URL(req.url).origin;
-    const { jenis, tahun } = ctx.params;
+  GET: async ({ url, params }) => {
+    const origin = url.origin;
+    const { jenis, tahun } = params;
     const db = await getDB();
     const { hasil } = getListPeraturan(db, {
       jenis,

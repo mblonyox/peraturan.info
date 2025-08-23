@@ -5,9 +5,9 @@ import { getOrama } from "~/lib/orama/mod.ts";
 import { define } from "~/utils/define.ts";
 
 export const handler = define.handlers({
-  GET: async ({ req }) => {
+  GET: async ({ url }) => {
     try {
-      const query = new URL(req.url).searchParams.get("query")?.trim();
+      const query = url.searchParams.get("query")?.trim();
       if (!query || query.length < 3) return new Response(JSON.stringify([]));
       const index = await getOrama();
       const result = await search(index, {

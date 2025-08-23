@@ -14,7 +14,7 @@ interface Data {
 }
 
 export const handler = define.handlers<Data>(async (ctx) => {
-  const tanggalParam = new URL(ctx.req.url).searchParams.get("tanggal");
+  const tanggalParam = ctx.url.searchParams.get("tanggal");
   if (tanggalParam) {
     if (
       !/^\d{4}-\d{2}-\d{2}$/.test(tanggalParam) ||
