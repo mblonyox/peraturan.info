@@ -20,13 +20,7 @@ export const handler = define.handlers<Data>(async (ctx) => {
     description: `Isi Peraturan penuh atas ${peraturan.rujukPanjang}`,
     image: `${ctx.url.origin}/${jenis}/${tahun}/${nomor}/image.png`,
   };
-  ctx.state.breadcrumbs = [...peraturan.breadcrumbs, {
-    name: "Isi Peraturan",
-  }];
-  ctx.state.pageHeading = {
-    title: peraturan.judul,
-    description: peraturan.rujukPendek,
-  };
+  ctx.state.breadcrumbs?.push({ name: "Isi Peraturan" });
   const path = `/${jenis}/${tahun}/${nomor}`;
   const marked = createMarked();
   const html = await marked.parse(md);

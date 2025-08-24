@@ -33,9 +33,7 @@ export const handler = define.handlers<Data>((ctx) => {
     ).flat();
   const pasals = getPasals(tokens);
   let token: PeraturanToken | undefined, prev, next;
-  const breadcrumbs: { name: string; url?: string }[] = [
-    ...peraturan.breadcrumbs,
-  ];
+  const breadcrumbs: { name: string; url?: string }[] = [];
   token = pasals.find((token: PeraturanToken) => {
     const slug = token.nomor?.toLowerCase().replace(" ", "-");
     return slug === pasal;
@@ -117,11 +115,7 @@ export const handler = define.handlers<Data>((ctx) => {
     description: ellipsis(token.raw, 155),
     image: `${ctx.url.origin}/${jenis}/${tahun}/${nomor}/image.png`,
   };
-  ctx.state.breadcrumbs = breadcrumbs;
-  ctx.state.pageHeading = {
-    title: peraturan.judul,
-    description: peraturan.rujukPendek,
-  };
+  ctx.state.breadcrumbs?.push(...breadcrumbs);
   const path = `/${jenis}/${tahun}/${nomor}`;
   return { data: { path, md, html, prev, next } };
 });

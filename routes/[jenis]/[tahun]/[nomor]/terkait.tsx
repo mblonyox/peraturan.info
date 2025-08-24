@@ -37,11 +37,7 @@ export const handler = define.handlers<Data>(async (ctx) => {
       `Peraturan Terkait (Metadata, Sumber Peraturan, Abstrak) atas ${peraturan.rujukPanjang}`,
     image: `${ctx.url.origin}/${jenis}/${tahun}/${nomor}/image.png`,
   };
-  ctx.state.breadcrumbs = [...peraturan.breadcrumbs, { name: "Terkait" }];
-  ctx.state.pageHeading = {
-    title: peraturan.judul,
-    description: peraturan.rujukPendek,
-  };
+  ctx.state.breadcrumbs?.push({ name: "Terkait" });
   return { data: { sumber, relasi1, relasi2 } };
 });
 

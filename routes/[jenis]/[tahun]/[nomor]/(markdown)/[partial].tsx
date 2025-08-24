@@ -23,9 +23,7 @@ export const handler = define.handlers<Data>((ctx) => {
   const md = ctx.state.md as string;
   const marked = createMarked();
   const rootTokens = marked.lexer(md);
-  const breadcrumbs: { name: string; url?: string }[] = [
-    ...peraturan.breadcrumbs,
-  ];
+  const breadcrumbs: { name: string; url?: string }[] = [];
   let tokens: PeraturanToken[] | undefined;
   if (partial === "pembukaan") {
     tokens = rootTokens.filter((token) =>
@@ -56,11 +54,7 @@ export const handler = define.handlers<Data>((ctx) => {
     ),
     image: `${ctx.url.origin}/${jenis}/${tahun}/${nomor}/image.png`,
   };
-  ctx.state.breadcrumbs = breadcrumbs;
-  ctx.state.pageHeading = {
-    title: peraturan.judul,
-    description: peraturan.rujukPendek,
-  };
+  ctx.state.breadcrumbs?.push(...breadcrumbs);
   const path = `/${jenis}/${tahun}/${nomor}`;
   return { data: { path, md, html } };
 });

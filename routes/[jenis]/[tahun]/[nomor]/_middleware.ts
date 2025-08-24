@@ -9,5 +9,10 @@ export const handler = define.middleware(async (ctx) => {
   const peraturan = getPeraturan(db, jenis, tahun, nomor);
   if (!peraturan) throw new HttpError(404);
   ctx.state.peraturan = peraturan;
+  ctx.state.breadcrumbs = peraturan.breadcrumbs;
+  ctx.state.pageHeading = {
+    title: peraturan.judul,
+    description: peraturan.rujukPendek,
+  };
   return ctx.next();
 });
