@@ -121,9 +121,9 @@ export default define.page<typeof handler>(
           <>
             <a
               role="tab"
-              href={`?tanggal=${tanggal}`}
+              href={`/terbaru?tanggal=${tanggal}`}
               className={clsx(
-                "tab flex-1 z-1",
+                "tab flex-1 z-1 text-nowrap",
                 tanggal === tanggalDipilih && "tab-active",
               )}
               aria-selected={tanggal === tanggalDipilih}
