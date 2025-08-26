@@ -269,7 +269,7 @@ const pasal: TokenizerAndRendererExtension = {
   level: "block",
   tokenizer(src: string) {
     const match = src.match(
-      /^(Pasal \d+)\n([\s\S]+?\n)(?=Pasal \d+\n|\n{2,}|$)/,
+      /^(Pasal \d+)\n([\s\S]+?\n)(?=Pasal \d+\n|Paragraf \d+\n|\n{2,}|$)/,
     );
     if (match) {
       const token = {
