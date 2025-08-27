@@ -13,9 +13,9 @@ const menus = [
     menu: [
       { href: "/uu", text: "Undang\u2011Undang" },
       { href: "/perppu", text: "Perppu" },
-      { href: "/pp", text: "Peraturan\u2011Pemerintah" },
-      { href: "/perpres", text: "Peraturan\u2011Presiden" },
-      { href: "/permenkeu", text: "Peraturan\u2011Menteri\u2011Keuangan" },
+      { href: "/pp", text: "Peraturan\u00A0Pemerintah" },
+      { href: "/perpres", text: "Peraturan\u00A0Presiden" },
+      { href: "/permenkeu", text: "Peraturan\u00A0Menteri\u00A0Keuangan" },
     ],
   },
 ];
