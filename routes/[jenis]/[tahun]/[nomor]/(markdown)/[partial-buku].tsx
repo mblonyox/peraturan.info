@@ -25,7 +25,6 @@ export const handler = define.handlers<Data>((ctx) => {
   const marked = createMarked();
   const rootTokens = marked.lexer(md);
   const breadcrumbs: { name: string; url?: string }[] = [];
-  const juduls = [];
   let tokens = [...rootTokens] as PeraturanToken[];
   let token, prev, next;
   for (const [k, v] of Object.entries({ buku, bab, bagian, paragraf })) {
@@ -40,7 +39,6 @@ export const handler = define.handlers<Data>((ctx) => {
       name: token.nomor,
       url: path + token.nomor.toLowerCase().replace(" ", "-"),
     });
-    juduls.push(token.nomor);
     const index = tokens.indexOf(token);
     if (index > 0) {
       const prevToken = tokens[index - 1];
@@ -65,9 +63,7 @@ export const handler = define.handlers<Data>((ctx) => {
   if (!token?.nomor) throw new HttpError(404);
   breadcrumbs.pop();
   breadcrumbs.push({ name: token.nomor });
-  juduls.pop();
-  juduls.push(token.judul);
-  const judulPartial = juduls.join(", ");
+  const judulPartial = breadcrumbs.map((b) => b.name).join(", ");
   const html = marked.parser([token as PeraturanToken]);
   ctx.state.seo = {
     title: `${judulPartial} | ${peraturan.rujukPanjang}`,

@@ -108,7 +108,7 @@ export const handler = define.handlers<Data>((ctx) => {
   breadcrumbs.push({
     name: (token.type === "ayat" ? `ayat ` : "") + token?.nomor,
   });
-  const judulPartial = breadcrumbs.slice(3).map(({ name }) => name).join(" ");
+  const judulPartial = breadcrumbs.map((b) => b.name).join(" ");
   const html = marked.parser([token as PeraturanToken]);
   ctx.state.seo = {
     title: `${judulPartial} | ${peraturan.rujukPanjang}`,
