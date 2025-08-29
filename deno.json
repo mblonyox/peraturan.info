@@ -31,18 +31,18 @@
     "@std/path": "jsr:@std/path@^1.1.2",
     "@tailwindcss/postcss": "npm:@tailwindcss/postcss@^4.1.12",
     "clsx": "npm:clsx@^2.1.1",
-    "daisyui": "npm:daisyui@^5.0.50",
+    "daisyui": "npm:daisyui@^5.0.54",
     "dpack": "npm:dpack@^0.6.22",
     "feed": "npm:feed@^5.1.0",
-    "fresh": "jsr:@fresh/core@^2.0.0-alpha.59",
+    "fresh": "jsr:@fresh/core@^2.0.0-alpha.63",
     "github-slugger": "npm:github-slugger@^2.0.0",
-    "marked": "npm:marked@^16.2.0",
+    "marked": "npm:marked@^16.2.1",
     "postcss": "npm:postcss@^8.5.6",
     "preact": "npm:preact@^10.27.1",
     "react": "npm:preact@^10.27.1/compat",
     "schema-dts": "npm:schema-dts@^1.1.5",
     "tailwindcss": "npm:tailwindcss@^4.1.12",
-    "zod": "npm:zod@^4.0.17"
+    "zod": "npm:zod@^4.1.5"
   },
   "nodeModulesDir": "auto",
   "scopes": {
