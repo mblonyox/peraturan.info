@@ -75,7 +75,6 @@ export default define.page(({ Component, url, state }) => {
         <link rel="manifest" href="/manifest.json" />
         <link rel="stylesheet" href="/styles.css" />
         <SeoTags url={url} {...state.seo} />
-        {state.heads}
       </head>
       <body className="min-w-xs">
         <Component />
