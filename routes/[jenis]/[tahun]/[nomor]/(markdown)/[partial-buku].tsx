@@ -34,10 +34,10 @@ export const handler = define.handlers<Data>((ctx) => {
       token.nomor?.toLowerCase().replace(" ", "-") === v
     );
     if (!token?.nomor) throw new HttpError(404);
-    const path = breadcrumbs.at(-1)?.url + "/";
+    const path = breadcrumbs.at(-1)?.url ?? peraturan.path;
     breadcrumbs.push({
       name: token.nomor,
-      url: path + token.nomor.toLowerCase().replace(" ", "-"),
+      url: path + "/" + token.nomor.toLowerCase().replace(" ", "-"),
     });
     const index = tokens.indexOf(token);
     if (index > 0) {
@@ -45,7 +45,7 @@ export const handler = define.handlers<Data>((ctx) => {
       if (prevToken.nomor) {
         prev = {
           name: prevToken.nomor,
-          url: path + prevToken.nomor.toLowerCase().replace(" ", "-"),
+          url: path + "/" + prevToken.nomor.toLowerCase().replace(" ", "-"),
         };
       }
     }
@@ -54,7 +54,7 @@ export const handler = define.handlers<Data>((ctx) => {
       if (nextToken.nomor) {
         next = {
           name: nextToken.nomor,
-          url: path + nextToken.nomor.toLowerCase().replace(" ", "-"),
+          url: path + "/" + nextToken.nomor.toLowerCase().replace(" ", "-"),
         };
       }
     }
