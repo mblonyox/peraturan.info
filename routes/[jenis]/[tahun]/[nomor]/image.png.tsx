@@ -17,7 +17,11 @@ const getLogo = async () => {
 };
 
 export const handler = define.handlers(async (ctx) => {
+  const cache = await caches.open("og-image");
+  const cachedContent = await cache.match(ctx.url);
+  if (cachedContent) return cachedContent;
   const peraturan = ctx.state.peraturan as Peraturan;
+  const logo = await getLogo();
   const response = new ImageResponse(
     <div
       style={{
@@ -31,7 +35,7 @@ export const handler = define.handlers(async (ctx) => {
       }}
     >
       <img
-        src={await getLogo()}
+        src={logo}
         style={{
           width: 256,
           height: 256,
@@ -69,9 +73,10 @@ export const handler = define.handlers(async (ctx) => {
           color: "#ffffff",
         }}
       >
-        {ctx.req.url.replaceAll("/image.png", "")}
+        {new URL(peraturan.path, ctx.url).href}
       </div>
     </div>,
   );
+  await cache.put(ctx.url, response.clone());
   return response;
 });

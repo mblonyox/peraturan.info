@@ -34,7 +34,7 @@
     "daisyui": "npm:daisyui@^5.0.54",
     "dpack": "npm:dpack@^0.6.22",
     "feed": "npm:feed@^5.1.0",
-    "fresh": "jsr:@fresh/core@^2.0.0-alpha.63",
+    "fresh": "jsr:@fresh/core@^2.0.0-beta.1",
     "github-slugger": "npm:github-slugger@^2.0.0",
     "marked": "npm:marked@^16.2.1",
     "postcss": "npm:postcss@^8.5.6",
