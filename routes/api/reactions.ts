@@ -23,7 +23,7 @@ export const handler = define.handlers({
         status: 400,
       });
     }
-    const result = await getReaksi(kv, data.path);
+    const result = await getReaksi(kv, data.path).catch(() => []);
     return Response.json(result);
   },
   POST: async (ctx) => {
