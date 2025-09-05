@@ -30,7 +30,8 @@ export default define.layout(async (
       disabled: false,
     },
   ];
-  const counters = await getReaksi(kv, `/${jenis}/${tahun}/${nomor}`);
+  const counters = await getReaksi(kv, `/${jenis}/${tahun}/${nomor}`)
+    .catch(() => []);
 
   return (
     <div className="container">
