@@ -4,11 +4,13 @@ import {
   getFilterByJenisCount,
   getFilterByTahunCount,
   getListPeraturan,
+  JENIS2_PERATURAN,
   NAMA2_JENIS,
   type Peraturan,
 } from "~/models/peraturan.ts";
 import { define } from "~/utils/define.ts";
 import { HttpError } from "fresh";
+import { z } from "zod";
 
 interface Data {
   judul: string;
@@ -20,54 +22,63 @@ interface Data {
   filterByTahunProps: FilterByTahunProps;
 }
 
-export const handler = define.handlers<Data>(async (ctx) => {
-  const { jenis: kodeJenis, tahun } = ctx.params;
-  const namaJenis = NAMA2_JENIS[kodeJenis]?.panjang ??
-    (kodeJenis === "all" && "semua peraturan");
-  if (kodeJenis !== "all" && !namaJenis) throw new HttpError(404);
-  if (tahun?.length && (tahun?.length !== 4 || isNaN(parseInt(tahun)))) {
-    throw new HttpError(404);
-  }
-  const searchParams = ctx.url.searchParams;
-  const page = parseInt(searchParams.get("page") ?? "1");
-  const pageSize = parseInt(searchParams.get("pageSize") ?? "10");
+const paramsSchema = z.object({
+  jenis: z.union([
+    z.literal("all").transform(() => undefined),
+    z.enum(JENIS2_PERATURAN),
+  ]),
+  tahun: z.union([
+    z.literal("").optional(),
+    z.string().regex(/\d{4}/),
+  ]),
+});
 
+const querySchema = z.instanceof(URLSearchParams).pipe(
+  z.preprocess(
+    (u) => Object.fromEntries(u.entries()),
+    z.object({
+      page: z.coerce.number().int().min(1).default(1),
+      pageSize: z.coerce.number().int().min(10).max(100).default(10),
+    }),
+  ),
+);
+
+export const handler = define.handlers<Data>(async (ctx) => {
+  const res1 = paramsSchema.safeParse(ctx.params);
+  if (!res1.success) throw new HttpError(404);
+  const { jenis, tahun } = res1.data;
+  const res2 = querySchema.safeParse(ctx.url.searchParams);
+  if (!res2.success) throw new HttpError(400, "Invalid query.");
+  const { page, pageSize } = res2.data;
   const db = await getDB();
-  const jenis = kodeJenis === "all" ? undefined : kodeJenis;
   const listPeraturan = getListPeraturan(db, {
     jenis,
     tahun,
     page,
     pageSize,
   });
+  if (!listPeraturan.hasil.length) throw new HttpError(404);
   const filterByJenis = getFilterByJenisCount(db, { jenis, tahun });
   const filterByTahun = getFilterByTahunCount(db, { jenis, tahun });
-
-  const judul = (namaJenis || kodeJenis) + (
-    tahun ? ` pada tahun ${tahun}` : ""
-  );
-  const range = listPeraturan.hasil.length
-    ? `Menampilkan ${(page - 1) * pageSize + 1} s.d. ${
-      (page - 1) * pageSize + listPeraturan.hasil.length
-    } dari ${listPeraturan.total} peraturan.`
-    : "";
-
+  const namaJenis = jenis ? NAMA2_JENIS[jenis].panjang : "semua peraturan";
+  const judul = namaJenis + (tahun ? ` pada tahun ${tahun}` : "");
+  const start = (page - 1) * pageSize + 1;
+  const end = start + listPeraturan.hasil.length - 1;
+  const range = `Menampilkan urutan ${
+    start === end ? start : `${start} s.d. ${end}`
+  } dari ${listPeraturan.total} peraturan.`;
   ctx.state.seo = {
-    title: `Daftar ${judul}, halaman #${page}.`,
+    title: `Laman #${page} | Daftar ${judul}.`,
     description: `Tampilan daftar ${judul}. ${range}`,
   };
-  ctx.state.breadcrumbs = [
-    {
-      name: (namaJenis || kodeJenis),
-    },
-  ];
+  ctx.state.breadcrumbs = [{ name: namaJenis }];
   if (tahun) {
-    ctx.state.breadcrumbs[0].url = `/${kodeJenis}`;
+    ctx.state.breadcrumbs[0].url = `/${jenis ?? "all"}`;
     ctx.state.breadcrumbs.push({ name: tahun });
   }
   ctx.state.pageHeading = {
-    title: `Daftar Peraturan`,
-    description: `${range}`,
+    title: `Daftar ${judul}`,
+    description: range,
   };
 
   return {
@@ -199,7 +210,7 @@ function FilterByJenis({ data, tahun }: FilterByJenisProps) {
         {data.map(({ jenis, jumlah }) => (
           <li key={jenis}>
             <a className="link" href={`/${jenis}/${tahun ?? ""}`}>
-              {jenis}&nbsp;({jumlah})
+              {NAMA2_JENIS[jenis].pendek}&nbsp;({jumlah})
             </a>
           </li>
         ))}
@@ -217,18 +228,20 @@ function FilterByTahun({ data, jenis }: FilterByTahunProps) {
   return (
     <section>
       <p>Saring berdasar tahun</p>
-      <ul className="menu menu-vertical">
-        <li>
-          <a className="link" href={`/${jenis ?? "all"}`}>Semua tahun</a>
-        </li>
-        {data.map(({ tahun, jumlah }) => (
-          <li key={tahun}>
-            <a className="link" href={`/${jenis ?? "all"}/${tahun}`}>
-              {tahun}&nbsp;({jumlah})
-            </a>
+      <div className="max-h-[50vh] overflow-auto">
+        <ul className="menu menu-vertical">
+          <li>
+            <a className="link" href={`/${jenis ?? "all"}`}>Semua tahun</a>
           </li>
-        ))}
-      </ul>
+          {data.map(({ tahun, jumlah }) => (
+            <li key={tahun}>
+              <a className="link" href={`/${jenis ?? "all"}/${tahun}`}>
+                {tahun}&nbsp;({jumlah})
+              </a>
+            </li>
+          ))}
+        </ul>
+      </div>
     </section>
   );
 }

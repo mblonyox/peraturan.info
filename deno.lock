@@ -4,9 +4,9 @@
     "jsr:@ayk/lint-import-order@*": "0.1.0",
     "jsr:@deno/esbuild-plugin@^1.2.0": "1.2.0",
     "jsr:@deno/loader@~0.3.3": "0.3.5",
-    "jsr:@fresh/build-id@1": "1.0.1",
-    "jsr:@fresh/core@^2.0.0-alpha.37": "2.0.0-beta.3",
-    "jsr:@fresh/core@^2.0.0-beta.3": "2.0.0-beta.3",
+    "jsr:@fresh/build-id@1": "1.0.0",
+    "jsr:@fresh/core@^2.0.0-alpha.37": "2.0.0-beta.4",
+    "jsr:@fresh/core@^2.0.0-beta.4": "2.0.0-beta.4",
     "jsr:@fresh/plugin-tailwind@^0.0.1-alpha.9": "0.0.1-alpha.9",
     "jsr:@std/bytes@^1.0.6": "1.0.6",
     "jsr:@std/cli@^1.0.21": "1.0.21",
@@ -72,14 +72,14 @@
     "@deno/loader@0.3.5": {
       "integrity": "72f6ce9c6e7242c6e070705dbd8a838884dd236d5dd0bd907d08bece92db5722"
     },
-    "@fresh/build-id@1.0.1": {
-      "integrity": "12a2ec25fd52ae9ec68c26848a5696cd1c9b537f7c983c7e56e4fb1e7e816c20",
+    "@fresh/build-id@1.0.0": {
+      "integrity": "c42a1dab0b0b8bcddf93657edf03f404d537ba8e1d44144b3c749727c5671d5a",
       "dependencies": [
         "jsr:@std/encoding@^1.0.10"
       ]
     },
-    "@fresh/core@2.0.0-beta.3": {
-      "integrity": "754080f641f63cef1c9adca58eebfe4c33a3b1b60a21415b4cb509fc7bbe2c70",
+    "@fresh/core@2.0.0-beta.4": {
+      "integrity": "d8fe71024d89f95c740a5a123688d152a7ccfa7250d77ef5f9b3a072c913b95a",
       "dependencies": [
         "jsr:@deno/esbuild-plugin",
         "jsr:@fresh/build-id",
@@ -1015,7 +1015,7 @@
   },
   "workspace": {
     "dependencies": [
-      "jsr:@fresh/core@^2.0.0-beta.3",
+      "jsr:@fresh/core@^2.0.0-beta.4",
       "jsr:@fresh/plugin-tailwind@^0.0.1-alpha.9",
       "jsr:@std/encoding@^1.0.10",
       "jsr:@std/http@^1.0.20",
