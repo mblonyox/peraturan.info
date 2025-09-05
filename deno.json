@@ -20,8 +20,8 @@
     "$mock_file": "https://deno.land/x/mock_file@v1.1.2/mod.ts",
     "$og_edge": "https://deno.land/x/og_edge@0.0.6/mod.ts",
     "$sqlite": "https://deno.land/x/sqlite@v3.8/mod.ts",
-    "@charkour/react-reactions": "https://esm.sh/*@charkour/react-reactions",
     "@fresh/plugin-tailwind": "jsr:@fresh/plugin-tailwind@^0.0.1-alpha.9",
+    "@giscus/react": "https://esm.sh/*@giscus/react@3.1.0",
     "@hyzyla/pdfium": "npm:@hyzyla/pdfium@^2.1.9",
     "@orama/orama": "npm:@orama/orama@^2.1.1",
     "@orama/plugin-data-persistence": "npm:@orama/plugin-data-persistence@^2.1.1",
@@ -47,6 +47,9 @@
   "scopes": {
     "https://deno.land/x/og_edge@0.0.6/": {
       "https://esm.sh/react@18.2.0": "https://esm.sh/preact@10.27.1/compat"
+    },
+    "https://esm.sh/*@giscus/react@3.1.0/": {
+      "@giscus/react/": "https://esm.sh/*@giscus/react@3.1.0/"
     }
   },
   "exclude": ["**/_fresh/*", "data"],

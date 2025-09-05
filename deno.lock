@@ -5,6 +5,7 @@
     "jsr:@deno/esbuild-plugin@^1.2.0": "1.2.0",
     "jsr:@deno/loader@~0.3.3": "0.3.5",
     "jsr:@fresh/build-id@1": "1.0.1",
+    "jsr:@fresh/core@^2.0.0-alpha.37": "2.0.0-beta.3",
     "jsr:@fresh/core@^2.0.0-beta.3": "2.0.0-beta.3",
     "jsr:@fresh/plugin-tailwind@^0.0.1-alpha.9": "0.0.1-alpha.9",
     "jsr:@std/bytes@^1.0.6": "1.0.6",
@@ -19,6 +20,7 @@
     "jsr:@std/http@^1.0.15": "1.0.20",
     "jsr:@std/http@^1.0.20": "1.0.20",
     "jsr:@std/internal@^1.0.10": "1.0.10",
+    "jsr:@std/json@^1.0.2": "1.0.2",
     "jsr:@std/jsonc@1": "1.0.2",
     "jsr:@std/media-types@1": "1.1.0",
     "jsr:@std/media-types@^1.1.0": "1.1.0",
@@ -43,6 +45,7 @@
     "npm:dpack@~0.6.22": "0.6.22",
     "npm:esbuild-wasm@0.25.7": "0.25.7",
     "npm:esbuild@0.25.7": "0.25.7",
+    "npm:esbuild@~0.25.5": "0.25.7",
     "npm:feed@^5.1.0": "5.1.0",
     "npm:github-slugger@2": "2.0.0",
     "npm:marked@^16.2.1": "16.2.1",
@@ -62,7 +65,8 @@
       "integrity": "04ddd0fca9416d8a2866263928a53b9d5ed08dfca064d64504a0aaf9800c709e",
       "dependencies": [
         "jsr:@deno/loader",
-        "jsr:@std/path@^1.1.1"
+        "jsr:@std/path@^1.1.1",
+        "npm:esbuild@~0.25.5"
       ]
     },
     "@deno/loader@0.3.5": {
@@ -91,8 +95,8 @@
         "jsr:@std/uuid",
         "npm:@opentelemetry/api",
         "npm:@preact/signals@^2.2.1",
-        "npm:esbuild",
         "npm:esbuild-wasm",
+        "npm:esbuild@0.25.7",
         "npm:preact-render-to-string",
         "npm:preact@^10.27.0"
       ]
@@ -100,6 +104,7 @@
     "@fresh/plugin-tailwind@0.0.1-alpha.9": {
       "integrity": "e2cddf75ffd3203950a79913eb35ec454e23df54cb95c7549d14172e5b3c4b59",
       "dependencies": [
+        "jsr:@fresh/core@^2.0.0-alpha.37",
         "npm:@tailwindcss/postcss@^4.1.10",
         "npm:postcss@8.5.6"
       ]
@@ -142,8 +147,14 @@
     "@std/internal@1.0.10": {
       "integrity": "e3be62ce42cab0e177c27698e5d9800122f67b766a0bea6ca4867886cbde8cf7"
     },
+    "@std/json@1.0.2": {
+      "integrity": "d9e5497801c15fb679f55a2c01c7794ad7a5dfda4dd1bebab5e409cb5e0d34d4"
+    },
     "@std/jsonc@1.0.2": {
-      "integrity": "909605dae3af22bd75b1cbda8d64a32cf1fd2cf6efa3f9e224aba6d22c0f44c7"
+      "integrity": "909605dae3af22bd75b1cbda8d64a32cf1fd2cf6efa3f9e224aba6d22c0f44c7",
+      "dependencies": [
+        "jsr:@std/json"
+      ]
     },
     "@std/media-types@1.1.0": {
       "integrity": "c9d093f0c05c3512932b330e3cc1fe1d627b301db33a4c2c2185c02471d6eaa4"
@@ -882,9 +893,11 @@
   },
   "redirects": {
     "https://esm.sh/*@charkour/react-reactions": "https://esm.sh/*@charkour/react-reactions@0.11.0",
+    "https://esm.sh/*@giscus/react": "https://esm.sh/*@giscus/react@3.1.0",
     "https://esm.sh/@types/camelize@~1.0.1/index.d.ts": "https://esm.sh/@types/camelize@1.0.1/index.d.ts",
     "https://esm.sh/@types/react@~19.0.7/index.d.ts": "https://esm.sh/@types/react@19.0.14/index.d.ts",
     "https://esm.sh/@types/react@~19.1.10/index.d.ts": "https://esm.sh/@types/react@19.1.11/index.d.ts",
+    "https://esm.sh/@types/react@~19.1.12/jsx-runtime.d.ts": "https://esm.sh/@types/react@19.1.12/jsx-runtime.d.ts",
     "https://esm.sh/@types/unicode-trie@~2.0.3/index.d.ts": "https://esm.sh/@types/unicode-trie@2.0.3/index.d.ts",
     "https://esm.sh/camelize@^1.0.0?target=denonext": "https://esm.sh/camelize@1.0.1?target=denonext",
     "https://esm.sh/css-background-parser@^0.1.0?target=denonext": "https://esm.sh/css-background-parser@0.1.0?target=denonext",
@@ -951,6 +964,12 @@
     "https://deno.land/x/sqlite@v3.8/src/wasm.ts": "e79d0baa6e42423257fb3c7cc98091c54399254867e0f34a09b5bdef37bd9487",
     "https://esm.sh/*@charkour/react-reactions@0.11.0": "014f7589ea910ff486a9695a7d70084ade1c249f9f6460e8c1378d34967d570d",
     "https://esm.sh/*@charkour/react-reactions@0.11.0/denonext/react-reactions.mjs": "3ff102645fbaf78cde15e3bc66e0417a6041adf6513819a4e934943e2a42cea8",
+    "https://esm.sh/*@giscus/react@3.1.0": "ea8f8a38d02edbbc474a694e95c63a8b4d79cf331c0909bcb12a9f90f838d6f2",
+    "https://esm.sh/*@giscus/react@3.1.0/denonext/dist/giscus-Ci9LqPcC.mjs": "e8ad0121c6921ae7d2682a96c5ec893cc347e405f3bac71586d9a018ef176248",
+    "https://esm.sh/*@giscus/react@3.1.0/denonext/react.mjs": "d151c48c6ff781a48753e557ce44b39284ca2288fcc9d5f2a56c4a4d14608fd9",
+    "https://esm.sh/*@giscus/react@3.1.0/dist/giscus-Ci9LqPcC.js": "b8b40f24b8a4e948d6574aeec059b6c6f2c4cd97bca784693351281ef4ea862d",
+    "https://esm.sh/*@giscus/react@3.1.0/es2022/react.mjs": "d151c48c6ff781a48753e557ce44b39284ca2288fcc9d5f2a56c4a4d14608fd9",
+    "https://esm.sh/*@giscus/react@3.1.0?target=es2022": "b9409a434043f5da1259c4c8d4d042cbad8aed2489269953810cd0cb18f82aff",
     "https://esm.sh/@resvg/resvg-wasm@2.0.0-alpha.4": "d371b4611f91d15ce11dcac327c51cd82afeb22ab1d8fbf4a288233d2a099536",
     "https://esm.sh/@resvg/resvg-wasm@2.0.0-alpha.4/denonext/resvg-wasm.mjs": "684ad3e3052a6de80ebebb052785e670300a29ee92de10ef52e596b3366ea032",
     "https://esm.sh/@shuding/opentype.js@1.4.0-beta.0/denonext/opentype.mjs": "018430ec9d39bad59482266911124a6ea28188f6b6f0e5bc3be63eb378fd2e9e",

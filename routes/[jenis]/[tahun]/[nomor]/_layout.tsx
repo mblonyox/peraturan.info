@@ -1,13 +1,10 @@
 import SocialShareButtons from "~/components/social_share_buttons.tsx";
-import EmojiReactions from "~/islands/emoji_reactions.tsx";
-import { kv } from "~/lib/kv/mod.ts";
-import { getReaksi } from "~/models/reaksi.ts";
+import Comments from "~/islands/comments.tsx";
+import type { Peraturan } from "~/models/mod.ts";
 import { define } from "~/utils/define.ts";
 import { clsx } from "clsx";
 
-export default define.layout(async (
-  { Component, url, params, state },
-) => {
+export default define.layout(({ Component, url, params, state }) => {
   const path = url.pathname.split("/").at(-1);
   const { jenis, tahun, nomor } = params;
   const tabs = [
@@ -30,8 +27,7 @@ export default define.layout(async (
       disabled: false,
     },
   ];
-  const counters = await getReaksi(kv, `/${jenis}/${tahun}/${nomor}`)
-    .catch(() => []);
+  const peraturan = state.peraturan as Peraturan;
 
   return (
     <div className="container">
@@ -58,10 +54,7 @@ export default define.layout(async (
           </>
         ))}
       </div>
-      <EmojiReactions
-        counters={counters}
-        path={`/${jenis}/${tahun}/${nomor}`}
-      />
+      <Comments term={peraturan.rujukPanjang} />
     </div>
   );
 });
