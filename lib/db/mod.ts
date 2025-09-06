@@ -21,8 +21,3 @@ export async function getDB() {
   }
   return db;
 }
-
-export async function lastModDB() {
-  const info = await Deno.stat(filepath);
-  return info.mtime ?? undefined;
-}

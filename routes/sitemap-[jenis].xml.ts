@@ -1,15 +1,12 @@
-import { getDB, lastModDB } from "~/lib/db/mod.ts";
+import { Readable } from "node:stream";
+import { getDB } from "~/lib/db/mod.ts";
 import { getFilterByTahunCount } from "~/models/peraturan.ts";
 import { define } from "~/utils/define.ts";
 import type { RouteConfig } from "fresh";
+import { SitemapIndexStream, streamToPromise } from "sitemap";
 
 export const config: RouteConfig = {
   routeOverride: "/sitemap-:jenis(\\w+).xml",
-};
-
-type SitemapTag = {
-  loc: string;
-  lastmod?: Date;
 };
 
 export const handler = define.handlers({
@@ -17,23 +14,12 @@ export const handler = define.handlers({
     const origin = url.origin;
     const { jenis } = params;
     const db = await getDB();
-    const lastmod = await lastModDB();
-    const tahunJumlah = getFilterByTahunCount(db, { jenis });
-    const indexes: SitemapTag[] = tahunJumlah.map(({ tahun }) => ({
-      loc: origin + `/sitemap-${jenis}-${tahun}.xml`,
-      lastmod,
-    }));
-
+    const items = getFilterByTahunCount(db, { jenis })
+      .map(({ tahun }) => origin + `/sitemap-${jenis}-${tahun}.xml`);
+    const stream = Readable.from(items).pipe(new SitemapIndexStream());
     return new Response(
-      '<?xml version="1.0" encoding="UTF-8"?>' +
-        '<sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">' +
-        indexes.map(({ loc, lastmod }) =>
-          "<sitemap>" +
-          `<loc>${loc}</loc>` +
-          (lastmod ? `<lastmod>${lastmod?.toISOString()}</lastmod>` : "") +
-          "</sitemap>"
-        ).join("") + "</sitemapindex>",
-      { headers: { "Content-Type": "text/xml" } },
+      await streamToPromise(stream),
+      { headers: { "Content-Type": "application/xml" } },
     );
   },
 });

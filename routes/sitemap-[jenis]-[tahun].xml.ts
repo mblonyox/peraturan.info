@@ -1,23 +1,16 @@
+import { Readable } from "node:stream";
 import { getDB } from "~/lib/db/mod.ts";
 import { getListPeraturan } from "~/models/peraturan.ts";
 import { define } from "~/utils/define.ts";
 import { lastModMd, readTextMd } from "~/utils/fs.ts";
 import { createMarked, type PeraturanToken } from "~/utils/md.ts";
 import type { RouteConfig } from "fresh";
-
-type UrlTag = {
-  loc: string;
-  lastmod?: Date;
-  changefreq?:
-    | "always"
-    | "hourly"
-    | "daily"
-    | "weekly"
-    | "monthly"
-    | "yearly"
-    | "never";
-  priority?: number;
-};
+import {
+  EnumChangefreq,
+  type SitemapItemLoose,
+  SitemapStream,
+  streamToPromise,
+} from "sitemap";
 
 export const config: RouteConfig = {
   routeOverride: "/sitemap-:jenis(\\w+)-:tahun(\\d+).xml",
@@ -33,13 +26,19 @@ export const handler = define.handlers({
       tahun,
       pageSize: 10000,
     });
-    const urls: UrlTag[] = [];
+    const items: SitemapItemLoose[] = [];
     for (const p of hasil) {
       const lastmod = p.created_at;
-      urls.push({
-        loc: origin + p.path + "/info",
-        lastmod,
-        changefreq: "yearly",
+      items.push({
+        url: p.path + "/info",
+        img: p.path + "/preview.png",
+        lastmod: lastmod.toString(),
+        changefreq: EnumChangefreq.YEARLY,
+        priority: 0.5,
+      }, {
+        url: p.path + "/terkait",
+        lastmod: lastmod.toString(),
+        changefreq: EnumChangefreq.YEARLY,
         priority: 0.5,
       });
       const md = await readTextMd({
@@ -55,30 +54,20 @@ export const handler = define.handlers({
         });
         const paths = getPartialPaths(md);
         paths.forEach((path) => {
-          urls.push({
-            loc: origin + p.path + path,
-            lastmod,
-            changefreq: "yearly",
+          items.push({
+            url: p.path + path,
+            lastmod: lastmod?.toString(),
+            changefreq: EnumChangefreq.YEARLY,
             priority: 1.0,
           });
         });
       }
     }
-
+    const stream = Readable.from(items)
+      .pipe(new SitemapStream({ hostname: origin }));
     return new Response(
-      '<?xml version="1.0" encoding="UTF-8"?>' +
-        '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">' +
-        urls.map(({ loc, lastmod, changefreq, priority }) =>
-          "<url>" +
-          `<loc>${loc}</loc>` +
-          (lastmod ? `<lastmod>${lastmod?.toISOString()}</lastmod>` : "") +
-          (changefreq ? `<changefreq>${changefreq}</changefreq>` : "") +
-          (priority ? `<priority>${priority}</priority>` : "") +
-          "</url>"
-        )
-          .join("") +
-        "</urlset>",
-      { headers: { "Content-Type": "text/xml" } },
+      await streamToPromise(stream),
+      { headers: { "Content-Type": "application/xml" } },
     );
   },
 });
