@@ -17,14 +17,11 @@ export default define.page(({ Component, url, state }) => {
           content="width=device-width, initial-scale=1.0"
         />
         <link rel="canonical" href={canonicalUrl.toString()} />
-        <link rel="me" href="mailto:mblonyox@gmail.com" />
         <link
-          rel="webmention"
-          href="https://webmention.io/peraturan.info/webmention"
-        />
-        <link
-          rel="pingback"
-          href="https://webmention.io/peraturan.info/xmlrpc"
+          rel="search"
+          type="application/opensearchdescription+xml"
+          href="/search.xml"
+          title="Pencarian"
         />
         <link
           rel="alternate"
