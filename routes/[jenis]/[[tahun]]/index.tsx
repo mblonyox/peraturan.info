@@ -11,6 +11,7 @@ import {
 import { define } from "~/utils/define.ts";
 import { HttpError } from "fresh";
 import { z } from "zod";
+import { $pageLimit, $searchParams } from "../../../utils/validate.ts";
 
 interface Data {
   judul: string;
@@ -33,23 +34,13 @@ const paramsSchema = z.object({
   ]),
 });
 
-const querySchema = z.instanceof(URLSearchParams).pipe(
-  z.preprocess(
-    (u) => Object.fromEntries(u.entries()),
-    z.object({
-      page: z.coerce.number().int().min(1).default(1),
-      pageSize: z.coerce.number().int().min(10).max(100).default(10),
-    }),
-  ),
-);
-
 export const handler = define.handlers<Data>(async (ctx) => {
   const res1 = paramsSchema.safeParse(ctx.params);
   if (!res1.success) throw new HttpError(404);
   const { jenis, tahun } = res1.data;
-  const res2 = querySchema.safeParse(ctx.url.searchParams);
+  const res2 = $searchParams.pipe($pageLimit).safeParse(ctx.url.searchParams);
   if (!res2.success) throw new HttpError(400, "Invalid query.");
-  const { page, pageSize } = res2.data;
+  const { page, limit: pageSize } = res2.data;
   const db = await getDB();
   const listPeraturan = getListPeraturan(db, {
     jenis,

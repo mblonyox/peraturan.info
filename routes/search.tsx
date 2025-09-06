@@ -3,6 +3,9 @@ import Pagination from "~/components/pagination.tsx";
 import { getOrama } from "~/lib/orama/mod.ts";
 import { define } from "~/utils/define.ts";
 import { ellipsis } from "~/utils/string.ts";
+import { $pageLimit, $searchParams } from "~/utils/validate.ts";
+import { HttpError } from "fresh";
+import { z } from "zod";
 
 interface Data {
   results: Results<TypedDocument<Awaited<ReturnType<typeof getOrama>>>>;
@@ -11,10 +14,12 @@ interface Data {
 
 export const handler = define.handlers<Data>({
   GET: async (ctx) => {
-    const params = ctx.url.searchParams;
-    const query = params.get("query") ?? "";
-    const limit = parseInt(params.get("limit") ?? "12");
-    const page = parseInt(params.get("page") ?? "1");
+    const res = $searchParams.pipe(z.object({
+      ...$pageLimit.shape,
+      query: z.string().default(""),
+    })).safeParse(ctx.url.searchParams);
+    if (!res.success) throw new HttpError(400, res.error.message);
+    const { page, limit, query } = res.data;
     const offset = (page - 1) * limit;
     const index = await getOrama();
     const results = await search(index, {
@@ -23,12 +28,13 @@ export const handler = define.handlers<Data>({
       offset,
       limit,
     });
+    if (results.count && !results.hits.length) throw new HttpError(404);
     const title = "Hasil Pencarian";
+    const start = offset + 1;
+    const end = offset + results.hits.length;
     const description = results.hits.length
-      ? `Pencarian dengan kata kunci "${query}" menampilkan ${
-        offset + 1
-      } s.d. ${
-        offset + results.hits.length
+      ? `Pencarian dengan kata kunci "${query}" menampilkan urutan ${
+        start === end ? start : start + " s.d. " + end
       } dari ${results.count} hasil dalam ${results.elapsed.formatted}.`
       : "Pencarian tidak menemukan hasil.";
     ctx.state.seo = {
