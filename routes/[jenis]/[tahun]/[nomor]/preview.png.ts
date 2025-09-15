@@ -17,7 +17,7 @@ export const handler = define.handlers({
     if (!urlPdf) throw new HttpError(404);
     const pdfData = await getPdfData(urlPdf);
     const png = await getPdfFirstPageImage(pdfData);
-    const response = new Response(png.data, {
+    const response = new Response(png.data.buffer as ArrayBuffer, {
       headers: {
         "Content-Type": "image/png",
         "Cache-Control": "public, max-age=31536000, immutable",
