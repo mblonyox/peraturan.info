@@ -56,5 +56,6 @@ async function getPdfFirstPageImage(data: Uint8Array) {
     },
   });
   doc.destroy();
+  pdfium.destroy();
   return image;
 }

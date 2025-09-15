@@ -1,5 +1,3 @@
-/// <reference lib="dom" />
-
 import type { State } from "~/utils/define.ts";
 import { App, staticFiles, trailingSlashes } from "fresh";
 

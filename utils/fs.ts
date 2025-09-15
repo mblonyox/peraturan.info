@@ -1,12 +1,10 @@
-import { dirname, fromFileUrl, resolve } from "@std/path";
-
-export const rootPath = resolve(dirname(fromFileUrl(import.meta.url)), "..");
+import { resolve } from "@std/path";
 
 const getMdFilePath = (
   jenis: string,
   tahun: string | number,
   nomor: string | number,
-) => resolve(rootPath, "data", `${jenis}/${tahun}/${nomor}.md`);
+) => resolve(Deno.cwd(), `data/${jenis}/${tahun}/${nomor}.md`);
 
 export const existsMd = async (
   { jenis, tahun, nomor }: { jenis: string; tahun: string; nomor: string },

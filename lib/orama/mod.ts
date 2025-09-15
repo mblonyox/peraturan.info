@@ -1,5 +1,5 @@
 import { create, load, type Orama } from "@orama/orama";
-import { dirname, fromFileUrl, resolve } from "@std/path";
+import { resolve } from "@std/path";
 import * as dpack from "dpack";
 
 const schema = {
@@ -14,10 +14,7 @@ const schema = {
 
 export type Schema = typeof schema;
 
-const filepath = resolve(
-  dirname(fromFileUrl(import.meta.url)),
-  "../../data/orama.dpack",
-);
+const filepath = resolve(Deno.cwd(), "data/orama.dpack");
 let orama: Orama<Schema> | undefined;
 
 async function loadOrama() {
