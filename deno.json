@@ -31,10 +31,10 @@
     "@std/path": "jsr:@std/path@^1.1.2",
     "@tailwindcss/postcss": "npm:@tailwindcss/postcss@^4.1.13",
     "clsx": "npm:clsx@^2.1.1",
-    "daisyui": "npm:daisyui@^5.1.12",
+    "daisyui": "npm:daisyui@^5.1.13",
     "dpack": "npm:dpack@^0.6.22",
     "feed": "npm:feed@^5.1.0",
-    "fresh": "jsr:@fresh/core@^2.0.2",
+    "fresh": "jsr:@fresh/core@^2.1.0",
     "github-slugger": "npm:github-slugger@^2.0.0",
     "marked": "npm:marked@^16.3.0",
     "postcss": "npm:postcss@^8.5.6",
@@ -42,7 +42,7 @@
     "react": "npm:preact@^10.27.2/compat",
     "sitemap": "npm:sitemap@^8.0.0",
     "tailwindcss": "npm:tailwindcss@^4.1.13",
-    "zod": "npm:zod@^4.1.8"
+    "zod": "npm:zod@^4.1.9"
   },
   "nodeModulesDir": "auto",
   "scopes": {
