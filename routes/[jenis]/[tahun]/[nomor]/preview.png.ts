@@ -5,6 +5,10 @@ import { define } from "~/utils/define.ts";
 import { createCanvas } from "$canvas";
 import { HttpError } from "fresh";
 
+const wasmUrl = import.meta.env.DEV
+  ? "node_modules/@hyzyla/pdfium/dist/pdfium.wasm"
+  : import.meta.resolve("./pdfium.wasm");
+
 export const handler = define.handlers({
   GET: async ({ params, url }) => {
     const cache = await caches.open("preview");
@@ -41,7 +45,7 @@ async function getPdfData(url: string) {
 }
 
 async function getPdfFirstPageImage(data: Uint8Array) {
-  const pdfium = await PDFiumLibrary.init();
+  const pdfium = await PDFiumLibrary.init({ wasmUrl });
   const doc = await pdfium.loadDocument(data);
   const page = doc.getPage(0);
   const image = page.render({

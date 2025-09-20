@@ -7,7 +7,11 @@
     "update": "deno run -A -r jsr:@fresh/update .",
     "indexing": "deno run -A indexing.ts"
   },
-  "compilerOptions": { "jsx": "react-jsx", "jsxImportSource": "preact" },
+  "compilerOptions": {
+    "jsx": "react-jsx",
+    "jsxImportSource": "preact",
+    "types": ["vite/client"]
+  },
   "lint": {
     "rules": { "tags": ["fresh", "recommended", "react", "jsr"] },
     "plugins": ["jsr:@ayk/lint-import-order"]
