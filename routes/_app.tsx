@@ -1,7 +1,6 @@
 import SeoTags from "~/components/seo_tags.tsx";
 import { GOOGLE_TAG_ID, HOSTNAME } from "~/utils/const.ts";
 import { define } from "~/utils/define.ts";
-import { asset } from "fresh/runtime";
 
 export default define.page(({ Component, url, state }) => {
   const canonicalUrl = new URL(url);
@@ -71,7 +70,6 @@ export default define.page(({ Component, url, state }) => {
           href="/icons/favicon-16x16.png"
         />
         <link rel="manifest" href="/manifest.json" />
-        <link rel="stylesheet" href={asset("/styles.css")} />
         <SeoTags url={url} {...state.seo} />
         <script
           src={`https://www.googletagmanager.com/gtag/js?id=${GOOGLE_TAG_ID}`}

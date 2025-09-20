@@ -1,27 +1,15 @@
-import { encodeBase64 } from "@std/encoding/base64";
-import { dirname, fromFileUrl, resolve } from "@std/path";
+import { ImageResponse } from "@vercel/og";
+import rawLogo from "~/assets/logo.png?raw";
 import type { Peraturan } from "~/models/mod.ts";
 import { define } from "~/utils/define.ts";
 import { ellipsis } from "~/utils/string.ts";
-import { ImageResponse } from "$og_edge";
-
-const getLogo = async () => {
-  const buffer = await Deno.readFile(
-    resolve(
-      dirname(fromFileUrl(import.meta.url)),
-      "../../../../static/icons/pwa-512x512.png",
-    ),
-  );
-  return "data:image/png;base64," +
-    encodeBase64(buffer);
-};
 
 export const handler = define.handlers(async (ctx) => {
   const cache = await caches.open("og-image");
   const cachedContent = await cache.match(ctx.url);
   if (cachedContent) return cachedContent;
   const peraturan = ctx.state.peraturan as Peraturan;
-  const logo = await getLogo();
+  const logo = "data:image/png;base64," + btoa(rawLogo);
   const response = new ImageResponse(
     <div
       style={{

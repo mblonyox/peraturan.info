@@ -1,11 +1,8 @@
-import { dirname, fromFileUrl, resolve } from "@std/path";
+import { resolve } from "@std/path";
 import { prepareLocalFile, prepareVirtualFile } from "$mock_file";
 import { DB } from "$sqlite";
 
-const filepath = resolve(
-  dirname(fromFileUrl(import.meta.url)),
-  "../../data/database.sqlite",
-);
+const filepath = resolve(Deno.cwd(), "data/database.sqlite");
 let db: DB | undefined;
 
 async function initDB() {

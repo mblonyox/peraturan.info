@@ -5,7 +5,7 @@ import { isValidTheme } from "~/utils/theme.ts";
 import { regexes } from "zod";
 
 const redirectHostname = define.middleware((ctx) => {
-  if (HOSTNAME && ctx.url.hostname !== HOSTNAME) {
+  if (HOSTNAME && ctx.url.hostname === "peraturan.deno.dev") {
     const url = new URL(ctx.url);
     url.hostname = HOSTNAME;
     return Response.redirect(url, 301);
