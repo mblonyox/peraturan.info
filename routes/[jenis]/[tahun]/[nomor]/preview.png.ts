@@ -1,13 +1,14 @@
 import { PDFiumLibrary } from "@hyzyla/pdfium";
+import { fromFileUrl } from "@std/path";
 import { getDB } from "~/lib/db/mod.ts";
 import { getSumberPeraturan } from "~/models/mod.ts";
 import { define } from "~/utils/define.ts";
 import { createCanvas } from "$canvas";
 import { HttpError } from "fresh";
 
-const wasmUrl = import.meta.env.DEV
-  ? "node_modules/@hyzyla/pdfium/dist/pdfium.wasm"
-  : import.meta.resolve("./pdfium.wasm");
+const wasmBinary = import.meta.env.DEV
+  ? undefined
+  : Deno.readFileSync(fromFileUrl(import.meta.resolve("./pdfium.wasm"))).buffer;
 
 export const handler = define.handlers({
   GET: async ({ params, url }) => {
@@ -45,7 +46,7 @@ async function getPdfData(url: string) {
 }
 
 async function getPdfFirstPageImage(data: Uint8Array) {
-  const pdfium = await PDFiumLibrary.init({ wasmUrl });
+  const pdfium = await PDFiumLibrary.init({ wasmBinary });
   const doc = await pdfium.loadDocument(data);
   const page = doc.getPage(0);
   const image = page.render({
