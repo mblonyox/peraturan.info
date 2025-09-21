@@ -87,7 +87,7 @@ gtag('config', '${GOOGLE_TAG_ID}');
           }}
         />
       </head>
-      <body className="min-w-xs">
+      <body className="min-w-sm">
         <Component />
       </body>
     </html>
