@@ -1,4 +1,5 @@
 {
+  "$schema": "https://json.schemastore.org/web-manifest-combined.json",
   "background_color": "#11191f",
   "description": "Peraturan.Info adalah upaya untuk meningkatkan cara penyajian peraturan perundang-undangan di Indonesia sehingga lebih user-friendly yang terinspirasi dari legislation.gov.uk.",
   "dir": "ltr",
