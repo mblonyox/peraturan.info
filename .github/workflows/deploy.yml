@@ -33,6 +33,9 @@ jobs:
         with:
           deno-version: v2.x
 
+      - name: Install dependencies
+        run: deno install
+
       - name: Run check
         run: deno task check
 
@@ -56,8 +59,11 @@ jobs:
         with:
           deno-version: v2.x
 
+      - name: Install dependencies
+        run: deno install
+
       - name: Build step
-        run: "deno task build"
+        run: deno task build
 
       - name: Upload to Deno Deploy
         uses: denoland/deployctl@v1
