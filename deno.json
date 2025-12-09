@@ -17,6 +17,7 @@
     "plugins": ["jsr:@ayk/lint-import-order"]
   },
   "imports": {
+    "@babel/core": "npm:@babel/core@^7.28.5",
     "~/": "./",
     "$canvas": "https://deno.land/x/canvas@v1.4.2/mod.ts",
     "$mock_file": "https://deno.land/x/mock_file@v1.1.2/mod.ts",
@@ -42,11 +43,11 @@
     "preact": "npm:preact@^10.28.0",
     "sitemap": "npm:sitemap@^9.0.0",
     "tailwindcss": "npm:tailwindcss@^4.1.17",
-    "vite": "npm:vite@^7.2.6",
+    "vite": "npm:vite@^7.2.7",
     "vite-plugin-static-copy": "npm:vite-plugin-static-copy@^3.1.4",
     "zod": "npm:zod@^4.1.13"
   },
   "nodeModulesDir": "manual",
-  "exclude": ["**/_fresh/*", "data"],
+  "exclude": ["**/_fresh/*", "data", "node_modules"],
   "unstable": ["kv"]
 }

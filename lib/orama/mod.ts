@@ -1,5 +1,6 @@
-import { create, load, type Orama } from "@orama/orama";
+import { create, load, type Orama, type RawData } from "@orama/orama";
 import { resolve } from "@std/path";
+// @deno-types="~/dpack.d.ts"
 import * as dpack from "dpack";
 
 const schema = {
@@ -19,9 +20,9 @@ let orama: Orama<Schema> | undefined;
 
 async function loadOrama() {
   const data = await Deno.readTextFile(filepath);
-  const orama = await create({ schema });
-  const deserialized = dpack.parse(data);
-  await load(orama, deserialized);
+  const orama = create({ schema });
+  const deserialized = dpack.parse(data) as RawData;
+  load(orama, deserialized);
   return orama;
 }
 

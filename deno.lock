@@ -33,6 +33,7 @@
     "jsr:@std/streams@^1.0.14": "1.0.14",
     "jsr:@std/uuid@^1.0.9": "1.0.9",
     "npm:@babel/core@^7.28.0": "7.28.5",
+    "npm:@babel/core@^7.28.5": "7.28.5",
     "npm:@babel/preset-react@^7.27.1": "7.28.5_@babel+core@7.28.5",
     "npm:@giscus/react@^3.1.0": "3.1.0_react@19.1.1_react-dom@19.1.1__react@19.1.1",
     "npm:@hyzyla/pdfium@^2.1.9": "2.1.9",
@@ -42,8 +43,8 @@
     "npm:@orama/plugin-data-persistence@^3.1.16": "3.1.16",
     "npm:@preact/signals@^2.2.1": "2.5.1_preact@10.28.0",
     "npm:@preact/signals@^2.5.1": "2.5.1_preact@10.28.0",
-    "npm:@prefresh/vite@^2.4.8": "2.4.11_preact@10.28.0_vite@7.2.6__@types+node@24.2.0__picomatch@4.0.3_@types+node@24.2.0",
-    "npm:@tailwindcss/vite@^4.1.17": "4.1.17_vite@7.2.6__@types+node@24.2.0__picomatch@4.0.3_@types+node@24.2.0",
+    "npm:@prefresh/vite@^2.4.8": "2.4.11_preact@10.28.0_vite@7.2.7__@types+node@24.2.0__picomatch@4.0.3_@types+node@24.2.0",
+    "npm:@tailwindcss/vite@^4.1.17": "4.1.17_vite@7.2.7__@types+node@24.2.0__picomatch@4.0.3_@types+node@24.2.0",
     "npm:@types/node@*": "24.2.0",
     "npm:@vercel/og@~0.8.5": "0.8.5",
     "npm:clsx@^2.1.1": "2.1.1",
@@ -63,9 +64,9 @@
     "npm:rollup@^4.50.0": "4.53.3",
     "npm:sitemap@9": "9.0.0",
     "npm:tailwindcss@^4.1.17": "4.1.17",
-    "npm:vite-plugin-static-copy@^3.1.4": "3.1.4_vite@7.2.6__@types+node@24.2.0__picomatch@4.0.3_@types+node@24.2.0",
-    "npm:vite@^7.1.4": "7.2.6_@types+node@24.2.0_picomatch@4.0.3",
-    "npm:vite@^7.2.6": "7.2.6_@types+node@24.2.0_picomatch@4.0.3",
+    "npm:vite-plugin-static-copy@^3.1.4": "3.1.4_vite@7.2.7__@types+node@24.2.0__picomatch@4.0.3_@types+node@24.2.0",
+    "npm:vite@^7.1.4": "7.2.7_@types+node@24.2.0_picomatch@4.0.3",
+    "npm:vite@^7.2.7": "7.2.7_@types+node@24.2.0_picomatch@4.0.3",
     "npm:zod@^4.1.13": "4.1.13"
   },
   "jsr": {
@@ -122,7 +123,7 @@
         "jsr:@std/dotenv",
         "jsr:@std/fmt@^1.0.7",
         "jsr:@std/path@1",
-        "npm:@babel/core",
+        "npm:@babel/core@^7.28.0",
         "npm:@babel/preset-react",
         "npm:@mjackson/node-fetch-server",
         "npm:@prefresh/vite",
@@ -607,7 +608,7 @@
     "@prefresh/utils@1.2.1": {
       "integrity": "sha512-vq/sIuN5nYfYzvyayXI4C2QkprfNaHUQ9ZX+3xLD8nL3rWyzpxOm1+K7RtMbhd+66QcaISViK7amjnheQ/4WZw=="
     },
-    "@prefresh/vite@2.4.11_preact@10.28.0_vite@7.2.6__@types+node@24.2.0__picomatch@4.0.3_@types+node@24.2.0": {
+    "@prefresh/vite@2.4.11_preact@10.28.0_vite@7.2.7__@types+node@24.2.0__picomatch@4.0.3_@types+node@24.2.0": {
       "integrity": "sha512-/XjURQqdRiCG3NpMmWqE9kJwrg9IchIOWHzulCfqg2sRe/8oQ1g5De7xrk9lbqPIQLn7ntBkKdqWXIj4E9YXyg==",
       "dependencies": [
         "@babel/core",
@@ -835,7 +836,7 @@
         "@tailwindcss/oxide-win32-x64-msvc"
       ]
     },
-    "@tailwindcss/vite@4.1.17_vite@7.2.6__@types+node@24.2.0__picomatch@4.0.3_@types+node@24.2.0": {
+    "@tailwindcss/vite@4.1.17_vite@7.2.7__@types+node@24.2.0__picomatch@4.0.3_@types+node@24.2.0": {
       "integrity": "sha512-4+9w8ZHOiGnpcGI6z1TVVfWaX/koK7fKeSYF3qlYg2xpBtbteP2ddBxiarL+HVgfSJGeK5RIxRQmKm4rTJJAwA==",
       "dependencies": [
         "@tailwindcss/node",
@@ -1433,7 +1434,7 @@
       ],
       "bin": true
     },
-    "vite-plugin-static-copy@3.1.4_vite@7.2.6__@types+node@24.2.0__picomatch@4.0.3_@types+node@24.2.0": {
+    "vite-plugin-static-copy@3.1.4_vite@7.2.7__@types+node@24.2.0__picomatch@4.0.3_@types+node@24.2.0": {
       "integrity": "sha512-iCmr4GSw4eSnaB+G8zc2f4dxSuDjbkjwpuBLLGvQYR9IW7rnDzftnUjOH5p4RYR+d4GsiBqXRvzuFhs5bnzVyw==",
       "dependencies": [
         "chokidar",
@@ -1443,8 +1444,8 @@
         "vite"
       ]
     },
-    "vite@7.2.6_@types+node@24.2.0_picomatch@4.0.3": {
-      "integrity": "sha512-tI2l/nFHC5rLh7+5+o7QjKjSR04ivXDF4jcgV0f/bTQ+OJiITy5S6gaynVsEM+7RqzufMnVbIon6Sr5x1SDYaQ==",
+    "vite@7.2.7_@types+node@24.2.0_picomatch@4.0.3": {
+      "integrity": "sha512-ITcnkFeR3+fI8P1wMgItjGrR10170d8auB4EpMLPqmx6uxElH3a/hHGQabSHKdqd4FXWO1nFIp9rRn7JQ34ACQ==",
       "dependencies": [
         "@types/node@24.2.0",
         "esbuild",
@@ -1537,6 +1538,7 @@
       "jsr:@fresh/plugin-vite@^1.0.8",
       "jsr:@std/http@^1.0.22",
       "jsr:@std/path@^1.1.3",
+      "npm:@babel/core@^7.28.5",
       "npm:@giscus/react@^3.1.0",
       "npm:@hyzyla/pdfium@^2.1.9",
       "npm:@orama/orama@^3.1.16",
@@ -1555,7 +1557,7 @@
       "npm:sitemap@9",
       "npm:tailwindcss@^4.1.17",
       "npm:vite-plugin-static-copy@^3.1.4",
-      "npm:vite@^7.2.6",
+      "npm:vite@^7.2.7",
       "npm:zod@^4.1.13"
     ]
   }
