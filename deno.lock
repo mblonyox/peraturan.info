@@ -33,14 +33,13 @@
     "jsr:@std/streams@^1.0.14": "1.0.14",
     "jsr:@std/uuid@^1.0.9": "1.0.9",
     "npm:@babel/core@^7.28.0": "7.28.5",
-    "npm:@babel/core@^7.28.5": "7.28.5",
     "npm:@babel/preset-react@^7.27.1": "7.28.5_@babel+core@7.28.5",
     "npm:@giscus/react@^3.1.0": "3.1.0_react@19.1.1_react-dom@19.1.1__react@19.1.1",
     "npm:@hyzyla/pdfium@^2.1.9": "2.1.9",
     "npm:@mjackson/node-fetch-server@0.7": "0.7.0",
     "npm:@opentelemetry/api@^1.9.0": "1.9.0",
-    "npm:@orama/orama@^3.1.16": "3.1.16",
-    "npm:@orama/plugin-data-persistence@^3.1.16": "3.1.16",
+    "npm:@orama/orama@^2.1.1": "2.1.1",
+    "npm:@orama/plugin-data-persistence@^2.1.1": "2.1.1",
     "npm:@preact/signals@^2.2.1": "2.5.1_preact@10.28.0",
     "npm:@preact/signals@^2.5.1": "2.5.1_preact@10.28.0",
     "npm:@prefresh/vite@^2.4.8": "2.4.11_preact@10.28.0_vite@7.2.7__@types+node@24.2.0__picomatch@4.0.3_@types+node@24.2.0",
@@ -48,7 +47,7 @@
     "npm:@types/node@*": "24.2.0",
     "npm:@vercel/og@~0.8.5": "0.8.5",
     "npm:clsx@^2.1.1": "2.1.1",
-    "npm:daisyui@^5.5.8": "5.5.8",
+    "npm:daisyui@^5.5.9": "5.5.9",
     "npm:dpack@~0.6.22": "0.6.22",
     "npm:esbuild-wasm@~0.25.11": "0.25.12",
     "npm:esbuild@0.25.7": "0.25.7",
@@ -123,7 +122,7 @@
         "jsr:@std/dotenv",
         "jsr:@std/fmt@^1.0.7",
         "jsr:@std/path@1",
-        "npm:@babel/core@^7.28.0",
+        "npm:@babel/core",
         "npm:@babel/preset-react",
         "npm:@mjackson/node-fetch-server",
         "npm:@prefresh/vite",
@@ -568,22 +567,21 @@
     "@mjackson/node-fetch-server@0.7.0": {
       "integrity": "sha512-un8diyEBKU3BTVj3GzlTPA1kIjCkGdD+AMYQy31Gf9JCkfoZzwgJ79GUtHrF2BN3XPNMLpubbzPcxys+a3uZEw=="
     },
-    "@msgpack/msgpack@3.1.2": {
-      "integrity": "sha512-JEW4DEtBzfe8HvUYecLU9e6+XJnKDlUAIve8FvPzF3Kzs6Xo/KuZkZJsDH0wJXl/qEZbeeE7edxDNY3kMs39hQ=="
+    "@msgpack/msgpack@2.8.0": {
+      "integrity": "sha512-h9u4u/jiIRKbq25PM+zymTyW6bhTzELvOoUd+AvYriWOAKpLGnIamaET3pnHYoI5iYphAHBI4ayx0MehR+VVPQ=="
     },
     "@opentelemetry/api@1.9.0": {
       "integrity": "sha512-3giAOQvZiH5F9bMlMiv8+GSPMeqg0dbaeo58/0SlA9sxSqZhnUtxzX9/2FzyhS9sWQf5S0GJE0AKBrFqjpeYcg=="
     },
-    "@orama/orama@3.1.16": {
-      "integrity": "sha512-scSmQBD8eANlMUOglxHrN1JdSW8tDghsPuS83otqealBiIeMukCQMOf/wc0JJjDXomqwNdEQFLXLGHrU6PGxuA=="
+    "@orama/orama@2.1.1": {
+      "integrity": "sha512-euTV/2kya290SNkl5m8e/H1na8iDygk74nNtl4E0YZNyYIrEMwE1JwamoroMKGZw2Uz+in/8gH3m1+2YfP0j1w=="
     },
-    "@orama/plugin-data-persistence@3.1.16": {
-      "integrity": "sha512-kDYrK/tg0r/OjcwC0BHpQDS6w8ZDyaf1QprtvXMfLpBCtdISYZ5mghumr5oUPlrkOhikt+tF4ZIZkFcNJDLNBg==",
+    "@orama/plugin-data-persistence@2.1.1": {
+      "integrity": "sha512-JocJ7Q9mv/2+1jr6194mSiQUvbJ3/7WRZipzg5z8LI6kKcbCFMcYQgJ5RP65bIrXS8EeR36mt5hsRTJdEo+ZbA==",
       "dependencies": [
         "@msgpack/msgpack",
         "@orama/orama",
-        "dpack",
-        "seqproto"
+        "dpack"
       ]
     },
     "@preact/signals-core@1.12.1": {
@@ -963,8 +961,8 @@
         "postcss-value-parser"
       ]
     },
-    "daisyui@5.5.8": {
-      "integrity": "sha512-6psL9jIEOFOw68V10j/BKCWcRgx8dh81mmNxShr+g7HDM6UHNoPharlp9zq/PQkHNuGU1ZQsajR3HgpvavbRKQ=="
+    "daisyui@5.5.9": {
+      "integrity": "sha512-bAL2xPbvMNLQ9oUuP0FD4tqNcPmTOA8o0XJYAn5eKbH4uXWIstKTZK6VE8iP7xvx90euVcZl768RvxYgl0tw2w=="
     },
     "debug@4.4.3": {
       "integrity": "sha512-RGwwWnwQvkVfavKVt22FGLw+xYSdzARwm0ru6DhTVA3umU5hZc28V3kO4stgYryrTlLpuvgI9GiijltAjNbcqA==",
@@ -1371,9 +1369,6 @@
       "integrity": "sha512-BR7VvDCVHO+q2xBEWskxS6DJE1qRnb7DxzUrogb71CWoSficBxYsiAGd+Kl0mmq/MprG9yArRkyrQxTO6XjMzA==",
       "bin": true
     },
-    "seqproto@0.2.3": {
-      "integrity": "sha512-HpNyPYl7DJa2a6XQJ+MJAc6ft6Y9ZU+zRiuvTHFpLPeqvapcTAGFJyhMEIN7Y7VXhWT6NEdNVhbXFHwtaCOfCw=="
-    },
     "sitemap@9.0.0": {
       "integrity": "sha512-J/SU27FJ+I52TcDLKZzPRRVQUMj0Pp1i/HLb2lrkU+hrMLM+qdeRjdacrNxnSW48Waa3UcEOGOdX1+0Lob7TgA==",
       "dependencies": [
@@ -1538,16 +1533,15 @@
       "jsr:@fresh/plugin-vite@^1.0.8",
       "jsr:@std/http@^1.0.22",
       "jsr:@std/path@^1.1.3",
-      "npm:@babel/core@^7.28.5",
       "npm:@giscus/react@^3.1.0",
       "npm:@hyzyla/pdfium@^2.1.9",
-      "npm:@orama/orama@^3.1.16",
-      "npm:@orama/plugin-data-persistence@^3.1.16",
+      "npm:@orama/orama@^2.1.1",
+      "npm:@orama/plugin-data-persistence@^2.1.1",
       "npm:@preact/signals@^2.5.1",
       "npm:@tailwindcss/vite@^4.1.17",
       "npm:@vercel/og@~0.8.5",
       "npm:clsx@^2.1.1",
-      "npm:daisyui@^5.5.8",
+      "npm:daisyui@^5.5.9",
       "npm:dpack@~0.6.22",
       "npm:feed@^5.1.0",
       "npm:github-slugger@2",
