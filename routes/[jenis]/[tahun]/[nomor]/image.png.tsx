@@ -1,5 +1,6 @@
 import { ImageResponse } from "@vercel/og";
-import rawLogo from "~/assets/logo.png?raw";
+
+import logoDataUrl from "~/assets/logo.png?url&inline";
 import type { Peraturan } from "~/models/mod.ts";
 import { define } from "~/utils/define.ts";
 import { ellipsis } from "~/utils/string.ts";
@@ -9,7 +10,6 @@ export const handler = define.handlers(async (ctx) => {
   const cachedContent = await cache.match(ctx.url);
   if (cachedContent) return cachedContent;
   const peraturan = ctx.state.peraturan as Peraturan;
-  const logo = "data:image/png;base64," + btoa(rawLogo);
   const response = new ImageResponse(
     <div
       style={{
@@ -23,7 +23,7 @@ export const handler = define.handlers(async (ctx) => {
       }}
     >
       <img
-        src={logo}
+        src={logoDataUrl}
         style={{
           width: 256,
           height: 256,
@@ -65,6 +65,6 @@ export const handler = define.handlers(async (ctx) => {
       </div>
     </div>,
   );
-  await cache.put(ctx.url, response.clone());
+  cache.put(ctx.url, response.clone()).catch(() => null);
   return response;
 });
