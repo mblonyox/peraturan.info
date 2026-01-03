@@ -28,7 +28,7 @@ export const handler = define.handlers({
         "Cache-Control": "public, max-age=31536000, immutable",
       },
     });
-    await cache.put(url, response.clone());
+    cache.put(url, response.clone()).catch(() => null);
     return response;
   },
 });

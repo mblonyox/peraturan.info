@@ -1,6 +1,7 @@
 {
   "version": "5",
   "specifiers": {
+    "jsr:@ayk/lint-import-order@*": "0.1.0",
     "jsr:@deno/esbuild-plugin@^1.2.0": "1.2.1",
     "jsr:@deno/loader@~0.3.10": "0.3.10",
     "jsr:@deno/loader@~0.3.2": "0.3.10",
@@ -67,6 +68,9 @@
     "npm:zod@^4.3.4": "4.3.4"
   },
   "jsr": {
+    "@ayk/lint-import-order@0.1.0": {
+      "integrity": "be312f8269525055394118ac89d5a12dbb0bdc4a94d0ced4994b1823cc41c393"
+    },
     "@deno/esbuild-plugin@1.2.1": {
       "integrity": "df629467913adc1f960149fdfa3a3430ba8c20381c310fba096db244e6c3c9f6",
       "dependencies": [
