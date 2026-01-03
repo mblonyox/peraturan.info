@@ -20,9 +20,9 @@ let orama: Orama<Schema> | undefined;
 
 async function loadOrama() {
   const data = await Deno.readTextFile(filepath);
-  const orama = create({ schema });
+  const orama = await create({ schema });
   const deserialized = dpack.parse(data) as RawData;
-  load(orama, deserialized);
+  await load(orama, deserialized);
   return orama;
 }
 
