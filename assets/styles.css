@@ -22,3 +22,10 @@
     }
   }
 }
+
+#mouthful-comments {
+  input[type="submit"] {
+    background-color: var(--color-base-1200);
+    border-color: var(--color-base-content);
+  }
+}

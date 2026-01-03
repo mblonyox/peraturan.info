@@ -1,6 +1,5 @@
+import Comments from "~/components/comments.tsx";
 import SocialShareButtons from "~/components/social_share_buttons.tsx";
-import Comments from "~/islands/comments.tsx";
-import type { Peraturan } from "~/models/mod.ts";
 import { define } from "~/utils/define.ts";
 import { clsx } from "clsx";
 
@@ -27,7 +26,6 @@ export default define.layout(({ Component, url, params, state }) => {
       disabled: false,
     },
   ];
-  const peraturan = state.peraturan as Peraturan;
 
   return (
     <div className="container">
@@ -54,7 +52,7 @@ export default define.layout(({ Component, url, params, state }) => {
           </>
         ))}
       </div>
-      <Comments term={peraturan.rujukPanjang} />
+      <Comments />
     </div>
   );
 });

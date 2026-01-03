@@ -22,7 +22,6 @@
     "$mock_file": "https://deno.land/x/mock_file@v1.1.2/mod.ts",
     "$sqlite": "https://deno.land/x/sqlite@v3.8/mod.ts",
     "@fresh/plugin-vite": "jsr:@fresh/plugin-vite@^1.0.8",
-    "@giscus/react": "npm:@giscus/react@^3.1.0",
     "@hyzyla/pdfium": "npm:@hyzyla/pdfium@^2.1.9",
     "@orama/orama": "npm:@orama/orama@2.1.1",
     "@orama/plugin-data-persistence": "npm:@orama/plugin-data-persistence@2.1.1",
