@@ -4,7 +4,7 @@ const getMdFilePath = (
   jenis: string,
   tahun: string | number,
   nomor: string | number,
-) => resolve(Deno.cwd(), `data/${jenis}/${tahun}/${nomor}.md`);
+) => resolve(Deno.cwd(), `data/${jenis}/${tahun}/${nomor}/fulltext.md`);
 
 export const existsMd = async (
   { jenis, tahun, nomor }: { jenis: string; tahun: string; nomor: string },
