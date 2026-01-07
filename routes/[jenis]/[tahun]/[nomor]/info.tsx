@@ -105,7 +105,7 @@ function Preview({ peraturan }: { peraturan: Peraturan }) {
     <div>
       <h2 className="text-2xl mb-2">Tampilan</h2>
       <Image
-        src={peraturan.path + "/preview.png"}
+        src={peraturan.path + "/thumbnail.png"}
         alt={peraturan.rujukPendek}
         className="rounded-box"
       />

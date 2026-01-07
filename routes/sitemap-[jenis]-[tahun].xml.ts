@@ -31,7 +31,7 @@ export const handler = define.handlers({
       const lastmod = p.created_at;
       items.push({
         url: p.path + "/info",
-        img: p.path + "/preview.png",
+        img: p.path + "/thumbnail.png",
         lastmod: lastmod.toString(),
         changefreq: EnumChangefreq.YEARLY,
         priority: 0.5,

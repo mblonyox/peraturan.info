@@ -1,49 +1,30 @@
+import { exists } from "@std/fs";
 import { resolve } from "@std/path";
 
-const getMdFilePath = (
-  jenis: string,
-  tahun: string | number,
-  nomor: string | number,
-) => resolve(Deno.cwd(), `data/${jenis}/${tahun}/${nomor}/fulltext.md`);
+interface PeraturanId {
+  jenis: string;
+  tahun: string | number;
+  nomor: string | number;
+}
 
-export const existsMd = async (
-  { jenis, tahun, nomor }: { jenis: string; tahun: string; nomor: string },
-) => {
-  try {
-    const stat = await Deno.stat(getMdFilePath(jenis, tahun, nomor));
-    return stat.isFile;
-  } catch (error) {
-    if (error instanceof Deno.errors.NotFound) {
-      return false;
-    }
-    throw error;
-  }
-};
+const getMdFilePath = ({ jenis, tahun, nomor }: PeraturanId) =>
+  resolve(Deno.cwd(), `data/${jenis}/${tahun}/${nomor}/fulltext.md`);
 
-export const readTextMd = async (
-  { jenis, tahun, nomor }: {
-    jenis: string;
-    tahun: string | number;
-    nomor: string | number;
-  },
-) => {
-  try {
-    return await Deno.readTextFile(getMdFilePath(jenis, tahun, nomor));
-  } catch (error) {
-    if (error instanceof Deno.errors.NotFound) {
-      return null;
-    }
-    throw error;
-  }
-};
+const getThumbnailFilePath = ({ jenis, tahun, nomor }: PeraturanId) =>
+  resolve(Deno.cwd(), `data/${jenis}/${tahun}/${nomor}/thumbnail.png`);
 
-export const lastModMd = async (
-  { jenis, tahun, nomor }: {
-    jenis: string;
-    tahun: string | number;
-    nomor: string | number;
-  },
-) => {
-  const stat = await Deno.stat(getMdFilePath(jenis, tahun, nomor));
+export const existsMd = (pId: PeraturanId) => exists(getMdFilePath(pId));
+
+export const readTextMd = (pId: PeraturanId) =>
+  Deno.readTextFile(getMdFilePath(pId));
+
+export const lastModMd = async (pId: PeraturanId) => {
+  const stat = await Deno.stat(getMdFilePath(pId));
   return stat.mtime ?? undefined;
 };
+
+export const existsThumbnail = (pId: PeraturanId) =>
+  exists(getThumbnailFilePath(pId));
+
+export const readThumbnail = (pId: PeraturanId) =>
+  Deno.readFile(getThumbnailFilePath(pId));

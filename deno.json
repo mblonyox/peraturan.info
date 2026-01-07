@@ -18,14 +18,13 @@
   },
   "imports": {
     "~/": "./",
-    "$canvas": "https://deno.land/x/canvas@v1.4.2/mod.ts",
     "$mock_file": "https://deno.land/x/mock_file@v1.1.2/mod.ts",
     "$sqlite": "https://deno.land/x/sqlite@v3.8/mod.ts",
     "@fresh/plugin-vite": "jsr:@fresh/plugin-vite@^1.0.8",
-    "@hyzyla/pdfium": "npm:@hyzyla/pdfium@^2.1.9",
     "@orama/orama": "npm:@orama/orama@2.1.1",
     "@orama/plugin-data-persistence": "npm:@orama/plugin-data-persistence@2.1.1",
     "@preact/signals": "npm:@preact/signals@^2.5.1",
+    "@std/fs": "jsr:@std/fs@^1.0.21",
     "@std/http": "jsr:@std/http@^1.0.23",
     "@std/path": "jsr:@std/path@^1.1.4",
     "@tailwindcss/vite": "npm:@tailwindcss/vite@^4.1.18",
@@ -38,12 +37,12 @@
     "github-slugger": "npm:github-slugger@^2.0.0",
     "marked": "npm:marked@^17.0.1",
     "postcss": "npm:postcss@^8.5.6",
-    "preact": "npm:preact@^10.28.1",
+    "preact": "npm:preact@^10.28.2",
     "sitemap": "npm:sitemap@^9.0.0",
     "tailwindcss": "npm:tailwindcss@^4.1.18",
-    "vite": "npm:vite@^7.3.0",
+    "vite": "npm:vite@^7.3.1",
     "vite-plugin-static-copy": "npm:vite-plugin-static-copy@^3.1.4",
-    "zod": "npm:zod@^4.3.4"
+    "zod": "npm:zod@^4.3.5"
   },
   "nodeModulesDir": "manual",
   "exclude": ["**/_fresh/*", "data", "node_modules"]

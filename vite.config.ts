@@ -9,10 +9,6 @@ function copySsrAssets(): Plugin {
     ...viteStaticCopy({
       targets: [
         {
-          src: "node_modules/@hyzyla/pdfium/dist/pdfium.wasm",
-          dest: "assets",
-        },
-        {
           src: "node_modules/@vercel/og/dist/resvg.wasm",
           dest: "assets",
         },
