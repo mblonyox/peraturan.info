@@ -1,10 +1,10 @@
 import { getCookies, setCookie } from "@std/http/cookie";
-import { HOSTNAME } from "~/utils/const.ts";
 import { define } from "~/utils/define.ts";
 import { isValidTheme } from "~/utils/theme.ts";
 import { regexes } from "zod";
 
 const redirectHostname = define.middleware((ctx) => {
+  const HOSTNAME = Deno.env.get("HOSTNAME");
   if (HOSTNAME && ctx.url.hostname === "peraturan.deno.dev") {
     const url = new URL(ctx.url);
     url.hostname = HOSTNAME;

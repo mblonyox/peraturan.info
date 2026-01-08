@@ -3,7 +3,7 @@ import { persistToFile } from "@orama/plugin-data-persistence/server";
 
 import { getDB } from "~/lib/db/mod.ts";
 import { getListPeraturan } from "~/models/peraturan.ts";
-import { readTextMd } from "~/utils/fs.ts";
+import { getPeraturanMarkdown } from "~/utils/data.ts";
 
 try {
   const index = await create({
@@ -22,7 +22,7 @@ try {
   const db = await getDB();
   const { hasil } = getListPeraturan(db, { pageSize: 20000 });
   for (const p of hasil) {
-    const md = await readTextMd({
+    const md = await getPeraturanMarkdown({
       jenis: p.jenis,
       tahun: p.tahun,
       nomor: p.nomor,

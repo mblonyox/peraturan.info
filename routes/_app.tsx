@@ -1,8 +1,9 @@
 import SeoTags from "~/components/seo_tags.tsx";
-import { GOOGLE_TAG_ID, HOSTNAME } from "~/utils/const.ts";
 import { define } from "~/utils/define.ts";
 
 export default define.page(({ Component, url, state }) => {
+  const HOSTNAME = Deno.env.get("HOSTNAME");
+  const GOOGLE_TAG_ID = Deno.env.get("GOOGLE_TAG_ID");
   const canonicalUrl = new URL(url);
   canonicalUrl.protocol = "https";
   canonicalUrl.searchParams.sort();

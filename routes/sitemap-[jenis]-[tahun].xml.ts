@@ -1,8 +1,8 @@
 import { Readable } from "node:stream";
 import { getDB } from "~/lib/db/mod.ts";
 import { getListPeraturan } from "~/models/peraturan.ts";
+import { getPeraturanMarkdown } from "~/utils/data.ts";
 import { define } from "~/utils/define.ts";
-import { lastModMd, readTextMd } from "~/utils/fs.ts";
 import { createMarked, type PeraturanToken } from "~/utils/md.ts";
 import type { RouteConfig } from "fresh";
 import {
@@ -41,22 +41,16 @@ export const handler = define.handlers({
         changefreq: EnumChangefreq.YEARLY,
         priority: 0.5,
       });
-      const md = await readTextMd({
+      const md = await getPeraturanMarkdown({
         jenis,
         tahun,
         nomor: p.nomor,
       });
       if (md) {
-        const lastmod = await lastModMd({
-          jenis,
-          tahun,
-          nomor: p.nomor,
-        });
         const paths = getPartialPaths(md);
         paths.forEach((path) => {
           items.push({
             url: p.path + path,
-            lastmod: lastmod?.toString(),
             changefreq: EnumChangefreq.YEARLY,
             priority: 1.0,
           });

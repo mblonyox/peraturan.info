@@ -2,205 +2,25 @@
   "version": "5",
   "specifiers": {
     "jsr:@ayk/lint-import-order@*": "0.1.0",
-    "jsr:@deno/esbuild-plugin@^1.2.0": "1.2.1",
-    "jsr:@deno/loader@~0.3.10": "0.3.10",
-    "jsr:@deno/loader@~0.3.2": "0.3.10",
-    "jsr:@fresh/build-id@1": "1.0.1",
-    "jsr:@fresh/core@2": "2.2.0",
-    "jsr:@fresh/core@^2.2.0": "2.2.0",
-    "jsr:@fresh/plugin-vite@^1.0.8": "1.0.8",
-    "jsr:@std/bytes@^1.0.6": "1.0.6",
-    "jsr:@std/cli@^1.0.25": "1.0.25",
-    "jsr:@std/dotenv@~0.225.5": "0.225.6",
-    "jsr:@std/encoding@^1.0.10": "1.0.10",
-    "jsr:@std/fmt@^1.0.7": "1.0.8",
-    "jsr:@std/fmt@^1.0.8": "1.0.8",
-    "jsr:@std/fs@^1.0.19": "1.0.21",
-    "jsr:@std/fs@^1.0.21": "1.0.21",
-    "jsr:@std/html@^1.0.5": "1.0.5",
-    "jsr:@std/http@^1.0.21": "1.0.23",
-    "jsr:@std/http@^1.0.23": "1.0.23",
-    "jsr:@std/internal@^1.0.12": "1.0.12",
-    "jsr:@std/json@^1.0.2": "1.0.2",
-    "jsr:@std/jsonc@^1.0.2": "1.0.2",
-    "jsr:@std/media-types@^1.1.0": "1.1.0",
-    "jsr:@std/net@^1.0.6": "1.0.6",
-    "jsr:@std/path@1": "1.1.4",
-    "jsr:@std/path@^1.1.1": "1.1.4",
-    "jsr:@std/path@^1.1.2": "1.1.4",
-    "jsr:@std/path@^1.1.4": "1.1.4",
-    "jsr:@std/semver@^1.0.6": "1.0.7",
-    "jsr:@std/streams@^1.0.16": "1.0.16",
-    "jsr:@std/uuid@^1.0.9": "1.1.0",
-    "npm:@babel/core@^7.28.0": "7.28.5",
-    "npm:@babel/preset-react@^7.27.1": "7.28.5_@babel+core@7.28.5",
-    "npm:@mjackson/node-fetch-server@0.7": "0.7.0",
-    "npm:@opentelemetry/api@^1.9.0": "1.9.0",
     "npm:@orama/orama@2.1.1": "2.1.1",
     "npm:@orama/plugin-data-persistence@2.1.1": "2.1.1",
-    "npm:@preact/signals@^2.2.1": "2.5.1_preact@10.28.2",
-    "npm:@preact/signals@^2.5.1": "2.5.1_preact@10.28.2",
-    "npm:@prefresh/vite@^2.4.8": "2.4.11_preact@10.28.2_vite@7.3.1__picomatch@4.0.3",
     "npm:@tailwindcss/vite@^4.1.18": "4.1.18_vite@7.3.1__picomatch@4.0.3",
     "npm:@vercel/og@~0.8.6": "0.8.6",
     "npm:clsx@^2.1.1": "2.1.1",
     "npm:daisyui@^5.5.14": "5.5.14",
     "npm:dpack@~0.6.22": "0.6.22",
-    "npm:esbuild-wasm@~0.25.11": "0.25.12",
-    "npm:esbuild@0.25.7": "0.25.7",
-    "npm:esbuild@~0.25.5": "0.25.12",
     "npm:feed@^5.1.0": "5.1.0",
     "npm:github-slugger@2": "2.0.0",
     "npm:marked@^17.0.1": "17.0.1",
     "npm:postcss@^8.5.6": "8.5.6",
-    "npm:preact-render-to-string@^6.6.3": "6.6.5_preact@10.28.2",
-    "npm:preact@^10.27.0": "10.28.2",
-    "npm:preact@^10.27.2": "10.28.2",
-    "npm:preact@^10.28.2": "10.28.2",
-    "npm:rollup@^4.50.0": "4.54.0",
     "npm:sitemap@9": "9.0.0",
     "npm:tailwindcss@^4.1.18": "4.1.18",
     "npm:vite-plugin-static-copy@^3.1.4": "3.1.4_vite@7.3.1__picomatch@4.0.3",
-    "npm:vite@^7.1.4": "7.3.1_picomatch@4.0.3",
-    "npm:vite@^7.3.1": "7.3.1_picomatch@4.0.3",
     "npm:zod@^4.3.5": "4.3.5"
   },
   "jsr": {
     "@ayk/lint-import-order@0.1.0": {
       "integrity": "be312f8269525055394118ac89d5a12dbb0bdc4a94d0ced4994b1823cc41c393"
-    },
-    "@deno/esbuild-plugin@1.2.1": {
-      "integrity": "df629467913adc1f960149fdfa3a3430ba8c20381c310fba096db244e6c3c9f6",
-      "dependencies": [
-        "jsr:@deno/loader@~0.3.10",
-        "jsr:@std/path@^1.1.1",
-        "npm:esbuild@~0.25.5"
-      ]
-    },
-    "@deno/loader@0.3.10": {
-      "integrity": "a9c0aa44a0499e7fecef52c29fbc206c1c8f8946388f25d9d0789a23313bfd43"
-    },
-    "@fresh/build-id@1.0.1": {
-      "integrity": "12a2ec25fd52ae9ec68c26848a5696cd1c9b537f7c983c7e56e4fb1e7e816c20",
-      "dependencies": [
-        "jsr:@std/encoding"
-      ]
-    },
-    "@fresh/core@2.2.0": {
-      "integrity": "b3c00f82288a2c4c8ec85e4abb67b080b366ec5971860f2f2898eb281ea1a80f",
-      "dependencies": [
-        "jsr:@deno/esbuild-plugin",
-        "jsr:@fresh/build-id",
-        "jsr:@std/encoding",
-        "jsr:@std/fmt@^1.0.8",
-        "jsr:@std/fs@^1.0.19",
-        "jsr:@std/html",
-        "jsr:@std/http@^1.0.21",
-        "jsr:@std/jsonc",
-        "jsr:@std/media-types",
-        "jsr:@std/path@^1.1.2",
-        "jsr:@std/semver",
-        "jsr:@std/uuid",
-        "npm:@opentelemetry/api",
-        "npm:@preact/signals@^2.2.1",
-        "npm:esbuild-wasm",
-        "npm:esbuild@0.25.7",
-        "npm:preact-render-to-string",
-        "npm:preact@^10.27.0",
-        "npm:preact@^10.27.2"
-      ]
-    },
-    "@fresh/plugin-vite@1.0.8": {
-      "integrity": "5780d842ed82e4cbccd93dd8ba2d54bf59dff5aee65921134aab15a4cd457c56",
-      "dependencies": [
-        "jsr:@deno/loader@~0.3.2",
-        "jsr:@fresh/core@2",
-        "jsr:@fresh/core@^2.2.0",
-        "jsr:@std/dotenv",
-        "jsr:@std/fmt@^1.0.7",
-        "jsr:@std/path@1",
-        "npm:@babel/core",
-        "npm:@babel/preset-react",
-        "npm:@mjackson/node-fetch-server",
-        "npm:@prefresh/vite",
-        "npm:rollup",
-        "npm:vite@^7.1.4"
-      ]
-    },
-    "@std/bytes@1.0.6": {
-      "integrity": "f6ac6adbd8ccd99314045f5703e23af0a68d7f7e58364b47d2c7f408aeb5820a"
-    },
-    "@std/cli@1.0.25": {
-      "integrity": "1f85051b370c97a7a9dfc6ba626e7ed57a91bea8c081597276d1e78d929d8c91"
-    },
-    "@std/dotenv@0.225.6": {
-      "integrity": "1d6f9db72f565bd26790fa034c26e45ecb260b5245417be76c2279e5734c421b"
-    },
-    "@std/encoding@1.0.10": {
-      "integrity": "8783c6384a2d13abd5e9e87a7ae0520a30e9f56aeeaa3bdf910a3eaaf5c811a1"
-    },
-    "@std/fmt@1.0.8": {
-      "integrity": "71e1fc498787e4434d213647a6e43e794af4fd393ef8f52062246e06f7e372b7"
-    },
-    "@std/fs@1.0.21": {
-      "integrity": "d720fe1056d78d43065a4d6e0eeb2b19f34adb8a0bc7caf3a4dbf1d4178252cd",
-      "dependencies": [
-        "jsr:@std/internal",
-        "jsr:@std/path@^1.1.4"
-      ]
-    },
-    "@std/html@1.0.5": {
-      "integrity": "4e2d693f474cae8c16a920fa5e15a3b72267b94b84667f11a50c6dd1cb18d35e"
-    },
-    "@std/http@1.0.23": {
-      "integrity": "6634e9e034c589bf35101c1b5ee5bbf052a5987abca20f903e58bdba85c80dee",
-      "dependencies": [
-        "jsr:@std/cli",
-        "jsr:@std/encoding",
-        "jsr:@std/fmt@^1.0.8",
-        "jsr:@std/fs@^1.0.21",
-        "jsr:@std/html",
-        "jsr:@std/media-types",
-        "jsr:@std/net",
-        "jsr:@std/path@^1.1.4",
-        "jsr:@std/streams"
-      ]
-    },
-    "@std/internal@1.0.12": {
-      "integrity": "972a634fd5bc34b242024402972cd5143eac68d8dffaca5eaa4dba30ce17b027"
-    },
-    "@std/json@1.0.2": {
-      "integrity": "d9e5497801c15fb679f55a2c01c7794ad7a5dfda4dd1bebab5e409cb5e0d34d4"
-    },
-    "@std/jsonc@1.0.2": {
-      "integrity": "909605dae3af22bd75b1cbda8d64a32cf1fd2cf6efa3f9e224aba6d22c0f44c7",
-      "dependencies": [
-        "jsr:@std/json"
-      ]
-    },
-    "@std/media-types@1.1.0": {
-      "integrity": "c9d093f0c05c3512932b330e3cc1fe1d627b301db33a4c2c2185c02471d6eaa4"
-    },
-    "@std/net@1.0.6": {
-      "integrity": "110735f93e95bb9feb95790a8b1d1bf69ec0dc74f3f97a00a76ea5efea25500c"
-    },
-    "@std/path@1.1.4": {
-      "integrity": "1d2d43f39efb1b42f0b1882a25486647cb851481862dc7313390b2bb044314b5",
-      "dependencies": [
-        "jsr:@std/internal"
-      ]
-    },
-    "@std/semver@1.0.7": {
-      "integrity": "7d5f65391762dc4358abde80fc3354086ddb40101f140295e60f290c138887d0"
-    },
-    "@std/streams@1.0.16": {
-      "integrity": "85030627befb1767c60d4f65cb30fa2f94af1d6ee6e5b2515b76157a542e89c4"
-    },
-    "@std/uuid@1.1.0": {
-      "integrity": "6268db2ccf172849c9be80763354ca305d49ef4af41fe995623d44fcc3f7457c",
-      "dependencies": [
-        "jsr:@std/bytes"
-      ]
     }
   },
   "npm": {
@@ -1770,13 +1590,13 @@
     "https://deno.land/x/sqlite@v3.8/src/error.ts": "f7a15cb00d7c3797da1aefee3cf86d23e0ae92e73f0ba3165496c3816ab9503a",
     "https://deno.land/x/sqlite@v3.8/src/function.ts": "e4c83b8ec64bf88bafad2407376b0c6a3b54e777593c70336fb40d43a79865f2",
     "https://deno.land/x/sqlite@v3.8/src/query.ts": "d58abda928f6582d77bad685ecf551b1be8a15e8e38403e293ec38522e030cad",
-    "https://deno.land/x/sqlite@v3.8/src/wasm.ts": "e79d0baa6e42423257fb3c7cc98091c54399254867e0f34a09b5bdef37bd9487"
+    "https://deno.land/x/sqlite@v3.8/src/wasm.ts": "e79d0baa6e42423257fb3c7cc98091c54399254867e0f34a09b5bdef37bd9487",
+    "https://esm.sh/printd@1.6.0": "d8eff7996d0d1799349c15d321ca35ba1bf40646e1bb5fb36081df40a388931e"
   },
   "workspace": {
     "dependencies": [
       "jsr:@fresh/core@^2.2.0",
       "jsr:@fresh/plugin-vite@^1.0.8",
-      "jsr:@std/fs@^1.0.21",
       "jsr:@std/http@^1.0.23",
       "jsr:@std/path@^1.1.4",
       "npm:@orama/orama@2.1.1",

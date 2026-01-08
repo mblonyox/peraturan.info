@@ -1,5 +1,7 @@
+import { getPeraturanThumbnail } from "~/utils/data.ts";
 import { define } from "~/utils/define.ts";
-import { readThumbnail } from "~/utils/fs.ts";
+
+import { HttpError } from "fresh";
 
 export const handler = define.handlers({
   GET: async ({ params, url }) => {
@@ -7,7 +9,8 @@ export const handler = define.handlers({
     const cachedContent = await cache.match(url);
     if (cachedContent) return cachedContent;
     const { jenis, tahun, nomor } = params;
-    const image = await readThumbnail({ jenis, tahun, nomor });
+    const image = await getPeraturanThumbnail({ jenis, tahun, nomor });
+    if (!image) throw new HttpError(404);
     const response = new Response(image, {
       headers: {
         "Content-Type": "image/png",

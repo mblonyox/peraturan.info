@@ -1,6 +1,6 @@
+import Image from "~/islands/image.tsx";
 import type { Peraturan } from "~/models/mod.ts";
 import { define } from "~/utils/define.ts";
-import Image from "../../../../islands/image.tsx";
 
 interface Data {
   peraturan: Peraturan;
