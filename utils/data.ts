@@ -17,6 +17,19 @@ export const getDatabaseBytes = async () => {
   }
 };
 
+export const getOramaDpackText = async () => {
+  try {
+    const dataUrl = Deno.env.get("DATA_URL");
+    if (!dataUrl) throw new Error("DATA_URL not found");
+    const url = dataUrl + "/orama.dpack";
+    const response = await fetch(url);
+    if (!response.ok) throw new Error("Failed to fetch orama.dpack");
+    return response.text();
+  } catch {
+    return null;
+  }
+};
+
 export const getPeraturanMarkdown = async ({
   jenis,
   tahun,

@@ -24,7 +24,6 @@
     "@orama/plugin-data-persistence": "npm:@orama/plugin-data-persistence@2.1.1",
     "@preact/signals": "npm:@preact/signals@^2.5.1",
     "@std/http": "jsr:@std/http@^1.0.23",
-    "@std/path": "jsr:@std/path@^1.1.4",
     "@tailwindcss/vite": "npm:@tailwindcss/vite@^4.1.18",
     "@vercel/og": "npm:@vercel/og@^0.8.6",
     "clsx": "npm:clsx@^2.1.1",
@@ -43,5 +42,5 @@
     "zod": "npm:zod@^4.3.5"
   },
   "nodeModulesDir": "manual",
-  "exclude": ["**/_fresh/*", "data", "node_modules"]
+  "exclude": ["_fresh", "node_modules", "static/*.js"]
 }

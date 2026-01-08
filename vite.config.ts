@@ -1,5 +1,5 @@
+import { resolve } from "node:path";
 import { fresh } from "@fresh/plugin-vite";
-import { resolve } from "@std/path";
 import tailwindcss from "@tailwindcss/vite";
 import { defineConfig, type Plugin } from "vite";
 import { viteStaticCopy } from "vite-plugin-static-copy";
