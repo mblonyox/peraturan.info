@@ -4,14 +4,19 @@ interface PeraturanId {
   nomor: string | number;
 }
 
+const notFounds = new Set<string | URL | Request>();
+
 async function cachedFetch(url: string | URL | Request) {
+  if (notFounds.has(url)) throw new Error("Not found");
   const cache = await caches.open("data");
-  let response = await cache.match(url);
-  if (!response) {
-    response = await fetch(url);
-    await cache.put(url, response.clone());
+  const cachedResponse = await cache.match(url);
+  if (cachedResponse) return cachedResponse;
+  const response = await fetch(url);
+  if (!response.ok) {
+    notFounds.add(url);
+    throw new Error("Failed to fetch " + url);
   }
-  if (!response.ok) throw new Error("Failed to fetch " + url);
+  await cache.put(url, response.clone());
   return response;
 }
 
