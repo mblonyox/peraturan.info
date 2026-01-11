@@ -1,23 +1,19 @@
+import GTagJs from "~/components/gtag_js.tsx";
+import MetaCanonicalUrl from "~/components/meta_canonical_url.tsx";
 import SeoTags from "~/components/seo_tags.tsx";
 import { define } from "~/utils/define.ts";
 
 export default define.page(({ Component, url, state }) => {
-  const HOSTNAME = Deno.env.get("HOSTNAME");
-  const GOOGLE_TAG_ID = Deno.env.get("GOOGLE_TAG_ID");
-  const canonicalUrl = new URL(url);
-  canonicalUrl.protocol = "https";
-  canonicalUrl.searchParams.sort();
-  if (HOSTNAME) canonicalUrl.hostname = HOSTNAME;
   return (
     <html lang="id" data-theme={state.theme}>
       <head>
-        <base href="/" />
+        <MetaCanonicalUrl url={url} />
+        <GTagJs />
         <meta charSet="utf-8" />
         <meta
           name="viewport"
           content="width=device-width, initial-scale=1.0"
         />
-        <link rel="canonical" href={canonicalUrl.toString()} />
         <link
           rel="search"
           type="application/opensearchdescription+xml"
@@ -52,6 +48,11 @@ export default define.page(({ Component, url, state }) => {
           href="https://fonts.gstatic.com"
           crossOrigin="anonymous"
         />
+        <link
+          rel="preconnect"
+          href="https://mouthful.inoxsegar.com"
+          crossOrigin="anonymous"
+        />
         <meta name="theme-color" content="#11191f" />
         <link
           rel="apple-touch-icon"
@@ -72,21 +73,6 @@ export default define.page(({ Component, url, state }) => {
         />
         <link rel="manifest" href="/manifest.json" />
         <SeoTags url={url} {...state.seo} />
-        <script
-          src={`https://www.googletagmanager.com/gtag/js?id=${GOOGLE_TAG_ID}`}
-          async
-        />
-        <script
-          // deno-lint-ignore react-no-danger
-          dangerouslySetInnerHTML={{
-            __html: `\
-window.dataLayer = window.dataLayer || [];
-function gtag(){dataLayer.push(arguments);}
-gtag('js', new Date());
-gtag('config', '${GOOGLE_TAG_ID}');
-`,
-          }}
-        />
       </head>
       <body className="min-w-sm">
         <Component />
