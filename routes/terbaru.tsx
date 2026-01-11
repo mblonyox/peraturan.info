@@ -116,9 +116,12 @@ export default define.page<typeof handler>(
           JSON Feed
         </a>
       </div>
-      <div role="tablist" className="tabs tabs-border bg-base-200 rounded-box">
-        {tanggalTerakhir.map(({ tanggal, jumlah }) => (
-          <>
+      <div className="card card-border">
+        <div
+          role="tablist"
+          className="tabs tabs-border bg-base-200 rounded-box rounded-b-none"
+        >
+          {tanggalTerakhir.map(({ tanggal, jumlah }) => (
             <a
               role="tab"
               href={`/terbaru?tanggal=${tanggal}`}
@@ -133,56 +136,54 @@ export default define.page<typeof handler>(
                 month: "short",
               })} ({jumlah})
             </a>
-            {tanggal === tanggalDipilih && (
-              <div className="tab-content bg-base-100 border-base-300 rounded-t-none">
-                {!listPeraturan.length
-                  ? (
-                    <div className="alert alert-info" role="alert">
-                      Tidak ada peraturan pada tanggal yang ditentukan.
-                    </div>
-                  )
-                  : (
-                    <table className="table table-striped table-responsive table-hover">
-                      <thead>
-                        <tr>
-                          <th scope="col">#</th>
-                          <th scope="col">Judul</th>
-                          <th scope="col">Nomor dan Tahun</th>
-                          <th scope="col">Bentuk</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        {listPeraturan.map((
-                          {
-                            path,
-                            judul,
-                            nomorPendek,
-                            namaJenisPanjang,
-                          },
-                          index,
-                        ) => (
-                          <tr key={judul}>
-                            <th scope="row">{index + 1}</th>
-                            <td>
-                              {judul}
-                            </td>
-                            <td>
-                              <a className="link" href={path}>
-                                {nomorPendek}
-                              </a>
-                            </td>
-                            <td>
-                              {namaJenisPanjang}
-                            </td>
-                          </tr>
-                        ))}
-                      </tbody>
-                    </table>
-                  )}
+          ))}
+        </div>
+        <div className="card-body">
+          {!listPeraturan.length
+            ? (
+              <div className="alert alert-info" role="alert">
+                Tidak ada peraturan pada tanggal yang ditentukan.
               </div>
+            )
+            : (
+              <table className="table table-striped table-responsive table-hover">
+                <thead>
+                  <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Judul</th>
+                    <th scope="col">Nomor dan Tahun</th>
+                    <th scope="col">Bentuk</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {listPeraturan.map((
+                    {
+                      path,
+                      judul,
+                      nomorPendek,
+                      namaJenisPanjang,
+                    },
+                    index,
+                  ) => (
+                    <tr key={judul}>
+                      <th scope="row">{index + 1}</th>
+                      <td>
+                        {judul}
+                      </td>
+                      <td>
+                        <a className="link" href={path}>
+                          {nomorPendek}
+                        </a>
+                      </td>
+                      <td>
+                        {namaJenisPanjang}
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
             )}
-          </>
-        ))}
+        </div>
       </div>
     </div>
   ),
