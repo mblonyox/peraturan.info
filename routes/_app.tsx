@@ -38,21 +38,6 @@ export default define.page(({ Component, url, state }) => {
           type="application/feed+json"
           title="JSON Feed"
         />
-        <link
-          rel="preconnect"
-          href="https://fonts.googleapis.com"
-          crossOrigin="anonymous"
-        />
-        <link
-          rel="preconnect"
-          href="https://fonts.gstatic.com"
-          crossOrigin="anonymous"
-        />
-        <link
-          rel="preconnect"
-          href="https://mouthful.inoxsegar.com"
-          crossOrigin="anonymous"
-        />
         <meta name="theme-color" content="#11191f" />
         <link
           rel="apple-touch-icon"

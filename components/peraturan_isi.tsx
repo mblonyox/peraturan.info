@@ -1,6 +1,6 @@
 import PeraturanOutline from "~/components/peraturan_outline.tsx";
 import PrintButton from "~/islands/print_button.tsx";
-import { asset } from "fresh/runtime";
+import { asset, Head } from "fresh/runtime";
 
 type Props = {
   md: string;
@@ -13,6 +13,18 @@ type Props = {
 export default function PeraturanIsi({ md, path, html, prev, next }: Props) {
   return (
     <>
+      <Head>
+        <link
+          rel="preconnect"
+          href="https://fonts.googleapis.com"
+          crossOrigin="anonymous"
+        />
+        <link
+          rel="preconnect"
+          href="https://fonts.gstatic.com"
+          crossOrigin="anonymous"
+        />
+      </Head>
       <link
         href="https://fonts.googleapis.com/css2?family=EB+Garamond&display=swap"
         rel="stylesheet"
