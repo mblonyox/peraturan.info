@@ -25,7 +25,8 @@ export default function PeraturanIsi({ md, path, html, prev, next }: Props) {
         <input
           id="outline"
           type="checkbox"
-          class="drawer-toggle"
+          className="drawer-toggle"
+          hidden
         />
         <aside className="drawer-side lg:hidden">
           <label

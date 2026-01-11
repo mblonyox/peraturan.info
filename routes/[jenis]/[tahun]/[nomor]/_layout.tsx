@@ -30,7 +30,7 @@ export default define.layout(({ Component, url, params, state }) => {
   return (
     <div className="container">
       <SocialShareButtons url={url} seo={state.seo} />
-      <div className="tabs tabs-lift bg-base-200 rounded-box">
+      <div className="tabs tabs-lift bg-base-200 rounded-box" role="tablist">
         {tabs.map(({ name, url, isActive, disabled }) => (
           <>
             <a

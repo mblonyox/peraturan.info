@@ -100,7 +100,7 @@ export default define.page<typeof handler>(
 
     return (
       <div className="drawer">
-        <input id="filters" type="checkbox" class="drawer-toggle" />
+        <input id="filters" type="checkbox" class="drawer-toggle" hidden />
         <aside className="drawer-side">
           <label
             for="filters"

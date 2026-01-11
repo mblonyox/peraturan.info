@@ -16,7 +16,12 @@ export default function ThemeSwitcher({ initTheme }: Props) {
 
   return (
     <div className="dropdown dropdown-end">
-      <div tabIndex={0} role="button" className="btn m-1">
+      <div
+        tabIndex={0}
+        role="button"
+        aria-label="Switch Theme"
+        className="btn m-1"
+      >
         <svg
           xmlns="http://www.w3.org/2000/svg"
           width="16"
