@@ -6,7 +6,14 @@ interface PeraturanId {
 
 const notFounds = new Set<string | URL | Request>();
 
+function isFileUrl(url: string | URL | Request): boolean {
+  if (url instanceof Request) url = url.url;
+  if (url instanceof URL) url = url.href;
+  return url.startsWith("file://");
+}
+
 async function cachedFetch(url: string | URL | Request) {
+  if (isFileUrl(url)) return fetch(url);
   if (notFounds.has(url)) throw new Error("Not found");
   const cache = await caches.open("data");
   const cachedResponse = await cache.match(url);
