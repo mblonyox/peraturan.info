@@ -30,11 +30,13 @@ export default define.layout(({ Component, url, params, state }) => {
   return (
     <div className="container">
       <SocialShareButtons url={url} seo={state.seo} />
-      <div className="tabs tabs-lift bg-base-200 rounded-box" role="tablist">
-        {tabs.map(({ name, url, isActive, disabled }) => (
-          <>
+      <div className="card card-border border-1">
+        <div
+          className="tabs tabs-lift bg-base-200 rounded-box rounded-b-none"
+          role="tablist"
+        >
+          {tabs.map(({ name, url, isActive, disabled }) => (
             <a
-              role="tab"
               href={url}
               className={clsx(
                 "tab flex-1 z-1",
@@ -43,14 +45,15 @@ export default define.layout(({ Component, url, params, state }) => {
               )}
               aria-selected={isActive}
               aria-disabled={disabled}
+              role="tab"
             >
               {name}
             </a>
-            <div className="tab-content bg-base-100 border-base-300 p-2 rounded-t-none">
-              {isActive && <Component />}
-            </div>
-          </>
-        ))}
+          ))}
+        </div>
+        <div className="card-body">
+          <Component />
+        </div>
       </div>
       <Comments />
     </div>
