@@ -81,32 +81,16 @@
     text-align: justify;
   }
 
-  ol {
+  .butir-container {
     margin-bottom: 0;
     padding-inline-start: 5mm;
-    li {
+    .butir-item {
+      display: list-item;
       padding-inline-start: 5mm;
+      &::marker {
+        content: attr(data-marker);
+      }
     }
-  }
-
-  ol.butir.number {
-    list-style: decimal outside;
-  }
-
-  ol.butir.lower-latin {
-    list-style: lower-latin outside;
-  }
-
-  ol.butir.kurung {
-    list-style: none;
-  }
-
-  ol.butir.number.kurung > li::marker {
-    content: counter(list-item, decimal) ") ";
-  }
-
-  ol.butir.lower-latin.kurung > li::marker {
-    content: counter(list-item, lower-latin) ") ";
   }
 }
 @media screen {

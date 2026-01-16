@@ -13,29 +13,49 @@ export type PeraturanToken = Tokens.Generic & {
   tokens?: PeraturanToken[];
 };
 
+const rules = {
+  judul: /^([^]+?)\nNOMOR (.+)\nTENTANG\n([^]+?)(?:\n{2,}|$)/,
+  frasaJabatan: /^DENGAN RAHMAT TUHAN YANG MAHA ESA\n\n([^]+?,)(?:\n{2,}|$)/,
+  konsideran: /^Menimbang[ \t]*:[ \t]*\n([^]+?)(?:\n{2,}|$)/,
+  dasarHukum: /^Mengingat[ \t]*:[ \t]*\n([^]+?)(?:\n{2,}|$)/,
+  diktum: /^(Dengan[^]+\n)?MEMUTUSKAN:\n/,
+  mencabut: /^Mencabut[ \t]*:[ \t]*\n([^]+?)(?:\n{2,}|$)/,
+  menetapkan: /^Menetapkan[ \t]*:[ \t]*\n([^]+?)(?:\n{2,}|$)/,
+  buku: /^((BUKU [A-Z ]+)\n[^]+?)\n\n([^]+?)(?=\nBUKU [A-Z ]+\n|\n{3,}|$)/,
+  bab: /^((BAB [MDCLXVI]+)\n[^]+?)\n\n([^]+?)(?=\nBAB [MDCLXVI]+\n|\n{3,}|$)/,
+  bagian:
+    /^((Bagian [\w ]+?)\n[^]+?)\n\n([^]+?)(?=\nBagian [\w ]+?\n|\n{3,}|$)/,
+  paragraf: /^((Paragraf \d+)\n[^]+?)\n\n([^]+?)(?=\nParagraf \d+\n|\n{3,}|$)/,
+  pasal: /^(Pasal \d+[a-z]*)\n([^]+?)(?=\nPasal \d+[a-z]*\n|\n{3,}|$)/,
+  pasalRomawi: /^(Pasal [MDCLXVI]+)\n([^]+?)(?=\nPasal [MDCLXVI]+\n|\n{3,}|$)/,
+  ayat: /^(\(\d+[a-z]*\))[ \t]([^]+?)(?=\n\(\d+[a-z]*\)[ \t]|\n{2,}|$)/,
+  butir: /^( {0,6})((?:1|a)[\)\.])[ \t][^\n]+?(?=\n|$)/,
+};
+
 const judul: TokenizerAndRendererExtension = {
   name: "judul",
   level: "block",
   tokenizer(src) {
-    const match = src.match(
-      /^(([\s\S]+?)\nNOMOR +(.+)\nTENTANG\n([\s\S]+?))(?:\n{2,}|$)/,
-    );
-    if (match) {
-      const token = {
+    const cap = rules.judul.exec(src);
+    if (cap) {
+      const token: PeraturanToken = {
         type: "judul",
-        raw: match[0],
-        jenis: match[2],
-        nomor: match[3],
-        judul: match[4],
-        tokens: this.lexer.inlineTokens(match[1].replaceAll("\n", "<br/>"), []),
+        raw: cap[0],
+        jenis: cap[1],
+        nomor: cap[2],
+        judul: cap[3],
+        tokens: [],
       };
+      this.lexer.inlineTokens(
+        cap[0].trim().replaceAll("\n", "<br/>"),
+        token.tokens,
+      );
       return token;
     }
   },
   renderer(token) {
-    return `<h1 class="judul">${
-      this.parser.parseInline(token.tokens ?? [])
-    }</h1><br/>`;
+    const content = this.parser.parseInline(token.tokens ?? []);
+    return `<h1 class="judul">${content}</h1><br/>`;
   },
 };
 
@@ -43,23 +63,24 @@ const frasaJabatan: TokenizerAndRendererExtension = {
   name: "frasa-jabatan",
   level: "block",
   tokenizer(src) {
-    const match = src.match(
-      /^DENGAN RAHMAT TUHAN YANG MAHA ESA\n\n([\s\S]+?,)(?:\n{2,}|$)/,
-    );
-    if (match) {
-      const token = {
+    const cap = rules.frasaJabatan.exec(src);
+    if (cap) {
+      const token: PeraturanToken = {
         type: "frasa-jabatan",
-        raw: match[0],
-        jabatan: match[1],
-        tokens: this.lexer.inlineTokens(match[1].replaceAll("\n", "<br/>"), []),
+        raw: cap[0],
+        jabatan: cap[1],
+        tokens: [],
       };
+      this.lexer.inlineTokens(
+        cap[1].trim().replaceAll("\n", "<br/>"),
+        token.tokens,
+      );
       return token;
     }
   },
   renderer(token) {
-    return `<p class="frasa-drtyme">DENGAN RAHMAT TUHAN YANG MAHA ESA</p><br/><p class="jabatan-pembentuk">${
-      this.parser.parseInline(token.tokens ?? [])
-    }</p><br/>`;
+    const content = this.parser.parseInline(token.tokens ?? []);
+    return `<p class="frasa-drtyme">DENGAN RAHMAT TUHAN YANG MAHA ESA</p><br/><p class="jabatan-pembentuk">${content}</p><br/>`;
   },
 };
 
@@ -67,21 +88,20 @@ const konsideran: TokenizerAndRendererExtension = {
   name: "konsideran",
   level: "block",
   tokenizer(src: string) {
-    const match = src.match(/^Menimbang[ \t]*:[ \t]*\n([\s\S]+?\n)(?:\n+|$)/);
-    if (match) {
-      const token = {
+    const cap = rules.konsideran.exec(src);
+    if (cap) {
+      const token: PeraturanToken = {
         type: "konsideran",
-        raw: match[0],
+        raw: cap[0],
         tokens: [],
       };
-      this.lexer.blockTokens(match[1], token.tokens);
+      this.lexer.blockTokens(cap[1], token.tokens);
       return token;
     }
   },
   renderer(token) {
-    return `<table class="konsideran"><tbody><tr><th>Menimbang</th><td>:</td><td>${
-      this.parser.parse(token.tokens ?? [])
-    }</td></tr></tbody></table><br/>`;
+    const content = this.parser.parse(token.tokens ?? []);
+    return `<table class="konsideran"><tbody><tr><th>Menimbang</th><td>:</td><td>${content}</td></tr></tbody></table><br/>`;
   },
 };
 
@@ -89,21 +109,20 @@ const dasarHukum: TokenizerAndRendererExtension = {
   name: "dasar-hukum",
   level: "block",
   tokenizer(src: string) {
-    const match = src.match(/^Mengingat[ \t]*:[ \t]*\n([\s\S]+?\n)(?:\n+|$)/);
-    if (match) {
-      const token = {
+    const cap = rules.dasarHukum.exec(src);
+    if (cap) {
+      const token: PeraturanToken = {
         type: "dasar-hukum",
-        raw: match[0],
+        raw: cap[0],
         tokens: [],
       };
-      this.lexer.blockTokens(match[1], token.tokens);
+      this.lexer.blockTokens(cap[1], token.tokens);
       return token;
     }
   },
   renderer(token) {
-    return `<table class="dasar-hukum"><tbody><tr><th>Mengingat</th><td>:</td><td>${
-      this.parser.parse(token.tokens ?? [])
-    }</td></tr></tbody></table><br/>`;
+    const content = this.parser.parse(token.tokens ?? []);
+    return `<table class="dasar-hukum"><tbody><tr><th>Mengingat</th><td>:</td><td>${content}</td></tr></tbody></table><br/>`;
   },
 };
 
@@ -111,40 +130,71 @@ const diktum: TokenizerAndRendererExtension = {
   name: "diktum",
   level: "block",
   tokenizer(src) {
-    const match = src.match(
-      /^(Dengan[\s\S]+\n)?MEMUTUSKAN:\n(?:Mencabut[ \t]*:[ \t]*\n([\s\S]+?\n)\n)?Menetapkan[ \t]*:[ \t]*\n([\s\S]+?\n)(?:\n+|$)/,
-    );
-    if (match) {
-      const token = {
+    const cap = rules.diktum.exec(src);
+    if (cap) {
+      const token: PeraturanToken = {
         type: "diktum",
-        raw: match[0],
-        persetujuan: this.lexer.inlineTokens(
-          match[1]?.replaceAll("\n", "<br/>"),
-          [],
-        ),
-        mencabut: this.lexer.inlineTokens(match[2], []),
-        menetapkan: this.lexer.inlineTokens(match[3], []),
+        raw: cap[0],
+        tokens: [],
       };
+      if (cap[1]) {
+        this.lexer.inlineTokens(
+          cap[1].trim().replaceAll("\n", "<br/>"),
+          token.tokens,
+        );
+      }
       return token;
     }
   },
   renderer(token) {
-    return [
-      token.persetujuan.length
-        ? `<p class="persetujuan">${
-          this.parser.parseInline(token.persetujuan ?? [])
-        }</p>`
-        : "",
-      '<p class="kata-memutuskan">MEMUTUSKAN:</p>',
-      token.mencabut.length
-        ? `<table><tbody><tr><th><p>Mencabut</p></th><td>:</td><td><p>${
-          this.parser.parseInline(token.mencabut ?? [])
-        }</p></td></tr></tbody></table><br/>`
-        : "",
-      `<table><tbody><tr><th><p>Menetapkan</p></th><td>:</td><td><p>${
-        this.parser.parseInline(token.menetapkan ?? [])
-      }</p></td></tr></tbody></table><br/>`,
-    ].join("");
+    const content = '<p class="kata-memutuskan">MEMUTUSKAN:</p>';
+    if (token.tokens?.length) {
+      const parsed = this.parser.parseInline(token.tokens);
+      return `<p class="persetujuan">${parsed}</p>` + content;
+    }
+    return content;
+  },
+};
+
+const mencabut: TokenizerAndRendererExtension = {
+  name: "mencabut",
+  level: "block",
+  tokenizer(src: string) {
+    const cap = rules.mencabut.exec(src);
+    if (cap) {
+      const token: PeraturanToken = {
+        type: "mencabut",
+        raw: cap[0],
+        tokens: [],
+      };
+      this.lexer.blockTokens(cap[1], token.tokens);
+      return token;
+    }
+  },
+  renderer(token) {
+    const content = this.parser.parse(token.tokens ?? []);
+    return `<table class="mencabut"><tbody><tr><th>Mencabut</th><td>:</td><td>${content}</td></tr></tbody></table><br/>`;
+  },
+};
+
+const menetapkan: TokenizerAndRendererExtension = {
+  name: "menetapkan",
+  level: "block",
+  tokenizer(src: string) {
+    const cap = rules.menetapkan.exec(src);
+    if (cap) {
+      const token: PeraturanToken = {
+        type: "menetapkan",
+        raw: cap[0],
+        tokens: [],
+      };
+      this.lexer.blockTokens(cap[1], token.tokens);
+      return token;
+    }
+  },
+  renderer(token) {
+    const content = this.parser.parse(token.tokens ?? []);
+    return `<table class="menetapkan"><tbody><tr><th>Menetapkan</th><td>:</td><td>${content}</td></tr></tbody></table><br/>`;
   },
 };
 
@@ -152,28 +202,29 @@ const buku: TokenizerAndRendererExtension = {
   name: "buku",
   level: "block",
   tokenizer(src: string) {
-    const match = src.match(
-      /^((BUKU [A-Z ]+)\n[\s\S]*?)\n\n([\s\S]+?\n)(?=BUKU [A-Z ]+\n|\n{2,}|$)/,
-    );
-    if (match) {
-      const token = {
+    const cap = rules.buku.exec(src);
+    if (cap) {
+      const token: PeraturanToken = {
         type: "buku",
-        raw: match[0],
-        judul: match[1],
-        nomor: match[2],
+        raw: cap[0],
+        judul: cap[1],
+        nomor: cap[2],
         headers: [],
         tokens: [],
       };
-      this.lexer.inlineTokens(match[1].replaceAll("\n", "<br>"), token.headers);
-      this.lexer.blockTokens(match[3], token.tokens);
+      this.lexer.inlineTokens(
+        cap[1].trim().replaceAll("\n", "<br>"),
+        token.headers,
+      );
+      this.lexer.blockTokens(cap[3], token.tokens);
       return token;
     }
   },
   renderer(token) {
     const id = slug(token.nomor);
-    return `<h2 id="${id}" class="buku">${
-      this.parser.parseInline(token.headers)
-    }</h2><br>${this.parser.parse(token.tokens ?? [])}`;
+    const headers = this.parser.parseInline(token.headers);
+    const content = this.parser.parse(token.tokens ?? []);
+    return `<h2 id="${id}" class="buku">${headers}</h2><br>${content}`;
   },
 };
 
@@ -181,28 +232,29 @@ const bab: TokenizerAndRendererExtension = {
   name: "bab",
   level: "block",
   tokenizer(src: string) {
-    const match = src.match(
-      /^((BAB [MDCLXVI]+)\n[\s\S]*?)\n\n([\s\S]+?\n)(?=BAB [MDCLXVI]+\n|\n{2,}|$)/,
-    );
-    if (match) {
-      const token = {
+    const cap = rules.bab.exec(src);
+    if (cap) {
+      const token: PeraturanToken = {
         type: "bab",
-        raw: match[0],
-        judul: match[1],
-        nomor: match[2],
+        raw: cap[0],
+        judul: cap[1],
+        nomor: cap[2],
         headers: [],
         tokens: [],
       };
-      this.lexer.inlineTokens(match[1].replaceAll("\n", "<br>"), token.headers);
-      this.lexer.blockTokens(match[3], token.tokens);
+      this.lexer.inlineTokens(
+        cap[1].trim().replaceAll("\n", "<br>"),
+        token.headers,
+      );
+      this.lexer.blockTokens(cap[3], token.tokens);
       return token;
     }
   },
   renderer(token) {
     const id = slug(token.nomor);
-    return `<h3 id="${id}" class="bab">${
-      this.parser.parseInline(token.headers)
-    }</h3><br>${this.parser.parse(token.tokens ?? [])}`;
+    const headers = this.parser.parseInline(token.headers);
+    const content = this.parser.parse(token.tokens ?? []);
+    return `<h3 id="${id}" class="bab">${headers}</h3><br>${content}`;
   },
 };
 
@@ -210,28 +262,29 @@ const bagian: TokenizerAndRendererExtension = {
   name: "bagian",
   level: "block",
   tokenizer(src: string) {
-    const match = src.match(
-      /^((Bagian .+?)\n[\s\S]+?)\n\n([\s\S]+?\n)(?=Bagian [\s\w]+?\n|\n{2,}|$)/,
-    );
-    if (match) {
-      const token = {
+    const cap = rules.bagian.exec(src);
+    if (cap) {
+      const token: PeraturanToken = {
         type: "bagian",
-        raw: match[0],
-        judul: match[1],
-        nomor: match[2],
+        raw: cap[0],
+        judul: cap[1],
+        nomor: cap[2],
         headers: [],
         tokens: [],
       };
-      this.lexer.inlineTokens(match[1].replaceAll("\n", "<br>"), token.headers);
-      this.lexer.blockTokens(match[3], token.tokens);
+      this.lexer.inlineTokens(
+        cap[1].trim().replaceAll("\n", "<br>"),
+        token.headers,
+      );
+      this.lexer.blockTokens(cap[3], token.tokens);
       return token;
     }
   },
   renderer(token) {
     const id = slug(token.nomor);
-    return `<h4 id="${id}" class="bagian">${
-      this.parser.parseInline(token.headers)
-    }</h4><br>${this.parser.parse(token.tokens ?? [])}`;
+    const headers = this.parser.parseInline(token.headers);
+    const content = this.parser.parse(token.tokens ?? []);
+    return `<h4 id="${id}" class="bagian">${headers}</h4><br>${content}`;
   },
 };
 
@@ -239,28 +292,29 @@ const paragraf: TokenizerAndRendererExtension = {
   name: "paragraf",
   level: "block",
   tokenizer(src: string) {
-    const match = src.match(
-      /^((Paragraf \d+)\n[\s\S]+?)\n\n([\s\S]+?\n)(?=Paragraf \d+\n|\n{2,}|$)/,
-    );
-    if (match) {
-      const token = {
+    const cap = rules.paragraf.exec(src);
+    if (cap) {
+      const token: PeraturanToken = {
         type: "paragraf",
-        raw: match[0],
-        judul: match[1],
-        nomor: match[2],
+        raw: cap[0],
+        judul: cap[1],
+        nomor: cap[2],
         headers: [],
         tokens: [],
       };
-      this.lexer.inlineTokens(match[1].replaceAll("\n", "<br>"), token.headers);
-      this.lexer.blockTokens(match[3], token.tokens);
+      this.lexer.inlineTokens(
+        cap[1].trim().replaceAll("\n", "<br>"),
+        token.headers,
+      );
+      this.lexer.blockTokens(cap[3], token.tokens);
       return token;
     }
   },
   renderer(token) {
     const id = slug(token.nomor);
-    return `<h5 id="${id}" class="paragraf">${
-      this.parser.parseInline(token.headers)
-    }</h5><br>${this.parser.parse(token.tokens ?? [])}`;
+    const headers = this.parser.parseInline(token.headers);
+    const content = this.parser.parse(token.tokens ?? []);
+    return `<h5 id="${id}" class="paragraf">${headers}</h5><br>${content}`;
   },
 };
 
@@ -268,30 +322,26 @@ const pasal: TokenizerAndRendererExtension = {
   name: "pasal",
   level: "block",
   tokenizer(src: string) {
-    const match = src.match(
-      /^(Pasal \d+)\n([\s\S]+?\n)(?=Pasal \d+\n|Paragraf \d+\n|\n{2,}|$)/,
-    );
-    if (match) {
-      const token = {
+    const cap = rules.pasal.exec(src) || rules.pasalRomawi.exec(src);
+    if (cap) {
+      const token: PeraturanToken = {
         type: "pasal",
-        raw: match[0],
-        nomor: match[1],
+        raw: cap[0],
+        nomor: cap[1],
         tokens: [],
       };
       this.lexer.state.top = false;
-      this.lexer.blockTokens(match[2], token.tokens);
-      // deno-lint-ignore no-explicit-any
-      token.tokens.forEach((token: any) => {
-        if (token.type === "ayat") token.nomorPasal = match[1];
+      this.lexer.blockTokens(cap[2], token.tokens);
+      token.tokens?.forEach((token: PeraturanToken) => {
+        if (token.type === "ayat") token.nomorPasal = token.nomor;
       });
       return token;
     }
   },
   renderer(token) {
     const id = slug(token.nomor);
-    return `<h6 id="${id}" class="pasal">${token.nomor}</h6><div class="isi-pasal">${
-      this.parser.parse(token.tokens ?? [])
-    }</div><br>`;
+    const content = this.parser.parse(token.tokens ?? []);
+    return `<h6 id="${id}" class="pasal">${token.nomor}</h6><div class="isi-pasal">${content}</div><br>`;
   },
 };
 
@@ -299,29 +349,24 @@ const ayat: TokenizerAndRendererExtension = {
   name: "ayat",
   level: "block",
   tokenizer(src: string) {
-    const match = src.match(
-      /^(\(\d+\))[ \t]([\s\S]+?\n)(?=\(\d+\)[ \t]|\n+|$)/,
-    );
-    if (match) {
-      const token = {
+    const cap = rules.ayat.exec(src);
+    if (cap) {
+      const token: PeraturanToken = {
         type: "ayat",
-        raw: match[0],
-        nomor: match[1],
+        raw: cap[0],
+        nomor: cap[1],
         nomorPasal: null,
         tokens: [],
       };
       this.lexer.state.top = false;
-      this.lexer.blockTokens(match[2], token.tokens);
+      this.lexer.blockTokens(cap[2], token.tokens);
       return token;
     }
   },
   renderer(token) {
-    const id = slug(
-      `${token.nomorPasal} ayat ${token.nomor}`,
-    );
-    return `<div id="${id}" class="ayat"><span>${token.nomor}</span>${
-      this.parser.parse(token.tokens ?? [])
-    }</div>`;
+    const id = slug(`${token.nomorPasal} ayat ${token.nomor}`);
+    const content = this.parser.parse(token.tokens ?? []);
+    return `<div id="${id}" class="ayat"><span>${token.nomor}</span>${content}</div>`;
   },
 };
 
@@ -329,47 +374,41 @@ const butirList: TokenizerAndRendererExtension = {
   name: "butir-list",
   level: "block",
   tokenizer(src: string) {
-    const match = src.match(
-      /^( {0,6})((?:\d{1,2}|[a-z]{1,2})[\)\.])[ \t].+?(?=\n|$)/,
-    );
-    if (!match) return;
-    const numberStyle = /^\d{1,2}/.test(match[2]);
-    const marker = match[2].slice(-1);
+    const cap = rules.butir.exec(src);
+    if (!cap) return;
+    const indent = cap[1];
+    const marker = cap[2];
+    const suffix = marker.slice(-1);
+    const alphaNumeric = /\d+/.test(marker) ? "\\d+" : "[a-z]+";
+    const bullet = `${indent}${alphaNumeric}${RegExp.escape(suffix)}`;
     const list = {
       type: "butir-list",
-      style: numberStyle ? "number" : "lower-latin",
-      marker,
       raw: "",
       items: [] as unknown[],
     };
-    const itemBullet = match[1] + (numberStyle ? "\\d{1,2}" : "[a-z]{1,2}") +
-      `\\${marker}[ \\t]`;
-    const itemRegex = new RegExp(
-      `^${itemBullet}([\\s\\S]+?\n)(?=${itemBullet}|\\n+|$)`,
+    const re = new RegExp(
+      `^(${bullet})[ \t]([^]+?)(?=${bullet}[ \t]|\\n{2,}|$)`,
     );
     while (src) {
-      const match = itemRegex.exec(src);
-      if (!match) break;
-      const raw = match[0];
-      src = src.substring(raw.length);
+      const cap = re.exec(src);
+      if (!cap) break;
       const item = {
         type: "butir-item",
-        raw,
+        raw: cap[0],
+        marker: cap[1].trim(),
         tokens: [],
       };
-      this.lexer.state.top = false;
-      this.lexer.blockTokens(match[1], item.tokens);
+      this.lexer.state.top = true;
+      this.lexer.blockTokens(cap[2], item.tokens);
       list.items.push(item);
-      list.raw += raw;
+      list.raw += item.raw;
+      src = src.slice(item.raw.length);
     }
     if (list.raw.length) return list;
   },
   renderer(token) {
-    const styleClassName = token.style +
-      (token.marker === ")" ? " kurung" : "");
-    return `<ol class="butir ${styleClassName}">${
-      this.parser.parse(token.items)
-    }</ol>`;
+    const content = this.parser.parse(token.items);
+    return `<div class="butir-container">${content}</div>`;
   },
   childTokens: ["items"],
 };
@@ -377,7 +416,8 @@ const butirList: TokenizerAndRendererExtension = {
 const butirItem: RendererExtension = {
   name: "butir-item",
   renderer(token) {
-    return `<li>${this.parser.parse(token.tokens ?? [])}</li>`;
+    const content = this.parser.parse(token.tokens ?? []);
+    return `<div data-marker="${token.marker}" class="butir-item">${content}</div>`;
   },
 };
 
@@ -388,6 +428,8 @@ const extension: MarkedExtension = {
     konsideran,
     dasarHukum,
     diktum,
+    mencabut,
+    menetapkan,
     buku,
     bab,
     bagian,
