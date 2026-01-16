@@ -385,7 +385,7 @@ const butirList: TokenizerAndRendererExtension = {
     const marker = cap[2];
     const suffix = marker.slice(-1);
     const alphaNumeric = /\d+/.test(marker) ? "\\d+" : "[a-z]+";
-    const bullet = `${indent}${alphaNumeric}${RegExp.escape(suffix)}`;
+    const bullet = `${indent}${alphaNumeric}\\${suffix}`;
     const list = {
       type: "butir-list",
       raw: "",
