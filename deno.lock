@@ -49,7 +49,7 @@
     "npm:esbuild-wasm@~0.25.11": "0.25.12",
     "npm:esbuild@0.25.7": "0.25.7",
     "npm:esbuild@~0.25.5": "0.25.12",
-    "npm:feed@^5.1.0": "5.1.0",
+    "npm:feed@^5.2.0": "5.2.0",
     "npm:github-slugger@2": "2.0.0",
     "npm:marked@^17.0.1": "17.0.1",
     "npm:postcss@^8.5.6": "8.5.6",
@@ -1338,8 +1338,8 @@
         "picomatch@4.0.3"
       ]
     },
-    "feed@5.1.0": {
-      "integrity": "sha512-qGNhgYygnefSkAHHrNHqC7p3R8J0/xQDS/cYUud8er/qD9EFGWyCdUDfULHTJQN1d3H3WprzVwMc9MfB4J50Wg==",
+    "feed@5.2.0": {
+      "integrity": "sha512-hgH6CCb+7+0c8PBlakI2KubG6R+Rb1MhpNcdvqUXZTBwBHf32piwY255diAkAmkGZ6AWlywOU88AkOgP9q8Rdw==",
       "dependencies": [
         "xml-js"
       ]
@@ -1785,7 +1785,7 @@
       "npm:clsx@^2.1.1",
       "npm:daisyui@^5.5.14",
       "npm:dpack@~0.6.22",
-      "npm:feed@^5.1.0",
+      "npm:feed@^5.2.0",
       "npm:github-slugger@2",
       "npm:marked@^17.0.1",
       "npm:postcss@^8.5.6",

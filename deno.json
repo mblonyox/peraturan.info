@@ -8,6 +8,13 @@
     "indexing": "deno run -A indexing.ts"
   },
   "compilerOptions": {
+    "lib": [
+      "dom",
+      "dom.iterable",
+      "dom.asynciterable",
+      "deno.ns",
+      "deno.unstable"
+    ],
     "jsx": "react-jsx",
     "jsxImportSource": "preact",
     "types": ["vite/client"]
@@ -29,7 +36,7 @@
     "clsx": "npm:clsx@^2.1.1",
     "daisyui": "npm:daisyui@^5.5.14",
     "dpack": "npm:dpack@^0.6.22",
-    "feed": "npm:feed@^5.1.0",
+    "feed": "npm:feed@^5.2.0",
     "fresh": "jsr:@fresh/core@^2.2.0",
     "github-slugger": "npm:github-slugger@^2.0.0",
     "marked": "npm:marked@^17.0.1",
