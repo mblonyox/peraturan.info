@@ -40,6 +40,18 @@
     margin-left: 35mm;
   }
 
+  .container {
+    .buku,
+    .bab,
+    .bagian,
+    .paragraf,
+    .pasal,
+    .isi-pasal,
+    .ayat {
+      margin-left: 0;
+    }
+  }
+
   .isi-pasal > .ayat {
     margin-left: 0;
   }

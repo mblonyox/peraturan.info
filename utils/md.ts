@@ -26,10 +26,11 @@ const rules = {
   bagian:
     /^((Bagian [\w ]+?)\n[^]+?)\n\n([^]+?)(?=\nBagian [\w ]+?\n|\n{3,}|$)/,
   paragraf: /^((Paragraf \d+)\n[^]+?)\n\n([^]+?)(?=\nParagraf \d+\n|\n{3,}|$)/,
-  pasal: /^(Pasal \d+[a-z]*)\n([^]+?)(?=\nPasal \d+[a-z]*\n|\n{3,}|$)/,
+  pasal: /^(Pasal \d+[A-Z]*)\n([^]+?)(?=\nPasal \d+[A-Z]*\n|\n{3,}|$)/,
   pasalRomawi: /^(Pasal [MDCLXVI]+)\n([^]+?)(?=\nPasal [MDCLXVI]+\n|\n{3,}|$)/,
-  ayat: /^(\(\d+[a-z]*\))[ \t]([^]+?)(?=\n\(\d+[a-z]*\)[ \t]|\n{2,}|$)/,
+  ayat: /^(\(\d+[a-z]*\))[ \t]([^]+?)(?=\n\(\d+[a-z]*\)[ \t]|\n{3,}|$)/,
   butir: /^( {0,6})((?:1|a)[\)\.])[ \t][^\n]+?(?=\n|$)/,
+  container: /^:{3}\n([^]+?)\n:{3}(?=\n|$)/,
 };
 
 const judul: TokenizerAndRendererExtension = {
@@ -330,8 +331,10 @@ const pasal: TokenizerAndRendererExtension = {
         nomor: cap[1],
         tokens: [],
       };
+      const top = this.lexer.state.top;
       this.lexer.state.top = false;
       this.lexer.blockTokens(cap[2], token.tokens);
+      this.lexer.state.top = top;
       token.tokens?.forEach((token: PeraturanToken) => {
         if (token.type === "ayat") token.nomorPasal = token.nomor;
       });
@@ -358,8 +361,10 @@ const ayat: TokenizerAndRendererExtension = {
         nomorPasal: null,
         tokens: [],
       };
+      const top = this.lexer.state.top;
       this.lexer.state.top = false;
       this.lexer.blockTokens(cap[2], token.tokens);
+      this.lexer.state.top = top;
       return token;
     }
   },
@@ -387,7 +392,7 @@ const butirList: TokenizerAndRendererExtension = {
       items: [] as unknown[],
     };
     const re = new RegExp(
-      `^(${bullet})[ \t]([^]+?)(?=${bullet}[ \t]|\\n{2,}|$)`,
+      `^(${bullet})[ \t]([^]+?)(?=${bullet}[ \t]|\\n{3,}|$)`,
     );
     while (src) {
       const cap = re.exec(src);
@@ -398,7 +403,6 @@ const butirList: TokenizerAndRendererExtension = {
         marker: cap[1].trim(),
         tokens: [],
       };
-      this.lexer.state.top = true;
       this.lexer.blockTokens(cap[2], item.tokens);
       list.items.push(item);
       list.raw += item.raw;
@@ -421,6 +425,27 @@ const butirItem: RendererExtension = {
   },
 };
 
+const container: TokenizerAndRendererExtension = {
+  name: "container",
+  level: "block",
+  tokenizer(src: string) {
+    const cap = rules.container.exec(src);
+    if (cap) {
+      const token: PeraturanToken = {
+        type: "container",
+        raw: cap[0],
+        tokens: [],
+      };
+      this.lexer.blockTokens(cap[1], token.tokens);
+      return token;
+    }
+  },
+  renderer(token) {
+    const content = this.parser.parse(token.tokens ?? []);
+    return `<div class="container">${content}</div>`;
+  },
+};
+
 const extension: MarkedExtension = {
   extensions: [
     judul,
@@ -438,6 +463,7 @@ const extension: MarkedExtension = {
     ayat,
     butirList,
     butirItem,
+    container,
   ],
 };
 
