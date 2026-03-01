@@ -8,6 +8,24 @@ export const secureHeaders = () =>
       "Strict-Transport-Security",
       "max-age=31536000; includeSubDomains; preload",
     );
+    headers.set(
+      "Content-Security-Policy",
+      [
+        "default-src 'self'",
+        "script-src 'self' 'unsafe-inline' https://www.googletagmanager.com", // unsafe-inline needed for fresh
+        "style-src 'self' 'unsafe-inline' blob:",
+        "font-src 'self'",
+        "img-src 'self' data:",
+        "media-src 'self' data: blob:",
+        "worker-src 'self' blob:",
+        "connect-src 'self' https://mouthful.inoxsegar.com",
+        "object-src 'none'",
+        "base-uri 'self'",
+        "form-action 'self'",
+        "frame-ancestors 'none'",
+        "upgrade-insecure-requests",
+      ].join("; "),
+    );
     headers.set("X-Frame-Options", "DENY");
     headers.set("X-Content-Type-Options", "nosniff");
     headers.set("Referrer-Policy", "strict-origin-when-cross-origin");
