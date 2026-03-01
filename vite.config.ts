@@ -7,6 +7,7 @@ import { viteStaticCopy } from "vite-plugin-static-copy";
 function copySsrAssets(): Plugin {
   return {
     ...viteStaticCopy({
+      environment: "ssr",
       targets: [
         {
           src: "node_modules/@vercel/og/dist/resvg.wasm",
@@ -19,7 +20,6 @@ function copySsrAssets(): Plugin {
       ],
     }).find((p) => p.apply === "build"),
     name: "copy-ssr-assets",
-    applyToEnvironment: (env) => env.name === "ssr",
   };
 }
 
