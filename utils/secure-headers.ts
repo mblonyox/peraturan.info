@@ -10,7 +10,7 @@ export const secureHeaders = () =>
     );
     headers.set(
       "Content-Security-Policy",
-      "default-src 'self'; script-src 'self' 'unsafe-inline' 'https://mouthful.inoxsegar.com'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self' 'https://mouthful.inoxsegar.com'; frame-ancestors 'none'; form-action 'none'; base-uri 'self';",
+      "default-src 'self'; script-src 'self' 'unsafe-inline' https://www.googletagmanager.com; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self' https://mouthful.inoxsegar.com; frame-ancestors 'none'; form-action 'none'; base-uri 'self';",
     );
     headers.set("X-Frame-Options", "DENY");
     headers.set("X-Content-Type-Options", "nosniff");

@@ -35,6 +35,7 @@ const setSessionId = define.middleware(async (ctx) => {
       path: "/",
       httpOnly: true,
       secure: true,
+      sameSite: "Lax",
       maxAge: 31536000,
     });
     return new Response(response.body, {
