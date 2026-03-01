@@ -23,6 +23,7 @@ export const secureHeaders = () =>
         "base-uri 'self'",
         "form-action 'self'",
         "frame-ancestors 'none'",
+        "frame-src 'self' https://docs.google.com",
         "upgrade-insecure-requests",
       ].join("; "),
     );
@@ -31,7 +32,7 @@ export const secureHeaders = () =>
     headers.set("Referrer-Policy", "strict-origin-when-cross-origin");
     headers.set(
       "Permissions-Policy",
-      "geolocation=(), microphone=(), camera=(), payment=(), usb=(), gyroscope=(), accelerometer=(), magnetometer=(), speaker=(), fullscreen=(), interest-cohort=()",
+      "geolocation=(), microphone=(), camera=(), payment=(), usb=(), gyroscope=(), accelerometer=(), magnetometer=(), fullscreen=(), interest-cohort=()",
     );
     return new Response(response.body, { headers, status: response.status });
   });
