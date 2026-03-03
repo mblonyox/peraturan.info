@@ -1,7 +1,6 @@
 import { createDefine } from "fresh";
 
 export interface State {
-  sessionId?: string;
   theme?:
     | "light"
     | "dark"

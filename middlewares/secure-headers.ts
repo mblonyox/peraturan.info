@@ -1,7 +1,7 @@
-import { define } from "./define.ts";
+import type { Middleware } from "fresh";
 
-export const secureHeaders = () =>
-  define.middleware(async (ctx) => {
+export function secureHeaders<T>(): Middleware<T> {
+  return async (ctx) => {
     const response = await ctx.next();
     const headers = new Headers(response.headers);
     headers.set(
@@ -35,4 +35,5 @@ export const secureHeaders = () =>
       "geolocation=(), microphone=(), camera=(), payment=(), usb=(), gyroscope=(), accelerometer=(), magnetometer=(), fullscreen=(), interest-cohort=()",
     );
     return new Response(response.body, { headers, status: response.status });
-  });
+  };
+}
