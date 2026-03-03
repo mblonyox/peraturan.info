@@ -5,12 +5,9 @@ import type { Peraturan } from "~/models/mod.ts";
 import { define } from "~/utils/define.ts";
 import { ellipsis } from "~/utils/string.ts";
 
-export const handler = define.handlers(async ({ url, state }) => {
-  const cache = await caches.open("og-image");
-  const cachedContent = await cache.match(url);
-  if (cachedContent) return cachedContent;
+export const handler = define.handlers(({ url, state }) => {
   const peraturan = state.peraturan as Peraturan;
-  const response = new ImageResponse(
+  return new ImageResponse(
     <div
       style={{
         width: "100%",
@@ -65,6 +62,4 @@ export const handler = define.handlers(async ({ url, state }) => {
       </div>
     </div>,
   );
-  cache.put(url, response.clone()).catch(() => null);
-  return response;
 });
