@@ -1,5 +1,10 @@
-import { Transform } from "node:stream";
+import { type Transform, Writable } from "node:stream";
 
-export const toTransformStream = (transform: Transform) => {
-  return Transform.toWeb(transform) as TransformStream;
+export const toTransformStream = (stream: Transform): TransformStream => {
+  const readable = ReadableStream.from(stream);
+  const writable = Writable.toWeb(stream);
+  return {
+    readable,
+    writable,
+  };
 };
