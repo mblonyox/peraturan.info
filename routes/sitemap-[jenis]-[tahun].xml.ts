@@ -1,3 +1,4 @@
+import process from "node:process";
 import { getDB } from "~/lib/db/mod.ts";
 import { getListPeraturan } from "~/models/peraturan.ts";
 import { getPeraturanMarkdown } from "~/utils/data.ts";
@@ -5,6 +6,8 @@ import { define } from "~/utils/define.ts";
 import { createMarked, type PeraturanToken } from "~/utils/md.ts";
 import type { RouteConfig } from "fresh";
 import { EnumChangefreq, type SitemapItemLoose, SitemapStream } from "sitemap";
+
+globalThis.process = process;
 
 export const config: RouteConfig = {
   routeOverride: "/sitemap-:jenis(\\w+)-:tahun(\\d+).xml",
