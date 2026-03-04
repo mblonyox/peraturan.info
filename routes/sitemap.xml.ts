@@ -1,10 +1,11 @@
 import process from "node:process";
+import { Readable } from "node:stream";
 import { define } from "~/utils/define.ts";
-import { type SitemapItemLoose, SitemapStream } from "sitemap";
+import { type SitemapItemLoose, SitemapStream, streamToPromise } from "sitemap";
 
 globalThis.process = process;
 
-export const handler = define.handlers(({ url }) => {
+export const handler = define.handlers(async ({ url }) => {
   const origin = url.origin;
   const items: (SitemapItemLoose | string)[] = [
     {
@@ -13,10 +14,10 @@ export const handler = define.handlers(({ url }) => {
     },
     "/terbaru",
   ];
-  const sitemapStream = new SitemapStream({ hostname: origin });
-  const { readable, writable } = SitemapStream.toWeb(sitemapStream);
-  ReadableStream.from(items).pipeTo(writable);
-  return new Response(readable as ReadableStream, {
+  const stream = Readable.from(items)
+    .pipe(new SitemapStream({ hostname: origin }));
+  const body = await streamToPromise(stream);
+  return new Response(body as BodyInit, {
     headers: { "Content-Type": "application/xml" },
   });
 });
