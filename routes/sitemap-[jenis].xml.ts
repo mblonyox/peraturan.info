@@ -1,8 +1,9 @@
 import process from "node:process";
+import { Readable } from "node:stream";
+import { arrayBuffer } from "node:stream/consumers";
 import { getDB } from "~/lib/db/mod.ts";
 import { getFilterByTahunCount } from "~/models/peraturan.ts";
 import { define } from "~/utils/define.ts";
-import { toTransformStream } from "~/utils/streams.ts";
 import type { RouteConfig } from "fresh";
 import { SitemapIndexStream } from "sitemap";
 
@@ -18,10 +19,7 @@ export const handler = define.handlers(async ({ url, params }) => {
   const db = await getDB();
   const items = getFilterByTahunCount(db, { jenis })
     .map(({ tahun }) => origin + `/sitemap-${jenis}-${tahun}.xml`);
-  const sitemapIndexStream = new SitemapIndexStream();
-  const stream = ReadableStream.from(items)
-    .pipeThrough(toTransformStream(sitemapIndexStream));
-  return new Response(stream, {
-    headers: { "Content-Type": "application/xml" },
-  });
+  const stream = Readable.from(items).pipe(new SitemapIndexStream());
+  const body = await arrayBuffer(stream);
+  return new Response(body, { headers: { "Content-Type": "application/xml" } });
 });
