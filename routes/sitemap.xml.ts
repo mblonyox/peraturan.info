@@ -18,5 +18,7 @@ export const handler = define.handlers(async ({ url }) => {
   const stream = Readable.from(items)
     .pipe(new SitemapStream({ hostname: origin }));
   const body = await arrayBuffer(stream);
-  return new Response(body, { headers: { "Content-Type": "application/xml" } });
+  return new Response(body, {
+    headers: { "Content-Type": "application/xml; charset=utf-8" },
+  });
 });

@@ -21,5 +21,7 @@ export const handler = define.handlers(async ({ url, params }) => {
     .map(({ tahun }) => origin + `/sitemap-${jenis}-${tahun}.xml`);
   const stream = Readable.from(items).pipe(new SitemapIndexStream());
   const body = await arrayBuffer(stream);
-  return new Response(body, { headers: { "Content-Type": "application/xml" } });
+  return new Response(body, {
+    headers: { "Content-Type": "application/xml; charset=utf-8" },
+  });
 });

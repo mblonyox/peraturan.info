@@ -20,7 +20,9 @@ export const handler = define.handlers({
   <Language>id</Language>
 </OpenSearchDescription>`;
     return new Response(body, {
-      headers: { "Content-Type": "application/opensearchdescription+xml" },
+      headers: {
+        "Content-Type": "application/opensearchdescription+xml; charset=utf-8",
+      },
     });
   },
 });

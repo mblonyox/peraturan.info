@@ -9,7 +9,7 @@ export const handler = define.handlers({
     const list = getFeedListPeraturan(db);
     const feed = createPeraturanFeed(list, url.origin);
     return new Response(feed.rss2(), {
-      headers: { "Content-Type": "application/rss+xml" },
+      headers: { "Content-Type": "application/rss+xml; charset=utf-8" },
     });
   },
 });

@@ -21,7 +21,9 @@ export const handler = define.handlers(async ({ url, params }) => {
   const stream = Readable.from(generateItems(jenis, tahun))
     .pipe(new SitemapStream({ hostname: origin }));
   const body = await arrayBuffer(stream);
-  return new Response(body, { headers: { "Content-Type": "application/xml" } });
+  return new Response(body, {
+    headers: { "Content-Type": "application/xml; charset=utf-8" },
+  });
 });
 
 async function* generateItems(jenis: string, tahun: string) {

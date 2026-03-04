@@ -9,7 +9,7 @@ export const handler = define.handlers({
     const list = getFeedListPeraturan(db);
     const feed = createPeraturanFeed(list, url.origin);
     return new Response(feed.atom1(), {
-      headers: { "Content-Type": "application/atom+xml" },
+      headers: { "Content-Type": "application/atom+xml; charset=utf-8" },
     });
   },
 });
