@@ -1,10 +1,9 @@
 import process from "node:process";
-import { Readable } from "node:stream";
 import { getDB } from "~/lib/db/mod.ts";
 import { getFilterByTahunCount } from "~/models/peraturan.ts";
 import { define } from "~/utils/define.ts";
 import type { RouteConfig } from "fresh";
-import { SitemapIndexStream, streamToPromise } from "sitemap";
+import { SitemapIndexStream } from "sitemap";
 
 globalThis.process = process;
 
@@ -18,10 +17,10 @@ export const handler = define.handlers(async ({ url, params }) => {
   const db = await getDB();
   const items = getFilterByTahunCount(db, { jenis })
     .map(({ tahun }) => origin + `/sitemap-${jenis}-${tahun}.xml`);
-  const stream = Readable.from(items)
-    .pipe(new SitemapIndexStream());
-  const body = await streamToPromise(stream);
-  return new Response(body as BodyInit, {
+  const sitemapIndexStream = new SitemapIndexStream();
+  const { writable, readable } = SitemapIndexStream.toWeb(sitemapIndexStream);
+  ReadableStream.from(items).pipeTo(writable);
+  return new Response(readable as ReadableStream, {
     headers: { "Content-Type": "application/xml" },
   });
 });

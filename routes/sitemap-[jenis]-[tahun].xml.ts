@@ -1,17 +1,11 @@
 import process from "node:process";
-import { Readable } from "node:stream";
 import { getDB } from "~/lib/db/mod.ts";
 import { getListPeraturan } from "~/models/peraturan.ts";
 import { getPeraturanMarkdown } from "~/utils/data.ts";
 import { define } from "~/utils/define.ts";
 import { createMarked, type PeraturanToken } from "~/utils/md.ts";
 import type { RouteConfig } from "fresh";
-import {
-  EnumChangefreq,
-  type SitemapItemLoose,
-  SitemapStream,
-  streamToPromise,
-} from "sitemap";
+import { EnumChangefreq, type SitemapItemLoose, SitemapStream } from "sitemap";
 
 globalThis.process = process;
 
@@ -19,13 +13,13 @@ export const config: RouteConfig = {
   routeOverride: "/sitemap-:jenis(\\w+)-:tahun(\\d+).xml",
 };
 
-export const handler = define.handlers(async ({ url, params }) => {
+export const handler = define.handlers(({ url, params }) => {
   const origin = url.origin;
   const { jenis, tahun } = params;
-  const stream = Readable.from(generateItems(jenis, tahun))
-    .pipe(new SitemapStream({ hostname: origin }));
-  const body = await streamToPromise(stream);
-  return new Response(body as BodyInit, {
+  const sitemapStream = new SitemapStream({ hostname: origin });
+  const { readable, writable } = SitemapStream.toWeb(sitemapStream);
+  ReadableStream.from(generateItems(jenis, tahun)).pipeTo(writable);
+  return new Response(readable as ReadableStream, {
     headers: { "Content-Type": "application/xml" },
   });
 });
