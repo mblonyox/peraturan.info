@@ -17,7 +17,7 @@ export const handler = define.handlers(({ url }) => {
   const { readable, writable } = SitemapStream.toWeb(sitemapStream);
   ReadableStream.from(items)
     .pipeTo(writable)
-    .finally(() => writable.close());
+    .finally(() => sitemapStream.end());
   return new Response(readable as ReadableStream, {
     headers: { "Content-Type": "application/xml" },
   });
