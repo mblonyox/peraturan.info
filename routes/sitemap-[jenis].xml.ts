@@ -19,7 +19,9 @@ export const handler = define.handlers(async ({ url, params }) => {
     .map(({ tahun }) => origin + `/sitemap-${jenis}-${tahun}.xml`);
   const sitemapIndexStream = new SitemapIndexStream();
   const { writable, readable } = SitemapIndexStream.toWeb(sitemapIndexStream);
-  ReadableStream.from(items).pipeTo(writable);
+  ReadableStream.from(items)
+    .pipeTo(writable)
+    .finally(() => writable.close());
   return new Response(readable as ReadableStream, {
     headers: { "Content-Type": "application/xml" },
   });
