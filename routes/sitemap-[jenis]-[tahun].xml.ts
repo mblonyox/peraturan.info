@@ -4,6 +4,7 @@ import { getListPeraturan } from "~/models/peraturan.ts";
 import { getPeraturanMarkdown } from "~/utils/data.ts";
 import { define } from "~/utils/define.ts";
 import { createMarked, type PeraturanToken } from "~/utils/md.ts";
+import { toTransformStream } from "~/utils/streams.ts";
 import type { RouteConfig } from "fresh";
 import { EnumChangefreq, type SitemapItemLoose, SitemapStream } from "sitemap";
 
@@ -17,11 +18,9 @@ export const handler = define.handlers(({ url, params }) => {
   const origin = url.origin;
   const { jenis, tahun } = params;
   const sitemapStream = new SitemapStream({ hostname: origin });
-  const { readable, writable } = SitemapStream.toWeb(sitemapStream);
-  ReadableStream.from(generateItems(jenis, tahun))
-    .pipeTo(writable, { preventClose: true })
-    .finally(() => sitemapStream.end());
-  return new Response(readable as ReadableStream, {
+  const stream = ReadableStream.from(generateItems(jenis, tahun))
+    .pipeThrough(toTransformStream(sitemapStream));
+  return new Response(stream, {
     headers: { "Content-Type": "application/xml" },
   });
 });
