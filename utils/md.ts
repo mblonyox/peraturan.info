@@ -14,7 +14,7 @@ export type PeraturanToken = Tokens.Generic & {
 };
 
 const rules = {
-  judul: /^([^]+?)\nNOMOR (.+)\nTENTANG\n([^]+?)(?:\n{2,}|$)/,
+  judul: /^([^a-z]+)\nNOMOR (.+)\nTENTANG\n([^a-z]+)(?:\n{2,}|$)/,
   frasaJabatan: /^DENGAN RAHMAT TUHAN YANG MAHA ESA\n\n([^]+?,)(?:\n{2,}|$)/,
   konsideran: /^Menimbang[ \t]*:[ \t]*\n([^]+?)(?:\n{2,}|$)/,
   dasarHukum: /^Mengingat[ \t]*:[ \t]*\n([^]+?)(?:\n{2,}|$)/,
@@ -29,7 +29,7 @@ const rules = {
   pasal: /^(Pasal \d+[A-Z]*)\n([^]+?)(?=\nPasal \d+[A-Z]*\n|\n{3,}|$)/,
   pasalRomawi: /^(Pasal [MDCLXVI]+)\n([^]+?)(?=\nPasal [MDCLXVI]+\n|\n{3,}|$)/,
   ayat: /^(\(\d+[a-z]*\))[ \t]([^]+?)(?=\n\(\d+[a-z]*\)[ \t]|\n{3,}|$)/,
-  butir: /^( {0,6})((?:1|a)[\)\.])[ \t][^\n]+?(?=\n|$)/,
+  butir: /^([ \t]{0,6})([a1][\)\.])[ \t][^\n]+?(?=\n|$)/,
   container: /^:{3}\n([^]+?)\n:{3}(?=\n|$)/,
 };
 
@@ -392,7 +392,7 @@ const butirList: TokenizerAndRendererExtension = {
       items: [] as unknown[],
     };
     const re = new RegExp(
-      `^(${bullet})[ \t]([^]+?)(?=${bullet}[ \t]|\\n{3,}|$)`,
+      `^(${bullet})[ \\t]([^]+?)(?=${bullet}[ \\t]|\\n{3,}|$)`,
     );
     while (src) {
       const cap = re.exec(src);
@@ -465,6 +465,24 @@ const extension: MarkedExtension = {
     butirItem,
     container,
   ],
+  tokenizer: {
+    paragraph(src) {
+      const butirStart = src.search(/\n+[ \t]{0,6}[a1][\)\.]/);
+      if (butirStart >= 0) src = src.slice(0, butirStart);
+      const cap = this.rules.block.paragraph.exec(src);
+      if (cap) {
+        const text = cap[1].charAt(cap[1].length - 1) === "\n"
+          ? cap[1].slice(0, -1)
+          : cap[1];
+        return {
+          type: "paragraph",
+          raw: cap[0],
+          text,
+          tokens: this.lexer.inline(text),
+        };
+      }
+    },
+  },
 };
 
 export const createMarked = () => markedUse(extension);
