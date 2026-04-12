@@ -1,29 +1,35 @@
-import { clsx } from "clsx";
+"use client";
 
-type PaginationProps =
-  & {
-    url: URL;
-    page: number;
-    maxItems?: number;
-  }
-  & ({
-    total: number;
-    pageSize: number;
-    lastPage?: never;
-  } | {
-    total?: never;
-    pageSize?: never;
-    lastPage: number;
-  });
+import { usePathname, useSearchParams } from "next/navigation";
+import { clsx } from "clsx";
+import Link from "next/link";
+
+type PaginationProps = {
+  page: number;
+  maxItems?: number;
+} & (
+  | {
+      total: number;
+      pageSize: number;
+      lastPage?: never;
+    }
+  | {
+      total?: never;
+      pageSize?: never;
+      lastPage: number;
+    }
+);
 
 export default function Pagination({
-  url,
   total,
   page,
   pageSize,
   lastPage,
   maxItems,
 }: PaginationProps) {
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
+
   lastPage ??= Math.ceil((total ?? 0) / (pageSize ?? 10));
   const itemsSize = maxItems ?? 5;
   if (!lastPage || page < 1 || page > lastPage) return null;
@@ -41,9 +47,9 @@ export default function Pagination({
   }
 
   const pageUrl = (page: number) => {
-    const p = new URL(url);
-    p.searchParams.set("page", `${page}`);
-    return p.href;
+    const q = new URLSearchParams(searchParams);
+    q.set("page", `${page}`);
+    return pathname + "?" + q.toString();
   };
 
   return (
@@ -52,67 +58,61 @@ export default function Pagination({
       className="flex justify-center my-2"
     >
       <div className="join join-horizontal">
-        {page === 1
-          ? (
-            <button type="button" className="join-item btn" disabled>
-              <span>&lt;</span>
-            </button>
-          )
-          : (
-            <a
-              className={clsx("join-item btn", page === 1 && "disabled")}
-              href={pageUrl(page - 1)}
-            >
-              &lt;
-            </a>
-          )}
+        {page === 1 ? (
+          <button type="button" className="join-item btn" disabled>
+            <span>&lt;</span>
+          </button>
+        ) : (
+          <Link
+            className={clsx("join-item btn", page === 1 && "disabled")}
+            href={pageUrl(page - 1)}
+          >
+            &lt;
+          </Link>
+        )}
 
         {!items.includes(1) && (
           <>
-            <a href={pageUrl(1)} className="join-item btn">{1}</a>
-            {Math.min(...items) > 2 &&
-              (
-                <button type="button" className="join-item btn">
-                  <span>&#8230;</span>
-                </button>
-              )}
+            <Link href={pageUrl(1)} className="join-item btn">
+              {1}
+            </Link>
+            {Math.min(...items) > 2 && (
+              <button type="button" className="join-item btn">
+                <span>&#8230;</span>
+              </button>
+            )}
           </>
         )}
         {items.map((i) => (
-          <a
+          <Link
+            key={i}
             className={clsx("join-item btn", page === i && "btn-active")}
             href={pageUrl(i)}
           >
             {i}
-          </a>
+          </Link>
         ))}
         {!items.includes(lastPage) && (
           <>
-            {Math.max(...items) < lastPage - 1 &&
-              (
-                <button type="button" className="join-item btn">
-                  <span>&#8230;</span>
-                </button>
-              )}
-            <a className="join-item btn" href={pageUrl(lastPage)}>
+            {Math.max(...items) < lastPage - 1 && (
+              <button type="button" className="join-item btn">
+                <span>&#8230;</span>
+              </button>
+            )}
+            <Link className="join-item btn" href={pageUrl(lastPage)}>
               {lastPage}
-            </a>
+            </Link>
           </>
         )}
-        {page === lastPage
-          ? (
-            <button type="button" className="join-item btn" disabled>
-              <span>&gt;</span>
-            </button>
-          )
-          : (
-            <a
-              className="join-item btn"
-              href={pageUrl(page + 1)}
-            >
-              &gt;
-            </a>
-          )}
+        {page === lastPage ? (
+          <button type="button" className="join-item btn" disabled>
+            <span>&gt;</span>
+          </button>
+        ) : (
+          <Link className="join-item btn" href={pageUrl(page + 1)}>
+            &gt;
+          </Link>
+        )}
       </div>
     </nav>
   );
