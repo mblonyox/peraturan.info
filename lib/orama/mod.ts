@@ -21,10 +21,9 @@ export async function getOrama() {
   if (!orama) {
     orama = await create({ schema });
     const data = await getOramaDpackText();
-    if (data) {
-      const deserialized = dpack.parse(data) as RawData;
-      await load(orama, deserialized);
-    }
+    if (!data) throw new Error("Orama data tidak ditemukan.");
+    const deserialized = dpack.parse(data) as RawData;
+    await load(orama, deserialized);
     return orama;
   }
   return orama;

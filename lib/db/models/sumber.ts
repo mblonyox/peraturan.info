@@ -1,5 +1,5 @@
 import type { Database } from "better-sqlite3";
-import type { PuuRef } from "./peraturan.js";
+import type { PuuRef } from "./peraturan";
 
 export type SumberPeraturan = {
   id: number;

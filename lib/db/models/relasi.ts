@@ -1,5 +1,5 @@
 import type { Database } from "better-sqlite3";
-import { Peraturan, type PeraturanRow, type PuuRef } from "./peraturan.js";
+import { Peraturan, type PeraturanRow, type PuuRef } from "./peraturan";
 
 export const JENIS2_RELASI = [
   "cabut",

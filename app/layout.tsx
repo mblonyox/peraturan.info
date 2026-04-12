@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import { ThemeProvider } from "next-themes";
+
 import "./globals.css";
 
 import LayoutNavbar from "@/components/layout_navbar";
@@ -32,10 +33,10 @@ export default function RootLayout({
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
       suppressHydrationWarning
     >
-      <body className="min-w-sm min-h-full flex flex-col">
+      <body className="min-w-sm min-h-screen flex flex-col justify-between">
         <ThemeProvider attribute="class">
           <LayoutNavbar />
-          <main>{children}</main>
+          <main className="flex-1">{children}</main>
           <LayoutFooter />
         </ThemeProvider>
       </body>
