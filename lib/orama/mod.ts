@@ -1,7 +1,6 @@
 import { create, load, type Orama, type RawData } from "@orama/orama";
 
-import { getOramaDpackText } from "~/utils/data.ts";
-// @deno-types="~/dpack.d.ts"
+import { getOramaDpackText } from "@/utils/data";
 import * as dpack from "dpack";
 
 const schema = {

@@ -1,4 +1,6 @@
-import { useCallback } from "preact/hooks";
+"use client";
+
+import { type MouseEventHandler, useCallback } from "react";
 
 type Props = {
   title: string;
@@ -7,7 +9,7 @@ type Props = {
 };
 
 export default function WebShareButton({ title, description, url }: Props) {
-  const onClickShare = useCallback((e: Event) => {
+  const onClickShare = useCallback<MouseEventHandler>((e) => {
     if ("share" in navigator) {
       e.preventDefault();
       navigator

@@ -1,8 +1,14 @@
-import SearchInput from "~/islands/search_input.tsx";
-import ThemeSwitcher from "~/islands/theme_switcher.tsx";
-import type { ThemeOption } from "~/utils/theme.ts";
+"use client";
+
 import { clsx } from "clsx";
-import { asset } from "fresh/runtime";
+import Link from "next/link";
+import Image from "next/image";
+import { usePathname } from "next/navigation";
+
+import SearchInput from "@/components/islands/search_input";
+import ThemeSwitcher from "@/components/islands/theme_switcher";
+import IconMenu from "./icons/menu";
+import IconArrowDown from "./icons/arrow-down";
 
 const menus = [
   { href: "/", text: "Beranda" },
@@ -20,139 +26,101 @@ const menus = [
   },
 ];
 
-interface Props {
-  url: URL;
-  theme?: ThemeOption;
-}
-
-export default function LayoutNavbar({ url, theme }: Props) {
-  const { pathname, searchParams } = url;
+export default function LayoutNavbar() {
+  const pathname = usePathname();
 
   return (
     <nav className="navbar bg-base-200">
       <div className="navbar-start">
-        <details class="flex-none lg:hidden dropdown">
-          <summary
-            aria-label="Show Menu"
-            class="btn btn-square btn-ghost"
-          >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 24 24"
-              class="inline-block h-6 w-6 stroke-current"
-            >
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                d="M4 6h16M4 12h16M4 18h16"
-              >
-              </path>
-            </svg>
+        <details className="flex-none lg:hidden dropdown">
+          <summary aria-label="Show Menu" className="btn btn-square btn-ghost">
+            <IconMenu />
           </summary>
           <ul className="menu dropdown-content bg-base-300 rounded-box z-1 p-2 shadow-2xl">
             {menus.map(({ href, text, menu }) => (
-              <li>
-                {menu
-                  ? (
-                    <details open>
-                      <summary>{text}</summary>
-                      <ul>
-                        {menu.map(({ href, text }) => (
-                          <li>
-                            <a
-                              href={href}
-                              className={clsx(
-                                pathname === href && "menu-active",
-                              )}
-                              aria-current={pathname === href
-                                ? "page"
-                                : "false"}
-                            >
-                              {text}
-                            </a>
-                          </li>
-                        ))}
-                      </ul>
-                    </details>
-                  )
-                  : (
-                    <a
-                      href={href}
-                      className={clsx(pathname === href && "menu-active")}
-                      aria-current={pathname === href ? "page" : "false"}
-                    >
-                      {text}
-                    </a>
-                  )}
-              </li>
-            ))}
-          </ul>
-        </details>
-        <a href="/">
-          <img
-            src={asset("/logo.webp")}
-            alt="Logo Peraturan.Info"
-            width={32}
-            height={32}
-          />
-        </a>
-        <ul className="hidden lg:flex menu menu-horizontal rounded-box gap-2">
-          {menus.map(({ href, text, menu }) => (
-            <li>
-              {menu
-                ? (
-                  <div className="dropdown dropdown-start">
-                    <div tabIndex={0} role="button">
-                      <span className="mx-1">{text}</span>
-                      <svg
-                        width="12px"
-                        height="12px"
-                        className="inline-block h-2 w-2 fill-current opacity-60"
-                        xmlns="http://www.w3.org/2000/svg"
-                        viewBox="0 0 2048 2048"
-                      >
-                        <path d="M1799 349l242 241-1017 1017L7 590l242-241 775 775 775-775z">
-                        </path>
-                      </svg>
-                    </div>
-                    <ul
-                      tabIndex={-1}
-                      className="menu dropdown-content bg-base-300 rounded-box z-1 p-2 shadow-2xl"
-                    >
+              <li key={text}>
+                {menu ? (
+                  <details open>
+                    <summary>{text}</summary>
+                    <ul>
                       {menu.map(({ href, text }) => (
-                        <li>
-                          <a
+                        <li key={text}>
+                          <Link
                             href={href}
                             className={clsx(pathname === href && "menu-active")}
                             aria-current={pathname === href ? "page" : "false"}
                           >
                             {text}
-                          </a>
+                          </Link>
                         </li>
                       ))}
                     </ul>
-                  </div>
-                )
-                : (
-                  <a
+                  </details>
+                ) : (
+                  <Link
                     href={href}
                     className={clsx(pathname === href && "menu-active")}
                     aria-current={pathname === href ? "page" : "false"}
                   >
                     {text}
-                  </a>
+                  </Link>
                 )}
+              </li>
+            ))}
+          </ul>
+        </details>
+        <Link href="/">
+          <Image
+            src="/logo.webp"
+            alt="Logo Peraturan.Info"
+            width={32}
+            height={32}
+          />
+        </Link>
+        <ul className="hidden lg:flex menu menu-horizontal rounded-box gap-2">
+          {menus.map(({ href, text, menu }) => (
+            <li key={text}>
+              {menu ? (
+                <div className="dropdown dropdown-start">
+                  <div tabIndex={0} role="button">
+                    <span className="mx-1">{text}</span>
+                    <IconArrowDown />
+                  </div>
+                  <ul
+                    tabIndex={-1}
+                    className="menu dropdown-content bg-base-300 rounded-box z-1 p-2 shadow-2xl"
+                  >
+                    {menu.map(({ href, text }) => (
+                      <li key={text}>
+                        <Link
+                          href={href}
+                          className={clsx(pathname === href && "menu-active")}
+                          aria-current={pathname === href ? "page" : "false"}
+                        >
+                          {text}
+                        </Link>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              ) : (
+                <Link
+                  href={href}
+                  className={clsx(pathname === href && "menu-active")}
+                  aria-current={pathname === href ? "page" : "false"}
+                >
+                  {text}
+                </Link>
+              )}
             </li>
           ))}
         </ul>
       </div>
       <div className="navbar-center">
-        <SearchInput initQuery={searchParams.get("query")?.trim()} />
+        <SearchInput />
       </div>
       <div className="navbar-end">
-        <ThemeSwitcher initTheme={theme} />
+        <ThemeSwitcher />
       </div>
     </nav>
   );

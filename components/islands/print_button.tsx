@@ -1,14 +1,16 @@
-import { asset } from "fresh/runtime";
-import { useCallback } from "preact/hooks";
+"use client";
+
+import { useCallback } from "react";
+import { Printd } from "printd";
 
 export default function PrintButton() {
   const onClickHandler = useCallback(async () => {
-    const { Printd } = await import("https://esm.sh/printd@1.6.0");
     const d = new Printd();
     const el = document.querySelector(".peraturan");
     if (!el) return;
-    d.print(el as HTMLElement, [asset("/peraturan.css")]);
+    d.print(el as HTMLElement, ["/peraturan.css"]);
   }, []);
+
   return (
     <button
       type="button"
