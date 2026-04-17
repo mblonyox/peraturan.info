@@ -102,9 +102,9 @@ function Preview({ peraturan }: { peraturan: Peraturan }) {
       <Image
         src={peraturan.path + "/thumbnail.png"}
         alt={peraturan.rujukPendek}
-        className="rounded-box"
+        className="rounded-box w-full h-auto"
         width={360}
-        height={540}
+        height={0}
       />
     </div>
   );
