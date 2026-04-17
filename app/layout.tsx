@@ -18,7 +18,10 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Peraturan.Info",
+  title: {
+    default: "Peraturan.Info",
+    template: "%s | Peraturan.Info",
+  },
   description: "",
 };
 
