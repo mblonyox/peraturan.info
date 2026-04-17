@@ -1,5 +1,5 @@
 import type { Database } from "better-sqlite3";
-import type { PuuRef } from "./peraturan";
+import type { PeraturanParams, PuuRef } from "./peraturan";
 
 export type SumberPeraturan = {
   id: number;
@@ -11,13 +11,11 @@ export type SumberPeraturan = {
 
 export const getSumberPeraturan = (
   db: Database,
-  jenis: string,
-  tahun: string,
-  nomor: string,
+  { jenis, tahun, nomor }: PeraturanParams,
 ) =>
   db
     .prepare<
       unknown[],
       SumberPeraturan
     >(`SELECT * FROM sumber WHERE puu = :key`)
-    .all([`${jenis}/${tahun}/${nomor}`]);
+    .all({ key: `${jenis}/${tahun}/${nomor}` });

@@ -1,12 +1,19 @@
-import { ImageResponse } from "@vercel/og";
+import { ImageResponse } from "next/og";
 
-import logoDataUrl from "~/assets/logo.png?url&inline";
-import type { Peraturan } from "~/models/mod.ts";
-import { define } from "~/utils/define.ts";
-import { ellipsis } from "~/utils/string.ts";
+import logoDataUrl from "@/assets/logo.png";
+import { ellipsis } from "@/utils/string";
+import { getPeraturanData } from "./data";
 
-export const handler = define.handlers(({ url, state }) => {
-  const peraturan = state.peraturan as Peraturan;
+type Props = {
+  params: Promise<{
+    jenis: string;
+    tahun: string;
+    nomor: string;
+  }>;
+};
+
+export default async function Image({ params }: Props) {
+  const { peraturan } = await getPeraturanData(await params);
   return new ImageResponse(
     <div
       style={{
@@ -20,7 +27,8 @@ export const handler = define.handlers(({ url, state }) => {
       }}
     >
       <img
-        src={logoDataUrl}
+        src={logoDataUrl.src}
+        alt=""
         style={{
           width: 256,
           height: 256,
@@ -58,8 +66,8 @@ export const handler = define.handlers(({ url, state }) => {
           color: "#ffffff",
         }}
       >
-        {new URL(peraturan.path, url).href}
+        {new URL(peraturan.path, `https://peraturan.info`).href}
       </div>
     </div>,
   );
-});
+}

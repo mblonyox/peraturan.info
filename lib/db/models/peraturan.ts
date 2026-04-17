@@ -185,18 +185,15 @@ export const getFilterByTahunCount = (
     .all(whereParams);
 };
 
-export const getPeraturan = (
-  db: Database,
-  jenis: string,
-  tahun: string,
-  nomor: string,
-) => {
+export type PeraturanParams = { jenis: string; tahun: string; nomor: string };
+
+export const getPeraturan = (db: Database, params: PeraturanParams) => {
   const row = db
     .prepare<
       unknown[],
       PeraturanRow
     >(`SELECT * FROM peraturan WHERE jenis = :jenis AND tahun = :tahun AND nomor = :nomor`)
-    .get({ jenis, tahun, nomor });
+    .get(params);
   if (row) return new Peraturan(row);
   return null;
 };

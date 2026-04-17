@@ -33,7 +33,7 @@ const getData = cache(async (props: Props) => {
   const res2 = await searchParamsSchema.safeParseAsync(
     await props.searchParams,
   );
-  if (!res2.success) throw new Error("Invalid query." + res2.error);
+  if (!res2.success) notFound();
   const page = res2.data.page;
   const pageSize = res2.data.limit;
   const db = await getDB();

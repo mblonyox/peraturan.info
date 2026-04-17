@@ -5,7 +5,6 @@ import type {
   TokenizerAndRendererExtension,
   Tokens,
 } from "marked";
-import { use as markedUse } from "marked";
 
 export type PeraturanToken = Tokens.Generic & {
   nomor?: string;
@@ -446,7 +445,7 @@ const container: TokenizerAndRendererExtension = {
   },
 };
 
-const extension: MarkedExtension = {
+export const extension: MarkedExtension = {
   extensions: [
     judul,
     frasaJabatan,
@@ -471,9 +470,10 @@ const extension: MarkedExtension = {
       if (butirStart >= 0) src = src.slice(0, butirStart);
       const cap = this.rules.block.paragraph.exec(src);
       if (cap) {
-        const text = cap[1].charAt(cap[1].length - 1) === "\n"
-          ? cap[1].slice(0, -1)
-          : cap[1];
+        const text =
+          cap[1].charAt(cap[1].length - 1) === "\n"
+            ? cap[1].slice(0, -1)
+            : cap[1];
         return {
           type: "paragraph",
           raw: cap[0],
@@ -484,5 +484,3 @@ const extension: MarkedExtension = {
     },
   },
 };
-
-export const createMarked = () => markedUse(extension);
