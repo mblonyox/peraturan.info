@@ -6,6 +6,15 @@ import { getPeraturanData } from "./data";
 
 type Props = LayoutProps<"/[jenis]/[tahun]/[nomor]">;
 
+export async function generateMetadata(props: Props) {
+  const { peraturan } = await getPeraturanData(await props.params);
+
+  return {
+    title: { template: `%s | ${peraturan.rujukPendek}` },
+    description: peraturan.rujukPanjang,
+  };
+}
+
 export default async function Layout({ children, params }: Props) {
   const { jenis, tahun, nomor } = await params;
   const tabs = [
