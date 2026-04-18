@@ -2,7 +2,7 @@
 
 import { clsx } from "clsx";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { useSelectedLayoutSegment } from "next/navigation";
 
 interface Tab {
   path: string;
@@ -18,13 +18,14 @@ interface Props {
 }
 
 export default function Tabs({ tabs, children, defaultTab, basePath }: Props) {
-  const pathname = usePathname();
-  const activePath = pathname.slice(basePath.length);
-  const activeTab =
-    tabs.findIndex(({ path }) => path === activePath) ??
-    (typeof defaultTab === "number"
-      ? defaultTab
-      : tabs.findIndex(({ path }) => path === defaultTab));
+  const activePath = useSelectedLayoutSegment();
+  let activeTabIndex = tabs.findIndex(({ path }) => path === activePath);
+  if (activeTabIndex < 0) {
+    activeTabIndex =
+      typeof defaultTab === "number"
+        ? defaultTab
+        : tabs.findIndex(({ path }) => path === defaultTab);
+  }
 
   return (
     <div className="card card-border border">
@@ -33,11 +34,11 @@ export default function Tabs({ tabs, children, defaultTab, basePath }: Props) {
         role="tablist"
       >
         {tabs.map(({ name, path, disabled }, i) => {
-          const isActive = i === activeTab;
+          const isActive = i === activeTabIndex;
           return (
             <Link
               key={path}
-              href={basePath + path}
+              href={`${basePath}/${path}`}
               className={clsx(
                 "tab flex-1 z-1",
                 isActive && "tab-active",

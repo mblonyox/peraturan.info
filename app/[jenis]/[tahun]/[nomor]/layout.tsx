@@ -20,17 +20,17 @@ export default async function Layout({ children, params }: Props) {
   const tabs = [
     {
       name: "Info",
-      path: "/info",
+      path: "info",
       disabled: false,
     },
     {
       name: "Isi",
-      path: "/isi",
+      path: "isi",
       disabled: false,
     },
     {
       name: "Terkait",
-      path: "/terkait",
+      path: "terkait",
       disabled: false,
     },
   ];
