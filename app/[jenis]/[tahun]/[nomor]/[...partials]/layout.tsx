@@ -9,7 +9,7 @@ import { getPeraturanData } from "../data";
 import { Nav, NavContextProvider } from "./nav";
 import Outline from "./outline";
 
-import "./peraturan.css";
+import "@/public/peraturan.css";
 
 type Props = LayoutProps<"/[jenis]/[tahun]/[nomor]/[...partials]">;
 

@@ -82,7 +82,7 @@ function handlePasalPartial(md: string, partials: string[]): Data | null {
   const re = /^(pasal-\d+)(?:\/ayat-(\d+))?$/;
   const match = re.exec(path);
   if (!match) return null;
-  const [_, pasal, ayat] = match;
+  const [, pasal, ayat] = match;
   const marked = createMarked();
   const tokens = marked.lexer(md);
   const pasalTokens = getPasalTokens(tokens);
