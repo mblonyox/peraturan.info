@@ -1,4 +1,5 @@
 import Image from "next/image";
+import Link from "next/link";
 
 export default function Home() {
   return (
@@ -28,9 +29,9 @@ export default function Home() {
             </a>
             .
           </p>
-          <a href="/all" className="btn btn-primary">
+          <Link href="/all" className="btn btn-primary">
             Lihat Semua Peraturan.
-          </a>
+          </Link>
         </div>
       </div>
     </div>

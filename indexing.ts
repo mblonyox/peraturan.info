@@ -1,9 +1,8 @@
 import { create, insert } from "@orama/orama";
 import { persistToFile } from "@orama/plugin-data-persistence/server";
 
-import { getDB } from "~/lib/db/mod.ts";
-import { getListPeraturan } from "~/models/peraturan.ts";
-import { getPeraturanMarkdown } from "~/utils/data.ts";
+import { getDB, getListPeraturan } from "@/lib/db";
+import { getPeraturanMarkdown } from "@/utils/data";
 
 try {
   const index = await create({
@@ -38,8 +37,7 @@ try {
     });
   }
 
-  // deno-lint-ignore no-explicit-any
-  await persistToFile(index as any, "dpack", "data/index.dpack");
+  await persistToFile(index, "dpack", "data/index.dpack");
 } catch (error) {
   console.error(error);
 }
