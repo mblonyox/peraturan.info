@@ -1,0 +1,39 @@
+import Image from "next/image";
+import Link from "next/link";
+
+export default function Home() {
+  return (
+    <div className="hero">
+      <div className="hero-content text-center">
+        <div className="max-w-md">
+          <Image
+            src="/logo.webp"
+            alt="Logo Peraturan.Info"
+            className="mx-auto mb-5"
+            width={256}
+            height={256}
+          />
+          <h1 className="text-5xl font-bold mb-2">
+            Peraturan<span className="text-neutral-500">.Info</span>
+          </h1>
+          <p className="mb-5">
+            Peraturan.Info adalah upaya untuk meningkatkan cara penyajian
+            peraturan perundang-undangan di Indonesia sehingga lebih
+            user-friendly yang terinspirasi dari layanan{" "}
+            <a
+              href="https://legislation.gov.uk"
+              target="_blank"
+              rel="noreferrer noopener"
+            >
+              legislation.gov.uk
+            </a>
+            .
+          </p>
+          <Link href="/all" className="btn btn-primary">
+            Lihat Semua Peraturan.
+          </Link>
+        </div>
+      </div>
+    </div>
+  );
+}

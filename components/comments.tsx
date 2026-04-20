@@ -1,3 +1,5 @@
+import Script from "next/script";
+
 export default function Comments() {
   return (
     <div className="card card-border my-2 lg:my-3">
@@ -8,7 +10,7 @@ export default function Comments() {
           data-url="https://mouthful.inoxsegar.com"
           data-domain="peraturan.info"
         />
-        <script src="/mouthful-client.js"></script>
+        <Script src="/mouthful-client.js" />
       </div>
     </div>
   );

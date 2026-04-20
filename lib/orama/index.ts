@@ -1,0 +1,30 @@
+import { create, load, type Orama, type RawData } from "@orama/orama";
+import * as dpack from "dpack";
+
+import { getOramaDpackText } from "@/utils/data";
+
+const schema = {
+  path: "string",
+  jenis: "string",
+  tahun: "number",
+  nomor: "string",
+  judul: "string",
+  tanggal: "number",
+  teks: "string",
+} as const;
+
+export type Schema = typeof schema;
+
+let orama: Orama<Schema> | undefined;
+
+export async function getOrama() {
+  if (!orama) {
+    orama = await create({ schema });
+    const data = await getOramaDpackText();
+    if (!data) throw new Error("Orama data tidak ditemukan.");
+    const deserialized = dpack.parse(data) as RawData;
+    await load(orama, deserialized);
+    return orama;
+  }
+  return orama;
+}
