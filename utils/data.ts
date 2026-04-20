@@ -8,6 +8,9 @@ interface PeraturanId {
 }
 
 const notFounds = new Set<string>();
+const dataUrl = process.env.DATA_URL!;
+
+if (!dataUrl) throw new Error("DATA_URL is not defined");
 
 function isFileUrl(url: string): boolean {
   return url.startsWith("file://");
@@ -34,8 +37,6 @@ async function cachedFetch(url: string) {
 }
 
 export async function getDatabaseBytes() {
-  const dataUrl = process.env.DATA_URL;
-  if (!dataUrl) return null;
   const url = dataUrl + "/database.sqlite";
   try {
     const response = await cachedFetch(url);
@@ -46,8 +47,6 @@ export async function getDatabaseBytes() {
 }
 
 export async function getOramaDpackText() {
-  const dataUrl = process.env.DATA_URL;
-  if (!dataUrl) return null;
   const url = dataUrl + "/orama.dpack";
   try {
     const response = await cachedFetch(url);
@@ -62,8 +61,6 @@ export async function getPeraturanMarkdown({
   tahun,
   nomor,
 }: PeraturanId) {
-  const dataUrl = process.env.DATA_URL;
-  if (!dataUrl) return null;
   const url = [dataUrl, jenis, tahun, nomor, "fulltext.md"].join("/");
   try {
     const response = await cachedFetch(url);
@@ -78,8 +75,6 @@ export async function getPeraturanThumbnail({
   tahun,
   nomor,
 }: PeraturanId) {
-  const dataUrl = process.env.DATA_URL;
-  if (!dataUrl) return null;
   const url = [dataUrl, jenis, tahun, nomor, "thumbnail.png"].join("/");
   try {
     const response = await cachedFetch(url);

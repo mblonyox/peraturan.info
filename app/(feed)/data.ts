@@ -1,5 +1,6 @@
 import { Feed } from "feed";
 
+import { BASE_URL } from "@/lib/constants";
 import { getDB, getFeedListPeraturan } from "@/lib/db";
 
 const me = {
@@ -7,8 +8,6 @@ const me = {
   email: "mblonyox@gmail.com",
   link: "https://mblonyox.com",
 };
-
-const origin = `https://${process.env.HOSTNAME ?? "peraturan.info"}`;
 
 export async function createPeraturanFeed() {
   const db = await getDB();
@@ -18,26 +17,26 @@ export async function createPeraturanFeed() {
     description:
       "Feed Peraturan Perundang-undangan terbaru " +
       "yang tersedia di peraturan.info.",
-    id: origin + "/",
-    link: origin,
-    image: origin + "/og-image.png",
-    favicon: origin + "/favicon.ico",
+    id: BASE_URL + "/",
+    link: BASE_URL,
+    image: BASE_URL + "/og-image.png",
+    favicon: BASE_URL + "/favicon.ico",
     copyright: "@mblonyox",
     generator: "nodejs",
     feedLinks: {
-      atom: origin + "/atom.xml",
-      json: origin + "/feed.json",
-      rss: origin + "/rss.xml",
+      atom: BASE_URL + "/atom.xml",
+      json: BASE_URL + "/feed.json",
+      rss: BASE_URL + "/rss.xml",
     },
     author: me,
   });
   list.forEach((p) => {
     feed.addItem({
-      id: origin + p.path,
+      id: BASE_URL + p.path,
       title: p.rujukPendek,
       description: p.judul,
       content: p.rujukPanjang,
-      link: origin + p.path,
+      link: BASE_URL + p.path,
       date: p.created_at,
       author: [me],
     });
