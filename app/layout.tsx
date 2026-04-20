@@ -1,11 +1,11 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
-import { ThemeProvider } from "next-themes";
 
 import "./globals.css";
 
 import LayoutNavbar from "@/components/layout_navbar";
 import LayoutFooter from "@/components/layout_footer";
+import { BASE_URL } from "@/lib/constants";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -23,6 +23,14 @@ export const metadata: Metadata = {
     template: "%s | Peraturan.Info",
   },
   description: "",
+  metadataBase: BASE_URL,
+  alternates: {
+    types: {
+      "application/atom+xml": "/atom.xml",
+      "application/feed+json": "/feed.json",
+      "application/rss+xml": "/rss.xml",
+    },
+  },
 };
 
 export default function RootLayout({
@@ -37,11 +45,9 @@ export default function RootLayout({
       suppressHydrationWarning
     >
       <body className="min-w-sm min-h-screen flex flex-col justify-between">
-        <ThemeProvider attribute="class">
-          <LayoutNavbar />
-          <main className="flex-1">{children}</main>
-          <LayoutFooter />
-        </ThemeProvider>
+        <LayoutNavbar />
+        <main className="flex-1">{children}</main>
+        <LayoutFooter />
       </body>
     </html>
   );

@@ -10,13 +10,7 @@
   "short_name": "Peraturan",
   "start_url": "/",
   "theme_color": "#11191f",
-  "categories": [
-    "business",
-    "education",
-    "finance",
-    "government",
-    "politics"
-  ],
+  "categories": ["business", "education", "finance", "government", "politics"],
   "screenshots": [],
   "icons": [
     {

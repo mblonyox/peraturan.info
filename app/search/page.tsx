@@ -5,7 +5,7 @@ import { z } from "zod";
 
 import Pagination from "@/components/pagination";
 import { ellipsis } from "@/utils/string";
-import { getOrama } from "@/lib/orama/mod";
+import { getOrama } from "@/lib/orama";
 
 type Props = PageProps<"/search">;
 

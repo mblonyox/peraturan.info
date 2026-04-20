@@ -7,7 +7,7 @@ export const themeOptions = [
   "aqua",
 ] as const;
 
-export type ThemeOption = typeof themeOptions[number];
+export type ThemeOption = (typeof themeOptions)[number];
 
 export const isValidTheme = (t: string): t is ThemeOption =>
   themeOptions.includes(t as ThemeOption);

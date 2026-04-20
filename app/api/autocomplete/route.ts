@@ -1,7 +1,7 @@
 import { search } from "@orama/orama";
 import { boundedLevenshtein } from "@orama/orama/internals";
 
-import { getOrama } from "@/lib/orama/mod";
+import { getOrama } from "@/lib/orama";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(request: NextRequest) {

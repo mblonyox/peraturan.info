@@ -9,10 +9,7 @@ export default function LayoutBreadcrumbs({ breadcrumbs }: Props) {
   return (
     <div className="container my-5">
       <nav aria-label="breadcrumb" className="breadcrumbs">
-        <ul
-          vocab="https://schema.org/"
-          typeof="BreadcrumbList"
-        >
+        <ul vocab="https://schema.org/" typeof="BreadcrumbList">
           <li className="breadcrumb-item">
             <Link href="/" aria-label="Beranda">
               <svg
@@ -28,18 +25,14 @@ export default function LayoutBreadcrumbs({ breadcrumbs }: Props) {
             </Link>
           </li>
           {breadcrumbs.map(({ name, url }, index) => (
-            <li
-              key={index}
-              property="itemListElement"
-              typeof="ListItem"
-            >
-              {url
-                ? (
-                  <Link href={url} property="item" typeof="WebPage">
-                    <span property="name">{name}</span>
-                  </Link>
-                )
-                : <span property="name">{name}</span>}
+            <li key={index} property="itemListElement" typeof="ListItem">
+              {url ? (
+                <Link href={url} property="item" typeof="WebPage">
+                  <span property="name">{name}</span>
+                </Link>
+              ) : (
+                <span property="name">{name}</span>
+              )}
               <meta property="position" content={`${index + 1}`} />
             </li>
           ))}

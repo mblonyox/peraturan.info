@@ -4,11 +4,13 @@ import { clsx } from "clsx";
 import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
+import { Suspense } from "react";
 
 import SearchInput from "@/components/islands/search_input";
 import ThemeSwitcher from "@/components/islands/theme_switcher";
 import IconMenu from "./icons/menu";
 import IconArrowDown from "./icons/arrow-down";
+import { ThemeProvider } from "next-themes";
 
 const menus = [
   { href: "/", text: "Beranda" },
@@ -117,10 +119,14 @@ export default function LayoutNavbar() {
         </ul>
       </div>
       <div className="navbar-center">
-        <SearchInput />
+        <Suspense>
+          <SearchInput />
+        </Suspense>
       </div>
       <div className="navbar-end">
-        <ThemeSwitcher />
+        <ThemeProvider attribute="class">
+          <ThemeSwitcher />
+        </ThemeProvider>
       </div>
     </nav>
   );

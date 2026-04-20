@@ -1,22 +1,28 @@
-import type { Peraturan } from "~/models/peraturan.ts";
 import { Feed } from "feed";
+import { getDB, getFeedListPeraturan } from "@/lib/db";
 
-export const createPeraturanFeed = (list: Peraturan[], origin: string) => {
-  const me = {
-    name: "Sukirno",
-    email: "mblonyox@gmail.com",
-    link: "https://mblonyox.com",
-  };
+const me = {
+  name: "Sukirno",
+  email: "mblonyox@gmail.com",
+  link: "https://mblonyox.com",
+};
+
+const origin = `https://${process.env.HOSTNAME ?? "peraturan.info"}`;
+
+export async function createPeraturanFeed() {
+  const db = await getDB();
+  const list = getFeedListPeraturan(db);
   const feed = new Feed({
     title: "Peraturan.Info Feed",
-    description: "Feed Peraturan Perundang-undangan terbaru " +
+    description:
+      "Feed Peraturan Perundang-undangan terbaru " +
       "yang tersedia di peraturan.info.",
     id: origin + "/",
     link: origin,
     image: origin + "/og-image.png",
     favicon: origin + "/favicon.ico",
     copyright: "@mblonyox",
-    generator: "deno-deploy",
+    generator: "nodejs",
     feedLinks: {
       atom: origin + "/atom.xml",
       json: origin + "/feed.json",
@@ -32,10 +38,8 @@ export const createPeraturanFeed = (list: Peraturan[], origin: string) => {
       content: p.rujukPanjang,
       link: origin + p.path,
       date: p.created_at,
-      author: [
-        me,
-      ],
+      author: [me],
     });
   });
   return feed;
-};
+}
