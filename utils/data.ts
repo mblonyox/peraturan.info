@@ -1,5 +1,5 @@
-import { fileURLToPath } from "node:url";
 import { readFile } from "node:fs/promises";
+import { fileURLToPath } from "node:url";
 
 interface PeraturanId {
   jenis: string;

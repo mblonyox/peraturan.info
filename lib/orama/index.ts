@@ -1,7 +1,7 @@
 import { create, load, type Orama, type RawData } from "@orama/orama";
+import * as dpack from "dpack";
 
 import { getOramaDpackText } from "@/utils/data";
-import * as dpack from "dpack";
 
 const schema = {
   path: "string",

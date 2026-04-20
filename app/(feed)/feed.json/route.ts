@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+
 import { createPeraturanFeed } from "../data";
 
 export async function GET() {

@@ -1,8 +1,9 @@
 import type { Database } from "better-sqlite3";
+
 import {
   Peraturan,
-  type PeraturanRow,
   type PeraturanParams,
+  type PeraturanRow,
   type PuuRef,
 } from "./peraturan";
 

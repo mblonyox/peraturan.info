@@ -1,16 +1,17 @@
 "use client";
 
 import { clsx } from "clsx";
-import Link from "next/link";
 import Image from "next/image";
+import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { ThemeProvider } from "next-themes";
 import { Suspense } from "react";
 
-import SearchInput from "@/components/islands/search_input";
-import ThemeSwitcher from "@/components/islands/theme_switcher";
-import IconMenu from "./icons/menu";
+import SearchInput from "@/components/search_input";
+import ThemeSwitcher from "@/components/theme_switcher";
+
 import IconArrowDown from "./icons/arrow-down";
-import { ThemeProvider } from "next-themes";
+import IconMenu from "./icons/menu";
 
 const menus = [
   { href: "/", text: "Beranda" },

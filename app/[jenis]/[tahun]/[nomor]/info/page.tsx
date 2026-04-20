@@ -1,4 +1,5 @@
 import Image from "next/image";
+
 import { getPeraturanData, type Peraturan } from "../data";
 
 type Props = PageProps<"/[jenis]/[tahun]/[nomor]/info">;

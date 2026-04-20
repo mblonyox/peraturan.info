@@ -1,7 +1,8 @@
 import Comments from "@/components/comments";
-import SocialShareButtons from "@/components/social_share_buttons";
-import Tabs from "@/components/islands/tabs";
 import PageHeading from "@/components/page-heading";
+import SocialShareButtons from "@/components/social_share_buttons";
+import Tabs from "@/components/tabs";
+
 import { getPeraturanData } from "./data";
 
 type Props = LayoutProps<"/[jenis]/[tahun]/[nomor]">;

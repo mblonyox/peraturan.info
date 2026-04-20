@@ -1,3 +1,5 @@
+import { MetadataRoute } from "next";
+
 import { BASE_URL } from "@/lib/constants";
 import {
   getDB,
@@ -7,7 +9,6 @@ import {
 } from "@/lib/db";
 import { createMarked, PeraturanToken } from "@/lib/marked";
 import { getPeraturanMarkdown } from "@/utils/data";
-import { MetadataRoute } from "next";
 
 export async function generateSitemaps() {
   const db = await getDB();

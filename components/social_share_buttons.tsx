@@ -2,10 +2,10 @@
 
 import { useSyncExternalStore } from "react";
 
-import WebShareButton from "@/components/islands/web_share_button";
 import IconLinkedIn from "@/components/icons/linked-in";
 import IconTwitterX from "@/components/icons/twitter-x";
 import IconWhatsApp from "@/components/icons/whatsapp";
+import WebShareButton from "@/components/web_share_button";
 import { ellipsis } from "@/utils/string";
 
 const subscribe = (callback: () => void) => {

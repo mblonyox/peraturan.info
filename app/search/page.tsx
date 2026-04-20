@@ -1,11 +1,11 @@
 import { search } from "@orama/orama";
-import { cache } from "react";
 import { notFound } from "next/navigation";
+import { cache } from "react";
 import { z } from "zod";
 
 import Pagination from "@/components/pagination";
-import { ellipsis } from "@/utils/string";
 import { getOrama } from "@/lib/orama";
+import { ellipsis } from "@/utils/string";
 
 type Props = PageProps<"/search">;
 

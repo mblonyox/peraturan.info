@@ -1,15 +1,15 @@
+import "@/public/peraturan.css";
+
 import { notFound } from "next/navigation";
 
-import PrintButton from "@/components/islands/print_button";
-import IconWarning from "@/components/icons/warning";
 import IconListNested from "@/components/icons/list-nested";
+import IconWarning from "@/components/icons/warning";
+import PrintButton from "@/components/print_button";
 import { createMarked } from "@/lib/marked";
 
 import { getPeraturanData } from "../data";
 import { Nav, NavContextProvider } from "./nav";
 import Outline from "./outline";
-
-import "@/public/peraturan.css";
 
 type Props = LayoutProps<"/[jenis]/[tahun]/[nomor]/[...partials]">;
 

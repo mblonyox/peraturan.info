@@ -1,6 +1,6 @@
-import { getPeraturanData, getRelasiData } from "../data";
-
 import { type Peraturan, type RelasiPeraturan } from "@/lib/db";
+
+import { getPeraturanData, getRelasiData } from "../data";
 
 interface SumberItem {
   nama: string;

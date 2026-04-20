@@ -1,8 +1,8 @@
 "use client";
 
-import { usePathname, useSearchParams } from "next/navigation";
 import { clsx } from "clsx";
 import Link from "next/link";
+import { usePathname, useSearchParams } from "next/navigation";
 
 type PaginationProps = {
   page: number;

@@ -2,6 +2,7 @@ import { ImageResponse } from "next/og";
 
 import logoDataUrl from "@/assets/logo.png";
 import { ellipsis } from "@/utils/string";
+
 import { getPeraturanData } from "./data";
 
 type Props = {

@@ -1,4 +1,5 @@
 import type { Database } from "better-sqlite3";
+
 import type { PeraturanParams, PuuRef } from "./peraturan";
 
 export type SumberPeraturan = {

@@ -1,8 +1,9 @@
 "use client";
 
-import { themeOptions } from "@/utils/theme";
-import { useEffect } from "react";
 import { useTheme } from "next-themes";
+import { useEffect } from "react";
+
+import { themeOptions } from "@/utils/theme";
 
 export default function ThemeSwitcher() {
   const { theme, setTheme } = useTheme();

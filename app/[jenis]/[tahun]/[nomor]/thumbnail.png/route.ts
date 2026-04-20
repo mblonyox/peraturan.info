@@ -1,5 +1,5 @@
-import { type NextRequest, NextResponse } from "next/server";
 import { notFound } from "next/navigation";
+import { type NextRequest, NextResponse } from "next/server";
 
 import { getPeraturanData } from "../data";
 

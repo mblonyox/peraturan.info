@@ -3,8 +3,9 @@ import { cache } from "react";
 
 import { createMarked, type PeraturanToken } from "@/lib/marked";
 import { ellipsis } from "@/utils/string";
-import { SetNav } from "./nav";
+
 import { getPeraturanData } from "../data";
+import { SetNav } from "./nav";
 
 interface Data {
   html: string;
