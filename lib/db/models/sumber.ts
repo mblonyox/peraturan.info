@@ -1,5 +1,4 @@
-import type { Database } from "better-sqlite3";
-
+import type { DB } from "@mainframe-api/deno-sqlite";
 import type { PeraturanParams, PuuRef } from "./peraturan";
 
 export type SumberPeraturan = {
@@ -11,12 +10,9 @@ export type SumberPeraturan = {
 };
 
 export const getSumberPeraturan = (
-  db: Database,
+  db: DB,
   { jenis, tahun, nomor }: PeraturanParams,
 ) =>
-  db
-    .prepare<
-      unknown[],
-      SumberPeraturan
-    >(`SELECT * FROM sumber WHERE puu = :key`)
-    .all({ key: `${jenis}/${tahun}/${nomor}` });
+  db.queryEntries<SumberPeraturan>(`SELECT * FROM sumber WHERE puu = :key`, [
+    `${jenis}/${tahun}/${nomor}`,
+  ]);
