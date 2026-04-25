@@ -13,7 +13,7 @@ export default function Error({
     <article className="my-8 flex flex-col gap-2">
       <hgroup className="text-center">
         <h2 className="font-bold text-2xl">Error</h2>
-        <p className="text-lg">
+        <p className="text-lg break-all">
           Terjadi kesalahan : <code>{error.message}</code>
         </p>
       </hgroup>
@@ -24,14 +24,14 @@ export default function Error({
           </div>
         </div>
       </div>
-      <div className="w-full text-center">
-        <Link href="/" className="btn btn-outline-secondary mx-auto">
+      <div className="w-full flex flex-row gap-2 justify-center">
+        <Link href="/" className="btn btn-outline-secondary">
           Kembali ke beranda
         </Link>
         <button
           type="button"
           onClick={unstable_retry}
-          className="btn btn-outline-secondary mx-auto"
+          className="btn btn-outline-secondary"
         >
           Coba lagi
         </button>

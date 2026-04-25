@@ -4,20 +4,14 @@ import { join } from "node:path";
 import { ImageResponse } from "next/og";
 
 import { BASE_URL } from "@/lib/constants";
-import { ellipsis } from "@/utils/string";
 
-import { getPeraturanData } from "./data";
-
-type Props = {
-  params: Promise<{
-    jenis: string;
-    tahun: string;
-    nomor: string;
-  }>;
+export const alt = "Peraturan.Info";
+export const size = {
+  width: 1200,
+  height: 630,
 };
 
-export default async function Image({ params }: Props) {
-  const { peraturan } = await getPeraturanData(await params);
+export default async function Image() {
   const logo = await readFile(join(process.cwd(), "assets/logo.png"))
     .then((buffer) => buffer.toString("base64"))
     .then((base64) => `data:image/png;base64,${base64}`);
@@ -47,25 +41,27 @@ export default async function Image({ params }: Props) {
       />
       <div
         style={{
+          fontSize: 64,
+          fontWeight: "bold",
           marginLeft: "10%",
           marginRight: "10%",
+          color: "#ffffff",
+        }}
+      >
+        Peraturan.Info
+      </div>
+      <div
+        style={{
           fontSize: 32,
-          fontWeight: "bold",
+          marginLeft: "10%",
+          marginRight: "10%",
           color: "#ffffff",
           lineClamp: 3,
         }}
       >
-        {ellipsis(peraturan.judul, 200)}
-      </div>
-      <div
-        style={{
-          fontSize: 48,
-          marginLeft: "10%",
-          marginRight: "10%",
-          color: "#ffffff",
-        }}
-      >
-        {peraturan.rujukPendek}
+        Peraturan.Info adalah upaya untuk meningkatkan cara penyajian peraturan
+        perundang-undangan di Indonesia sehingga lebih user-friendly yang
+        terinspirasi dari legislation.gov.uk.
       </div>
       <div
         style={{
@@ -74,7 +70,7 @@ export default async function Image({ params }: Props) {
           color: "#ffffff",
         }}
       >
-        {new URL(peraturan.path, BASE_URL).href}
+        {BASE_URL}
       </div>
     </div>,
   );
