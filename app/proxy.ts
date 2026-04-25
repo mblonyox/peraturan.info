@@ -1,10 +1,10 @@
 import { NextRequest, NextResponse } from "next/server";
 
 export function proxy(request: NextRequest) {
-  const hostname = process.env.HOSTNAME;
-  if (hostname && request.nextUrl.hostname !== hostname) {
+  const canonicalHostname = process.env.CANONICAL_HOSTNAME;
+  if (canonicalHostname && request.nextUrl.hostname !== canonicalHostname) {
     const url = new URL(request.nextUrl);
-    url.hostname = hostname;
+    url.hostname = canonicalHostname;
     return NextResponse.redirect(url, 301);
   }
   return NextResponse.next();
