@@ -1,16 +1,15 @@
-import { Buffer } from "node:buffer";
-
-import DB, { type Database } from "better-sqlite3";
+import { DB } from "@mainframe-api/deno-sqlite";
 
 import { getDatabaseBytes } from "@/utils/data";
 
-let db: Database | undefined;
+let db: DB | undefined;
 
 export async function getDB() {
   if (!db) {
     const dbBytes = await getDatabaseBytes();
     if (!dbBytes) throw new Error("Database tidak ditemukan.");
-    db = new DB(Buffer.from(dbBytes));
+    db = new DB();
+    db.deserialize(dbBytes, { mode: "read" });
   }
   return db;
 }

@@ -1,5 +1,4 @@
-import type { Database } from "better-sqlite3";
-
+import type { DB } from "@mainframe-api/deno-sqlite";
 import {
   Peraturan,
   type PeraturanParams,
@@ -26,14 +25,13 @@ export type RelasiPeraturan = {
 };
 
 export const getRelasiPeraturan1 = (
-  db: Database,
+  db: DB,
   { jenis, tahun, nomor }: PeraturanParams,
 ) =>
   db
-    .prepare<unknown[], RelasiPeraturan & PeraturanRow>(
-      `SELECT * FROM relasi LEFT JOIN peraturan ON relasi.puu2 = peraturan.jenis || '/' || peraturan.tahun || '/' || peraturan.nomor WHERE puu1 = :key`,
-    )
-    .all({ key: `${jenis}/${tahun}/${nomor}` })
+    .queryEntries<
+      RelasiPeraturan & PeraturanRow
+    >(`SELECT * FROM relasi LEFT JOIN peraturan ON relasi.puu2 = peraturan.jenis || '/' || peraturan.tahun || '/' || peraturan.nomor WHERE puu1 = :key`, [`${jenis}/${tahun}/${nomor}`])
     .map(({ id, relasi, catatan, ...row }) => ({
       id,
       relasi,
@@ -42,14 +40,13 @@ export const getRelasiPeraturan1 = (
     }));
 
 export const getRelasiPeraturan2 = (
-  db: Database,
+  db: DB,
   { jenis, tahun, nomor }: PeraturanParams,
 ) =>
   db
-    .prepare<unknown[], RelasiPeraturan & PeraturanRow>(
-      `SELECT * FROM relasi LEFT JOIN peraturan ON relasi.puu1 = peraturan.jenis || '/' || peraturan.tahun || '/' || peraturan.nomor WHERE puu2 = :key`,
-    )
-    .all({ key: `${jenis}/${tahun}/${nomor}` })
+    .queryEntries<
+      RelasiPeraturan & PeraturanRow
+    >(`SELECT * FROM relasi LEFT JOIN peraturan ON relasi.puu1 = peraturan.jenis || '/' || peraturan.tahun || '/' || peraturan.nomor WHERE puu2 = :key`, [`${jenis}/${tahun}/${nomor}`])
     .map(({ id, relasi, catatan, ...row }) => ({
       id,
       relasi,

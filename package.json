@@ -10,9 +10,9 @@
     "fmt": "prettier --write ."
   },
   "dependencies": {
-    "@orama/orama": "2.1.1",
-    "@orama/plugin-data-persistence": "2.1.1",
-    "better-sqlite3": "^12.9.0",
+    "@mainframe-api/deno-sqlite": "jsr:^3.9.1",
+    "@orama/orama": "^2.1.1",
+    "@orama/plugin-data-persistence": "^2.1.1",
     "clsx": "^2.1.1",
     "dpack": "^0.6.22",
     "feed": "^5.2.1",
