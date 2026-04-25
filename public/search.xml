@@ -7,7 +7,7 @@
   <Tags>peraturan puu uu perpu pp perpres</Tags>
   <Image width="16" height="16" type="image/x-icon">https://peraturan.info/favicon.ico</Image>
   <Url type="text/html" template="https://peraturan.info/search?query={searchTerms}&amp;page={startPage?}"/>
-  <Url type="application/x-suggestions+json" template="https://peraturan.info/api/autocomple?query={searchTerms}"/>
+  <Url type="application/x-suggestions+json" template="https://peraturan.info/api/autocomplete?query={searchTerms}"/>
   <Query role="example" searchTerms="uu" />
   <InputEncoding>UTF-8</InputEncoding>
   <OutputEncoding>UTF-8</OutputEncoding>

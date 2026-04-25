@@ -30,6 +30,15 @@ const nextConfig: NextConfig = {
           },
         ],
       },
+      {
+        source: "/search.xml",
+        headers: [
+          {
+            key: "Content-Type",
+            value: "application/opensearchdescription+xml",
+          },
+        ],
+      },
     ];
   },
   rewrites() {

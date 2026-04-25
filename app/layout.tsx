@@ -18,12 +18,27 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
+  metadataBase: BASE_URL,
   title: {
     default: "Peraturan.Info",
     template: "%s | Peraturan.Info",
   },
-  description: "",
-  metadataBase: BASE_URL,
+  description:
+    "Peraturan.Info adalah upaya untuk meningkatkan cara penyajian peraturan perundang-undangan di Indonesia sehingga lebih user-friendly yang terinspirasi dari legislation.gov.uk.",
+  applicationName: "Peraturan.Info",
+  keywords: [
+    "hukum",
+    "peraturan",
+    "perundang-undangan",
+    "Indonesia",
+    "UU",
+    "PERPU",
+    "PP",
+    "PERPRES",
+  ],
+  authors: [{ name: "Sukirno", url: "https://mblonyox.com" }],
+  creator: "Sukirno",
+  publisher: "Peraturan.Info",
   alternates: {
     types: {
       "application/atom+xml": "/atom.xml",
@@ -44,6 +59,14 @@ export default function RootLayout({
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
       suppressHydrationWarning
     >
+      <head>
+        <link
+          rel="search"
+          type="application/opensearchdescription+xml"
+          title="Peraturan.Info Search"
+          href="/search.xml"
+        />
+      </head>
       <body className="min-w-sm min-h-screen flex flex-col justify-between">
         <LayoutNavbar />
         <main className="flex-1">{children}</main>
