@@ -14,7 +14,8 @@ import Outline from "./outline";
 type Props = LayoutProps<"/[jenis]/[tahun]/[nomor]/[...partials]">;
 
 export default async function Layout({ children, params }: Props) {
-  const { peraturan, md } = await getPeraturanData(await params);
+  const { jenis, tahun, nomor } = await params;
+  const { peraturan, md } = await getPeraturanData({ jenis, tahun, nomor });
   if (!md) notFound();
 
   const tokens = createMarked().lexer(md);

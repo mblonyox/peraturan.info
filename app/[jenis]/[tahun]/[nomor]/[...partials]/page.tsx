@@ -201,10 +201,9 @@ function handleBukuPartial(md: string, partials: string[]) {
 }
 
 const generateData = cache(async (props: Props): Promise<Data> => {
-  const params = await props.params;
-  const { md } = await getPeraturanData(params);
+  const { jenis, tahun, nomor, partials } = await props.params;
+  const { md } = await getPeraturanData({ jenis, tahun, nomor });
   if (!md) notFound();
-  const partials = params.partials;
   return (
     handleIsi(md, partials) ??
     handleRootPartial(md, partials) ??
