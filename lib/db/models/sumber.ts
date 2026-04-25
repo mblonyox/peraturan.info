@@ -1,4 +1,5 @@
 import type { DB } from "@mainframe-api/deno-sqlite";
+
 import type { PeraturanParams, PuuRef } from "./peraturan";
 
 export type SumberPeraturan = {

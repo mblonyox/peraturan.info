@@ -9,14 +9,9 @@ import {
   getRelasiPeraturan1,
   getRelasiPeraturan2,
   getSumberPeraturan,
+  type PeraturanParams,
 } from "@/lib/db";
 import { getPeraturanMarkdown, getPeraturanThumbnail } from "@/utils/data";
-
-type PeraturanParams = {
-  jenis: string;
-  tahun: string;
-  nomor: string;
-};
 
 export const getPeraturanData = cache(async (params: PeraturanParams) => {
   const db = await getDB();

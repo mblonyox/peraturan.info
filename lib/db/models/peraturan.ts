@@ -11,9 +11,9 @@ export const JENIS2_PERATURAN = [
 export type JenisPeraturan = (typeof JENIS2_PERATURAN)[number];
 
 export type PeraturanParams = {
-  jenis: JenisPeraturan;
-  tahun: number;
-  nomor: number;
+  jenis: string;
+  tahun: string;
+  nomor: string;
 };
 
 export const NAMA2_JENIS: Record<

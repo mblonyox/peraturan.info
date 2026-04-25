@@ -6,8 +6,10 @@
     "dev": "next dev",
     "build": "next build --experimental-build-mode compile",
     "start": "next start",
+    "checks": "pnpm typecheck && pnpm lint && pnpm fmt",
     "lint": "eslint --fix .",
-    "fmt": "prettier --write ."
+    "fmt": "prettier --write .",
+    "typecheck": "pnpm tsc --noEmit"
   },
   "dependencies": {
     "@mainframe-api/deno-sqlite": "jsr:^3.9.1",
