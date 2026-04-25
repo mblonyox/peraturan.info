@@ -192,7 +192,7 @@ function handleBukuPartial(md: string, partials: string[]) {
         };
       }
     }
-    tokens = token.tokens!;
+    tokens = token.tokens ?? [];
   }
   if (!token?.nomor) notFound();
   const html = marked.parser([token as PeraturanToken]);

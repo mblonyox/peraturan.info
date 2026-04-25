@@ -1,4 +1,4 @@
-import type { DB, QueryParameter } from "@mainframe-api/deno-sqlite";
+import type { DB, QueryParameter, RowObject } from "@mainframe-api/deno-sqlite";
 
 export const JENIS2_PERATURAN = [
   "uu",
@@ -10,11 +10,11 @@ export const JENIS2_PERATURAN = [
 
 export type JenisPeraturan = (typeof JENIS2_PERATURAN)[number];
 
-export type PeraturanParams = {
+export interface PeraturanParams extends Record<string, QueryParameter> {
   jenis: string;
   tahun: string;
   nomor: string;
-};
+}
 
 export const NAMA2_JENIS: Record<
   JenisPeraturan | string,
@@ -30,7 +30,7 @@ export const NAMA2_JENIS: Record<
   permenkeu: { pendek: "PMK", panjang: "Peraturan Menteri Keuangan" },
 };
 
-export type PeraturanRow = {
+export interface PeraturanRow extends RowObject {
   jenis: string;
   tahun: string;
   nomor: string;
@@ -40,7 +40,7 @@ export type PeraturanRow = {
   tanggal_berlaku: string;
   nomor_text: string;
   created_at: string;
-};
+}
 
 export class Peraturan {
   jenis: JenisPeraturan;
@@ -116,15 +116,10 @@ export class Peraturan {
 
 export type PuuRef = `${JenisPeraturan}/${number}/${number}`;
 
-function buildWhereClause({ ...params }: Record<string, unknown>) {
-  (Object.keys(params) as Array<keyof typeof params>).forEach((key) => {
-    if (!params[key]) {
-      delete params[key];
-    }
-  });
-  const conditions = Object.keys(params)
-    .map((key) => `${key} = :${key}`)
-    .join(" AND ");
+function buildWhereClause(inputs: Record<string, unknown>) {
+  const keys = Object.keys(inputs).filter((key) => inputs[key]);
+  const conditions = keys.map((key) => `${key} = :${key}`).join(" AND ");
+  const params = Object.fromEntries(keys.map((key) => [key, inputs[key]]));
   return {
     whereClause: conditions ? ` WHERE ${conditions}` : "",
     whereParams: params as Record<string, QueryParameter>,

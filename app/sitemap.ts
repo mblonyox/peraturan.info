@@ -106,8 +106,8 @@ function getPartialPaths(md: string): string[] {
       path += "/" + token.nomor?.toLowerCase().replace(" ", "-");
       return [
         path,
-        ...token
-          .tokens!.map((token) => getSubPaths(token as PeraturanToken, path))
+        ...(token.tokens ?? [])
+          .map((token) => getSubPaths(token as PeraturanToken, path))
           .flat(),
       ];
     }
@@ -115,8 +115,8 @@ function getPartialPaths(md: string): string[] {
       path = "/" + token.nomor?.toLowerCase().replace(" ", "-");
       return [
         path,
-        ...token
-          .tokens!.map((token) => getSubPaths(token as PeraturanToken, path))
+        ...(token.tokens ?? [])
+          .map((token) => getSubPaths(token as PeraturanToken, path))
           .flat(),
       ];
     }

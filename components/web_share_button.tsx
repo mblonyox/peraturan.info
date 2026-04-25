@@ -4,11 +4,11 @@ import { type MouseEventHandler, useCallback } from "react";
 
 import IconShare from "@/components/icons/share";
 
-type Props = {
+interface Props {
   title: string;
   description: string;
   url: string;
-};
+}
 
 export default function WebShareButton({ title, description, url }: Props) {
   const onClickShare = useCallback<MouseEventHandler>(

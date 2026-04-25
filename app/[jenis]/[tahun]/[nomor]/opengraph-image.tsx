@@ -8,13 +8,13 @@ import { ellipsis } from "@/utils/string";
 
 import { getPeraturanData } from "./data";
 
-type Props = {
+interface Props {
   params: Promise<{
     jenis: string;
     tahun: string;
     nomor: string;
   }>;
-};
+}
 
 export default async function Image({ params }: Props) {
   const { peraturan } = await getPeraturanData(await params);

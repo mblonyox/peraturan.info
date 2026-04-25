@@ -8,7 +8,7 @@ interface PeraturanId {
 }
 
 const notFounds = new Set<string>();
-const dataUrl = process.env.DATA_URL!;
+const dataUrl = process.env.DATA_URL;
 
 if (!dataUrl) throw new Error("DATA_URL is not defined");
 

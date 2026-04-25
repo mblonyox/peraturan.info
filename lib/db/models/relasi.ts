@@ -17,13 +17,13 @@ export const JENIS2_RELASI = [
 
 export type JenisRelasi = (typeof JENIS2_RELASI)[number];
 
-export type RelasiPeraturan = {
+export interface RelasiPeraturan {
   id: number;
   puu1: PuuRef;
   relasi: JenisRelasi;
   puu2: PuuRef;
   catatan: string;
-};
+}
 
 export const getRelasiPeraturan1 = (
   db: DB,
