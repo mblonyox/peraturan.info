@@ -7,7 +7,7 @@ export default function Comments() {
         <h2 className="card-title text-2xl">Komentar!</h2>
         <div
           id="mouthful-comments"
-          data-url="https://mouthful.inoxsegar.com"
+          data-url="/api/mouthful"
           data-domain="peraturan.info"
         />
         <Script src="/mouthful-client.js" />

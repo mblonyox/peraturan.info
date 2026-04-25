@@ -32,6 +32,14 @@ const nextConfig: NextConfig = {
       },
     ];
   },
+  rewrites() {
+    return [
+      {
+        source: "/api/mouthful/:path*",
+        destination: `${process.env.MOUTHFUL_URL}/:path*`,
+      },
+    ];
+  },
 };
 
 export default nextConfig;
