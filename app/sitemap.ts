@@ -13,23 +13,48 @@ import { getPeraturanMarkdown } from "@/utils/data";
 export async function generateSitemaps() {
   const db = await getDB();
   const jenis = getFilterByJenisCount(db, {});
-  return jenis.flatMap((j) => {
-    const tahun = getFilterByTahunCount(db, { jenis: j.jenis });
-    return tahun.map((t) => ({ id: `${j.jenis}-${t.tahun}` }));
-  });
+  return jenis
+    .flatMap((j) => {
+      const tahun = getFilterByTahunCount(db, { jenis: j.jenis });
+      return tahun.map((t) => ({ id: `${j.jenis}-${t.tahun}` }));
+    })
+    .concat({ id: "root" });
 }
 
 export default async function sitemap(props: {
   id: Promise<string>;
 }): Promise<MetadataRoute.Sitemap> {
   const id = await props.id;
+  if (id === "root") return generateRootItems();
   const [jenis, tahun] = id.split("-");
   return Array.fromAsync(generateItems(jenis, tahun));
 }
 
 type SitemapItem = MetadataRoute.Sitemap[number];
 
-async function* generateItems(jenis: string, tahun: string) {
+function generateRootItems() {
+  const items: SitemapItem[] = [
+    {
+      url: BASE_URL,
+      lastModified: new Date().toISOString(),
+      changeFrequency: "daily",
+      priority: 1.0,
+    },
+    {
+      url: `${BASE_URL}/terbaru`,
+      lastModified: new Date().toISOString(),
+      changeFrequency: "daily",
+      priority: 0.9,
+    },
+  ];
+
+  return items;
+}
+
+async function* generateItems(
+  jenis: string,
+  tahun: string,
+): AsyncGenerator<SitemapItem> {
   const db = await getDB();
   const { hasil } = getListPeraturan(db, { jenis, tahun, pageSize: 1e4 });
   for (const p of hasil) {
