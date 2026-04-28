@@ -70,11 +70,10 @@ jobs:
       - name: Build step
         run: pnpm build
 
-      - name: Copy public folder
-        run: cp -r public .next/standalone/
-
-      - name: Copy static folder
-        run: cp -r .next/static .next/standalone/.next/
+      - name: Copy public & static folder
+        run: |
+          cp -r public .next/standalone/public
+          cp -r .next/static .next/standalone/.next/static
 
       - name: Upload artifact
         uses: actions/upload-artifact@v6
