@@ -1,0 +1,70 @@
+name: Snapshot Workflow
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  checks:
+    name: Checks Types, Linting and Formatting
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os:
+          - ubuntu-latest
+          - macos-latest
+          - windows-latest
+        include:
+          - os: ubuntu-latest
+            cache_path: ~/.cache/deno/
+          - os: macos-latest
+            cache_path: ~/Library/Caches/deno/
+          - os: windows-latest
+            cache_path: ~\AppData\Local\deno\
+
+    steps:
+      - name: Setup repo
+        uses: actions/checkout@v6
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v6
+        with:
+          version: 10
+          cache: true
+
+      - name: Install dependencies
+        run: pnpm install
+
+      - name: Run check
+        run: deno task check
+
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Setup repo
+        uses: actions/checkout@v6
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v6
+        with:
+          version: 10
+          cache: true
+
+      - name: Install dependencies
+        run: pnpm install
+
+      - name: Build step
+        run: pnpm build
+
+      - name: Copy public & static to server
+        run: cp -r public .next/standalone/ && cp -r .next/static .next/standalone/.next
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v6
+        with:
+          name: snapshot
+          path: .next/standalone
