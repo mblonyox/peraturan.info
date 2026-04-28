@@ -1,4 +1,4 @@
-import type { DB, QueryParameter, RowObject } from "@mainframe-api/deno-sqlite";
+import type { Database } from "better-sqlite3";
 
 export const JENIS2_PERATURAN = [
   "uu",
@@ -9,12 +9,6 @@ export const JENIS2_PERATURAN = [
 ] as const;
 
 export type JenisPeraturan = (typeof JENIS2_PERATURAN)[number];
-
-export interface PeraturanParams extends Record<string, QueryParameter> {
-  jenis: string;
-  tahun: string;
-  nomor: string;
-}
 
 export const NAMA2_JENIS: Record<
   JenisPeraturan | string,
@@ -30,7 +24,7 @@ export const NAMA2_JENIS: Record<
   permenkeu: { pendek: "PMK", panjang: "Peraturan Menteri Keuangan" },
 };
 
-export interface PeraturanRow extends RowObject {
+export interface PeraturanRow {
   jenis: string;
   tahun: string;
   nomor: string;
@@ -116,18 +110,17 @@ export class Peraturan {
 
 export type PuuRef = `${JenisPeraturan}/${number}/${number}`;
 
-function buildWhereClause(inputs: Record<string, unknown>) {
-  const keys = Object.keys(inputs).filter((key) => inputs[key]);
+function buildWhereClause({ ...params }: Record<string, unknown>) {
+  const keys = Object.keys(params).filter((k) => params[k]);
   const conditions = keys.map((key) => `${key} = :${key}`).join(" AND ");
-  const params = Object.fromEntries(keys.map((key) => [key, inputs[key]]));
   return {
     whereClause: conditions ? ` WHERE ${conditions}` : "",
-    whereParams: params as Record<string, QueryParameter>,
+    whereParams: Object.fromEntries(keys.map((k) => [k, params[k]])),
   };
 }
 
 export const getListPeraturan = (
-  db: DB,
+  db: Database,
   {
     jenis,
     tahun,
@@ -145,68 +138,86 @@ export const getListPeraturan = (
   const pageSize = pageSizeParam ?? 10;
   const limit = pageSize;
   const offset = (page - 1) * pageSize;
-  const rows = db.queryEntries<PeraturanRow>(
-    `SELECT * FROM peraturan ${whereClause} ORDER BY tahun DESC, nomor DESC LIMIT :limit  OFFSET :offset`,
-    { ...whereParams, limit, offset },
-  );
-  const hasil = rows.map((row) => new Peraturan(row));
-  const [[total]] = db.query<number[]>(
-    `SELECT COUNT(*) FROM peraturan ${whereClause}`,
-    whereParams,
-  );
+  const hasil = db
+    .prepare<unknown[], PeraturanRow>(
+      `SELECT * FROM peraturan ${whereClause} ORDER BY tahun DESC, nomor DESC LIMIT :limit OFFSET :offset`,
+    )
+    .all({ ...whereParams, limit, offset })
+    .map((row) => new Peraturan(row));
+  const { total } = db
+    .prepare<
+      unknown[],
+      { total: number }
+    >(`SELECT COUNT(*) AS total FROM peraturan ${whereClause}`)
+    .get(whereParams) ?? { total: 0 };
   return { total, hasil, page, pageSize };
 };
 
 export const getFilterByJenisCount = (
-  db: DB,
+  db: Database,
   params: { jenis?: string; tahun?: string },
 ) => {
   const { whereClause, whereParams } = buildWhereClause(params);
-  return db.queryEntries<{ jenis: string; jumlah: number }>(
-    `SELECT jenis, count(*) AS jumlah FROM peraturan ${whereClause} GROUP BY jenis`,
-    whereParams,
-  );
+  return db
+    .prepare<
+      unknown[],
+      { jenis: string; jumlah: number }
+    >(`SELECT jenis, count(*) AS jumlah FROM peraturan ${whereClause} GROUP BY jenis`)
+    .all(whereParams);
 };
 
 export const getFilterByTahunCount = (
-  db: DB,
+  db: Database,
   params: { jenis?: string; tahun?: string },
 ) => {
   const { whereClause, whereParams } = buildWhereClause(params);
-  return db.queryEntries<{ tahun: number; jumlah: number }>(
-    `SELECT tahun, count(*) AS jumlah FROM peraturan ${whereClause} GROUP BY tahun ORDER BY tahun DESC`,
-    whereParams,
-  );
+  return db
+    .prepare<
+      unknown[],
+      { tahun: number; jumlah: number }
+    >(`SELECT tahun, count(*) AS jumlah FROM peraturan ${whereClause} GROUP BY tahun ORDER BY tahun DESC`)
+    .all(whereParams);
 };
 
-export const getPeraturan = (db: DB, params: PeraturanParams) => {
-  const [row] = db.queryEntries<PeraturanRow>(
-    `SELECT * FROM peraturan WHERE jenis = :jenis AND tahun = :tahun AND nomor = :nomor`,
-    params,
-  );
+export interface PeraturanParams {
+  jenis: string;
+  tahun: string;
+  nomor: string;
+}
+
+export const getPeraturan = (db: Database, params: PeraturanParams) => {
+  const row = db
+    .prepare<
+      unknown[],
+      PeraturanRow
+    >(`SELECT * FROM peraturan WHERE jenis = :jenis AND tahun = :tahun AND nomor = :nomor`)
+    .get(params);
   if (row) return new Peraturan(row);
   return null;
 };
 
-export const getTanggalTerakhir = (db: DB) =>
-  db.queryEntries<{ tanggal: string; jumlah: number }>(
-    `SELECT tanggal_diundangkan tanggal, count() jumlah FROM peraturan GROUP BY tanggal_diundangkan ORDER BY tanggal_diundangkan DESC LIMIT 5`,
-  );
+export const getTanggalTerakhir = (db: Database) =>
+  db
+    .prepare<
+      unknown[],
+      { tanggal: string; jumlah: number }
+    >(`SELECT tanggal_diundangkan tanggal, count() jumlah FROM peraturan GROUP BY tanggal_diundangkan ORDER BY tanggal_diundangkan DESC LIMIT 5`)
+    .all();
 
-export const getListPeraturanByTanggal = (db: DB, tanggal: string) => {
+export const getListPeraturanByTanggal = (db: Database, tanggal: string) => {
   const { whereClause, whereParams } = buildWhereClause({
     tanggal_diundangkan: tanggal,
   });
-  const rows = db.queryEntries<PeraturanRow>(
-    `SELECT * FROM peraturan ${whereClause}`,
-    { ...whereParams },
-  );
-  return rows.map((row) => new Peraturan(row));
+  return db
+    .prepare<unknown[], PeraturanRow>(`SELECT * FROM peraturan ${whereClause}`)
+    .all(whereParams)
+    .map((row) => new Peraturan(row));
 };
 
-export const getFeedListPeraturan = (db: DB) => {
-  const rows = db.queryEntries<PeraturanRow>(
-    "SELECT * FROM peraturan ORDER BY created_at DESC, tanggal_diundangkan DESC LIMIT 15",
-  );
-  return rows.map((row) => new Peraturan(row));
-};
+export const getFeedListPeraturan = (db: Database) =>
+  db
+    .prepare<unknown[], PeraturanRow>(
+      "SELECT * FROM peraturan ORDER BY created_at DESC, tanggal_diundangkan DESC LIMIT 15",
+    )
+    .all()
+    .map((row) => new Peraturan(row));

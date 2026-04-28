@@ -1,8 +1,8 @@
-import type { DB, RowObject } from "@mainframe-api/deno-sqlite";
+import type { Database } from "better-sqlite3";
 
 import type { PeraturanParams, PuuRef } from "./peraturan";
 
-interface SumberPeraturanRow extends RowObject {
+export interface SumberPeraturan {
   id: number;
   puu: PuuRef;
   nama: string;
@@ -11,9 +11,12 @@ interface SumberPeraturanRow extends RowObject {
 }
 
 export const getSumberPeraturan = (
-  db: DB,
+  db: Database,
   { jenis, tahun, nomor }: PeraturanParams,
 ) =>
-  db.queryEntries<SumberPeraturanRow>(`SELECT * FROM sumber WHERE puu = :key`, [
-    `${jenis}/${tahun}/${nomor}`,
-  ]);
+  db
+    .prepare<
+      unknown[],
+      SumberPeraturan
+    >(`SELECT * FROM sumber WHERE puu = :key`)
+    .all({ key: `${jenis}/${tahun}/${nomor}` });
