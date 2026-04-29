@@ -15,18 +15,23 @@ interface PeraturanId {
 
 const DEFAULT_LOCAL_DATA_URL = "../data-peraturan";
 const DEFAULT_REMOTE_DATA_URL =
-  "https://raw.githubusercontent.com/mblonyox/data-peraturan/refs/heads/main";
+  "https://raw.githubusercontent.com/mblonyox/data-peraturan/refs/heads/main/";
 
 const localDataUrl = process.env.LOCAL_DATA_URL ?? DEFAULT_LOCAL_DATA_URL;
 const remoteDataUrl = process.env.REMOTE_DATA_URL ?? DEFAULT_REMOTE_DATA_URL;
 
-async function readOrFetch(path: string) {
+function readOrFetch(path: string): Promise<ArrayBuffer | null>;
+function readOrFetch(path: string, text: true): Promise<string | null>;
+async function readOrFetch(
+  path: string,
+  text?: boolean,
+): Promise<ArrayBuffer | string | null> {
   const localPath = join(localDataUrl, path);
   const file = await readFile(localPath).catch(() => null);
-  if (file) return file.buffer;
+  if (file) return text ? file.toString() : file.buffer;
   const url = new URL(path, remoteDataUrl);
   const response = await fetch(url);
-  if (response.ok) return response.arrayBuffer();
+  if (response.ok) return text ? response.text() : response.arrayBuffer();
   return null;
 }
 
@@ -37,7 +42,7 @@ export async function getDatabaseBytes() {
 
 export async function getOramaDpackText() {
   const path = "orama.dpack";
-  return readOrFetch(path).catch(() => null);
+  return readOrFetch(path, true).catch(() => null);
 }
 
 export async function getPeraturanMarkdown({
@@ -46,7 +51,7 @@ export async function getPeraturanMarkdown({
   nomor,
 }: PeraturanId) {
   const path = [jenis, tahun, nomor, "fulltext.md"].join("/");
-  return readOrFetch(path).catch(() => null);
+  return readOrFetch(path, true).catch(() => null);
 }
 
 export async function getPeraturanThumbnail({
