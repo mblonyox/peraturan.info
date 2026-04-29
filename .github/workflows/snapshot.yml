@@ -28,14 +28,12 @@ jobs:
       - name: Setup repo
         uses: actions/checkout@v6
 
-      - name: Setup pnpm
+      - name: Setup pnpm and install dependencies
         uses: pnpm/action-setup@v6
         with:
           version: 10
           cache: true
-
-      - name: Install dependencies
-        run: pnpm install
+          run_install: true
 
       - name: Generate Types
         run: pnpm next typegen
@@ -51,14 +49,13 @@ jobs:
       - name: Setup repo
         uses: actions/checkout@v6
 
-      - name: Setup pnpm
+      - name: Setup pnpm and install dependencies
         uses: pnpm/action-setup@v6
         with:
           version: 10
           cache: true
-
-      - name: Install dependencies
-        run: pnpm install
+          run_install: |
+            - args: ["--config.node-linker=hoisted"]
 
       - name: Use cache
         uses: actions/cache@v5
