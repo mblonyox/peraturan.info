@@ -96,7 +96,6 @@ jobs:
         uses: actions/download-artifact@v8
         with:
           name: snapshot
-          path: snapshot
 
       - name: Deploy to server
         uses: appleboy/scp-action@v1
@@ -104,5 +103,4 @@ jobs:
           host: ${{ secrets.DEPLOY_HOST }}
           username: ${{ secrets.DEPLOY_USERNAME }}
           key: ${{ secrets.DEPLOY_KEY }}
-          source: snapshot/*
           target: ${{ secrets.DEPLOY_PATH }}
