@@ -49,19 +49,20 @@ jobs:
       - name: Setup repo
         uses: actions/checkout@v6
 
-      - name: Setup pnpm and install dependencies
+      - name: Setup pnpm
         uses: pnpm/action-setup@v6
         with:
           version: 10
           cache: true
-          run_install: |
-            - args: ["--config.node-linker=hoisted"]
 
       - name: Setup Node.js
         uses: actions/setup-node@v6
         with:
           node-version: 22
-          cache: "pnpm"
+          cache: pnpm
+
+      - name: Install dependencies
+        run: pnpm install --config.node-linker=hoisted
 
       - name: Use cache
         uses: actions/cache@v5
