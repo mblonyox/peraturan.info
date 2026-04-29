@@ -1,5 +1,5 @@
 import { readFile } from "node:fs/promises";
-import { fileURLToPath } from "node:url";
+import { join } from "node:path";
 
 import { NodeFetchCache } from "node-fetch-cache";
 
@@ -13,44 +13,31 @@ interface PeraturanId {
   nomor: string | number;
 }
 
-const dataUrl = process.env.DATA_URL;
+const DEFAULT_LOCAL_DATA_URL = "../data-peraturan";
+const DEFAULT_REMOTE_DATA_URL =
+  "https://raw.githubusercontent.com/mblonyox/data-peraturan/refs/heads/main";
 
-if (!dataUrl) throw new Error("DATA_URL is not defined");
+const localDataUrl = process.env.LOCAL_DATA_URL ?? DEFAULT_LOCAL_DATA_URL;
+const remoteDataUrl = process.env.REMOTE_DATA_URL ?? DEFAULT_REMOTE_DATA_URL;
 
-function isFileUrl(url: string): boolean {
-  return url.startsWith("file://");
-}
-
-async function readFileUrl(url: string) {
-  const buffer = await readFile(fileURLToPath(url));
-  return new Response(buffer);
-}
-
-async function cachedFetch(url: string) {
-  if (isFileUrl(url)) return readFileUrl(url);
+async function readOrFetch(path: string) {
+  const localPath = join(localDataUrl, path);
+  const file = await readFile(localPath).catch(() => null);
+  if (file) return file.buffer;
+  const url = new URL(path, remoteDataUrl);
   const response = await fetch(url);
-  if (!response.ok) throw new Error("Failed to fetch " + url);
-  return response;
+  if (response.ok) return response.arrayBuffer();
+  return null;
 }
 
 export async function getDatabaseBytes() {
-  const url = dataUrl + "/database.sqlite";
-  try {
-    const response = await cachedFetch(url);
-    return response.arrayBuffer();
-  } catch {
-    return null;
-  }
+  const path = "database.sqlite";
+  return readOrFetch(path).catch(() => null);
 }
 
 export async function getOramaDpackText() {
-  const url = dataUrl + "/orama.dpack";
-  try {
-    const response = await cachedFetch(url);
-    return response.text();
-  } catch {
-    return null;
-  }
+  const path = "orama.dpack";
+  return readOrFetch(path).catch(() => null);
 }
 
 export async function getPeraturanMarkdown({
@@ -58,13 +45,8 @@ export async function getPeraturanMarkdown({
   tahun,
   nomor,
 }: PeraturanId) {
-  const url = [dataUrl, jenis, tahun, nomor, "fulltext.md"].join("/");
-  try {
-    const response = await cachedFetch(url);
-    return response.text();
-  } catch {
-    return null;
-  }
+  const path = [jenis, tahun, nomor, "fulltext.md"].join("/");
+  return readOrFetch(path).catch(() => null);
 }
 
 export async function getPeraturanThumbnail({
@@ -72,11 +54,6 @@ export async function getPeraturanThumbnail({
   tahun,
   nomor,
 }: PeraturanId) {
-  const url = [dataUrl, jenis, tahun, nomor, "thumbnail.png"].join("/");
-  try {
-    const response = await cachedFetch(url);
-    return response.arrayBuffer();
-  } catch {
-    return null;
-  }
+  const path = [jenis, tahun, nomor, "thumbnail.png"].join("/");
+  return readOrFetch(path).catch(() => null);
 }
