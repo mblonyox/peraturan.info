@@ -70,9 +70,8 @@ jobs:
       - name: Build step
         run: pnpm build
 
-      - name: Copy node_modules, public & static folder
+      - name: Copy public & static folder
         run: |
-          cp -r node_modules .next/standalone/node_modules
           cp -r public .next/standalone/public
           cp -r .next/static .next/standalone/.next/static
 
