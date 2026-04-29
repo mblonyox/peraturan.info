@@ -27,11 +27,21 @@ async function readOrFetch(
   text?: boolean,
 ): Promise<ArrayBuffer | string | null> {
   const localPath = join(localDataUrl, path);
-  const file = await readFile(localPath).catch(() => null);
+  const file = await readFile(localPath).catch((err) => {
+    console.error(`Error reading local file [${localPath}]: ${err}.`);
+    return null;
+  });
   if (file) return text ? file.toString() : file.buffer;
   const url = new URL(path, remoteDataUrl);
-  const response = await fetch(url);
+  const response = await fetch(url).catch((err) => {
+    console.error(`Error fetching remote file [${url}]: ${err}.`);
+    return null;
+  });
+  if (!response) return null;
   if (response.ok) return text ? response.text() : response.arrayBuffer();
+  console.error(
+    `Response not ok for remote file [${url}]: ${response.statusText}.`,
+  );
   return null;
 }
 
