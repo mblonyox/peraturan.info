@@ -83,7 +83,7 @@ jobs:
           include-hidden-files: true
 
   deploy:
-    name: Deploy to GitHub Pages
+    name: Deploy to Server
     needs: build
     runs-on: ubuntu-latest
 
@@ -103,4 +103,5 @@ jobs:
           host: ${{ secrets.DEPLOY_HOST }}
           username: ${{ secrets.DEPLOY_USERNAME }}
           key: ${{ secrets.DEPLOY_KEY }}
+          source: ./*
           target: ${{ secrets.DEPLOY_PATH }}
