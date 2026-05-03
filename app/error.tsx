@@ -2,13 +2,13 @@
 
 import Link from "next/link";
 
-export default function Error({
-  error,
-  unstable_retry,
-}: {
+interface Props {
   error: Error & { digest?: string };
   unstable_retry: () => void;
-}) {
+  reset: () => void;
+}
+
+export default function Error({ error, unstable_retry }: Props) {
   return (
     <article className="my-8 flex flex-col gap-2">
       <hgroup className="text-center">

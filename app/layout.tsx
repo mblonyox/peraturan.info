@@ -1,21 +1,12 @@
 import "./globals.css";
 
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
 
 import LayoutFooter from "@/components/layout_footer";
 import LayoutNavbar from "@/components/layout_navbar";
 import { BASE_URL } from "@/lib/constants";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-});
+type Props = LayoutProps<"/">;
 
 export const metadata: Metadata = {
   metadataBase: BASE_URL,
@@ -48,17 +39,9 @@ export const metadata: Metadata = {
   },
 };
 
-export default function RootLayout({
-  children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
+export default function RootLayout({ children }: Props) {
   return (
-    <html
-      lang="id"
-      className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
-      suppressHydrationWarning
-    >
+    <html lang="id" className="h-full antialiased" suppressHydrationWarning>
       <head>
         <link
           rel="search"
