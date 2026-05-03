@@ -7,6 +7,8 @@ import { getPeraturanData } from "./data";
 
 type Props = LayoutProps<"/[jenis]/[tahun]/[nomor]">;
 
+export { generateStaticParams } from "./data";
+
 export async function generateMetadata(props: Props) {
   const { peraturan } = await getPeraturanData(await props.params);
 

@@ -72,6 +72,7 @@ async function* generateItems(
       changefreq: "yearly",
       priority: 0.5,
     } as SitemapItem;
+    if (process.env.PRERENDER) continue;
     const md = await getPeraturanMarkdown({
       jenis,
       tahun,

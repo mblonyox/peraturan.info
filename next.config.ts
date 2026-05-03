@@ -9,7 +9,7 @@ export default function AppConfig(phase: string) {
     output: "standalone",
     poweredByHeader: false,
     env: {
-      SKIP_REMOTE_DATA: phase === PHASE_PRODUCTION_BUILD ? "true" : undefined,
+      PRERENDER: phase === PHASE_PRODUCTION_BUILD ? "true" : undefined,
     },
     headers: () => [
       {

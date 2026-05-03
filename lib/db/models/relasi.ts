@@ -34,6 +34,7 @@ export const getRelasiPeraturan1 = (
       `SELECT * FROM relasi LEFT JOIN peraturan ON relasi.puu2 = peraturan.jenis || '/' || peraturan.tahun || '/' || peraturan.nomor WHERE puu1 = :key`,
     )
     .all({ key: `${jenis}/${tahun}/${nomor}` })
+    .filter((r) => r.jenis && r.tahun && r.nomor)
     .map(({ id, relasi, catatan, ...row }) => ({
       id,
       relasi,
@@ -50,6 +51,7 @@ export const getRelasiPeraturan2 = (
       `SELECT * FROM relasi LEFT JOIN peraturan ON relasi.puu1 = peraturan.jenis || '/' || peraturan.tahun || '/' || peraturan.nomor WHERE puu2 = :key`,
     )
     .all({ key: `${jenis}/${tahun}/${nomor}` })
+    .filter((r) => r.jenis && r.tahun && r.nomor)
     .map(({ id, relasi, catatan, ...row }) => ({
       id,
       relasi,

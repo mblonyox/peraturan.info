@@ -5,6 +5,7 @@ import { cache } from "react";
 
 import {
   getDB,
+  getListPeraturan,
   getPeraturan,
   getRelasiPeraturan1,
   getRelasiPeraturan2,
@@ -29,5 +30,15 @@ export const getRelasiData = cache(async (params: PeraturanParams) => {
   const relasi2 = getRelasiPeraturan2(db, params);
   return { sumber, relasi1, relasi2 };
 });
+
+export const generateStaticParams = async () => {
+  const db = await getDB();
+  const list = getListPeraturan(db, { pageSize: 1e4 });
+  return list.hasil.map((item) => ({
+    jenis: item.jenis,
+    tahun: item.tahun.toString(),
+    nomor: item.nomor.toString(),
+  }));
+};
 
 export type { Peraturan } from "@/lib/db";
