@@ -20,7 +20,7 @@ async function readOrFetch(
   const localPath = join(LOCAL_DATA_PATH, path);
   const file = await readFile(localPath).catch(() => null);
   if (file) return text ? file.toString() : file.buffer;
-  if (process.env.PRERENDER) return null;
+  if (process.env.DATA_MODE === "local") return null;
   const url = new URL(path, parseSrc(DATA_REPO));
   const response = await fetch(url.href, { cache: "force-cache" })
     .then((r) => (r.ok ? r : null))

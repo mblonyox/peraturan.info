@@ -1,6 +1,6 @@
 import { MetadataRoute } from "next";
 
-import { BASE_URL } from "@/lib/constants";
+import { BASE_URL, DATA_MODE } from "@/lib/constants";
 import {
   getDB,
   getFilterByJenisCount,
@@ -72,7 +72,7 @@ async function* generateItems(
       changefreq: "yearly",
       priority: 0.5,
     } as SitemapItem;
-    if (process.env.PRERENDER) continue;
+    if (DATA_MODE === "local") continue;
     const md = await getPeraturanMarkdown({
       jenis,
       tahun,
