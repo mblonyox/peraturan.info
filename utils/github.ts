@@ -3,5 +3,5 @@ export function parseSrc(src: string) {
   if (!match) throw new Error(`Invalid src: ${src}`);
   const [, owner, repo, ref] = match;
   const branch = ref ?? "main";
-  return `https://raw.githubusercontent.com/${owner}/${repo}/refs/head/${branch}`;
+  return `https://raw.githubusercontent.com/${owner}/${repo}/refs/head/${branch}/`;
 }
