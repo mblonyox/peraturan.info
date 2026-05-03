@@ -33,7 +33,7 @@ export const getRelasiData = cache(async (params: PeraturanParams) => {
 
 export const generateStaticParams = async () => {
   const db = await getDB();
-  const list = getListPeraturan(db, { pageSize: 1e4 });
+  const list = getListPeraturan(db, { pageSize: 1e3 });
   return list.hasil.map((item) => ({
     jenis: item.jenis,
     tahun: item.tahun.toString(),
