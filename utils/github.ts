@@ -1,7 +1,7 @@
 export function parseSrc(src: string) {
-  const match = src.match(/^([\w-.]+)\/([\w-.]+)(?:#(.+))?$/);
+  const match = src.match(/^(?:github:)?([\w-.]+)\/([\w-.]+)(?:#(.+))?$/);
   if (!match) throw new Error(`Invalid src: ${src}`);
   const [, owner, repo, ref] = match;
   const branch = ref ?? "main";
-  return `https://raw.githubusercontent.com/${owner}/${repo}/refs/head/${branch}/`;
+  return `https://raw.githubusercontent.com/${owner}/${repo}/refs/heads/${branch}/`;
 }

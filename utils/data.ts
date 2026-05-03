@@ -22,8 +22,10 @@ async function readOrFetch(
   if (file) return text ? file.toString() : file.buffer;
   if (process.env.PRERENDER) return null;
   const url = new URL(path, parseSrc(DATA_REPO));
-  const response = await fetch(url.href).catch(() => null);
-  if (response?.ok) return text ? response.text() : response.arrayBuffer();
+  const response = await fetch(url.href, { cache: "force-cache" })
+    .then((r) => (r.ok ? r : null))
+    .catch(() => null);
+  if (response) return text ? response.text() : response.arrayBuffer();
   return null;
 }
 
