@@ -1,22 +1,36 @@
+import { DatabaseSync, type SQLInputValue } from "node:sqlite";
 import { debounce } from "@std/async";
-import { getDatabaseBytes } from "~/utils/data.ts";
-import { DB as Database } from "$sqlite";
-
-class DB extends Database implements Disposable {
-  #debouncedClose = debounce(() => this.close(true), 1_000);
-
-  [Symbol.dispose]() {
-    this.#debouncedClose();
-  }
-}
 
 let db: DB | undefined;
 
-export async function getDB() {
-  if (!db) {
-    db = new DB(":memory:", { mode: "read" });
-    const dbBytes = await getDatabaseBytes();
-    if (dbBytes) db.deserialize(dbBytes);
-  }
+export function getDB(): DB {
+  if (!db) db = new DB();
   return db;
+}
+
+export class DB extends DatabaseSync {
+  override [Symbol.dispose] = debounce(() => {
+    super[Symbol.dispose]();
+    db = undefined;
+  }, 500);
+
+  constructor() {
+    super("database.sqlite", { readOnly: true });
+  }
+
+  query<T extends unknown[]>(
+    sql: string,
+    params?: Record<string, SQLInputValue>,
+  ): T[] {
+    return this.prepare(sql)
+      .all(params ?? {})
+      .map((v) => Object.values(v)) as T[];
+  }
+
+  queryEntries<T>(
+    sql: string,
+    params?: Record<string, SQLInputValue>,
+  ): T[] {
+    return this.prepare(sql).all(params ?? {}) as T[];
+  }
 }

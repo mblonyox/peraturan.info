@@ -1,4 +1,4 @@
-import type { DB } from "$sqlite";
+import type { DB } from "../lib/db/mod.ts";
 import type { PuuRef } from "./peraturan.ts";
 
 export type SumberPeraturan = {
@@ -17,5 +17,5 @@ export const getSumberPeraturan = (
 ) =>
   db.queryEntries<SumberPeraturan>(
     `SELECT * FROM sumber WHERE puu = :key`,
-    [`${jenis}/${tahun}/${nomor}`],
+    { key: `${jenis}/${tahun}/${nomor}` },
   );

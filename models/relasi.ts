@@ -1,4 +1,4 @@
-import type { DB } from "$sqlite";
+import type { DB } from "../lib/db/mod.ts";
 import { Peraturan, type PeraturanRow, type PuuRef } from "./peraturan.ts";
 
 export const JENIS2_RELASI = [
@@ -27,7 +27,7 @@ export const getRelasiPeraturan1 = (
 ) =>
   db.queryEntries<RelasiPeraturan & PeraturanRow>(
     `SELECT * FROM relasi LEFT JOIN peraturan ON relasi.puu2 = peraturan.jenis || '/' || peraturan.tahun || '/' || peraturan.nomor WHERE puu1 = :key`,
-    [`${jenis}/${tahun}/${nomor}`],
+    { key: `${jenis}/${tahun}/${nomor}` },
   ).map(({ id, relasi, catatan, ...row }) => ({
     id,
     relasi,
@@ -43,7 +43,7 @@ export const getRelasiPeraturan2 = (
 ) =>
   db.queryEntries<RelasiPeraturan & PeraturanRow>(
     `SELECT * FROM relasi LEFT JOIN peraturan ON relasi.puu1 = peraturan.jenis || '/' || peraturan.tahun || '/' || peraturan.nomor WHERE puu2 = :key`,
-    [`${jenis}/${tahun}/${nomor}`],
+    { key: `${jenis}/${tahun}/${nomor}` },
   ).map(({ id, relasi, catatan, ...row }) => ({
     id,
     relasi,

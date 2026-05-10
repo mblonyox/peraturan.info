@@ -13,7 +13,7 @@ interface Data {
   listPeraturan: Peraturan[];
 }
 
-export const handler = define.handlers<Data>(async (ctx) => {
+export const handler = define.handlers<Data>((ctx) => {
   const tanggalParam = ctx.url.searchParams.get("tanggal");
   if (tanggalParam) {
     if (
@@ -23,7 +23,7 @@ export const handler = define.handlers<Data>(async (ctx) => {
       throw new Error("Tanggal tidak valid.");
     }
   }
-  using db = await getDB();
+  using db = getDB();
   const tanggalTerakhir = getTanggalTerakhir(db);
   const tanggalDipilih = tanggalParam ?? tanggalTerakhir.at(0)!.tanggal;
   const listPeraturan = getListPeraturanByTanggal(db, tanggalDipilih);
