@@ -1,7 +1,7 @@
 import { create, insert } from "@orama/orama";
 import { persistToFile } from "@orama/plugin-data-persistence/server";
 
-import { getDB } from "~/lib/db/mod.ts";
+import { DB } from "~/lib/db/mod.ts";
 import { getListPeraturan } from "~/models/peraturan.ts";
 import { getPeraturanMarkdown } from "~/utils/data.ts";
 
@@ -19,7 +19,7 @@ try {
     language: "indonesian",
   });
 
-  using db = await getDB();
+  using db = new DB();
   const { hasil } = getListPeraturan(db, { pageSize: 20000 });
   for (const p of hasil) {
     const md = await getPeraturanMarkdown({

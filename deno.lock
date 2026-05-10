@@ -1788,6 +1788,9 @@
       "integrity": "sha512-ytENFjIJFl2UwYglde2jchW2Hwm4GJFLDiSXWdTrJQBIN9Fcyp7n4DhxJEiWNAJMV1/BqWfW/kkg71UDcHJyTQ=="
     }
   },
+  "remote": {
+    "https://esm.sh/printd@1.6.0": "d8eff7996d0d1799349c15d321ca35ba1bf40646e1bb5fb36081df40a388931e"
+  },
   "workspace": {
     "dependencies": [
       "jsr:@fresh/core@^2.3.3",

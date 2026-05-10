@@ -1,5 +1,5 @@
 import Pagination from "~/components/pagination.tsx";
-import { getDB } from "~/lib/db/mod.ts";
+import { DB } from "~/lib/db/mod.ts";
 import {
   getFilterByJenisCount,
   getFilterByTahunCount,
@@ -34,14 +34,14 @@ const paramsSchema = z.object({
   ]),
 });
 
-export const handler = define.handlers<Data>(async (ctx) => {
+export const handler = define.handlers<Data>((ctx) => {
   const res1 = paramsSchema.safeParse(ctx.params);
   if (!res1.success) throw new HttpError(404);
   const { jenis, tahun } = res1.data;
   const res2 = $searchParams.pipe($pageLimit).safeParse(ctx.url.searchParams);
   if (!res2.success) throw new HttpError(400, "Invalid query.");
   const { page, limit: pageSize } = res2.data;
-  using db = await getDB();
+  using db = new DB();
   const listPeraturan = getListPeraturan(db, {
     jenis,
     tahun,

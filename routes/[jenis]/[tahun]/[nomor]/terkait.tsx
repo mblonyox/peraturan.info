@@ -1,4 +1,4 @@
-import { getDB } from "~/lib/db/mod.ts";
+import { DB } from "~/lib/db/mod.ts";
 import {
   getRelasiPeraturan1,
   getRelasiPeraturan2,
@@ -24,9 +24,9 @@ interface Data {
   relasi2: RelasiItem[];
 }
 
-export const handler = define.handlers<Data>(async (ctx) => {
+export const handler = define.handlers<Data>((ctx) => {
   const { jenis, tahun, nomor } = ctx.params;
-  using db = await getDB();
+  using db = new DB();
   const peraturan = ctx.state.peraturan as Peraturan;
   const sumber = getSumberPeraturan(db, jenis, tahun, nomor);
   const relasi1 = getRelasiPeraturan1(db, jenis, tahun, nomor);

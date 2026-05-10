@@ -1,7 +1,7 @@
 import process from "node:process";
 import { Readable } from "node:stream";
 import { arrayBuffer } from "node:stream/consumers";
-import { getDB } from "~/lib/db/mod.ts";
+import { DB } from "~/lib/db/mod.ts";
 import { getFilterByTahunCount } from "~/models/peraturan.ts";
 import { define } from "~/utils/define.ts";
 import type { RouteConfig } from "fresh";
@@ -16,7 +16,7 @@ export const config: RouteConfig = {
 export const handler = define.handlers(async ({ url, params }) => {
   const origin = url.origin;
   const { jenis } = params;
-  using db = await getDB();
+  using db = new DB();
   const items = getFilterByTahunCount(db, { jenis })
     .map(({ tahun }) => origin + `/sitemap-${jenis}-${tahun}.xml`);
   const stream = Readable.from(items).pipe(new SitemapIndexStream());

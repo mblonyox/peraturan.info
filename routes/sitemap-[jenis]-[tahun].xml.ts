@@ -1,7 +1,7 @@
 import process from "node:process";
 import { Readable } from "node:stream";
 import { arrayBuffer } from "node:stream/consumers";
-import { getDB } from "~/lib/db/mod.ts";
+import { DB } from "~/lib/db/mod.ts";
 import { getListPeraturan } from "~/models/peraturan.ts";
 import { getPeraturanMarkdown } from "~/utils/data.ts";
 import { define } from "~/utils/define.ts";
@@ -27,7 +27,7 @@ export const handler = define.handlers(async ({ url, params }) => {
 });
 
 async function* generateItems(jenis: string, tahun: string) {
-  using db = await getDB();
+  using db = new DB();
   const { hasil } = getListPeraturan(db, {
     jenis,
     tahun,

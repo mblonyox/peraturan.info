@@ -1,4 +1,4 @@
-import { getDB } from "~/lib/db/mod.ts";
+import { DB } from "~/lib/db/mod.ts";
 import {
   getListPeraturanByTanggal,
   getTanggalTerakhir,
@@ -23,7 +23,7 @@ export const handler = define.handlers<Data>((ctx) => {
       throw new Error("Tanggal tidak valid.");
     }
   }
-  using db = getDB();
+  using db = new DB();
   const tanggalTerakhir = getTanggalTerakhir(db);
   const tanggalDipilih = tanggalParam ?? tanggalTerakhir.at(0)!.tanggal;
   const listPeraturan = getListPeraturanByTanggal(db, tanggalDipilih);

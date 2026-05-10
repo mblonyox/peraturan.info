@@ -1,21 +1,25 @@
 import { DatabaseSync, type SQLInputValue } from "node:sqlite";
 import { debounce } from "@std/async";
 
-let db: DB | undefined;
-
-export function getDB(): DB {
-  if (!db) db = new DB();
-  return db;
-}
-
 export class DB extends DatabaseSync {
-  override [Symbol.dispose] = debounce(() => {
+  static db: DB | undefined;
+
+  #debouncedDispose = debounce(() => {
     super[Symbol.dispose]();
-    db = undefined;
+    DB.db = undefined;
   }, 500);
 
   constructor() {
+    if (DB.db) {
+      DB.db.#debouncedDispose.clear();
+      return DB.db;
+    }
     super("database.sqlite", { readOnly: true });
+    DB.db = this;
+  }
+
+  override [Symbol.dispose]() {
+    this.#debouncedDispose();
   }
 
   query<T extends unknown[]>(
