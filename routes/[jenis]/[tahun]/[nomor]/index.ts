@@ -6,5 +6,6 @@ export const handler = define.handlers(async (ctx) => {
   const md = await getPeraturanMarkdown({ jenis, tahun, nomor });
   ctx.state.md = md;
   const subPath = md ? "/isi" : "/info";
-  return Response.redirect(ctx.url + subPath, 302);
+  const newUrl = new URL(ctx.url.pathname + subPath, ctx.url);
+  return Response.redirect(newUrl, 302);
 });
