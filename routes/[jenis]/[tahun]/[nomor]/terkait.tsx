@@ -26,7 +26,7 @@ interface Data {
 
 export const handler = define.handlers<Data>(async (ctx) => {
   const { jenis, tahun, nomor } = ctx.params;
-  const db = await getDB();
+  using db = await getDB();
   const peraturan = ctx.state.peraturan as Peraturan;
   const sumber = getSumberPeraturan(db, jenis, tahun, nomor);
   const relasi1 = getRelasiPeraturan1(db, jenis, tahun, nomor);

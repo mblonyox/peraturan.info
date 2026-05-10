@@ -25,6 +25,7 @@
     "plugins": ["jsr:@ayk/lint-import-order"]
   },
   "imports": {
+    "@std/async": "jsr:@std/async@^1.3.0",
     "~/": "./",
     "$sqlite": "https://deno.land/x/sqlite@v3.9.1/mod.ts",
     "@fresh/plugin-vite": "jsr:@fresh/plugin-vite@^1.0.8",

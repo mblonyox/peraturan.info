@@ -19,7 +19,7 @@ try {
     language: "indonesian",
   });
 
-  const db = await getDB();
+  using db = await getDB();
   const { hasil } = getListPeraturan(db, { pageSize: 20000 });
   for (const p of hasil) {
     const md = await getPeraturanMarkdown({

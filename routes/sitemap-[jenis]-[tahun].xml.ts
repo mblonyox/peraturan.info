@@ -27,7 +27,7 @@ export const handler = define.handlers(async ({ url, params }) => {
 });
 
 async function* generateItems(jenis: string, tahun: string) {
-  const db = await getDB();
+  using db = await getDB();
   const { hasil } = getListPeraturan(db, {
     jenis,
     tahun,

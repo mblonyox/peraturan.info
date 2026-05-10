@@ -23,7 +23,7 @@ export const handler = define.handlers<Data>(async (ctx) => {
       throw new Error("Tanggal tidak valid.");
     }
   }
-  const db = await getDB();
+  using db = await getDB();
   const tanggalTerakhir = getTanggalTerakhir(db);
   const tanggalDipilih = tanggalParam ?? tanggalTerakhir.at(0)!.tanggal;
   const listPeraturan = getListPeraturanByTanggal(db, tanggalDipilih);

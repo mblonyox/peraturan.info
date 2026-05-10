@@ -16,7 +16,7 @@ export const config: RouteConfig = {
 export const handler = define.handlers(async ({ url, params }) => {
   const origin = url.origin;
   const { jenis } = params;
-  const db = await getDB();
+  using db = await getDB();
   const items = getFilterByTahunCount(db, { jenis })
     .map(({ tahun }) => origin + `/sitemap-${jenis}-${tahun}.xml`);
   const stream = Readable.from(items).pipe(new SitemapIndexStream());

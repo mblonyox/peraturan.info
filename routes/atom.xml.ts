@@ -5,7 +5,7 @@ import { createPeraturanFeed } from "~/utils/feed.ts";
 
 export const handler = define.handlers({
   GET: async ({ url }) => {
-    const db = await getDB();
+    using db = await getDB();
     const list = getFeedListPeraturan(db);
     const feed = createPeraturanFeed(list, url.origin);
     return new Response(feed.atom1(), {

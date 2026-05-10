@@ -41,7 +41,7 @@ export const handler = define.handlers<Data>(async (ctx) => {
   const res2 = $searchParams.pipe($pageLimit).safeParse(ctx.url.searchParams);
   if (!res2.success) throw new HttpError(400, "Invalid query.");
   const { page, limit: pageSize } = res2.data;
-  const db = await getDB();
+  using db = await getDB();
   const listPeraturan = getListPeraturan(db, {
     jenis,
     tahun,
