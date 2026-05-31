@@ -14,7 +14,7 @@ function copySsrAssets(): Plugin {
           dest: "assets",
         },
         {
-          src: "node_modules/@vercel/og/dist/noto-sans-v27-latin-regular.ttf",
+          src: "node_modules/@vercel/og/dist/Geist-Regular.ttf",
           dest: "assets",
         },
       ],
