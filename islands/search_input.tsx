@@ -15,10 +15,10 @@ type Props = {
 export default function SearchInput({ initQuery }: Props) {
   const query = useSignal(initQuery);
   const options = useSignal<string[]>([]);
-  const debounceId = useSignal<number | undefined>(undefined);
+  const debounceId = useSignal<NodeJS.Timeout | undefined>();
   useSignalEffect(() => {
     const q = query.value ?? "";
-    if (typeof debounceId.peek() == "number") clearTimeout(debounceId.peek());
+    clearTimeout(debounceId.peek());
     debounceId.value = setTimeout(() => {
       getAutocomplete(q)
         .then((value) => options.value = value);
