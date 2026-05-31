@@ -51,17 +51,29 @@ export function logger<T = unknown>(
 
     const start = Date.now();
 
-    const response = await ctx.next();
+    try {
+      const response = await ctx.next();
 
-    log(
-      fn,
-      LogPrefix.Outgoing,
-      method,
-      path,
-      response.status,
-      time(start),
-    );
+      log(
+        fn,
+        LogPrefix.Outgoing,
+        method,
+        path,
+        response.status,
+        time(start),
+      );
 
-    return response;
+      return response;
+    } catch (error) {
+      log(
+        fn,
+        LogPrefix.Error,
+        method,
+        path,
+        500,
+        time(start),
+      );
+      throw error;
+    }
   };
 }
