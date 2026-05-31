@@ -9,7 +9,7 @@ export const app = new App<State>()
   .use(
     canonicalHostname({
       hostname: "peraturan.info",
-      exclude: ["localhost", "127.0.0.1", /^peraturan\-.+\.deno\.dev$/],
+      exclude: ["localhost", "127.0.0.1"],
     }),
   )
   .use(logger())
