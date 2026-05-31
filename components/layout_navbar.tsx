@@ -1,6 +1,5 @@
 import SearchInput from "~/islands/search_input.tsx";
 import ThemeSwitcher from "~/islands/theme_switcher.tsx";
-import type { ThemeOption } from "~/utils/theme.ts";
 import { clsx } from "clsx";
 import { asset } from "fresh/runtime";
 
@@ -22,10 +21,9 @@ const menus = [
 
 interface Props {
   url: URL;
-  theme?: ThemeOption;
 }
 
-export default function LayoutNavbar({ url, theme }: Props) {
+export default function LayoutNavbar({ url }: Props) {
   const { pathname, searchParams } = url;
 
   return (
@@ -152,7 +150,7 @@ export default function LayoutNavbar({ url, theme }: Props) {
         <SearchInput initQuery={searchParams.get("query")?.trim()} />
       </div>
       <div className="navbar-end">
-        <ThemeSwitcher initTheme={theme} />
+        <ThemeSwitcher />
       </div>
     </nav>
   );

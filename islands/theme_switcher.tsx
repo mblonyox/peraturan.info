@@ -1,16 +1,14 @@
-import { type ThemeOption, themeOptions } from "~/utils/theme.ts";
+import { isValidTheme, themeOptions } from "~/utils/theme.ts";
 import { useEffect, useState } from "preact/hooks";
 
-interface Props {
-  initTheme?: ThemeOption;
-}
-
-export default function ThemeSwitcher({ initTheme }: Props) {
-  const [theme, setTheme] = useState<ThemeOption | undefined>(initTheme);
+export default function ThemeSwitcher() {
+  const [theme, setTheme] = useState<string | null>(
+    localStorage.getItem("theme"),
+  );
 
   useEffect(() => {
-    if (theme) {
-      document.cookie = `theme=${theme}; Max-Age=1707109200; Path=/`;
+    if (theme && isValidTheme(theme)) {
+      localStorage.setItem("theme", theme);
     }
   }, [theme]);
 

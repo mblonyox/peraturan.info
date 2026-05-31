@@ -6,7 +6,7 @@ import { define } from "~/utils/define.ts";
 
 export default define.page(({ Component, url, state }) => (
   <>
-    <LayoutNavbar url={url} theme={state.theme} />
+    <LayoutNavbar url={url} />
     <main className="min-h-screen">
       <LayoutBreadcrumbs breadcrumbs={state.breadcrumbs} />
       <LayoutPageHeading pageHeading={state.pageHeading} />
