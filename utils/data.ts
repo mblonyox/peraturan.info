@@ -27,18 +27,6 @@ async function cachedFetch(url: string | URL | Request) {
   return response;
 }
 
-export async function getDatabaseBytes() {
-  const dataUrl = Deno.env.get("DATA_URL");
-  if (!dataUrl) return null;
-  const url = dataUrl + "/database.sqlite";
-  try {
-    const response = await cachedFetch(url);
-    return response.bytes();
-  } catch {
-    return null;
-  }
-}
-
 export async function getOramaDpackText() {
   const dataUrl = Deno.env.get("DATA_URL");
   if (!dataUrl) return null;
