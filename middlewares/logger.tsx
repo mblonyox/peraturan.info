@@ -1,4 +1,4 @@
-import type { Middleware } from "fresh";
+import { HttpError, type Middleware } from "fresh";
 
 enum LogPrefix {
   Outgoing = "-->",
@@ -70,7 +70,7 @@ export function logger<T = unknown>(
         LogPrefix.Error,
         method,
         path,
-        500,
+        error instanceof HttpError ? error.status : 500,
         time(start),
       );
       throw error;
