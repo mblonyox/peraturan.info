@@ -4,7 +4,6 @@ import { MOUTHFUL_URL } from "./lib/constants";
 
 const nextConfig: NextConfig = {
   /* config options here */
-  output: "standalone",
   poweredByHeader: false,
   headers: () => [
     {
@@ -51,3 +50,6 @@ const nextConfig: NextConfig = {
 };
 
 export default nextConfig;
+
+import { initOpenNextCloudflareForDev } from "@opennextjs/cloudflare";
+initOpenNextCloudflareForDev();
