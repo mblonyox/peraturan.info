@@ -2,7 +2,7 @@
   "$schema": "https://unpkg.com/wrangler@latest/config-schema.json",
   "name": "peraturan-info",
   "compatibility_date": "2026-06-08",
-  "main": "./server.js",
+  "main": "./worker.js",
   "compatibility_flags": [
     "nodejs_compat"
   ],
