@@ -7,7 +7,7 @@ export default function MetaCanonicalUrl({ url }: Props) {
   const canonicalUrl = new URL(url);
   canonicalUrl.protocol = "https";
   canonicalUrl.searchParams.sort();
-  const HOSTNAME = Deno.env.get("HOSTNAME");
+  const HOSTNAME = process.env.CANONICAL_HOSTNAME;
   if (HOSTNAME) canonicalUrl.hostname = HOSTNAME;
   return <link rel="canonical" href={canonicalUrl.href} />;
 }

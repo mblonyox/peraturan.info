@@ -1,6 +1,6 @@
 export default function GTagJs() {
   if (import.meta.env.DEV) return null;
-  const GOOGLE_TAG_ID = Deno.env.get("GOOGLE_TAG_ID");
+  const GOOGLE_TAG_ID = process.env.GOOGLE_TAG_ID;
   if (!GOOGLE_TAG_ID) return null;
   return (
     <>

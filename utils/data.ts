@@ -1,3 +1,5 @@
+const dataUrl = process.env.DATA_URL;
+
 interface PeraturanId {
   jenis: string;
   tahun: string | number;
@@ -28,7 +30,6 @@ async function cachedFetch(url: string | URL | Request) {
 }
 
 export async function getOramaDpackText() {
-  const dataUrl = Deno.env.get("DATA_URL");
   if (!dataUrl) return null;
   const url = dataUrl + "/orama.dpack";
   try {
@@ -44,7 +45,6 @@ export async function getPeraturanMarkdown({
   tahun,
   nomor,
 }: PeraturanId) {
-  const dataUrl = Deno.env.get("DATA_URL");
   if (!dataUrl) return null;
   const url = [dataUrl, jenis, tahun, nomor, "fulltext.md"].join("/");
   try {
@@ -60,7 +60,6 @@ export async function getPeraturanThumbnail({
   tahun,
   nomor,
 }: PeraturanId) {
-  const dataUrl = Deno.env.get("DATA_URL");
   if (!dataUrl) return null;
   const url = [dataUrl, jenis, tahun, nomor, "thumbnail.png"].join("/");
   try {

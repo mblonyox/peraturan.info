@@ -18,13 +18,15 @@
     ],
     "jsx": "react-jsx",
     "jsxImportSource": "preact",
-    "types": ["vite/client"]
+    "types": ["vite/client", "react"]
   },
   "lint": {
     "rules": { "tags": ["fresh", "recommended", "react", "jsr"] },
     "plugins": ["jsr:@ayk/lint-import-order"]
   },
   "imports": {
+    "@cloudflare/vite-plugin": "npm:@cloudflare/vite-plugin@^1.40.0",
+    "wrangler": "npm:wrangler@^4.98.0",
     "~/": "./",
     "@fresh/plugin-vite": "jsr:@fresh/plugin-vite@^1.0.8",
     "@orama/orama": "npm:@orama/orama@2.1.1",
