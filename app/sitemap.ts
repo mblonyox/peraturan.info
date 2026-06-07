@@ -1,24 +1,12 @@
 import { MetadataRoute } from "next";
 
-import { BASE_URL, DATA_MODE } from "@/lib/constants";
-import {
-  getDB,
-  getFilterByJenisCount,
-  getFilterByTahunCount,
-  getListPeraturan,
-} from "@/lib/db";
+import { BASE_URL } from "@/lib/constants";
+import { getDB, getListPeraturan } from "@/lib/db";
 import { createMarked, PeraturanToken } from "@/lib/marked";
 import { getPeraturanMarkdown } from "@/utils/data";
 
 export async function generateSitemaps() {
-  const db = await getDB();
-  const jenis = getFilterByJenisCount(db, {});
-  return jenis
-    .flatMap((j) => {
-      const tahun = getFilterByTahunCount(db, { jenis: j.jenis });
-      return tahun.map((t) => ({ id: `${j.jenis}-${t.tahun}` }));
-    })
-    .concat({ id: "root" });
+  return [{ id: "root" }];
 }
 
 export default async function sitemap(props: {
@@ -72,7 +60,6 @@ async function* generateItems(
       changefreq: "yearly",
       priority: 0.5,
     } as SitemapItem;
-    if (DATA_MODE === "local") continue;
     const md = await getPeraturanMarkdown({
       jenis,
       tahun,
