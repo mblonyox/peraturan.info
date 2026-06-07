@@ -6,12 +6,15 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
+    "deploy": "opennextjs-cloudflare build && opennextjs-cloudflare deploy",
+    "preview": "opennextjs-cloudflare build && opennextjs-cloudflare preview",
     "checks": "pnpm typecheck && pnpm lint && pnpm fmt",
     "lint": "eslint --fix .",
     "fmt": "prettier --write .",
     "typecheck": "pnpm tsc --noEmit"
   },
   "dependencies": {
+    "@opennextjs/cloudflare": "^1.19.11",
     "@orama/orama": "^2.1.1",
     "@orama/plugin-data-persistence": "^2.1.1",
     "better-sqlite3": "^12.9.0",
@@ -42,7 +45,8 @@
     "prettier": "^3.8.3",
     "tailwindcss": "^4",
     "typescript": "^6",
-    "typescript-eslint": "^8.59.0"
+    "typescript-eslint": "^8.59.0",
+    "wrangler": "^4.98.0"
   },
   "browserslist": "> 1%"
 }
