@@ -3,13 +3,13 @@
   "name": "peraturan-info",
   "main": ".open-next/worker.js",
   "compatibility_date": "2026-06-07",
-  "observability": {
-    "enabled": true
-  },
   "compatibility_flags": [
     "nodejs_compat",
     "global_fetch_strictly_public"
   ],
+  "observability": {
+    "enabled": true
+  },
   "assets": {
     "directory": ".open-next/assets",
     "binding": "ASSETS"
@@ -24,5 +24,12 @@
     "binding": "IMAGES"
   },
   "workers_dev": false,
-  "preview_urls": false
+  "preview_urls": false,
+  "d1_databases": [
+    {
+      "binding": "DATABASE",
+      "database_name": "data-peraturan",
+      "database_id": "c665fed0-21e8-45f9-b3e0-35dbff130803"
+    }
+  ]
 }
