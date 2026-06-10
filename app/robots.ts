@@ -5,13 +5,15 @@ import { getDB, getFilterByJenisCount, getFilterByTahunCount } from "@/lib/db";
 
 export async function generateSitemaps() {
   const db = await getDB();
-  const jenis = getFilterByJenisCount(db, {});
-  return jenis
-    .flatMap((j) => {
-      const tahun = getFilterByTahunCount(db, { jenis: j.jenis });
-      return tahun.map((t) => ({ id: `${j.jenis}-${t.tahun}` }));
-    })
-    .concat({ id: "root" });
+  const filterByJenis = await getFilterByJenisCount(db, {});
+  const sitemapsIds: { id: string }[] = [];
+  for (const { jenis: j } of filterByJenis) {
+    const filterByTahun = await getFilterByTahunCount(db, { jenis: j });
+    sitemapsIds.push(
+      ...filterByTahun.map(({ tahun: t }) => ({ id: `${j}-${t}` })),
+    );
+  }
+  return sitemapsIds.concat({ id: "root" });
 }
 
 export default async function robots(): Promise<MetadataRoute.Robots> {

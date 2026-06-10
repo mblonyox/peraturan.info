@@ -1,5 +1,3 @@
-import type { Database } from "better-sqlite3";
-
 import type { PeraturanParams, PuuRef } from "./peraturan";
 
 export interface SumberPeraturan {
@@ -10,13 +8,13 @@ export interface SumberPeraturan {
   url_pdf: string;
 }
 
-export const getSumberPeraturan = (
-  db: Database,
+export async function getSumberPeraturan(
+  db: D1Database,
   { jenis, tahun, nomor }: PeraturanParams,
-) =>
-  db
-    .prepare<
-      unknown[],
-      SumberPeraturan
-    >(`SELECT * FROM sumber WHERE puu = :key`)
-    .all({ key: `${jenis}/${tahun}/${nomor}` });
+) {
+  const { results } = await db
+    .prepare(`SELECT * FROM sumber WHERE puu = ?`)
+    .bind(`${jenis}/${tahun}/${nomor}`)
+    .all();
+  return results as unknown as SumberPeraturan[];
+}

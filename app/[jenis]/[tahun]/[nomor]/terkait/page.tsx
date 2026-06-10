@@ -48,7 +48,7 @@ function Sumber({ items }: { items: SumberItem[] }) {
               <p>
                 <a
                   href={url_page}
-                  className="link inline-block w-full overflow-hidden overflow-ellipsis whitespace-nowrap"
+                  className="link inline-block w-full overflow-hidden text-ellipsis whitespace-nowrap"
                   target="_blank"
                   rel="noopener noreferrer"
                 >

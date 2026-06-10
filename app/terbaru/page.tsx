@@ -24,10 +24,10 @@ const getData = cache(async (props: Props) => {
     }
   }
   const db = await getDB();
-  const tanggalTerakhir = getTanggalTerakhir(db);
+  const tanggalTerakhir = await getTanggalTerakhir(db);
   const tanggalDipilih = tanggalParam ?? tanggalTerakhir.at(0)?.tanggal;
   if (!tanggalDipilih) throw new Error("Tidak ada data.");
-  const listPeraturan = getListPeraturanByTanggal(db, tanggalDipilih);
+  const listPeraturan = await getListPeraturanByTanggal(db, tanggalDipilih);
   if (!tanggalTerakhir.map(({ tanggal }) => tanggal).includes(tanggalDipilih)) {
     tanggalTerakhir.push({
       tanggal: tanggalDipilih,

@@ -11,7 +11,7 @@ const me = {
 
 export async function createPeraturanFeed() {
   const db = await getDB();
-  const list = getFeedListPeraturan(db);
+  const list = await getFeedListPeraturan(db);
   const feed = new Feed({
     title: "Peraturan.Info Feed",
     description:

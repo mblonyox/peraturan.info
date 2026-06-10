@@ -111,7 +111,7 @@ function BatangTubuhToken({
     .toLowerCase()
     .replaceAll(" ", "-")
     .replaceAll(/[\(\)]/g, "");
-  path = (token.type === "pasal" ? basePath : path) + `/${slug}`;
+  const subPath = (token.type === "pasal" ? basePath : path) + `/${slug}`;
   const subTokens = childTokens(token)?.filter((token) =>
     ["bab", "bagian", "paragraf", "pasal", "ayat"].includes(token.type),
   );
@@ -127,7 +127,7 @@ function BatangTubuhToken({
       {subTokens?.length ? (
         <details open={token.type === "pasal"}>
           <summary>
-            <Link href={path}>{judul}</Link>
+            <Link href={subPath}>{judul}</Link>
           </summary>
           <ul>
             {subTokens.map((token) => (
@@ -135,18 +135,18 @@ function BatangTubuhToken({
                 key={token.raw}
                 token={token}
                 basePath={basePath}
-                path={path}
+                path={subPath}
               />
             ))}
           </ul>
         </details>
       ) : (
         <div className="flex flex-col gap-2">
-          <Link className="text-nowrap" href={path}>
+          <Link className="text-nowrap" href={subPath}>
             {judul}
           </Link>
           {preview && (
-            <Link href={path}>
+            <Link href={subPath}>
               <cite>{preview}</cite>
             </Link>
           )}

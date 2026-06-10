@@ -19,7 +19,7 @@ try {
   });
 
   const db = await getDB();
-  const { hasil } = getListPeraturan(db, { pageSize: 20000 });
+  const { hasil } = await getListPeraturan(db, { pageSize: 20000 });
   for (const p of hasil) {
     const md = await getPeraturanMarkdown({
       jenis: p.jenis,

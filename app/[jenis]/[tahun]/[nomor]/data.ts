@@ -5,7 +5,6 @@ import { cache } from "react";
 
 import {
   getDB,
-  getListPeraturan,
   getPeraturan,
   getRelasiPeraturan1,
   getRelasiPeraturan2,
@@ -16,7 +15,7 @@ import { getPeraturanMarkdown, getPeraturanThumbnail } from "@/utils/data";
 
 export const getPeraturanData = cache(async (params: PeraturanParams) => {
   const db = await getDB();
-  const peraturan = getPeraturan(db, params);
+  const peraturan = await getPeraturan(db, params);
   if (!peraturan) notFound();
   const md = await getPeraturanMarkdown(params);
   const thumbnail = await getPeraturanThumbnail(params);
@@ -25,9 +24,9 @@ export const getPeraturanData = cache(async (params: PeraturanParams) => {
 
 export const getRelasiData = cache(async (params: PeraturanParams) => {
   const db = await getDB();
-  const sumber = getSumberPeraturan(db, params);
-  const relasi1 = getRelasiPeraturan1(db, params);
-  const relasi2 = getRelasiPeraturan2(db, params);
+  const sumber = await getSumberPeraturan(db, params);
+  const relasi1 = await getRelasiPeraturan1(db, params);
+  const relasi2 = await getRelasiPeraturan2(db, params);
   return { sumber, relasi1, relasi2 };
 });
 

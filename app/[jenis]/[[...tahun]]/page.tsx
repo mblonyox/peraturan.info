@@ -37,15 +37,15 @@ const getData = cache(async (props: Props) => {
   const page = res2.data.page;
   const pageSize = res2.data.limit;
   const db = await getDB();
-  const listPeraturan = getListPeraturan(db, {
+  const listPeraturan = await getListPeraturan(db, {
     jenis,
     tahun,
     page,
     pageSize,
   });
   if (!listPeraturan.hasil.length) notFound();
-  const filterByJenis = getFilterByJenisCount(db, { jenis, tahun });
-  const filterByTahun = getFilterByTahunCount(db, { jenis, tahun });
+  const filterByJenis = await getFilterByJenisCount(db, { jenis, tahun });
+  const filterByTahun = await getFilterByTahunCount(db, { jenis, tahun });
   const namaJenis = jenis ? NAMA2_JENIS[jenis].panjang : "semua peraturan";
   const judul = namaJenis + (tahun ? ` pada tahun ${tahun}` : "");
   const start = (page - 1) * pageSize + 1;

@@ -44,7 +44,7 @@ async function* generateItems(
   tahun: string,
 ): AsyncGenerator<SitemapItem> {
   const db = await getDB();
-  const { hasil } = getListPeraturan(db, { jenis, tahun, pageSize: 1e4 });
+  const { hasil } = await getListPeraturan(db, { jenis, tahun, pageSize: 1e4 });
   for (const p of hasil) {
     const lastmod = p.created_at;
     yield {
