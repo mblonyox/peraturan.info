@@ -155,7 +155,7 @@ export default async function Page(props: Props) {
 }
 
 interface FilterByJenisProps {
-  data: { jenis: string; jumlah: number }[];
+  data: { [jenis: string]: number };
   tahun?: string;
 }
 
@@ -169,7 +169,7 @@ function FilterByJenis({ data, tahun }: FilterByJenisProps) {
             Semua jenis
           </a>
         </li>
-        {data.map(({ jenis, jumlah }) => (
+        {Object.entries(data).map(([jenis, jumlah]) => (
           <li key={jenis}>
             <a className="link" href={`/${jenis}/${tahun ?? ""}`}>
               {NAMA2_JENIS[jenis].pendek}&nbsp;({jumlah})
@@ -182,7 +182,7 @@ function FilterByJenis({ data, tahun }: FilterByJenisProps) {
 }
 
 interface FilterByTahunProps {
-  data: { tahun: number; jumlah: number }[];
+  data: { [tahun: string]: number };
   jenis?: string;
 }
 
@@ -197,7 +197,7 @@ function FilterByTahun({ data, jenis }: FilterByTahunProps) {
               Semua tahun
             </a>
           </li>
-          {data.map(({ tahun, jumlah }) => (
+          {Object.entries(data).map(([tahun, jumlah]) => (
             <li key={tahun}>
               <a className="link" href={`/${jenis ?? "all"}/${tahun}`}>
                 {tahun}&nbsp;({jumlah})

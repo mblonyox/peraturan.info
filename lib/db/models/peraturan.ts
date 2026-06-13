@@ -135,51 +135,61 @@ export async function getListPeraturan(
     pageSize?: number;
   },
 ) {
-  const { whereClause, whereParams } = buildWhereClause({ jenis, tahun });
   const page = pageParam ?? 1;
   const pageSize = pageSizeParam ?? 10;
   const limit = pageSize;
   const offset = (page - 1) * pageSize;
   const hasil = await db
     .prepare(
-      `SELECT * FROM peraturan ${whereClause} ORDER BY tahun DESC, nomor DESC LIMIT ? OFFSET ?`,
+      `SELECT * FROM peraturan WHERE (?1 IS NULL OR jenis = ?1) AND (?2 IS NULL OR tahun = ?2) ORDER BY tahun DESC, nomor DESC LIMIT ? OFFSET ?`,
     )
-    .bind(...whereParams, limit, offset)
+    .bind(jenis ?? null, tahun ?? null, limit, offset)
     .all()
     .then((result) => result.results.map((row) => Peraturan.fromRow(row)));
-  const count = await db
-    .prepare(`SELECT COUNT(*) AS total FROM peraturan ${whereClause}`)
-    .bind(...whereParams)
+  const total = await db
+    .prepare(
+      `SELECT jumlah FROM total WHERE (?1 IS NULL AND jenis IS NULL OR jenis = ?1) AND (?2 IS NULL AND tahun IS NULL OR tahun = ?2)`,
+    )
+    .bind(jenis ?? null, tahun ?? null)
     .first();
-  return { total: (count?.total ?? 0) as number, hasil, page, pageSize };
+  return { total: (total?.jumlah ?? 0) as number, hasil, page, pageSize };
 }
 
 export async function getFilterByJenisCount(
   db: D1Database,
-  params: { jenis?: string; tahun?: string },
+  { jenis, tahun }: { jenis?: string; tahun?: string },
 ) {
-  const { whereClause, whereParams } = buildWhereClause(params);
   const { results } = await db
     .prepare(
-      `SELECT jenis, count(*) AS jumlah FROM peraturan ${whereClause} GROUP BY jenis`,
+      "SElECT jenis, jumlah FROM total WHERE (?1 IS NULL OR jenis = ?1) AND (?2 IS NULL AND tahun IS NULL OR tahun = ?2)",
     )
-    .bind(...whereParams)
+    .bind(jenis ?? null, tahun ?? null)
     .all();
-  return results as { jenis: string; jumlah: number }[];
+
+  return Object.fromEntries(
+    results
+      .filter((v) => !!v.jenis)
+      .map((v) => [v.jenis as string, v.jumlah as number]),
+  );
 }
 
 export async function getFilterByTahunCount(
   db: D1Database,
-  params: { jenis?: string; tahun?: string },
+  { jenis, tahun }: { jenis?: string; tahun?: string },
 ) {
-  const { whereClause, whereParams } = buildWhereClause(params);
+  const params = [tahun, jenis].filter((v) => !!v);
   const { results } = await db
     .prepare(
-      `SELECT tahun, count(*) AS jumlah FROM peraturan ${whereClause} GROUP BY tahun ORDER BY tahun DESC`,
+      "SElECT tahun, jumlah FROM total WHERE (?1 IS NULL AND jenis IS NULL OR jenis = ?1) AND (?2 IS NULL OR tahun = ?2)",
     )
-    .bind(...whereParams)
+    .bind(jenis ?? null, tahun ?? null)
     .all();
-  return results as { tahun: number; jumlah: number }[];
+
+  return Object.fromEntries(
+    results
+      .filter((v) => !!v.tahun)
+      .map((v) => [v.tahun as string, v.jumlah as number]),
+  );
 }
 
 export interface PeraturanParams {
