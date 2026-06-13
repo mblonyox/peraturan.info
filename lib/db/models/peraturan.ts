@@ -177,7 +177,6 @@ export async function getFilterByTahunCount(
   db: D1Database,
   { jenis, tahun }: { jenis?: string; tahun?: string },
 ) {
-  const params = [tahun, jenis].filter((v) => !!v);
   const { results } = await db
     .prepare(
       "SElECT tahun, jumlah FROM total WHERE (?1 IS NULL AND jenis IS NULL OR jenis = ?1) AND (?2 IS NULL OR tahun = ?2)",

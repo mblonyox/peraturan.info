@@ -19,6 +19,7 @@ const eslintConfig = defineConfig([
     "out/**",
     "build/**",
     "next-env.d.ts",
+    ".open-next/**",
   ]),
   {
     plugins: { "simple-import-sort": simpleImportSort },

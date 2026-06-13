@@ -1,4 +1,4 @@
-import { MetadataRoute } from "next";
+import type { MetadataRoute } from "next";
 
 import { BASE_URL } from "@/lib/constants";
 import { getDB, getFilterByJenisCount, getFilterByTahunCount } from "@/lib/db";
@@ -7,10 +7,10 @@ export async function generateSitemaps() {
   const db = await getDB();
   const filterByJenis = await getFilterByJenisCount(db, {});
   const sitemapsIds: { id: string }[] = [];
-  for (const { jenis: j } of filterByJenis) {
+  for (const j of Object.keys(filterByJenis)) {
     const filterByTahun = await getFilterByTahunCount(db, { jenis: j });
     sitemapsIds.push(
-      ...filterByTahun.map(({ tahun: t }) => ({ id: `${j}-${t}` })),
+      ...Object.keys(filterByTahun).map((t) => ({ id: `${j}-${t}` })),
     );
   }
   return sitemapsIds.concat({ id: "root" });

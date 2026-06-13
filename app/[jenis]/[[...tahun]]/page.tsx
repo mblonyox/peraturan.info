@@ -155,7 +155,7 @@ export default async function Page(props: Props) {
 }
 
 interface FilterByJenisProps {
-  data: { [jenis: string]: number };
+  data: Record<string, number>;
   tahun?: string;
 }
 
@@ -182,7 +182,7 @@ function FilterByJenis({ data, tahun }: FilterByJenisProps) {
 }
 
 interface FilterByTahunProps {
-  data: { [tahun: string]: number };
+  data: Record<string, number>;
   jenis?: string;
 }
 
