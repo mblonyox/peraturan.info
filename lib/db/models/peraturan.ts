@@ -112,22 +112,13 @@ export class Peraturan {
 
 export type PuuRef = `${JenisPeraturan}/${number}/${number}`;
 
-function buildWhereClause({ ...params }: Record<string, unknown>) {
-  const keys = Object.keys(params).filter((k) => params[k]);
-  const conditions = keys.map((key, i) => `${key} = ?${i + 1}`).join(" AND ");
-  return {
-    whereClause: conditions ? ` WHERE ${conditions}` : "",
-    whereParams: keys.map((k) => params[k]),
-  };
-}
-
 export async function getListPeraturan(
   db: D1Database,
   {
     jenis,
     tahun,
-    page: pageParam,
-    pageSize: pageSizeParam,
+    page = 1,
+    pageSize = 10,
   }: {
     jenis?: string;
     tahun?: string;
@@ -135,20 +126,37 @@ export async function getListPeraturan(
     pageSize?: number;
   },
 ) {
-  const page = pageParam ?? 1;
-  const pageSize = pageSizeParam ?? 10;
   const limit = pageSize;
   const offset = (page - 1) * pageSize;
+  const conditions: string[] = [];
+  const params: string[] = [];
+  if (jenis) {
+    conditions.push("jenis = ?");
+    params.push(jenis);
+  }
+  if (tahun) {
+    conditions.push("tahun = ?");
+    params.push(tahun);
+  }
+
   const hasil = await db
     .prepare(
-      `SELECT * FROM peraturan WHERE (?1 IS NULL OR jenis = ?1) AND (?2 IS NULL OR tahun = ?2) ORDER BY tahun DESC, nomor DESC LIMIT ? OFFSET ?`,
+      `SELECT *
+       FROM peraturan
+       ${conditions.length ? "WHERE " + conditions.join(" AND ") : ""}
+       ORDER BY jenis DESC, tahun DESC, nomor DESC
+       LIMIT ?
+       OFFSET ?`,
     )
-    .bind(jenis ?? null, tahun ?? null, limit, offset)
+    .bind(...params, limit, offset)
     .all()
     .then((result) => result.results.map((row) => Peraturan.fromRow(row)));
   const total = await db
     .prepare(
-      `SELECT jumlah FROM total WHERE (?1 IS NULL AND jenis IS NULL OR jenis = ?1) AND (?2 IS NULL AND tahun IS NULL OR tahun = ?2)`,
+      `SELECT jumlah
+       FROM total
+       WHERE (?1 IS NULL AND jenis IS NULL OR jenis = ?1)
+         AND (?2 IS NULL AND tahun IS NULL OR tahun = ?2)`,
     )
     .bind(jenis ?? null, tahun ?? null)
     .first();
@@ -161,7 +169,10 @@ export async function getFilterByJenisCount(
 ) {
   const { results } = await db
     .prepare(
-      "SElECT jenis, jumlah FROM total WHERE (?1 IS NULL OR jenis = ?1) AND (?2 IS NULL AND tahun IS NULL OR tahun = ?2)",
+      `SELECT jenis, jumlah
+       FROM total
+       WHERE (?1 IS NULL OR jenis = ?1)
+         AND (?2 IS NULL AND tahun IS NULL OR tahun = ?2)`,
     )
     .bind(jenis ?? null, tahun ?? null)
     .all();
@@ -179,7 +190,10 @@ export async function getFilterByTahunCount(
 ) {
   const { results } = await db
     .prepare(
-      "SElECT tahun, jumlah FROM total WHERE (?1 IS NULL AND jenis IS NULL OR jenis = ?1) AND (?2 IS NULL OR tahun = ?2)",
+      `SELECT tahun, jumlah
+       FROM total
+       WHERE (?1 IS NULL AND jenis IS NULL OR jenis = ?1)
+         AND (?2 IS NULL OR tahun = ?2)`,
     )
     .bind(jenis ?? null, tahun ?? null)
     .all();
@@ -214,7 +228,11 @@ export async function getPeraturan(
 export async function getTanggalTerakhir(db: D1Database) {
   const { results } = await db
     .prepare(
-      `SELECT tanggal_diundangkan tanggal, count() jumlah FROM peraturan GROUP BY tanggal_diundangkan ORDER BY tanggal_diundangkan DESC LIMIT 5`,
+      `SELECT tanggal_diundangkan tanggal, count() jumlah
+       FROM peraturan
+       GROUP BY tanggal_diundangkan
+       ORDER BY tanggal_diundangkan DESC
+       LIMIT 5`,
     )
     .all();
   return results as { tanggal: string; jumlah: number }[];
@@ -224,12 +242,13 @@ export async function getListPeraturanByTanggal(
   db: D1Database,
   tanggal: string,
 ) {
-  const { whereClause, whereParams } = buildWhereClause({
-    tanggal_diundangkan: tanggal,
-  });
   const { results } = await db
-    .prepare(`SELECT * FROM peraturan ${whereClause}`)
-    .bind(...whereParams)
+    .prepare(
+      `SELECT *
+       FROM peraturan
+       WHERE tanggal_diundangkan = ?`,
+    )
+    .bind(tanggal)
     .all();
   return results.map((row) => Peraturan.fromRow(row));
 }
@@ -237,7 +256,10 @@ export async function getListPeraturanByTanggal(
 export async function getFeedListPeraturan(db: D1Database) {
   const { results } = await db
     .prepare(
-      "SELECT * FROM peraturan ORDER BY created_at DESC, tanggal_diundangkan DESC LIMIT 15",
+      `SELECT *
+       FROM peraturan
+       ORDER BY tanggal_diundangkan DESC
+       LIMIT 15`,
     )
     .all();
   return results.map((row) => Peraturan.fromRow(row));
