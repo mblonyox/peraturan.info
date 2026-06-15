@@ -1,8 +1,12 @@
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![Deployed via Cloudflare Workers](https://img.shields.io/badge/Deployed%20via-Cloudflare%20Workers-%23FAAD3F)](https://workers.cloudflare.com/)
+
 # peraturan.info
 
-peraturan.info adalah upaya untuk meningkatkan cara penyajian peraturan
-perundang-undangan di Indonesia sehingga lebih user-friendly yang terinspirasi
-dari legislation.gov.uk.
+[peraturan.info](https://peraturan.info) adalah upaya untuk meningkatkan cara
+penyajian peraturan perundang-undangan di Indonesia sehingga lebih
+_user-friendly_ yang terinspirasi dari
+[legislation.gov.uk](https://www.legislation.gov.uk/).
 
 ## Dibuat dengan
 
@@ -12,32 +16,17 @@ dari legislation.gov.uk.
 
 ## Pengembangan
 
-First, run the development server:
+Saat ini pengembangan menggunakan Next.js dengan _package manager_ pnpm. Pengembangan sebelumnya menggunakan _framework_ Deno Fresh dapat dilihat pada _branch_ [deno-fresh](https://github.com/mblonyox/peraturan.info/tree/deno-fresh).
+
+Untuk memulai pengembangan jalankan:
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
 pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Buka [http://localhost:3000](http://localhost:3000) untuk melihat hasilnya.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
-
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+Anda bisa mulai mengedit halaman dengan memodifikasi `app/page.tsx`. Halaman akan diperbarui secara otomatis.
 
 ## Kontribusi
 
