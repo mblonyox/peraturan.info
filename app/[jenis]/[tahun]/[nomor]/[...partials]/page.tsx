@@ -4,7 +4,7 @@ import { cache } from "react";
 import { createMarked, type PeraturanToken } from "@/lib/marked";
 import { ellipsis } from "@/utils/string";
 
-import { getPeraturanData } from "../data";
+import { getPeraturanMarkdown } from "../data";
 import { SetNav } from "./nav";
 
 interface Data {
@@ -202,7 +202,7 @@ function handleBukuPartial(md: string, partials: string[]) {
 
 const generateData = cache(async (props: Props): Promise<Data> => {
   const { jenis, tahun, nomor, partials } = await props.params;
-  const { md } = await getPeraturanData({ jenis, tahun, nomor });
+  const md = await getPeraturanMarkdown({ jenis, tahun, nomor });
   if (!md) notFound();
   return (
     handleIsi(md, partials) ??

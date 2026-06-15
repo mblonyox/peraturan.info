@@ -1,3 +1,5 @@
+import { notFound } from "next/navigation";
+
 import Comments from "@/components/comments";
 import PageHeading from "@/components/page-heading";
 import SocialShareButtons from "@/components/social_share_buttons";
@@ -5,10 +7,29 @@ import Tabs from "@/components/tabs";
 
 import { getPeraturanData } from "./data";
 
+const tabs = [
+  {
+    name: "Info",
+    path: "info",
+    disabled: false,
+  },
+  {
+    name: "Isi",
+    path: "isi",
+    disabled: false,
+  },
+  {
+    name: "Terkait",
+    path: "terkait",
+    disabled: false,
+  },
+];
+
 type Props = LayoutProps<"/[jenis]/[tahun]/[nomor]">;
 
 export async function generateMetadata(props: Props) {
-  const { peraturan } = await getPeraturanData(await props.params);
+  const peraturan = await getPeraturanData(await props.params);
+  if (!peraturan) notFound();
 
   return {
     title: { template: `%s | ${peraturan.rujukPendek}` },
@@ -18,24 +39,8 @@ export async function generateMetadata(props: Props) {
 
 export default async function Layout({ children, params }: Props) {
   const { jenis, tahun, nomor } = await params;
-  const tabs = [
-    {
-      name: "Info",
-      path: "info",
-      disabled: false,
-    },
-    {
-      name: "Isi",
-      path: "isi",
-      disabled: false,
-    },
-    {
-      name: "Terkait",
-      path: "terkait",
-      disabled: false,
-    },
-  ];
-  const { peraturan } = await getPeraturanData({ jenis, tahun, nomor });
+  const peraturan = await getPeraturanData({ jenis, tahun, nomor });
+  if (!peraturan) notFound();
 
   return (
     <div className="container">

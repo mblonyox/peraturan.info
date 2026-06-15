@@ -2,7 +2,7 @@ import { create, insert } from "@orama/orama";
 import { persistToFile } from "@orama/plugin-data-persistence/server";
 
 import { getDB, getListPeraturan } from "@/lib/db";
-import { getPeraturanMarkdown } from "@/utils/data";
+import { readOrFetch } from "@/utils/data";
 
 try {
   const index = await create({
@@ -21,11 +21,7 @@ try {
   const db = await getDB();
   const { hasil } = await getListPeraturan(db, { pageSize: 20000 });
   for (const p of hasil) {
-    const md = await getPeraturanMarkdown({
-      jenis: p.jenis,
-      tahun: p.tahun,
-      nomor: p.nomor,
-    });
+    const md = await readOrFetch(`${p.path}/fulltext.md`, "text");
     await insert(index, {
       path: p.path,
       jenis: p.namaJenisPanjang,

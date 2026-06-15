@@ -1,6 +1,7 @@
 import { readFile } from "node:fs/promises";
 import { join } from "node:path";
 
+import { notFound } from "next/navigation";
 import { ImageResponse } from "next/og";
 
 import { BASE_URL } from "@/lib/constants";
@@ -17,7 +18,8 @@ interface Props {
 }
 
 export default async function Image({ params }: Props) {
-  const { peraturan } = await getPeraturanData(await params);
+  const peraturan = await getPeraturanData(await params);
+  if (!peraturan) notFound();
   const logo = await readFile(join(process.cwd(), "assets/logo.png"))
     .then((buffer) => buffer.toString("base64"))
     .then((base64) => `data:image/png;base64,${base64}`);

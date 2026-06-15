@@ -1,11 +1,13 @@
 import Image from "next/image";
+import { notFound } from "next/navigation";
 
 import { getPeraturanData, type Peraturan } from "../data";
 
 type Props = PageProps<"/[jenis]/[tahun]/[nomor]/info">;
 
 export async function generateMetadata({ params }: Props) {
-  const { peraturan } = await getPeraturanData(await params);
+  const peraturan = await getPeraturanData(await params);
+  if (!peraturan) notFound();
   return {
     title: `Informasi | ${peraturan.rujukPanjang}`,
     description: `Informasi umum (Metadata, Sumber Peraturan, Abstrak) atas ${peraturan.rujukPanjang}`,
@@ -13,7 +15,8 @@ export async function generateMetadata({ params }: Props) {
 }
 
 export default async function Page(props: Props) {
-  const { peraturan } = await getPeraturanData(await props.params);
+  const peraturan = await getPeraturanData(await props.params);
+  if (!peraturan) notFound();
   return (
     <div className="grid grid-cols-1 lg:grid-cols-2 gap-2">
       <Metadata peraturan={peraturan} />

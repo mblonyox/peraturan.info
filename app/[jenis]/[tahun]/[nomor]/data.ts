@@ -1,6 +1,5 @@
 "use server";
 
-import { notFound } from "next/navigation";
 import { cache } from "react";
 
 import {
@@ -11,16 +10,27 @@ import {
   getSumberPeraturan,
   type PeraturanParams,
 } from "@/lib/db";
-import { getPeraturanMarkdown, getPeraturanThumbnail } from "@/utils/data";
+import { readOrFetch } from "@/utils/data";
 
 export const getPeraturanData = cache(async (params: PeraturanParams) => {
   const db = await getDB();
   const peraturan = await getPeraturan(db, params);
-  if (!peraturan) notFound();
-  const md = await getPeraturanMarkdown(params);
-  const thumbnail = await getPeraturanThumbnail(params);
-  return { peraturan, md, thumbnail };
+  return peraturan;
 });
+
+export const getPeraturanMarkdown = cache(
+  async ({ jenis, tahun, nomor }: PeraturanParams) => {
+    const path = `${jenis}/${tahun}/${nomor}/fulltext.md`;
+    return readOrFetch(path, "text");
+  },
+);
+
+export const getPeraturanThumbnail = cache(
+  async ({ jenis, tahun, nomor }: PeraturanParams) => {
+    const path = `${jenis}/${tahun}/${nomor}/thumbnail.png`;
+    return readOrFetch(path);
+  },
+);
 
 export const getRelasiData = cache(async (params: PeraturanParams) => {
   const db = await getDB();

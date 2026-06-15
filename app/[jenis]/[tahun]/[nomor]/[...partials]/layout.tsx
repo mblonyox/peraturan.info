@@ -7,7 +7,7 @@ import IconWarning from "@/components/icons/warning";
 import PrintButton from "@/components/print_button";
 import { createMarked } from "@/lib/marked";
 
-import { getPeraturanData } from "../data";
+import { getPeraturanData, getPeraturanMarkdown } from "../data";
 import { Nav, NavContextProvider } from "./nav";
 import Outline from "./outline";
 
@@ -15,7 +15,9 @@ type Props = LayoutProps<"/[jenis]/[tahun]/[nomor]/[...partials]">;
 
 export default async function Layout({ children, params }: Props) {
   const { jenis, tahun, nomor } = await params;
-  const { peraturan, md } = await getPeraturanData({ jenis, tahun, nomor });
+  const peraturan = await getPeraturanData({ jenis, tahun, nomor });
+  if (!peraturan) notFound();
+  const md = await getPeraturanMarkdown({ jenis, tahun, nomor });
   if (!md) notFound();
 
   const tokens = createMarked().lexer(md);

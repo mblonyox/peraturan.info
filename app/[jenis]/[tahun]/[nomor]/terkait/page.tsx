@@ -1,3 +1,5 @@
+import { notFound } from "next/navigation";
+
 import { type Peraturan, type RelasiPeraturan } from "@/lib/db";
 
 import { getPeraturanData, getRelasiData } from "../data";
@@ -15,7 +17,8 @@ type RelasiItem = Pick<RelasiPeraturan, "id" | "relasi" | "catatan"> & {
 type Props = PageProps<"/[jenis]/[tahun]/[nomor]/terkait">;
 
 export async function generateMetadata({ params }: Props) {
-  const { peraturan } = await getPeraturanData(await params);
+  const peraturan = await getPeraturanData(await params);
+  if (!peraturan) notFound();
   return {
     title: `Terkait | ${peraturan.rujukPanjang}`,
     description: `Peraturan Terkait (Metadata, Sumber Peraturan, Abstrak) atas ${peraturan.rujukPanjang}`,

@@ -3,7 +3,7 @@ import { MetadataRoute } from "next";
 import { BASE_URL } from "@/lib/constants";
 import { getDB, getListPeraturan } from "@/lib/db";
 import { createMarked, PeraturanToken } from "@/lib/marked";
-import { getPeraturanMarkdown } from "@/utils/data";
+import { readOrFetch } from "@/utils/data";
 
 export async function generateSitemaps() {
   return [{ id: "root" }];
@@ -60,11 +60,7 @@ async function* generateItems(
       changefreq: "yearly",
       priority: 0.5,
     } as SitemapItem;
-    const md = await getPeraturanMarkdown({
-      jenis,
-      tahun,
-      nomor: p.nomor,
-    });
+    const md = await readOrFetch(`${p.path}/fulltext.md`, "text");
     if (md) {
       const paths = getPartialPaths(md);
       for (const path of paths) {

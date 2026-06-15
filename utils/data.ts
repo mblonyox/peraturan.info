@@ -5,53 +5,25 @@ import { DATA_REPO, LOCAL_DATA_PATH } from "@/lib/constants";
 
 import { parseSrc } from "./github";
 
-interface PeraturanId {
-  jenis: string;
-  tahun: string | number;
-  nomor: string | number;
-}
+const repoBaseUrl = parseSrc(DATA_REPO);
 
-function readOrFetch(path: string): Promise<ArrayBuffer | null>;
-function readOrFetch(path: string, text: true): Promise<string | null>;
-async function readOrFetch(
+export function readOrFetch(path: string): Promise<ArrayBuffer | null>;
+export function readOrFetch(
   path: string,
-  text?: boolean,
+  format: "text",
+): Promise<string | null>;
+export async function readOrFetch(
+  path: string,
+  format?: "text" | "binary",
 ): Promise<ArrayBuffer | string | null> {
   const localPath = join(LOCAL_DATA_PATH, path);
   const file = await readFile(localPath).catch(() => null);
-  if (file) return text ? file.toString() : file.buffer;
-  const url = new URL(path, parseSrc(DATA_REPO));
+  if (file) return format === "text" ? file.toString() : file.buffer;
+  const url = new URL(path, repoBaseUrl);
   const response = await fetch(url.href, { cache: "force-cache" })
     .then((r) => (r.ok ? r : null))
     .catch(() => null);
-  if (response) return text ? response.text() : response.arrayBuffer();
+  if (response)
+    return format === "text" ? response.text() : response.arrayBuffer();
   return null;
-}
-
-export async function getDatabaseBytes() {
-  const path = "database.sqlite";
-  return readOrFetch(path).catch(() => null);
-}
-
-export async function getOramaDpackText() {
-  const path = "orama.dpack";
-  return readOrFetch(path, true).catch(() => null);
-}
-
-export async function getPeraturanMarkdown({
-  jenis,
-  tahun,
-  nomor,
-}: PeraturanId) {
-  const path = [jenis, tahun, nomor, "fulltext.md"].join("/");
-  return readOrFetch(path, true).catch(() => null);
-}
-
-export async function getPeraturanThumbnail({
-  jenis,
-  tahun,
-  nomor,
-}: PeraturanId) {
-  const path = [jenis, tahun, nomor, "thumbnail.png"].join("/");
-  return readOrFetch(path).catch(() => null);
 }
