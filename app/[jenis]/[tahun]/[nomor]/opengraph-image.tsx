@@ -18,7 +18,7 @@ interface Props {
 export default async function Image({ params }: Props) {
   const peraturan = await getPeraturanData(await params);
   if (!peraturan) notFound();
-  const { env } = getCloudflareContext();
+  const { env } = await getCloudflareContext({ async: true });
   const logoBase64 = await env?.ASSETS?.fetch("logo.png")
     .then((r) => r.arrayBuffer())
     .then((buffer) => Buffer.from(buffer).toString("base64"))

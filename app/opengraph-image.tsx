@@ -10,7 +10,7 @@ export const size = {
 };
 
 export default async function Image() {
-  const { env } = getCloudflareContext();
+  const { env } = await getCloudflareContext({ async: true });
   const logoBase64 = await env?.ASSETS?.fetch("logo.png")
     .then((r) => r.arrayBuffer())
     .then((buffer) => Buffer.from(buffer).toString("base64"))
