@@ -10,11 +10,11 @@ export const size = {
 };
 
 export default async function Image() {
-  const { env } = await getCloudflareContext({ async: true });
-  const logoBase64 = await env?.ASSETS?.fetch("https://assets.local/logo.png")
-    .then((r) => r.arrayBuffer())
-    .then((buffer) => Buffer.from(buffer).toString("base64"))
-    .then((base64) => `data:image/png;base64,${base64}`);
+  const logoBase64 = await getCloudflareContext({ async: true })
+    .then(({ env }) => env.ASSETS?.fetch("https://assets.local/logo.png"))
+    .then((response) => response?.arrayBuffer())
+    .then((buffer) => buffer && Buffer.from(buffer).toString("base64"))
+    .then((base64) => base64 && `data:image/png;base64,${base64}`);
 
   return new ImageResponse(
     <div
@@ -28,17 +28,19 @@ export default async function Image() {
         background: "linear-gradient(to left, #212529, #343a40, #2b3035)",
       }}
     >
-      <img
-        src={logoBase64}
-        alt=""
-        style={{
-          width: 256,
-          height: 256,
-          position: "absolute",
-          bottom: 0,
-          right: 0,
-        }}
-      />
+      {logoBase64 && (
+        <img
+          src={logoBase64}
+          alt=""
+          style={{
+            width: 256,
+            height: 256,
+            position: "absolute",
+            bottom: 0,
+            right: 0,
+          }}
+        />
+      )}
       <div
         style={{
           fontSize: 64,
