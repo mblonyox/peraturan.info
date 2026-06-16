@@ -164,13 +164,12 @@ function handleBukuPartial(md: string, partials: string[]) {
   let token: PeraturanToken | undefined,
     title: string | undefined,
     prev: { name: string; url: string } | null = null,
-    next: { name: string; url: string } | null = null;
+    next: { name: string; url: string } | null = null,
+    path: string | undefined;
   for (const [k, v] of Object.entries({ buku, bab, bagian, paragraf })) {
     if (!v) continue;
-    tokens = tokens.filter((token) => token.type === k);
-    token = tokens.find(
-      (token) => token.nomor?.toLowerCase().replace(" ", "-") === v,
-    );
+    tokens = tokens.filter((t) => t.type === k);
+    token = tokens.find((t) => t.nomor?.toLowerCase().replace(" ", "-") === v);
     if (!token?.nomor) notFound();
     title = title ? `${title}, ${token.nomor}` : token.nomor;
     const index = tokens.indexOf(token);
@@ -179,7 +178,7 @@ function handleBukuPartial(md: string, partials: string[]) {
       if (prevToken.nomor) {
         prev = {
           name: prevToken.nomor,
-          url: prevToken.nomor.toLowerCase().replace(" ", "-"),
+          url: `${path}/${prevToken.nomor.toLowerCase().replace(" ", "-")}`,
         };
       }
     }
@@ -188,10 +187,13 @@ function handleBukuPartial(md: string, partials: string[]) {
       if (nextToken.nomor) {
         next = {
           name: nextToken.nomor,
-          url: nextToken.nomor.toLowerCase().replace(" ", "-"),
+          url: `${path}/${nextToken.nomor.toLowerCase().replace(" ", "-")}`,
         };
       }
     }
+    path = path
+      ? `${path}/${token?.nomor?.toLowerCase().replace(" ", "-")}`
+      : token?.nomor?.toLowerCase().replace(" ", "-");
     tokens = token.tokens ?? [];
   }
   if (!token?.nomor) notFound();
