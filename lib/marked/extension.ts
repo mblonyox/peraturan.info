@@ -13,8 +13,9 @@ export type PeraturanToken = Tokens.Generic & {
 };
 
 const rules = {
-  judul: /^([^a-z]+)\nNOMOR (.+)\nTENTANG\n([^a-z]+)(?:\n{2,}|$)/,
-  frasaJabatan: /^DENGAN RAHMAT TUHAN YANG MAHA ESA\n\n([^]+?,)(?:\n{2,}|$)/,
+  judul: /^([A-Z\s]+)\nNOMOR (.+)\nTENTANG\n([A-Z\s]+?)(?:\n{2,}|$)/,
+  frasaJabatan:
+    /^DENGAN RAHMAT TUHAN YANG MAHA ESA\n\n([A-Z\s]+?,)(?:\n{2,}|$)/,
   konsideran: /^Menimbang[ \t]*:[ \t]*\n([^]+?)(?:\n{2,}|$)/,
   dasarHukum: /^Mengingat[ \t]*:[ \t]*\n([^]+?)(?:\n{2,}|$)/,
   diktum: /^(Dengan[^]+\n)?MEMUTUSKAN:\n/,
