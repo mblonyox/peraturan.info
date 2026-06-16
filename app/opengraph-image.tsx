@@ -1,6 +1,4 @@
-import { readFile } from "node:fs/promises";
-import { join } from "node:path";
-
+import { getCloudflareContext } from "@opennextjs/cloudflare";
 import { ImageResponse } from "next/og";
 
 import { BASE_URL } from "@/lib/constants";
@@ -12,8 +10,10 @@ export const size = {
 };
 
 export default async function Image() {
-  const logo = await readFile(join(process.cwd(), "assets/logo.png"))
-    .then((buffer) => buffer.toString("base64"))
+  const { env } = getCloudflareContext();
+  const logoBase64 = await env?.ASSETS?.fetch("logo.png")
+    .then((r) => r.arrayBuffer())
+    .then((buffer) => Buffer.from(buffer).toString("base64"))
     .then((base64) => `data:image/png;base64,${base64}`);
 
   return new ImageResponse(
@@ -29,7 +29,7 @@ export default async function Image() {
       }}
     >
       <img
-        src={logo}
+        src={logoBase64}
         alt=""
         style={{
           width: 256,
