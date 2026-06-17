@@ -16,8 +16,8 @@
   },
   "dependencies": {
     "@opennextjs/cloudflare": "^1.19.11",
-    "@orama/orama": "^2",
-    "@orama/plugin-data-persistence": "^2",
+    "@orama/orama": "^2.1.1",
+    "@orama/plugin-data-persistence": "^2.1.1",
     "clsx": "^2.1.1",
     "dpack": "^0.6.22",
     "feed": "^5.2.1",
@@ -32,7 +32,7 @@
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4.3.1",
-    "@types/node": "^20.19.43",
+    "@types/node": "^25.9.3",
     "@types/react": "^19.2.17",
     "@types/react-dom": "^19.2.3",
     "daisyui": "^5.5.23",
@@ -44,7 +44,7 @@
     "prettier": "^3.8.4",
     "tailwindcss": "^4.3.1",
     "typescript": "^6.0.3",
-    "typescript-eslint": "^8.61.0",
+    "typescript-eslint": "^8.61.1",
     "wrangler": "^4.100.0"
   },
   "browserslist": "> 1%"
