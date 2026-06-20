@@ -20,7 +20,10 @@ export async function readOrFetch(
   const file = await readFile(localPath).catch(() => null);
   if (file) return format === "text" ? file.toString() : file.buffer;
   const url = new URL(path, repoBaseUrl);
-  const response = await fetch(url.href, { cache: "force-cache" })
+  const response = await fetch(url.href, {
+    cache: "force-cache",
+    next: { tags: [path] },
+  })
     .then((r) => (r.ok ? r : null))
     .catch(() => null);
   if (response)
