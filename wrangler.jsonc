@@ -3,7 +3,10 @@
   "name": "peraturan-info",
   "main": ".open-next/worker.js",
   "compatibility_date": "2026-06-07",
-  "compatibility_flags": ["nodejs_compat", "global_fetch_strictly_public"],
+  "compatibility_flags": [
+    "nodejs_compat",
+    "global_fetch_strictly_public"
+  ],
   "observability": {
     "enabled": true,
   },
@@ -50,7 +53,22 @@
   "migrations": [
     {
       "tag": "v1",
-      "new_sqlite_classes": ["DOQueueHandler", "DOShardedTagCache"],
+      "new_sqlite_classes": [
+        "DOQueueHandler",
+        "DOShardedTagCache"
+      ],
     },
+    {
+      "tag": "v2",
+      "new_sqlite_classes": [
+        "DOVisitCounter"
+      ],
+    },
+    {
+      "tag": "v3",
+      "deleted_classes": [
+        "DOVisitCounter"
+      ]
+    }
   ],
 }
