@@ -1,6 +1,4 @@
-import { getCloudflareContext } from "@opennextjs/cloudflare";
 import { notFound } from "next/navigation";
-import { after } from "next/server";
 
 import Comments from "@/components/comments";
 import PageHeading from "@/components/page-heading";
@@ -43,12 +41,6 @@ export default async function Layout({ children, params }: Props) {
   const { jenis, tahun, nomor } = await params;
   const peraturan = await getPeraturanData({ jenis, tahun, nomor });
   if (!peraturan) notFound();
-
-  after(async () => {
-    const { env } = await getCloudflareContext({ async: true });
-    const stub = env.VISIT_COUNTER.getByName("main");
-    await stub.visit(`${jenis}/${tahun}/${nomor}`);
-  });
 
   return (
     <div className="container">
