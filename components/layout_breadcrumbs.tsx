@@ -1,28 +1,99 @@
-import Link from "next/link";
+"use client";
 
-interface Props {
-  breadcrumbs?: { name: string; url?: string }[];
+import Link from "next/link";
+import { useSelectedLayoutSegments } from "next/navigation";
+
+import { JENIS2_PERATURAN, NAMA2_JENIS } from "@/lib/db";
+
+import IconHouse from "./icons/house";
+
+function formatPartials(segment: string): string {
+  if (/^ayat/i.test(segment)) return `ayat (${segment.split("-")[1]})`;
+  if (/^buku|bab/i.test(segment))
+    return segment.replaceAll("-", " ").toLocaleUpperCase();
+  return segment
+    .split("-")
+    .map((part) => part.charAt(0).toLocaleUpperCase() + part.slice(1))
+    .join(" ");
 }
 
-export default function LayoutBreadcrumbs({ breadcrumbs }: Props) {
-  if (!breadcrumbs) return null;
+function segmentsToBreadcrumbs(segments: string[]) {
+  const breadcrumbs: { name: string; url: string }[] = [];
+  let url = "";
+  let jenis: string | undefined;
+  let tahun: string | undefined;
+
+  const segment1 = segments.at(0);
+  url += `/${segment1}`;
+  switch (segment1) {
+    case "terbaru":
+      breadcrumbs.push({ name: "Peraturan terbaru", url });
+      break;
+    case "search":
+      breadcrumbs.push({ name: "Hasil Pencarian", url });
+      break;
+    case "all":
+      breadcrumbs.push({ name: "Semua peraturan", url });
+      break;
+    default: {
+      if (segment1 && JENIS2_PERATURAN.includes(segment1 as never)) {
+        breadcrumbs.push({
+          name: NAMA2_JENIS[segment1].panjang,
+          url,
+        });
+        jenis = segment1;
+      }
+      break;
+    }
+  }
+
+  const segment2 = segments.at(1);
+  url += `/${segment2}`;
+  if (segment2 && /^\d{4}$/.test(segment2)) {
+    breadcrumbs.push({
+      name: `Tahun ${segment2}`,
+      url,
+    });
+    tahun = segment2;
+  }
+
+  const segment3 = segments.at(2);
+  url += `/${segment3}`;
+  if (jenis && tahun && segment3 && /^\d+$/.test(segment3)) {
+    breadcrumbs.push({
+      name: `${NAMA2_JENIS[jenis].pendek} No. ${segment3} Th. ${tahun}`,
+      url,
+    });
+  }
+
+  const segment4 = segments.at(3);
+  for (const subSegment of segment4?.split("/") ?? []) {
+    url += `/${subSegment}`;
+    breadcrumbs.push({ name: formatPartials(subSegment), url });
+  }
+
+  return breadcrumbs;
+}
+
+export default function LayoutBreadcrumbs() {
+  const segments = useSelectedLayoutSegments();
+
+  if (segments.length === 0) {
+    return null;
+  }
+
+  const breadcrumbs = segmentsToBreadcrumbs(segments);
+
   return (
     <div className="container my-5">
       <nav aria-label="breadcrumb" className="breadcrumbs">
         <ul vocab="https://schema.org/" typeof="BreadcrumbList">
-          <li className="breadcrumb-item">
-            <Link href="/" aria-label="Beranda">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="16"
-                height="16"
-                fill="currentColor"
-                className="bi bi-house"
-                viewBox="0 0 16 16"
-              >
-                <path d="M8.707 1.5a1 1 0 0 0-1.414 0L.646 8.146a.5.5 0 0 0 .708.708L2 8.207V13.5A1.5 1.5 0 0 0 3.5 15h9a1.5 1.5 0 0 0 1.5-1.5V8.207l.646.647a.5.5 0 0 0 .708-.708L13 5.793V2.5a.5.5 0 0 0-.5-.5h-1a.5.5 0 0 0-.5.5v1.293L8.707 1.5ZM13 7.207V13.5a.5.5 0 0 1-.5.5h-9a.5.5 0 0 1-.5-.5V7.207l5-5 5 5Z" />
-              </svg>
+          <li>
+            <Link href="/" property="item" typeof="WebPage">
+              <IconHouse />
+              <span property="name">Beranda</span>
             </Link>
+            <meta property="position" content="1" />
           </li>
           {breadcrumbs.map(({ name, url }, index) => (
             <li key={index} property="itemListElement" typeof="ListItem">
@@ -33,7 +104,7 @@ export default function LayoutBreadcrumbs({ breadcrumbs }: Props) {
               ) : (
                 <span property="name">{name}</span>
               )}
-              <meta property="position" content={`${index + 1}`} />
+              <meta property="position" content={`${index + 2}`} />
             </li>
           ))}
         </ul>

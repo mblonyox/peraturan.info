@@ -2,6 +2,7 @@ import "./globals.css";
 
 import type { Metadata } from "next";
 
+import LayoutBreadcrumbs from "@/components/layout_breadcrumbs";
 import LayoutFooter from "@/components/layout_footer";
 import LayoutNavbar from "@/components/layout_navbar";
 import { BASE_URL } from "@/lib/constants";
@@ -52,6 +53,7 @@ export default function RootLayout({ children }: Props) {
       </head>
       <body className="min-w-sm min-h-screen flex flex-col justify-between">
         <LayoutNavbar />
+        <LayoutBreadcrumbs />
         <main className="flex-1">{children}</main>
         <LayoutFooter />
       </body>
