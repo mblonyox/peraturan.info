@@ -9,8 +9,6 @@ import Tabs from "@/components/tabs";
 
 import { getPeraturanData } from "./data";
 
-export { DOVisitCounter } from "@/lib/counter";
-
 const tabs = [
   {
     name: "Info",
