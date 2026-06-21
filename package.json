@@ -6,13 +6,14 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
+    "cf:typegen": "wrangler types --env-interface CloudflareEnv",
     "cf:build": "opennextjs-cloudflare build",
     "cf:deploy": "opennextjs-cloudflare deploy",
     "cf:preview": "opennextjs-cloudflare preview",
     "checks": "pnpm typecheck && pnpm lint && pnpm fmt",
     "lint": "eslint --fix .",
     "fmt": "prettier --write .",
-    "typecheck": "next typegen && tsc --noEmit"
+    "typecheck": "pnpm cf:typegen && next typegen && tsc --noEmit"
   },
   "dependencies": {
     "@opennextjs/cloudflare": "^1.19.11",
