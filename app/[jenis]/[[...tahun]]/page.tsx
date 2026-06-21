@@ -169,13 +169,19 @@ function FilterByJenis({ data, tahun }: FilterByJenisProps) {
             Semua jenis
           </a>
         </li>
-        {Object.entries(data).map(([jenis, jumlah]) => (
-          <li key={jenis}>
-            <a className="link" href={`/${jenis}/${tahun ?? ""}`}>
-              {NAMA2_JENIS[jenis].pendek}&nbsp;({jumlah})
-            </a>
-          </li>
-        ))}
+        {Object.entries(data)
+          .sort(
+            (a, b) =>
+              JENIS2_PERATURAN.indexOf(a[0] as never) -
+              JENIS2_PERATURAN.indexOf(b[0] as never),
+          )
+          .map(([jenis, jumlah]) => (
+            <li key={jenis}>
+              <a className="link" href={`/${jenis}/${tahun ?? ""}`}>
+                {NAMA2_JENIS[jenis].pendek}&nbsp;({jumlah})
+              </a>
+            </li>
+          ))}
       </ul>
     </section>
   );
@@ -197,13 +203,15 @@ function FilterByTahun({ data, jenis }: FilterByTahunProps) {
               Semua tahun
             </a>
           </li>
-          {Object.entries(data).map(([tahun, jumlah]) => (
-            <li key={tahun}>
-              <a className="link" href={`/${jenis ?? "all"}/${tahun}`}>
-                {tahun}&nbsp;({jumlah})
-              </a>
-            </li>
-          ))}
+          {Object.entries(data)
+            .sort((a, b) => b[0].localeCompare(a[0]))
+            .map(([tahun, jumlah]) => (
+              <li key={tahun}>
+                <a className="link" href={`/${jenis ?? "all"}/${tahun}`}>
+                  {tahun}&nbsp;({jumlah})
+                </a>
+              </li>
+            ))}
         </ul>
       </div>
     </section>
