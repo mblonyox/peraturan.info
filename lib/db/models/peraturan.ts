@@ -253,14 +253,15 @@ export async function getListPeraturanByTanggal(
   return results.map((row) => Peraturan.fromRow(row));
 }
 
-export async function getFeedListPeraturan(db: D1Database) {
+export async function getFeedListPeraturan(db: D1Database, limit = 15) {
   const { results } = await db
     .prepare(
       `SELECT *
        FROM peraturan
        ORDER BY tanggal_diundangkan DESC
-       LIMIT 15`,
+       LIMIT ?`,
     )
+    .bind(limit)
     .all();
   return results.map((row) => Peraturan.fromRow(row));
 }

@@ -50,3 +50,4 @@ next-env.d.ts
 
 # database
 database.sqlite
+data-peraturan.sql
