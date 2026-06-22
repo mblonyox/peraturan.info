@@ -87,27 +87,44 @@ export default function LayoutBreadcrumbs() {
   return (
     <div className="container my-5">
       <nav aria-label="breadcrumb" className="breadcrumbs">
-        <ul vocab="https://schema.org/" typeof="BreadcrumbList">
-          <li>
-            <Link href="/" property="item" typeof="WebPage">
+        <ol itemScope itemType="https://schema.org/BreadcrumbList">
+          <li
+            itemProp="itemListElement"
+            itemScope
+            itemType="https://schema.org/ListItem"
+          >
+            <Link
+              href="/"
+              itemProp="item"
+              itemType="https://schema.org/WebPage"
+            >
               <IconHouse />
-              <span property="name">Beranda</span>
+              <span itemProp="name">Beranda</span>
             </Link>
-            <meta property="position" content="1" />
+            <meta itemProp="position" content="1" />
           </li>
           {breadcrumbs.map(({ name, url }, index) => (
-            <li key={index} property="itemListElement" typeof="ListItem">
+            <li
+              key={index}
+              itemProp="itemListElement"
+              itemScope
+              itemType="https://schema.org/ListItem"
+            >
               {url ? (
-                <Link href={url} property="item" typeof="WebPage">
-                  <span property="name">{name}</span>
+                <Link
+                  href={url}
+                  itemProp="item"
+                  itemType="https://schema.org/WebPage"
+                >
+                  <span itemProp="name">{name}</span>
                 </Link>
               ) : (
-                <span property="name">{name}</span>
+                <span itemProp="name">{name}</span>
               )}
-              <meta property="position" content={`${index + 2}`} />
+              <meta itemProp="position" content={`${index + 2}`} />
             </li>
           ))}
-        </ul>
+        </ol>
       </nav>
     </div>
   );
