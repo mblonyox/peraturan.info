@@ -1,6 +1,7 @@
 import "./globals.css";
 
 import type { Metadata } from "next";
+import { ThemeProvider } from "next-themes";
 
 import LayoutBreadcrumbs from "@/components/layout_breadcrumbs";
 import LayoutFooter from "@/components/layout_footer";
@@ -52,10 +53,12 @@ export default function RootLayout({ children }: Props) {
         />
       </head>
       <body className="min-w-sm min-h-screen flex flex-col justify-between">
-        <LayoutNavbar />
-        <LayoutBreadcrumbs />
-        <main className="flex-1">{children}</main>
-        <LayoutFooter />
+        <ThemeProvider attribute="class">
+          <LayoutNavbar />
+          <LayoutBreadcrumbs />
+          <main className="flex-1">{children}</main>
+          <LayoutFooter />
+        </ThemeProvider>
       </body>
     </html>
   );

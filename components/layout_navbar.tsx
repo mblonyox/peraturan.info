@@ -4,7 +4,6 @@ import { clsx } from "clsx";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { ThemeProvider } from "next-themes";
 import { Suspense } from "react";
 
 import SearchInput from "@/components/search_input";
@@ -125,9 +124,7 @@ export default function LayoutNavbar() {
         </Suspense>
       </div>
       <div className="navbar-end">
-        <ThemeProvider attribute="class">
-          <ThemeSwitcher />
-        </ThemeProvider>
+        <ThemeSwitcher />
       </div>
     </nav>
   );

@@ -3,6 +3,7 @@ import { cache } from "react";
 import { z } from "zod";
 
 import IconFunnel from "@/components/icons/funnel";
+import PageHeading from "@/components/page-heading";
 import Pagination from "@/components/pagination";
 import {
   getDB,
@@ -47,11 +48,13 @@ const getData = cache(async (props: Props) => {
   if (!listPeraturan.hasil.length) notFound();
   const filterByJenis = await getFilterByJenisCount(db, { jenis, tahun });
   const filterByTahun = await getFilterByTahunCount(db, { jenis, tahun });
-  const namaJenis = jenis ? NAMA2_JENIS[jenis].panjang : "semua peraturan";
-  const judul = namaJenis + (tahun ? ` pada tahun ${tahun}` : "");
+  const headingTitle =
+    "Daftar " +
+    (jenis ? NAMA2_JENIS[jenis].panjang : "semua peraturan") +
+    (tahun ? ` pada tahun ${tahun}.` : ".");
   const start = (page - 1) * pageSize + 1;
   const end = start + listPeraturan.hasil.length - 1;
-  const range = `Menampilkan urutan ${
+  const headingDescription = `Menampilkan urutan ${
     start === end ? start : `${start} s.d. ${end}`
   } dari ${listPeraturan.total} peraturan.`;
 
@@ -59,17 +62,17 @@ const getData = cache(async (props: Props) => {
     ...listPeraturan,
     filterByJenisProps: { data: filterByJenis, tahun },
     filterByTahunProps: { data: filterByTahun, jenis },
-    judul,
-    range,
+    headingTitle,
+    headingDescription,
   };
 });
 
 export async function generateMetadata(props: Props) {
-  const { page, judul, range } = await getData(props);
+  const { page, headingTitle, headingDescription } = await getData(props);
 
   return {
-    title: `Laman #${page} | Daftar ${judul}.`,
-    description: `Tampilan daftar ${judul}. ${range}`,
+    title: `Laman #${page} | ${headingTitle}`,
+    description: `Tampilan ${headingTitle} ${headingDescription}`,
   };
 }
 
@@ -78,6 +81,8 @@ export default async function Page(props: Props) {
     page,
     pageSize,
     hasil,
+    headingTitle,
+    headingDescription,
     total,
     filterByJenisProps,
     filterByTahunProps,
@@ -98,47 +103,50 @@ export default async function Page(props: Props) {
           <FilterByTahun {...filterByTahunProps} />
         </div>
       </aside>
-      <div className="container drawer-content my-5">
-        <div className="block lg:hidden my-2">
-          <label htmlFor="filters" className="btn" aria-label="Open Filters">
-            <IconFunnel />
-            &nbsp;Saring
-          </label>
-        </div>
-        <div className="flex">
-          <div className="hidden lg:block">
-            <FilterByJenis {...filterByJenisProps} />
-            <FilterByTahun {...filterByTahunProps} />
+      <div className="drawer-content">
+        <PageHeading title={headingTitle} description={headingDescription} />
+        <div className="container my-5">
+          <div className="block lg:hidden my-2">
+            <label htmlFor="filters" className="btn" aria-label="Open Filters">
+              <IconFunnel />
+              &nbsp;Saring
+            </label>
           </div>
-          <div className="divider divider-horizontal hidden lg:flex"></div>
-          <div className="flex-1 overflow-x-auto">
-            <table className="table border-t-2 border-t-base-300">
-              <thead>
-                <tr>
-                  <th scope="col">#</th>
-                  <th scope="col">Judul</th>
-                  <th scope="col">Nomor dan Tahun</th>
-                  <th scope="col">Bentuk</th>
-                </tr>
-              </thead>
-              <tbody>
-                {hasil.map(
-                  ({ path, judul, nomorPendek, namaJenisPanjang }, index) => (
-                    <tr key={judul + nomorPendek}>
-                      <th scope="row">{startIndex + index}</th>
-                      <td>{judul}</td>
-                      <td>
-                        <a className="link" href={path}>
-                          {nomorPendek}
-                        </a>
-                      </td>
-                      <td>{namaJenisPanjang}</td>
-                    </tr>
-                  ),
-                )}
-              </tbody>
-            </table>
-            <Pagination {...{ total, page, pageSize }} />
+          <div className="flex">
+            <div className="hidden lg:block">
+              <FilterByJenis {...filterByJenisProps} />
+              <FilterByTahun {...filterByTahunProps} />
+            </div>
+            <div className="divider divider-horizontal hidden lg:flex"></div>
+            <div className="flex-1 overflow-x-auto">
+              <table className="table border-t-2 border-t-base-300">
+                <thead>
+                  <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Judul</th>
+                    <th scope="col">Nomor dan Tahun</th>
+                    <th scope="col">Bentuk</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {hasil.map(
+                    ({ path, judul, nomorPendek, namaJenisPanjang }, index) => (
+                      <tr key={judul + nomorPendek}>
+                        <th scope="row">{startIndex + index}</th>
+                        <td>{judul}</td>
+                        <td>
+                          <a className="link" href={path}>
+                            {nomorPendek}
+                          </a>
+                        </td>
+                        <td>{namaJenisPanjang}</td>
+                      </tr>
+                    ),
+                  )}
+                </tbody>
+              </table>
+              <Pagination {...{ total, page, pageSize }} />
+            </div>
           </div>
         </div>
       </div>
