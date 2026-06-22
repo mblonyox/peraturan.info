@@ -47,6 +47,10 @@ const nextConfig: NextConfig = {
       destination: `${MOUTHFUL_URL}/:path*`,
     },
   ],
+  images: {
+    loader: "custom",
+    loaderFile: "./lib/cf/image-loader.ts",
+  },
 };
 
 export default nextConfig;
