@@ -1,3 +1,4 @@
+import { unstable_cache } from "next/cache";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -9,18 +10,32 @@ import {
   getPopularPuu,
 } from "@/lib/db";
 
-export default async function Home() {
-  const db = await getDB();
-  const terbaru = await getFeedListPeraturan(db, 5);
-  const terpopuler = await getPopularPuu(db, 5).then((results) =>
-    Promise.all(
+export const dynamic = "force-dynamic";
+
+const getData = unstable_cache(
+  async () => {
+    const db = await getDB();
+    const terbaru = await getFeedListPeraturan(db, 5);
+    const results = await getPopularPuu(db, 5);
+    const terpopuler = await Promise.all(
       results.map(async ({ path, count }) => {
         const [jenis, tahun, nomor] = path.split("/");
         const peraturan = await getPeraturan(db, { jenis, tahun, nomor });
         return { peraturan, count };
       }),
-    ),
-  );
+    );
+
+    return { terbaru, terpopuler };
+  },
+  [],
+  {
+    revalidate: 60 * 60 * 24,
+    tags: ["home"],
+  },
+);
+
+export default async function Home() {
+  const { terbaru, terpopuler } = await getData();
 
   return (
     <>
