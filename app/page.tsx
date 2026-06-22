@@ -12,16 +12,35 @@ import {
 
 export const dynamic = "force-dynamic";
 
+function formatTanggal(date: Date) {
+  return date.toLocaleDateString("ID-id", {
+    day: "numeric",
+    month: "long",
+    year: "numeric",
+  });
+}
+
 const getData = unstable_cache(
   async () => {
     const db = await getDB();
-    const terbaru = await getFeedListPeraturan(db, 5);
+    const feedList = await getFeedListPeraturan(db, 10);
+    const terbaru = feedList.map((p) => ({
+      tanggal: formatTanggal(p.tanggal_diundangkan),
+      path: p?.path,
+      nomor: p?.rujukPendek,
+      judul: p?.judul,
+    }));
     const results = await getPopularPuu(db, 5);
     const terpopuler = await Promise.all(
       results.map(async ({ path, count }) => {
         const [jenis, tahun, nomor] = path.split("/");
         const peraturan = await getPeraturan(db, { jenis, tahun, nomor });
-        return { peraturan, count };
+        return {
+          path: peraturan?.path ?? "/",
+          nomor: peraturan?.rujukPendek ?? "Tidak ada nomor",
+          judul: peraturan?.judul ?? "Tidak ada judul",
+          count,
+        };
       }),
     );
 
@@ -74,32 +93,23 @@ export default async function Home() {
       <div className="container flex flex-col lg:flex-row my-5">
         <ul className="list rounded-box bg-base-200 flex-1">
           <li className="p-4 pb-2 text-xl font-bold">Terbaru</li>
-          {terbaru.slice(0, 5).map((peraturan) => (
-            <li key={peraturan.path} className="list-row">
+          {terbaru.slice(0, 5).map(({ path, nomor, judul, tanggal }) => (
+            <li key={path} className="list-row">
               <div>
                 <Image
                   className="h-auto rounded-xs"
-                  src={`${peraturan.path}/thumbnail.png`}
-                  alt={peraturan.judul}
+                  src={`${path}/thumbnail.png`}
+                  alt={judul}
                   width={64}
                   height={64}
                 />
               </div>
               <div>
-                <div className="text-xs">
-                  {new Date(peraturan.tanggal_diundangkan).toLocaleDateString(
-                    "ID-id",
-                    { day: "numeric", month: "long", year: "numeric" },
-                  )}
-                </div>
-                <div className="font-semibold">{peraturan.rujukPendek}</div>
-                <p className="text-sm">{peraturan.judul}</p>
+                <div className="text-xs">{tanggal}</div>
+                <div className="font-semibold">{nomor}</div>
+                <p className="text-sm">{judul}</p>
               </div>
-              <Link
-                href={peraturan.path}
-                target="_blank"
-                className="btn btn-ghost"
-              >
+              <Link href={path} target="_blank" className="btn btn-ghost">
                 Lihat
                 <IconBoxArrowUpRight />
               </Link>
@@ -109,26 +119,28 @@ export default async function Home() {
         <div className="divider lg:divider-horizontal"></div>
         <ul className="list rounded-box bg-base-200 flex-1">
           <li className="p-4 pb-2 text-xl font-bold">Terpopuler</li>
-          {terpopuler.slice(0, 5).map(({ peraturan, count }, index) => (
-            <li key={peraturan?.path} className="list-row">
-              <div className="text-4xl font-thin opacity-30 tabular-nums">
-                #{index + 1}
-              </div>
-              <div>
-                <div className="text-xs">{count} kali dilihat</div>
-                <div className="font-semibold">{peraturan?.rujukPendek}</div>
-                <p className="text-sm">{peraturan?.judul}</p>
-              </div>
-              <Link
-                href={peraturan?.path ?? "#"}
-                target="_blank"
-                className="btn btn-ghost"
-              >
-                Lihat
-                <IconBoxArrowUpRight />
-              </Link>
-            </li>
-          ))}
+          {terpopuler
+            .slice(0, 5)
+            .map(({ path, nomor, judul, count }, index) => (
+              <li key={path} className="list-row">
+                <div className="text-4xl font-thin opacity-30 tabular-nums">
+                  #{index + 1}
+                </div>
+                <div>
+                  <div className="text-xs">{count} kali dilihat</div>
+                  <div className="font-semibold">{nomor}</div>
+                  <p className="text-sm">{judul}</p>
+                </div>
+                <Link
+                  href={path ?? "#"}
+                  target="_blank"
+                  className="btn btn-ghost"
+                >
+                  Lihat
+                  <IconBoxArrowUpRight />
+                </Link>
+              </li>
+            ))}
         </ul>
       </div>
     </>
