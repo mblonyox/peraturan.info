@@ -15,13 +15,17 @@ export const dynamic = "force-dynamic";
 
 export async function generateSitemaps() {
   const items = [{ id: "root" }];
-  const db = await getDB();
-  const filterByJenis = await getFilterByJenisCount(db, {});
-  for (const jenis of Object.keys(filterByJenis)) {
-    const filterByTahun = await getFilterByTahunCount(db, { jenis });
-    for (const tahun of Object.keys(filterByTahun)) {
-      items.push({ id: `${jenis}-${tahun}` });
+  try {
+    const db = await getDB();
+    const filterByJenis = await getFilterByJenisCount(db, {});
+    for (const jenis of Object.keys(filterByJenis)) {
+      const filterByTahun = await getFilterByTahunCount(db, { jenis });
+      for (const tahun of Object.keys(filterByTahun)) {
+        items.push({ id: `${jenis}-${tahun}` });
+      }
     }
+  } catch {
+    // pass
   }
   return items;
 }
