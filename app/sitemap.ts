@@ -1,12 +1,14 @@
-import { MetadataRoute } from "next";
+import type { MetadataRoute } from "next";
 
 import { BASE_URL } from "@/lib/constants";
 import { getDB, getListPeraturan } from "@/lib/db";
 import { createMarked, PeraturanToken } from "@/lib/marked";
 import { readOrFetch } from "@/utils/data";
 
+import { sitemapsIds } from "./sitemap-ids";
+
 export async function generateSitemaps() {
-  return [{ id: "root" }];
+  return sitemapsIds({ skipDb: true });
 }
 
 export default async function sitemap(props: {
