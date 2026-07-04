@@ -11,33 +11,11 @@ import {
 import { createMarked, PeraturanToken } from "@/lib/marked";
 import { readOrFetch } from "@/utils/data";
 
-export const sitemapUrls = unstable_cache(
-  async () => {
-    const urls = [`${BASE_URL}/sitemap/root.xml`];
-    const db = await getDB();
-    const filterByJenis = await getFilterByJenisCount(db, {});
-    for (const jenis of Object.keys(filterByJenis)) {
-      const filterByTahun = await getFilterByTahunCount(db, { jenis });
-      for (const tahun of Object.keys(filterByTahun)) {
-        urls.push(`${BASE_URL}/sitemap/${jenis}-${tahun}.xml`);
-      }
-    }
-    return urls;
-  },
-  ["sitemap-urls"],
-  {
-    revalidate: 30 * 24 * 60 * 60, // 30 days
-  },
-);
-
 export const dynamic = "force-dynamic";
 
-const generateItems = unstable_cache(
-  async (jenis: string, tahun: string) =>
-    Array.fromAsync(streamItems(jenis, tahun)),
-  ["sitemap-items"],
-  { revalidate: 30 * 24 * 60 * 60 }, // 30 days
-);
+export function generateSitemaps() {
+  return [{ id: "root" }];
+}
 
 export default async function sitemap(props: {
   id: Promise<string>;
@@ -47,6 +25,13 @@ export default async function sitemap(props: {
   const [jenis, tahun] = id.split("-");
   return generateItems(jenis, tahun);
 }
+
+const generateItems = unstable_cache(
+  async (jenis: string, tahun: string) =>
+    Array.fromAsync(streamItems(jenis, tahun)),
+  ["sitemap-items"],
+  { revalidate: 30 * 24 * 60 * 60 }, // 30 days
+);
 
 type SitemapItem = MetadataRoute.Sitemap[number];
 
@@ -143,3 +128,22 @@ function getPartialPaths(md: string): string[] {
   };
   return paths.concat(rootTokens.flatMap((token) => getSubPaths(token)));
 }
+
+export const sitemapUrls = unstable_cache(
+  async () => {
+    const urls = [`${BASE_URL}/sitemap/root.xml`];
+    const db = await getDB();
+    const filterByJenis = await getFilterByJenisCount(db, {});
+    for (const jenis of Object.keys(filterByJenis)) {
+      const filterByTahun = await getFilterByTahunCount(db, { jenis });
+      for (const tahun of Object.keys(filterByTahun)) {
+        urls.push(`${BASE_URL}/sitemap/${jenis}-${tahun}.xml`);
+      }
+    }
+    return urls;
+  },
+  ["sitemap-urls"],
+  {
+    revalidate: 30 * 24 * 60 * 60, // 30 days
+  },
+);
