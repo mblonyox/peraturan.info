@@ -13,8 +13,17 @@ import { readOrFetch } from "@/utils/data";
 
 export const dynamic = "force-dynamic";
 
-export function generateSitemaps() {
-  return [{ id: "root" }];
+export async function generateSitemaps() {
+  const items = [{ id: "root" }];
+  const db = await getDB();
+  const filterByJenis = await getFilterByJenisCount(db, {});
+  for (const jenis of Object.keys(filterByJenis)) {
+    const filterByTahun = await getFilterByTahunCount(db, { jenis });
+    for (const tahun of Object.keys(filterByTahun)) {
+      items.push({ id: `${jenis}-${tahun}` });
+    }
+  }
+  return items;
 }
 
 export default async function sitemap(props: {
