@@ -1,4 +1,5 @@
 import type { MetadataRoute } from "next";
+import { unstable_cache } from "next/cache";
 
 import { BASE_URL } from "@/lib/constants";
 import {
@@ -11,6 +12,8 @@ import { createMarked, PeraturanToken } from "@/lib/marked";
 import { readOrFetch } from "@/utils/data";
 
 export const dynamic = "force-dynamic";
+
+export const revalidate = 604800; // 7 days
 
 export async function generateSitemaps() {
   const items = [{ id: "root" }];
@@ -35,9 +38,15 @@ export default async function sitemap(props: {
   const id = await props.id;
   if (id === "root") return generateRootItems();
   const [jenis, tahun] = id.split("-");
-  const results = await Array.fromAsync(streamItems(jenis, tahun));
-  return results;
+  return generateItems(jenis, tahun);
 }
+
+const generateItems = unstable_cache(
+  async (jenis: string, tahun: string) =>
+    Array.fromAsync(streamItems(jenis, tahun)),
+  ["sitemap-items"],
+  { revalidate: 604800 }, // 7 days
+);
 
 type SitemapItem = MetadataRoute.Sitemap[number];
 
@@ -135,15 +144,21 @@ function getPartialPaths(md: string): string[] {
   return paths.concat(rootTokens.flatMap((token) => getSubPaths(token)));
 }
 
-export const sitemapUrls = async () => {
-  const urls = [`${BASE_URL}/sitemap/root.xml`];
-  const db = await getDB();
-  const filterByJenis = await getFilterByJenisCount(db, {});
-  for (const jenis of Object.keys(filterByJenis)) {
-    const filterByTahun = await getFilterByTahunCount(db, { jenis });
-    for (const tahun of Object.keys(filterByTahun)) {
-      urls.push(`${BASE_URL}/sitemap/${jenis}-${tahun}.xml`);
+export const sitemapUrls = unstable_cache(
+  async () => {
+    const urls = [`${BASE_URL}/sitemap/root.xml`];
+    const db = await getDB();
+    const filterByJenis = await getFilterByJenisCount(db, {});
+    for (const jenis of Object.keys(filterByJenis)) {
+      const filterByTahun = await getFilterByTahunCount(db, { jenis });
+      for (const tahun of Object.keys(filterByTahun)) {
+        urls.push(`${BASE_URL}/sitemap/${jenis}-${tahun}.xml`);
+      }
     }
-  }
-  return urls;
-};
+    return urls;
+  },
+  ["sitemap-urls"],
+  {
+    revalidate: 30 * 24 * 60 * 60, // 30 days
+  },
+);

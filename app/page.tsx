@@ -1,3 +1,4 @@
+import { unstable_cache } from "next/cache";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -11,6 +12,8 @@ import {
 
 export const dynamic = "force-dynamic";
 
+export const revalidate = 86400; // 24 hours
+
 function formatTanggal(date: Date) {
   return date.toLocaleDateString("ID-id", {
     day: "numeric",
@@ -19,31 +22,38 @@ function formatTanggal(date: Date) {
   });
 }
 
-const getData = async () => {
-  const db = await getDB();
-  const feedList = await getFeedListPeraturan(db, 10);
-  const terbaru = feedList.map((p) => ({
-    tanggal: formatTanggal(p.tanggal_diundangkan),
-    path: p?.path,
-    nomor: p?.rujukPendek,
-    judul: p?.judul,
-  }));
-  const results = await getPopularPuu(db, 5);
-  const terpopuler = await Promise.all(
-    results.map(async ({ path, count }) => {
-      const [jenis, tahun, nomor] = path.split("/");
-      const peraturan = await getPeraturan(db, { jenis, tahun, nomor });
-      return {
-        path: peraturan?.path ?? "/",
-        nomor: peraturan?.rujukPendek ?? "Tidak ada nomor",
-        judul: peraturan?.judul ?? "Tidak ada judul",
-        count,
-      };
-    }),
-  );
+const getData = unstable_cache(
+  async () => {
+    const db = await getDB();
+    const feedList = await getFeedListPeraturan(db, 10);
+    const terbaru = feedList.map((p) => ({
+      tanggal: formatTanggal(p.tanggal_diundangkan),
+      path: p?.path,
+      nomor: p?.rujukPendek,
+      judul: p?.judul,
+    }));
+    const results = await getPopularPuu(db, 5);
+    const terpopuler = await Promise.all(
+      results.map(async ({ path, count }) => {
+        const [jenis, tahun, nomor] = path.split("/");
+        const peraturan = await getPeraturan(db, { jenis, tahun, nomor });
+        return {
+          path: peraturan?.path ?? "/",
+          nomor: peraturan?.rujukPendek ?? "Tidak ada nomor",
+          judul: peraturan?.judul ?? "Tidak ada judul",
+          count,
+        };
+      }),
+    );
 
-  return { terbaru, terpopuler };
-};
+    return { terbaru, terpopuler };
+  },
+  [],
+  {
+    revalidate: 86400,
+    tags: ["home"],
+  },
+);
 
 export default async function Home() {
   const { terbaru, terpopuler } = await getData();

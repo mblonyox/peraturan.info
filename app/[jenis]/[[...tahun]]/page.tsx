@@ -1,5 +1,5 @@
+import { unstable_cache } from "next/cache";
 import { notFound } from "next/navigation";
-import { cache } from "react";
 import { z } from "zod";
 
 import IconFunnel from "@/components/icons/funnel";
@@ -27,7 +27,7 @@ const paramsSchema = z.object({
 
 const searchParamsSchema = $searchParams.pipe($pageLimit);
 
-const getData = cache(async (props: Props) => {
+const parseParams = async (props: Props) => {
   const res1 = await paramsSchema.safeParseAsync(await props.params);
   if (!res1.success) notFound();
   const jenis = res1.data.jenis;
@@ -38,37 +38,54 @@ const getData = cache(async (props: Props) => {
   if (!res2.success) notFound();
   const page = res2.data.page;
   const pageSize = res2.data.limit;
-  const db = await getDB();
-  const listPeraturan = await getListPeraturan(db, {
+  return { jenis, tahun, page, pageSize };
+};
+
+const getData = unstable_cache(
+  async (
+    jenis: string | undefined,
+    tahun: string | undefined,
+    page: number,
+    pageSize: number,
+  ) => {
+    const db = await getDB();
+    const listPeraturan = await getListPeraturan(db, {
+      jenis,
+      tahun,
+      page,
+      pageSize,
+    });
+    if (!listPeraturan.hasil.length) notFound();
+    const filterByJenis = await getFilterByJenisCount(db, { jenis, tahun });
+    const filterByTahun = await getFilterByTahunCount(db, { jenis, tahun });
+    const headingTitle =
+      "Daftar " +
+      (jenis ? NAMA2_JENIS[jenis].panjang : "semua peraturan") +
+      (tahun ? ` pada tahun ${tahun}.` : ".");
+    const start = (page - 1) * pageSize + 1;
+    const end = start + listPeraturan.hasil.length - 1;
+    const headingDescription = `Menampilkan urutan ${
+      start === end ? start : `${start} s.d. ${end}`
+    } dari ${listPeraturan.total} peraturan.`;
+
+    return {
+      ...listPeraturan,
+      filterByJenisProps: { data: filterByJenis, tahun },
+      filterByTahunProps: { data: filterByTahun, jenis },
+      headingTitle,
+      headingDescription,
+    };
+  },
+);
+
+export async function generateMetadata(props: Props) {
+  const { jenis, tahun, page, pageSize } = await parseParams(props);
+  const { headingTitle, headingDescription } = await getData(
     jenis,
     tahun,
     page,
     pageSize,
-  });
-  if (!listPeraturan.hasil.length) notFound();
-  const filterByJenis = await getFilterByJenisCount(db, { jenis, tahun });
-  const filterByTahun = await getFilterByTahunCount(db, { jenis, tahun });
-  const headingTitle =
-    "Daftar " +
-    (jenis ? NAMA2_JENIS[jenis].panjang : "semua peraturan") +
-    (tahun ? ` pada tahun ${tahun}.` : ".");
-  const start = (page - 1) * pageSize + 1;
-  const end = start + listPeraturan.hasil.length - 1;
-  const headingDescription = `Menampilkan urutan ${
-    start === end ? start : `${start} s.d. ${end}`
-  } dari ${listPeraturan.total} peraturan.`;
-
-  return {
-    ...listPeraturan,
-    filterByJenisProps: { data: filterByJenis, tahun },
-    filterByTahunProps: { data: filterByTahun, jenis },
-    headingTitle,
-    headingDescription,
-  };
-});
-
-export async function generateMetadata(props: Props) {
-  const { page, headingTitle, headingDescription } = await getData(props);
+  );
 
   return {
     title: `Laman #${page} | ${headingTitle}`,
@@ -77,16 +94,15 @@ export async function generateMetadata(props: Props) {
 }
 
 export default async function Page(props: Props) {
+  const { jenis, tahun, page, pageSize } = await parseParams(props);
   const {
-    page,
-    pageSize,
     hasil,
     headingTitle,
     headingDescription,
     total,
     filterByJenisProps,
     filterByTahunProps,
-  } = await getData(props);
+  } = await getData(jenis, tahun, page, pageSize);
   const startIndex = (page - 1) * pageSize + 1;
 
   return (

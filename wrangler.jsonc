@@ -32,6 +32,24 @@
       "database_id": "c665fed0-21e8-45f9-b3e0-35dbff130803",
     },
   ],
+  "kv_namespaces": [
+    {
+      "binding": "NEXT_INC_CACHE_KV",
+      "id": "e72dfa12a9df42dda81009e948be4685",
+    },
+  ],
+  "durable_objects": {
+    "bindings": [
+      {
+        "name": "NEXT_CACHE_DO_QUEUE",
+        "class_name": "DOQueueHandler",
+      },
+      {
+        "name": "NEXT_TAG_CACHE_DO_SHARDED",
+        "class_name": "DOShardedTagCache",
+      },
+    ],
+  },
   "migrations": [
     {
       "tag": "v1",
@@ -40,24 +58,5 @@
         "DOShardedTagCache"
       ],
     },
-    {
-      "tag": "v2",
-      "new_sqlite_classes": [
-        "DOVisitCounter"
-      ],
-    },
-    {
-      "tag": "v3",
-      "deleted_classes": [
-        "DOVisitCounter"
-      ]
-    },
-    {
-      "tag": "v4",
-      "deleted_classes": [
-        "DOQueueHandler",
-        "DOShardedTagCache"
-      ]
-    }
   ],
 }
