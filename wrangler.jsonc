@@ -1,5 +1,6 @@
 {
   "$schema": "node_modules/wrangler/config-schema.json",
+  "main": "@astrojs/cloudflare/entrypoints/server",
   "name": "peraturan-info",
   "compatibility_date": "2026-07-25",
   "compatibility_flags": [
