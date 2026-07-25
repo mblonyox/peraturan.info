@@ -8,6 +8,12 @@ import PageHeading from "@/components/PageHeading.astro";
 import RootLayout from "@/layouts/RootLayout.astro";
 import { getListPeraturanByTanggal, getTanggalTerakhir } from "@/lib/db";
 
+Astro.cache.set({
+  maxAge: 86400,
+  swr: 604800,
+  tags: ["terbaru"],
+});
+
 const searchParams = Astro.url.searchParams;
 let tanggalParam = searchParams.get("tanggal");
 if (tanggalParam) {

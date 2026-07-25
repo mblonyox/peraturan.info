@@ -2,7 +2,7 @@ import type { APIRoute } from "astro";
 
 import { MOUTHFUL_URL } from "@/lib/constants";
 
-export const ALL: APIRoute = async ({ params, request }) => {
+export const ALL: APIRoute = async ({ params, request, cache }) => {
   const { search } = new URL(request.url);
   const targetUrl = new URL(params.path ?? "", MOUTHFUL_URL);
   targetUrl.search = search;
@@ -16,6 +16,13 @@ export const ALL: APIRoute = async ({ params, request }) => {
     const contentType = response.headers.get("content-type");
     const headers = new Headers();
     if (contentType) headers.set("content-type", contentType);
+    if (method === "GET") {
+      cache.set({
+        maxAge: 86400,
+        swr: 604800,
+        tags: ["mouthful"],
+      });
+    }
     return new Response(response.body, {
       status: response.status,
       statusText: response.statusText,

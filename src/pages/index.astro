@@ -5,6 +5,12 @@ import IconBoxArrowUpRight from "@/components/icons/box-arrow-up-right";
 import RootLayout from "@/layouts/RootLayout.astro";
 import { getFeedListPeraturan, getPeraturan, getPopularPuu } from "@/lib/db";
 
+Astro.cache.set({
+  maxAge: 86400,
+  swr: 604800,
+  tags: ["home"]
+})
+
 function formatTanggal(date: Date) {
   return date.toLocaleDateString("ID-id", {
     day: "numeric",

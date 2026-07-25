@@ -3,6 +3,8 @@ import { ImageResponse } from "cf-workers-og";
 
 import OpenGraphImage from "@/components/OpenGraphImage";
 
+export const prerender = true;
+
 interface ApiParams extends Params {
   jenis: string;
   tahun: string;

@@ -208,6 +208,13 @@ const data =
   handleBukuPartial(partials);
 if (!data) return Astro.rewrite("/404");
 const { html, prev, next, title, description } = data;
+
+Astro.cache.set({
+  maxAge: 86400,
+  swr: 2592000,
+  tags: ["peraturan", jenis, tahun, nomor, partials],
+});
+
 ---
 
 <PartialLayout {...{ peraturan, title, description, rootTokens, prev, next }}>

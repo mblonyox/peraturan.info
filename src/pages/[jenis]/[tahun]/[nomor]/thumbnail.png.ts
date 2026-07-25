@@ -8,12 +8,16 @@ interface PathParams extends Params {
   nomor: string;
 }
 
-export const GET: APIRoute<Props, PathParams> = async ({ params }) => {
+export const GET: APIRoute<Props, PathParams> = async ({ params, cache }) => {
   const jenis = params.jenis;
   const tahun = params.tahun;
   const nomor = params.nomor;
   const thumbnail = await getPeraturanThumbnail({ jenis, tahun, nomor });
   if (!thumbnail)
     return Response.json({ error: "Thumbnail not found" }, { status: 404 });
+  cache.set({
+    maxAge: 31536000,
+    tags: ["peraturan", jenis, tahun, nomor, "thumbnail"],
+  });
   return new Response(thumbnail, { headers: { "Content-Type": "image/png" } });
 };

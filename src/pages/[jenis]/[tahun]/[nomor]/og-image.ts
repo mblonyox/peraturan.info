@@ -12,10 +12,20 @@ interface ApiParams extends Params {
   nomor: string;
 }
 
-export const GET: APIRoute<Props, ApiParams> = async ({ params, rewrite }) => {
+export const GET: APIRoute<Props, ApiParams> = async ({
+  params,
+  rewrite,
+  cache,
+}) => {
+  const { jenis, tahun, nomor } = params;
   const peraturan = await getPeraturanData(params);
   if (!peraturan) return rewrite("/404");
   const url = new URL(peraturan.path, BASE_URL).href;
+
+  cache.set({
+    maxAge: 31536000,
+    tags: ["peraturan", jenis, tahun, nomor, "og-image"],
+  });
 
   return ImageResponse.create(
     OpenGraphImage({

@@ -4,11 +4,16 @@ import type { APIRoute } from "astro";
 
 import { getOrama } from "@/lib/orama";
 
-export const GET: APIRoute = async ({ request }) => {
+export const GET: APIRoute = async ({ request, cache }) => {
   try {
     const url = new URL(request.url);
     const query = url.searchParams.get("query")?.trim();
     if (!query || query.length < 3) return Response.json([]);
+    cache.set({
+      maxAge: 604800,
+      swr: 2592000,
+      tags: ["autocomplete"],
+    });
     const index = await getOrama();
     const result = await search(index, {
       term: query,

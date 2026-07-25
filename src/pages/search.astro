@@ -9,6 +9,12 @@ import { getOrama } from "@/lib/orama";
 import { ellipsis } from "@/lib/utils/string";
 import { $searchParams } from "@/lib/utils/validate";
 
+Astro.cache.set({
+  maxAge: 3600,
+  swr: 86400,
+  tags: ["search"]
+});
+
 const averageQueryLength = 16;
 
 const searchParamsSchema = $searchParams.pipe(
