@@ -1,8 +1,8 @@
 import { create, insert } from "@orama/orama";
 import { persistToFile } from "@orama/plugin-data-persistence/server";
 
-import { getDB, getListPeraturan } from "@/lib/db";
-import { readOrFetch } from "@/utils/data";
+import { getListPeraturan } from "@/lib/db";
+import { readOrFetch } from "@/lib/utils/data";
 
 try {
   const index = await create({
@@ -18,8 +18,7 @@ try {
     language: "indonesian",
   });
 
-  const db = await getDB();
-  const { hasil } = await getListPeraturan(db, { pageSize: 20000 });
+  const { hasil } = await getListPeraturan({ pageSize: 20000 });
   for (const p of hasil) {
     const md = await readOrFetch(`${p.path}/fulltext.md`, "text");
     await insert(index, {

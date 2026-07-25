@@ -1,0 +1,124 @@
+---
+import { JENIS2_PERATURAN, type JenisPeraturan, NAMA2_JENIS } from "@/lib/db";
+
+import IconHouse from "./icons/house";
+
+const pathname = Astro.url.pathname;
+const segments = pathname.split("/").filter(Boolean);
+
+function formatPartials(segment: string): string {
+  if (/^ayat/i.test(segment)) return `ayat (${segment.split("-")[1]})`;
+  if (/^buku|bab/i.test(segment))
+    return segment.replaceAll("-", " ").toUpperCase();
+  return segment
+    .split("-")
+    .map((part) => part.charAt(0).toUpperCase() + part.slice(1))
+    .join(" ");
+}
+
+function segmentsToBreadcrumbs(segments: string[]) {
+  const breadcrumbs: { name: string; url: string }[] = [];
+  let url = "";
+  let jenis: string | undefined;
+  let tahun: string | undefined;
+
+  const segment1 = segments.at(0);
+  if (!segment1) return breadcrumbs;
+
+  url += `/${segment1}`;
+  switch (segment1) {
+    case "terbaru":
+      breadcrumbs.push({ name: "Peraturan terbaru", url });
+      break;
+    case "search":
+      breadcrumbs.push({ name: "Hasil Pencarian", url });
+      break;
+    case "all":
+      breadcrumbs.push({ name: "Semua peraturan", url });
+      break;
+    default: {
+      if (JENIS2_PERATURAN.includes(segment1 as JenisPeraturan)) {
+        breadcrumbs.push({
+          name: NAMA2_JENIS[segment1].panjang,
+          url,
+        });
+        jenis = segment1;
+      }
+      break;
+    }
+  }
+
+  const segment2 = segments.at(1);
+  if (segment2 && /^\d{4}$/.test(segment2)) {
+    url += `/${segment2}`;
+    breadcrumbs.push({
+      name: `Tahun ${segment2}`,
+      url,
+    });
+    tahun = segment2;
+  }
+
+  const segment3 = segments.at(2);
+  if (jenis && tahun && segment3 && /^\d+$/.test(segment3)) {
+    url += `/${segment3}`;
+    breadcrumbs.push({
+      name: `${NAMA2_JENIS[jenis].pendek} No. ${segment3} Th. ${tahun}`,
+      url,
+    });
+  }
+
+  const segment4List = segments.slice(3);
+  for (const subSegment of segment4List) {
+    url += `/${subSegment}`;
+    breadcrumbs.push({ name: formatPartials(subSegment), url });
+  }
+
+  return breadcrumbs;
+}
+
+const breadcrumbs = segmentsToBreadcrumbs(segments);
+const hasBreadcrumbs = segments.length > 0;
+---
+{hasBreadcrumbs && (
+  <div class="container my-5">
+    <nav aria-label="breadcrumb" class="breadcrumbs">
+      <ol itemscope itemtype="https://schema.org/BreadcrumbList">
+        <li
+          itemprop="itemListElement"
+          itemscope
+          itemtype="https://schema.org/ListItem"
+        >
+          <a
+            href="/"
+            itemprop="item"
+            itemtype="https://schema.org/WebPage"
+          >
+            <IconHouse />
+            <span itemprop="name">Beranda</span>
+          </a>
+          <meta itemprop="position" content="1" />
+        </li>
+        {breadcrumbs.map(({ name, url }, index) => (
+          <li
+            itemprop="itemListElement"
+            itemscope
+            itemtype="https://schema.org/ListItem"
+          >
+            {url ? (
+              <a
+                href={url}
+                itemprop="item"
+                itemtype="https://schema.org/WebPage"
+              >
+                <span itemprop="name">{name}</span>
+              </a>
+            ) : (
+              <span itemprop="name">{name}</span>
+            )}
+            <meta itemprop="position" content={`${index + 2}`} />
+          </li>
+        ))}
+      </ol>
+    </nav>
+  </div>
+)}

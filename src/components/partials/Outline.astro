@@ -1,0 +1,94 @@
+---
+import type { Token } from "marked";
+
+import { ellipsis } from "@/lib/utils/string";
+
+import BatangTubuhOutline from "./BatangTubuhOutline.astro";
+
+interface Props {
+  tokens: Token[];
+}
+
+function childTokens(token?: Token) {
+  return token && "tokens" in token ? token.tokens : undefined;
+}
+const { jenis, tahun, nomor } = Astro.params;
+const basePath = `/${jenis}/${tahun}/${nomor}`;
+const { tokens } = Astro.props;
+const judul = tokens.find((token) => token.type === "judul");
+const konsideran = tokens.find((token) => token.type === "konsideran");
+const dasarHukum = tokens.find((token) => token.type === "dasar-hukum");
+const batangTubuh = tokens.filter(
+  (token) =>
+    token.type === "buku" || token.type === "bab" || token.type === "pasal",
+);
+---
+
+<ul class="menu w-full bg-base-200 border border-base-300 rounded-box">
+  <li>
+    <div class="flex flex-col gap-2">
+      <a href={basePath + "/judul"}>JUDUL</a>
+      <cite>{judul?.raw}</cite>
+    </div>
+  </li>
+  <li>
+    <a href={basePath + "/pembukaan"}>PEMBUKAAN</a>
+    <ul>
+      <li>
+        <details>
+          <summary>
+            <a href={basePath + "/konsideran"}>Konsideran (Menimbang)</a>
+          </summary>
+          <ul>
+            {
+              childTokens(konsideran)
+                ?.flatMap((token) =>
+                  token.type === "list" || token.type === "butir-list"
+                    ? token.items
+                    : (childTokens(token) ?? [token]),
+                )
+                ?.map((token) => (
+                  <li>
+                    <span>{ellipsis(token.raw)}</span>
+                  </li>
+                ))
+            }
+          </ul>
+        </details>
+      </li>
+      <li>
+        <details>
+          <summary>
+            <a href={basePath + "/dasar-hukum"}>Dasar Hukum (Mengingat)</a>
+          </summary>
+          <ul>
+            {
+              childTokens(dasarHukum)
+                ?.flatMap((token) =>
+                  token.type === "list" || token.type === "butir-list"
+                    ? token.items
+                    : (childTokens(token) ?? [token]),
+                )
+                ?.map((token) => (
+                  <li>
+                    <span>{ellipsis(token.raw)}</span>
+                  </li>
+                ))
+            }
+          </ul>
+        </details>
+      </li>
+    </ul>
+  </li>
+  <li>
+    <a href={basePath + "/batang-tubuh"}>BATANG TUBUH</a>
+    <ul>
+      {
+        batangTubuh.map((token) => (
+          <BatangTubuhOutline token={token} path={basePath} />
+        ))
+      }
+    </ul>
+  </li>
+  <li>PENUTUP</li>
+</ul>

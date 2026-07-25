@@ -1,0 +1,34 @@
+---
+interface Props {
+  data: Record<string, number>;
+  tahun?: string;
+}
+
+import { JENIS2_PERATURAN, NAMA2_JENIS } from "@/lib/db";
+
+const { data, tahun } = Astro.props;
+---
+
+<section>
+  <p>Saring berdasar jenis</p>
+  <ul class="menu menu-vertical">
+    <li>
+      <a class="link" href={`/all/${tahun ?? ""}`}> Semua jenis </a>
+    </li>
+    {
+      Object.entries(data)
+        .sort(
+          (a, b) =>
+            JENIS2_PERATURAN.indexOf(a[0] as never) -
+            JENIS2_PERATURAN.indexOf(b[0] as never),
+        )
+        .map(([jenis, jumlah]) => (
+          <li>
+            <a class="link" href={`/${jenis}/${tahun ?? ""}`}>
+              {NAMA2_JENIS[jenis].pendek}&nbsp;({jumlah})
+            </a>
+          </li>
+        ))
+    }
+  </ul>
+</section>

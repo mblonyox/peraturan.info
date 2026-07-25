@@ -1,0 +1,57 @@
+---
+interface Tab {
+  path: string;
+  name: string;
+  disabled?: boolean;
+}
+
+interface Props {
+  basePath: string;
+  tabs: Tab[];
+  defaultTab: string | number;
+}
+
+const { tabs, defaultTab, basePath } = Astro.props;
+
+const pathname = Astro.url.pathname;
+
+let activeTabIndex = tabs.findIndex(({ path }) => {
+  const tabPath = `${basePath}/${path}`.replace(/\/+/g, "/");
+  const normalizedPath = pathname.replace(/\/+/g, "/");
+  return normalizedPath === tabPath || normalizedPath.startsWith(tabPath + "/");
+});
+
+if (activeTabIndex < 0) {
+  activeTabIndex =
+    typeof defaultTab === "number"
+      ? defaultTab
+      : tabs.findIndex(({ path }) => path === defaultTab);
+}
+---
+
+<div class="card card-border border">
+  <div
+    class="tabs tabs-lift bg-base-200 rounded-box rounded-b-none"
+    role="tablist"
+  >
+    {
+      tabs.map(({ name, path, disabled }, i) => {
+        const isActive = i === activeTabIndex;
+        return (
+          <a
+            href={`${basePath}/${path}`}
+            class={`tab flex-1 z-1 ${isActive ? "tab-active" : ""} ${disabled ? "tab-disabled" : ""}`}
+            aria-selected={isActive}
+            aria-disabled={disabled}
+            role="tab"
+          >
+            {name}
+          </a>
+        );
+      })
+    }
+  </div>
+  <div class="card-body">
+    <slot />
+  </div>
+</div>

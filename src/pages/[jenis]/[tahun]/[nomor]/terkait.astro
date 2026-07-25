@@ -1,0 +1,126 @@
+---
+import DetailLayout from "@/layouts/DetailLayout.astro";
+
+import { getPeraturanData, getRelasiData } from "./data";
+
+const { jenis, tahun, nomor } = Astro.params;
+if (!jenis || !tahun || !nomor) return Astro.rewrite("/404");
+const peraturan = await getPeraturanData({ jenis, tahun, nomor });
+if (!peraturan) return Astro.rewrite("/404");
+
+const { sumber, relasi1, relasi2 } = await getRelasiData({
+  jenis,
+  tahun,
+  nomor,
+});
+
+const terkait = [
+  {
+    title: "Dicabut dengan",
+    items: relasi2.filter((r) => r.relasi === "cabut"),
+  },
+  {
+    title: "Dicabut sebagian dengan",
+    items: relasi2.filter((r) => r.relasi === "cabut_sebagian"),
+  },
+  {
+    title: "Diubah dengan",
+    items: relasi2.filter((r) => r.relasi === "ubah"),
+  },
+  {
+    title: "Ditetapkan dengan",
+    items: relasi2.filter((r) => r.relasi === "tetapkan"),
+  },
+
+  {
+    title: "Menetapkan",
+    items: relasi1.filter((r) => r.relasi === "tetapkan"),
+  },
+
+  { title: "Mencabut", items: relasi1.filter((r) => r.relasi === "cabut") },
+  {
+    title: "Mencabut sebagian",
+    items: relasi1.filter((r) => r.relasi === "cabut_sebagian"),
+  },
+  { title: "Mengubah", items: relasi1.filter((r) => r.relasi === "ubah") },
+  {
+    title: "Dasar Hukum",
+    items: relasi1.filter((r) => r.relasi === "dasar_hukum"),
+  },
+  {
+    title: "Dijadikan Dasar Hukum berlakunya",
+    items: relasi2.filter((r) => r.relasi === "dasar_hukum"),
+  },
+].filter((t) => t.items.length);
+
+const description = `Peraturan Terkait (Sumber dokumen dan tautan ke peraturan lainnya) atas ${peraturan.rujukPanjang}`;
+---
+
+<DetailLayout
+  peraturan={peraturan}
+  title="Peraturan Terkait"
+  description={description}
+>
+  <div class="grid grid-cols-1 lg:grid-cols-2 gap-2">
+    <div class="lg:col-span-2">
+      <h2 class="text-2xl mb-2">Sumber</h2>
+      <div class="w-full join join-vertical">
+        {
+          sumber.map(({ nama, url_page, url_pdf }) => (
+            <div class="join-item collapse bg-base-100 border border-base-300">
+              <input type="radio" name="sumber" />
+              <div class="collapse-title">{nama}</div>
+              <div class="collapse-content">
+                <p>
+                  <a
+                    href={url_page}
+                    class="link inline-block w-full overflow-hidden text-ellipsis whitespace-nowrap"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    {"🌐 " + url_page}
+                  </a>
+                </p>
+                {url_pdf && (
+                  <iframe
+                    title={nama}
+                    loading="lazy"
+                    src={`https://docs.google.com/gview?url=${url_pdf}&embedded=true`}
+                    class="w-full aspect-square border border-base-300 rounded-box"
+                  />
+                )}
+              </div>
+            </div>
+          ))
+        }
+      </div>
+    </div>
+    {
+      terkait.map(({ title, items }) => (
+        <div>
+          <h2 class="text-2xl mb-2">{title}</h2>
+          <div class="list bg-base-100 border border-base-300 rounded-box max-h-[50vh] overflow-y-auto">
+            {items.map(
+              ({ catatan, peraturan: { path, judul, rujukPendek } }) => (
+                <div class="list-row">
+                  <a class="link" href={path}>
+                    {rujukPendek}
+                  </a>
+                  <p class="list-col-wrap">
+                    {judul}
+                    {catatan && (
+                      <>
+                        <br />
+                        <em class="italic">{catatan}</em>
+                      </>
+                    )}
+                  </p>
+                </div>
+              ),
+            )}
+          </div>
+        </div>
+      ))
+    }
+  </div>
+</DetailLayout>

@@ -1,0 +1,13 @@
+---
+const { title, description } = Astro.props;
+---
+<div class="container my-5">
+  <hgroup>
+    <h1 class="text-2xl md:text-3xl lg:text-4xl font-bold">
+      <slot name="title">{title}</slot>
+    </h1>
+    <p class="text-neutral-500">
+      <slot name="description"><slot>{description}</slot></slot>
+    </p>
+  </hgroup>
+</div>

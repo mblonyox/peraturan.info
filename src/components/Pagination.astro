@@ -1,0 +1,93 @@
+---
+const { total, page, pageSize, lastPage, maxItems = 5 } = Astro.props;
+
+const pathname = Astro.url.pathname;
+const searchParams = Astro.url.searchParams;
+
+const calculatedLastPage = lastPage ?? Math.ceil((total ?? 0) / (pageSize ?? 10));
+
+const showPagination = calculatedLastPage && page >= 1 && page <= calculatedLastPage;
+
+const items = [page];
+if (showPagination) {
+  let i = 1;
+  while (items.length < maxItems) {
+    const prev = page - i;
+    if (prev > 0) items.unshift(prev);
+    if (items.length > maxItems) break;
+    const next = page + i;
+    if (next <= calculatedLastPage) items.push(next);
+    if (prev <= 0 && next > calculatedLastPage) break;
+    i++;
+  }
+}
+
+const getPageUrl = (targetPage: number) => {
+  const q = new URLSearchParams(searchParams);
+  q.set("page", `${targetPage}`);
+  return pathname + "?" + q.toString();
+};
+---
+{showPagination && (
+  <nav
+    aria-label="Laman-laman hasil pencarian"
+    class="flex justify-center my-2"
+  >
+    <div class="join join-horizontal">
+      {page === 1 ? (
+        <button type="button" class="join-item btn" disabled>
+          <span>&lt;</span>
+        </button>
+      ) : (
+        <a
+          class="join-item btn"
+          href={getPageUrl(page - 1)}
+        >
+          &lt;
+        </a>
+      )}
+
+      {!items.includes(1) && (
+        <>
+          <a href={getPageUrl(1)} class="join-item btn">
+            1
+          </a>
+          {Math.min(...items) > 2 && (
+            <button type="button" class="join-item btn" disabled>
+              <span>&#8230;</span>
+            </button>
+          )}
+        </>
+      )}
+      {items.map((item) => (
+        <a
+          class={`join-item btn ${page === item ? "btn-active" : ""}`}
+          href={getPageUrl(item)}
+        >
+          {item}
+        </a>
+      ))}
+      {!items.includes(calculatedLastPage) && (
+        <>
+          {Math.max(...items) < calculatedLastPage - 1 && (
+            <button type="button" class="join-item btn" disabled>
+              <span>&#8230;</span>
+            </button>
+          )}
+          <a class="join-item btn" href={getPageUrl(calculatedLastPage)}>
+            {calculatedLastPage}
+          </a>
+        </>
+      )}
+      {page === calculatedLastPage ? (
+        <button type="button" class="join-item btn" disabled>
+          <span>&gt;</span>
+        </button>
+      ) : (
+        <a class="join-item btn" href={getPageUrl(page + 1)}>
+          &gt;
+        </a>
+      )}
+    </div>
+  </nav>
+)}

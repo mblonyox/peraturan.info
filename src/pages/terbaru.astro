@@ -1,0 +1,137 @@
+---
+import clsx from "clsx";
+
+import IconFileJson from "@/components/icons/file-json";
+import IconRssFill from "@/components/icons/rss-fill";
+import IconRssLine from "@/components/icons/rss-line";
+import PageHeading from "@/components/PageHeading.astro";
+import RootLayout from "@/layouts/RootLayout.astro";
+import { getListPeraturanByTanggal, getTanggalTerakhir } from "@/lib/db";
+
+const searchParams = Astro.url.searchParams;
+let tanggalParam = searchParams.get("tanggal");
+if (tanggalParam) {
+  if (
+    !/^\d{4}-\d{2}-\d{2}$/.test(tanggalParam) ||
+    isNaN(Date.parse(tanggalParam))
+  ) {
+    throw new Error("Tanggal tidak valid.");
+  }
+}
+const tanggalTerakhir = await getTanggalTerakhir();
+const tanggalDipilih = tanggalParam ?? tanggalTerakhir.at(0)?.tanggal;
+if (!tanggalDipilih) throw new Error("Tidak ada data.");
+const listPeraturan = await getListPeraturanByTanggal(tanggalDipilih);
+if (!tanggalTerakhir.map(({ tanggal }) => tanggal).includes(tanggalDipilih)) {
+  tanggalTerakhir.push({
+    tanggal: tanggalDipilih,
+    jumlah: listPeraturan.length,
+  });
+  tanggalTerakhir.sort((a, b) => (a.tanggal < b.tanggal ? 1 : -1));
+}
+
+const tanggalDipilihFmtd = new Date(tanggalDipilih).toLocaleDateString(
+  "id-ID",
+  {
+    day: "numeric",
+    month: "long",
+    year: "numeric",
+  },
+);
+
+const layoutProps = {
+  title: `Peraturan Terbaru - ${tanggalDipilihFmtd}`,
+  description: `Tampilan ${listPeraturan.length} peraturan terbaru yang diundangkan pada tanggal ${tanggalDipilihFmtd}`,
+};
+---
+
+<RootLayout {...layoutProps}>
+  <PageHeading
+    title="Peraturan Terbaru"
+    description={(
+      <>
+        Selalu <i>up-to-date</i> dengan Peraturan Perundang-undangan terbaru
+        yang ditetapkan pada situs ini dengan layanan berlangganan gratis
+        menggunakan <i>RSS Feed.</i>
+      </>
+    )}
+  />
+  <div class="container">
+    <div class="join join-vertical md:join-horizontal w-full my-2">
+      <a href="/atom.xml" class="join-item btn link flex-1 p-2">
+        <IconRssLine />
+        Atom
+      </a>
+      <a href="/rss.xml" class="join-item btn link flex-1 p-2">
+        <IconRssFill />
+        RSS 2.0
+      </a>
+      <a href="/feed.json" class="join-item btn link flex-1 p-2">
+        <IconFileJson />
+        JSON Feed
+      </a>
+    </div>
+    <div class="card card-border">
+      <div
+        role="tablist"
+        class="tabs tabs-border bg-base-200 rounded-box rounded-b-none"
+      >
+        {
+          tanggalTerakhir.map(({ tanggal, jumlah }) => (
+            <a
+              role="tab"
+              href={`/terbaru?tanggal=${tanggal}`}
+              class={clsx(
+                "tab flex-1 z-1 text-nowrap",
+                tanggal === tanggalDipilih ? "tab-active" : "tab-inactive",
+              )}
+              aria-selected={tanggal === tanggalDipilih}
+            >
+              {new Date(tanggal).toLocaleDateString("id-ID", {
+                day: "2-digit",
+                month: "short",
+              })}{" "}
+              ({jumlah})
+            </a>
+          ))
+        }
+      </div>
+      <div class="card-body">
+        {
+          !listPeraturan.length ? (
+            <div class="alert alert-info" role="alert">
+              Tidak ada peraturan pada tanggal yang ditentukan.
+            </div>
+          ) : (
+            <table class="table table-striped table-responsive table-hover">
+              <thead>
+                <tr>
+                  <th scope="col">#</th>
+                  <th scope="col">Judul</th>
+                  <th scope="col">Nomor dan Tahun</th>
+                  <th scope="col">Bentuk</th>
+                </tr>
+              </thead>
+              <tbody>
+                {listPeraturan.map(
+                  ({ path, judul, nomorPendek, namaJenisPanjang }, index) => (
+                    <tr>
+                      <th scope="row">{index + 1}</th>
+                      <td>{judul}</td>
+                      <td>
+                        <a class="link" href={path}>
+                          {nomorPendek}
+                        </a>
+                      </td>
+                      <td>{namaJenisPanjang}</td>
+                    </tr>
+                  ),
+                )}
+              </tbody>
+            </table>
+          )
+        }
+      </div>
+    </div>
+  </div>
+</RootLayout>

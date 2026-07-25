@@ -1,0 +1,19 @@
+import type { APIRoute, Params, Props } from "astro";
+
+import { getPeraturanThumbnail } from "./data";
+
+interface PathParams extends Params {
+  jenis: string;
+  tahun: string;
+  nomor: string;
+}
+
+export const GET: APIRoute<Props, PathParams> = async ({ params }) => {
+  const jenis = params.jenis;
+  const tahun = params.tahun;
+  const nomor = params.nomor;
+  const thumbnail = await getPeraturanThumbnail({ jenis, tahun, nomor });
+  if (!thumbnail)
+    return Response.json({ error: "Thumbnail not found" }, { status: 404 });
+  return new Response(thumbnail, { headers: { "Content-Type": "image/png" } });
+};

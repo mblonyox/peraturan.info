@@ -1,0 +1,120 @@
+---
+import { Image } from "astro:assets";
+
+import IconBoxArrowUpRight from "@/components/icons/box-arrow-up-right";
+import RootLayout from "@/layouts/RootLayout.astro";
+import { getFeedListPeraturan, getPeraturan, getPopularPuu } from "@/lib/db";
+
+function formatTanggal(date: Date) {
+  return date.toLocaleDateString("ID-id", {
+    day: "numeric",
+    month: "long",
+    year: "numeric",
+  });
+}
+
+const feedList = await getFeedListPeraturan(10);
+const terbaru = feedList.map((p) => ({
+  tanggal: formatTanggal(p.tanggal_diundangkan),
+  path: p?.path,
+  nomor: p?.rujukPendek,
+  judul: p?.judul,
+}));
+const results = await getPopularPuu(5);
+const terpopuler = await Promise.all(
+  results.map(async ({ path, count }) => {
+    const [jenis, tahun, nomor] = path.split("/");
+    const peraturan = await getPeraturan({ jenis, tahun, nomor });
+    return {
+      path: peraturan?.path ?? "/",
+      nomor: peraturan?.rujukPendek ?? "Tidak ada nomor",
+      judul: peraturan?.judul ?? "Tidak ada judul",
+      count,
+    };
+  }),
+);
+---
+
+<RootLayout>
+  <div class="hero bg-base-300">
+    <div class="hero-content text-center">
+      <div class="max-w-md">
+        <Image
+          src="/logo.webp"
+          alt="Logo Peraturan.Info"
+          class="mx-auto mb-5"
+          width={256}
+          height={256}
+        />
+        <h1 class="text-5xl font-bold mb-2">
+          Peraturan<span class="text-neutral-500">.Info</span>
+        </h1>
+        <p class="mb-5">
+          Peraturan.Info adalah upaya untuk meningkatkan cara penyajian
+          peraturan perundang-undangan di Indonesia sehingga lebih user-friendly
+          yang terinspirasi dari layanan{" "}
+          <a
+            href="https://legislation.gov.uk"
+            target="_blank"
+            rel="noreferrer noopener"
+          >
+            legislation.gov.uk
+          </a>
+          .
+        </p>
+        <a href="/all" class="btn btn-primary"> Lihat Semua Peraturan. </a>
+      </div>
+    </div>
+  </div>
+  <div class="container flex flex-col lg:flex-row my-5">
+    <ul class="list rounded-box bg-base-200 flex-1">
+      <li class="p-4 pb-2 text-xl font-bold">Terbaru</li>
+      {
+        terbaru.slice(0, 5).map(({ path, nomor, judul, tanggal }) => (
+          <li class="list-row">
+            <div>
+              <img
+                class="h-auto rounded-xs"
+                src={`${path}/thumbnail.png`}
+                alt={judul}
+                width={64}
+                height={64}
+              />
+            </div>
+            <div>
+              <div class="text-xs">{tanggal}</div>
+              <div class="font-semibold">{nomor}</div>
+              <p class="text-sm">{judul}</p>
+            </div>
+            <a href={path} target="_blank" class="btn btn-ghost">
+              Lihat
+              <IconBoxArrowUpRight />
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+    <div class="divider lg:divider-horizontal"></div>
+    <ul class="list rounded-box bg-base-200 flex-1">
+      <li class="p-4 pb-2 text-xl font-bold">Terpopuler</li>
+      {
+        terpopuler.slice(0, 5).map(({ path, nomor, judul, count }, index) => (
+          <li class="list-row">
+            <div class="text-4xl font-thin opacity-30 tabular-nums">
+              #{index + 1}
+            </div>
+            <div>
+              <div class="text-xs">{count} kali dilihat</div>
+              <div class="font-semibold">{nomor}</div>
+              <p class="text-sm">{judul}</p>
+            </div>
+            <a href={path ?? "#"} target="_blank" class="btn btn-ghost">
+              Lihat
+              <IconBoxArrowUpRight />
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+  </div>
+</RootLayout>

@@ -1,0 +1,215 @@
+---
+import PartialLayout from "@/layouts/PartialLayout.astro";
+import { createMarked, type PeraturanToken } from "@/lib/marked";
+import { ellipsis } from "@/lib/utils/string";
+
+import { getPeraturanData,getPeraturanMarkdown } from "./data";
+
+const { jenis, tahun, nomor, partials } = Astro.params;
+if (!jenis || !tahun || !nomor || !partials) return Astro.rewrite("/404");
+const peraturan = await getPeraturanData({ jenis, tahun, nomor });
+if (!peraturan) return Astro.rewrite("/404");
+const md = await getPeraturanMarkdown({ jenis, tahun, nomor });
+if (!md) return Astro.rewrite("/404");
+
+const marked = createMarked();
+const rootTokens = marked.lexer(md) as PeraturanToken[];
+
+class PartialError extends Error {}
+
+interface Data {
+  html: string;
+  prev?: { name: string; url: string };
+  next?: { name: string; url: string };
+  title?: string;
+  description?: string;
+}
+
+function handleIsi(partials: string): Data | null {
+  if (partials !== "isi") return null;
+  const html = marked.parser(rootTokens);
+
+  return {
+    html,
+    title: "Isi Peraturan",
+  };
+}
+
+function handleRootPartial(partials: string): Data | null {
+  const partial = partials;
+  if (
+    !partial ||
+    ![
+      "judul",
+      "pembukaan",
+      "konsideran",
+      "dasar-hukum",
+      "batang-tubuh",
+    ].includes(partial)
+  )
+    return null;
+  let tokens = [...rootTokens];
+  if (partial === "pembukaan") {
+    tokens = tokens.filter((token) =>
+      ["frasa-jabatan", "konsideran", "dasar-hukum", "diktum"].includes(
+        token.type,
+      ),
+    );
+  } else if (partial === "batang-tubuh") {
+    tokens = tokens.filter((token) =>
+      ["buku", "bab", "pasal"].includes(token.type),
+    );
+  } else {
+    tokens = tokens.filter((token) => token.type === partial);
+  }
+  if (!tokens || !tokens.length)
+    throw new PartialError(`No ${partial} tokens found.`);
+  const title = partial
+    .split("-")
+    .map((word) => word[0].toUpperCase() + word.substring(1))
+    .join(" ");
+  const description = ellipsis(
+    tokens.map((token) => token.raw).join("\n"),
+    155,
+  );
+  const html = marked.parser(tokens);
+  return { html, title, description };
+}
+
+function getPasalTokens(tokens: PeraturanToken[]): PeraturanToken[] {
+  return tokens.flatMap((token) =>
+    token.type === "pasal" ? [token] : getPasalTokens(token?.tokens ?? []),
+  );
+}
+
+function handlePasalPartial(partials: string): Data | null {
+  const re = /^(pasal-\d+)(?:\/ayat-(\d+))?$/;
+  const match = re.exec(partials);
+  if (!match) return null;
+  const [, pasal, ayat] = match;
+  const pasalTokens = getPasalTokens(rootTokens);
+  let token: PeraturanToken | undefined,
+    title: string | undefined,
+    prev: { name: string; url: string } | undefined,
+    next: { name: string; url: string } | undefined;
+  token = pasalTokens.find((token: PeraturanToken) => {
+    const slug = token.nomor?.toLowerCase().replace(" ", "-");
+    return slug === pasal;
+  });
+  if (!token?.nomor) throw new PartialError("Pasal has no nomor.");
+  title = token.nomor;
+  {
+    const index = pasalTokens.indexOf(token);
+    if (index > 0) {
+      const prevToken = pasalTokens[index - 1];
+      if (prevToken.nomor) {
+        prev = {
+          name: prevToken.nomor,
+          url: prevToken.nomor.toLowerCase().replace(" ", "-"),
+        };
+      }
+    }
+    if (index < pasalTokens.length - 1) {
+      const nextToken = pasalTokens[index + 1];
+      if (nextToken.nomor) {
+        next = {
+          name: nextToken.nomor,
+          url: nextToken.nomor.toLowerCase().replace(" ", "-"),
+        };
+      }
+    }
+  }
+  if (ayat) {
+    const pasal = token;
+    const ayats = token.tokens as PeraturanToken[];
+    token = ayats.find((token) => {
+      const slug = token?.nomor?.toLowerCase()?.replaceAll(/[\(\)]/g, "");
+      return token.type === "ayat" && slug === ayat;
+    });
+    if (!token) throw new PartialError("Ayat not found.");
+    title = `${pasal.nomor} ayat ${token.nomor}`;
+    const index = ayats.indexOf(token);
+    if (index > 0) {
+      const prevToken = ayats[index - 1];
+      if (prevToken.nomor) {
+        prev = {
+          name: `${pasal.nomor} ayat ${prevToken?.nomor}`,
+          url: `${pasal.nomor?.toLowerCase()?.replace(" ", "-")}/ayat-${prevToken?.nomor?.toLowerCase()?.replaceAll(/[\(\)]/g, "")}`,
+        };
+      }
+    }
+    if (index < ayats.length - 1) {
+      const nextToken = ayats[index + 1];
+      if (nextToken.nomor) {
+        next = {
+          name: `${pasal.nomor} ayat ${nextToken.nomor}`,
+          url: `${pasal.nomor?.toLowerCase().replace(" ", "-")}/ayat-${nextToken.nomor?.toLowerCase().replaceAll(/[\(\)]/g, "")}`,
+        };
+      }
+    }
+  }
+  const html = marked.parser([token]);
+  const description = ellipsis(token.raw, 155);
+  return { html, prev, next, title, description };
+}
+
+function handleBukuPartial(partials: string) {
+  const re =
+    /^(?:(buku-\w+)\/?)?(?:(bab-[mdclxvi]+)(?:\/(bagian-\w+)(?:\/(paragraf-\d+))?)?)?$/;
+  const match = re.exec(partials);
+  if (!match) return null;
+  const [, buku, bab, bagian, paragraf] = match;
+  let tokens = [...rootTokens];
+  let token: PeraturanToken | undefined,
+    title: string | undefined,
+    prev: { name: string; url: string } | undefined,
+    next: { name: string; url: string } | undefined,
+    path: string | undefined;
+  for (const [k, v] of Object.entries({ buku, bab, bagian, paragraf })) {
+    if (!v) continue;
+    tokens = tokens.filter((t) => t.type === k);
+    token = tokens.find((t) => t.nomor?.toLowerCase().replace(" ", "-") === v);
+    if (!token?.nomor) throw new PartialError("Nomor not found.");
+    title = title ? `${title}, ${token.nomor}` : token.nomor;
+    const index = tokens.indexOf(token);
+    if (index > 0) {
+      const prevToken = tokens[index - 1];
+      if (prevToken.nomor) {
+        prev = {
+          name: prevToken.nomor,
+          url: `${path}/${prevToken.nomor.toLowerCase().replace(" ", "-")}`,
+        };
+      }
+    }
+    if (index < tokens.length - 1) {
+      const nextToken = tokens[index + 1];
+      if (nextToken.nomor) {
+        next = {
+          name: nextToken.nomor,
+          url: `${path}/${nextToken.nomor.toLowerCase().replace(" ", "-")}`,
+        };
+      }
+    }
+    path = path
+      ? `${path}/${token?.nomor?.toLowerCase().replace(" ", "-")}`
+      : token?.nomor?.toLowerCase().replace(" ", "-");
+    tokens = token.tokens ?? [];
+  }
+  if (!token?.nomor) throw new PartialError("Token not found.");
+  const html = marked.parser([token as PeraturanToken]);
+  const description = ellipsis(token.raw, 155);
+  return { html, prev, next, title, description };
+}
+
+const data =
+  handleIsi(partials) ??
+  handleRootPartial(partials) ??
+  handlePasalPartial(partials) ??
+  handleBukuPartial(partials);
+if (!data) return Astro.rewrite("/404");
+const { html, prev, next, title, description } = data;
+---
+
+<PartialLayout {...{ peraturan, title, description, rootTokens, prev, next }}>
+  <div set:html={html} />
+</PartialLayout>

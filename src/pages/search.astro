@@ -1,0 +1,79 @@
+---
+import { search } from "@orama/orama";
+import { z } from "zod";
+
+import PageHeading from "@/components/PageHeading.astro";
+import Pagination from "@/components/Pagination.astro";
+import RootLayout from "@/layouts/RootLayout.astro";
+import { getOrama } from "@/lib/orama";
+import { ellipsis } from "@/lib/utils/string";
+import { $searchParams } from "@/lib/utils/validate";
+
+const averageQueryLength = 16;
+
+const searchParamsSchema = $searchParams.pipe(
+  z.object({
+    page: z.coerce.number<string>().int().positive().default(1),
+    limit: z.coerce.number<string>().int().max(100).min(5).default(10),
+    query: z.string().optional().default(""),
+  }),
+);
+
+const res = searchParamsSchema.safeParse(Astro.url.searchParams);
+if (!res.success) throw Error("Invalid search parameters");
+const { page, limit, query } = res.data;
+const offset = (page - 1) * limit;
+const index = await getOrama();
+const results = await search(index, {
+  term: query,
+  properties: ["jenis", "nomor", "judul"],
+  offset,
+  limit,
+});
+if (results.count && !results.hits.length) return Astro.rewrite("/404");
+const total = results.count;
+const start = offset + 1;
+const end = offset + results.hits.length;
+const headingProps = {
+  title: `Hasil Pencarian: "${ellipsis(query, averageQueryLength)}"`,
+  description: results.hits.length
+    ? `Pencarian dengan kata kunci "${query}" menampilkan urutan ${
+        start === end ? start : start + " s.d. " + end
+      } dari ${total} hasil dalam ${results.elapsed.formatted}.`
+    : "Pencarian tidak menemukan hasil.",
+};
+const layoutProps = {
+  title: `Laman #${page} | ${headingProps.title}`,
+  description: `Tampilan ${headingProps.title} ${headingProps.description}`,
+};
+const paginationProps = { total, page, pageSize: limit };
+---
+
+<RootLayout {...layoutProps}>
+  <PageHeading {...headingProps} />
+  <div class="container">
+    <div class="grid grid-cols-2 xl:grid-cols-3 gap-2">
+      {
+        results.hits.map((hit) => (
+          <div class="card card-border shadow-sm">
+            <div class="card-body">
+              <p class="card-title line-clamp-3 text-xl font-bold">
+                {hit.document.judul as string}
+              </p>
+              <p class="font-light">
+                {hit.document.jenis} {hit.document.nomor}
+              </p>
+              <p>{ellipsis(hit.document.teks as string)}</p>
+              <div class="card-actions justify-end">
+                <a href={hit.document.path as string} class="btn btn-outline">
+                  Buka
+                </a>
+              </div>
+            </div>
+          </div>
+        ))
+      }
+    </div>
+    <Pagination {...paginationProps} />
+  </div>
+</RootLayout>

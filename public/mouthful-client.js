@@ -63,7 +63,7 @@
           u = o(t),
           s = 0;
         if (u >= 86400 && u <= 172800) return "Yesterday";
-        for (; (i = e.timespan[s++]); ) if ((r = n(i, u, s))) return r;
+        for (; (i = e.timespan[s++]);) if ((r = n(i, u, s))) return r;
         return 0 === Math.floor(u)
           ? "Just now"
           : Math.floor(u) + " seconds ago";
@@ -210,7 +210,7 @@
         if ((o && t.setAttribute("media", o), t.styleSheet))
           t.styleSheet.cssText = n;
         else {
-          for (; t.firstChild; ) t.removeChild(t.firstChild);
+          for (; t.firstChild;) t.removeChild(t.firstChild);
           t.appendChild(document.createTextNode(n));
         }
       }
@@ -307,7 +307,7 @@
             f(t, this));
         }
         function i(t, e) {
-          for (; 3 === t._state; ) t = t._value;
+          for (; 3 === t._state;) t = t._value;
           if (0 === t._state) return void t._deferreds.push(e);
           ((t._handled = !0),
             r._immediateFn(function () {
@@ -1387,7 +1387,7 @@
             i,
             u,
             s = R;
-          for (u = arguments.length; u-- > 2; ) D.push(arguments[u]);
+          for (u = arguments.length; u-- > 2;) D.push(arguments[u]);
           for (
             n &&
             null != n.children &&
@@ -1395,7 +1395,7 @@
             D.length;
           )
             if ((r = D.pop()) && void 0 !== r.pop)
-              for (u = r.length; u--; ) D.push(r[u]);
+              for (u = r.length; u--;) D.push(r[u]);
             else
               ("boolean" == typeof r && (r = null),
                 (i = "function" != typeof t) &&
@@ -1440,7 +1440,7 @@
         function u() {
           var t,
             e = M;
-          for (M = []; (t = e.pop()); ) t.__d && B(t);
+          for (M = []; (t = e.pop());) t.__d && B(t);
         }
         function s(t, e, n) {
           return "string" == typeof e || "number" == typeof e
@@ -1528,7 +1528,7 @@
           return this.__l[t.type]((T.event && T.event(t)) || t);
         }
         function d() {
-          for (var t; (t = N.pop()); )
+          for (var t; (t = N.pop());)
             (T.afterMount && T.afterMount(t),
               t.componentDidMount && t.componentDidMount());
         }
@@ -1570,7 +1570,7 @@
             (s += ""),
             (!t || !a(t, s)) && ((i = f(s, P)), t))
           ) {
-            for (; t.firstChild; ) i.appendChild(t.firstChild);
+            for (; t.firstChild;) i.appendChild(t.firstChild);
             (t.parentNode && t.parentNode.replaceChild(i, t), y(t, !0));
           }
           var l = i.firstChild,
@@ -1578,7 +1578,7 @@
             p = e.children;
           if (null == c) {
             c = i.__preactattr_ = {};
-            for (var h = i.attributes, m = h.length; m--; )
+            for (var h = i.attributes, m = h.length; m--;)
               c[h[m].name] = h[m].value;
           }
           return (
@@ -1649,7 +1649,7 @@
                       : t.insertBefore(f, a)));
             }
           if (d) for (var w in m) void 0 !== m[w] && y(m[w], !1);
-          for (; _ <= v; ) void 0 !== (f = h[v--]) && y(f, !1);
+          for (; _ <= v;) void 0 !== (f = h[v--]) && y(f, !1);
         }
         function y(t, e) {
           var n = t._component;
@@ -1662,7 +1662,7 @@
               v(t));
         }
         function v(t) {
-          for (t = t.lastChild; t; ) {
+          for (t = t.lastChild; t;) {
             var e = t.previousSibling;
             (y(t, !0), (t = e));
           }
@@ -1693,7 +1693,7 @@
               : ((o = new L(e, n)), (o.constructor = t), (o.render = C)),
             r)
           )
-            for (var i = r.length; i--; )
+            for (var i = r.length; i--;)
               if (r[i].constructor === t) {
                 ((o.__b = r[i].__b), r.splice(i, 1));
                 break;
@@ -1789,7 +1789,7 @@
                   C || ((v._component = null), y(v, !1)));
               }
               if ((C && j(C), (t.base = O), O && !r)) {
-                for (var R = t, E = t; (E = E.__u); ) (R = E).base = O;
+                for (var R = t, E = t; (E = E.__u);) (R = E).base = O;
                 ((O._component = R), (O._componentConstructor = R.constructor));
               }
             }
@@ -1801,7 +1801,7 @@
                   T.afterUpdate && T.afterUpdate(t)),
               null != t.__h)
             )
-              for (; t.__h.length; ) t.__h.pop().call(t);
+              for (; t.__h.length;) t.__h.pop().call(t);
             F || r || d();
           }
         }
@@ -2126,7 +2126,7 @@
           o < n.length;
           o++
         ) {
-          for (var r = n[o]; " " == r.charAt(0); ) r = r.substring(1, r.length);
+          for (var r = n[o]; " " == r.charAt(0);) r = r.substring(1, r.length);
           if (0 == r.indexOf(e)) return r.substring(e.length, r.length);
         }
         return null;

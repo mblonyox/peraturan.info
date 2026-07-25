@@ -1,0 +1,33 @@
+---
+import IconShare from "@/components/icons/share";
+
+const { title, description, url } = Astro.props;
+---
+<a
+  href={`https://www.addtoany.com/share#url=${encodeURIComponent(url)}&title=${encodeURIComponent(title)}`}
+  target="_blank"
+  rel="noopener noreferrer"
+  class="btn btn-block btn-secondary text-neutral-content web-share-btn"
+  data-title={title}
+  data-description={description}
+  data-url={url}
+>
+  <IconShare />
+  Bagikan
+</a>
+
+<script>
+  document.querySelectorAll(".web-share-btn").forEach((btn) => {
+    btn.addEventListener("click", (e) => {
+      if ("share" in navigator) {
+        e.preventDefault();
+        const currentBtn = e.currentTarget as HTMLElement;
+        navigator.share({
+          title: currentBtn.dataset.title ?? "",
+          text: currentBtn.dataset.description ?? "",
+          url: currentBtn.dataset.url ?? "",
+        }).catch(console.error);
+      }
+    });
+  });
+</script>

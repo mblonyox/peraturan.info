@@ -1,8 +1,10 @@
 {
-  "deno.enable": false,
   "css.customData": [".vscode/tailwind.json"],
   "editor.formatOnSave": true,
   "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "[astro]": {
+    "editor.defaultFormatter": "astro-build.astro-vscode"
+  },
   "[typescriptreact]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode"
   },

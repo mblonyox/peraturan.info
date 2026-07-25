@@ -1,0 +1,66 @@
+---
+import type { Token } from "marked";
+
+import { ellipsis } from "@/lib/utils/string";
+
+interface Props {
+  token: Token;
+  path: string;
+}
+
+const { token, path } = Astro.props;
+const { jenis, tahun, nomor: nomorPeraturan } = Astro.params;
+
+const basePath = `/${jenis}/${tahun}/${nomorPeraturan}`;
+
+function childTokens(token?: Token) {
+  return token && "tokens" in token ? token.tokens : undefined;
+}
+
+const nomor =
+  (token.type === "ayat" ? "ayat " : "") +
+  ("nomor" in token ? token.nomor : "");
+const judul = "judul" in token ? token.judul : nomor;
+const slug = nomor
+  .toLowerCase()
+  .replaceAll(" ", "-")
+  .replaceAll(/[\(\)]/g, "");
+const subPath = (token.type === "pasal" ? basePath : path) + `/${slug}`;
+const subTokens = childTokens(token)?.filter((token) =>
+  ["bab", "bagian", "paragraf", "pasal", "ayat"].includes(token.type),
+);
+const preview =
+  token.type === "pasal" && !subTokens?.length
+    ? ellipsis(token.raw?.substring(judul.length))
+    : token.type === "ayat"
+      ? ellipsis(token.raw?.substring(token.nomor?.length ?? 0))
+      : "";
+---
+
+<li>
+  {
+    subTokens?.length ? (
+      <details open={token.type === "pasal"}>
+        <summary>
+          <a href={subPath}>{judul}</a>
+        </summary>
+        <ul>
+          {subTokens.map((token) => (
+            <Astro.self token={token} path={subPath} />
+          ))}
+        </ul>
+      </details>
+    ) : (
+      <div class="flex flex-col gap-2">
+        <a class="text-nowrap" href={subPath}>
+          {judul}
+        </a>
+        {preview && (
+          <a href={subPath}>
+            <cite>{preview}</cite>
+          </a>
+        )}
+      </div>
+    )
+  }
+</li>

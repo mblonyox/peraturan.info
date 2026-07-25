@@ -1,0 +1,88 @@
+---
+import type { Token } from "marked";
+
+import type { Peraturan } from "@/lib/db";
+
+interface Props {
+  peraturan: Peraturan;
+  rootTokens: Token[];
+  title?: string;
+  description?: string;
+  prev?: { name: string; url: string };
+  next?: { name: string; url: string };
+}
+
+import "@/styles/peraturan.css";
+
+import IconListNested from "@/components/icons/list-nested";
+import IconWarning from "@/components/icons/warning";
+import Nav from "@/components/partials/Nav.astro";
+import Outline from "@/components/partials/Outline.astro";
+import PrintButton from "@/components/partials/PrintButton";
+
+import DetailLayout from "./DetailLayout.astro";
+
+const { peraturan, rootTokens, title, prev, next, description } = Astro.props;
+---
+
+<DetailLayout peraturan={peraturan} title={title} description={description}>
+  <div class="max-lg:drawer">
+    <input id="outline" type="checkbox" class="drawer-toggle" hidden />
+    <aside class="drawer-side lg:hidden">
+      <label for="outline" aria-label="Close Outline" class="drawer-overlay"
+      ></label>
+      <div class="bg-base-100 p-5 w-1/2"><Outline tokens={rootTokens} /></div>
+    </aside>
+    <div class="drawer-content">
+      <div role="alert" class="alert alert-warning alert-soft">
+        <IconWarning />
+        <div>
+          <h5 class="text-lg font-bold">Disclaimer</h5>
+          <p>
+            Dokumen peraturan ini ditampilkan sebagai hasil <i>parsing</i>{" "}
+            semi-otomatis menggunakan teknologi OCR{"  "}
+            <i>(Optical Character Recognition)</i>.
+          </p>
+          <p>
+            Oleh karena itu, dimungkinkan terdapat perbedaan format, penulisan,
+            maupun kekeliruan teks dari dokumen aslinya.
+          </p>
+          <p>
+            Untuk keakuratan dan keabsahan, silakan merujuk pada dokumen
+            resmi/sumber asli peraturan tersebut.
+          </p>
+        </div>
+      </div>
+      <div class="flex justify-between my-2">
+        <label for="outline" class="btn btn-outline">
+          <IconListNested />
+          <span class="hidden md:inline">Outline</span>
+        </label>
+        <span class="text-center">
+          <Nav prev={prev} next={next} />
+        </span>
+        <PrintButton client:load />
+      </div>
+      <div class="flex w-full">
+        <div
+          class="hidden lg:block max-w-1/4 2xl:max-w-1/5 max-h-[75vh] overflow-y-auto in-[&:has(#outline:checked)]:lg:hidden"
+        >
+          <Outline tokens={rootTokens} />
+        </div>
+        <div
+          class="divider divider-horizontal hidden lg:flex in-[&:has(#outline:checked)]:lg:hidden"
+        >
+        </div>
+        <div class="flex-1 max-h-[75vh] overflow-y-auto">
+          <div class="peraturan wadah">
+            <div class="kertas">
+              <div class="isi">
+                <slot />
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</DetailLayout>

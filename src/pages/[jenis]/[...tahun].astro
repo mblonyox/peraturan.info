@@ -1,0 +1,135 @@
+---
+import { z } from "zod";
+
+import IconFunnel from "@/components/icons/funnel";
+import FilterByJenis from "@/components/lists/FilterByJenis.astro";
+import FilterByTahun from "@/components/lists/FilterByTahun.astro";
+import PageHeading from "@/components/PageHeading.astro";
+import Pagination from "@/components/Pagination.astro";
+import RootLayout from "@/layouts/RootLayout.astro";
+import {
+  getFilterByJenisCount,
+  getFilterByTahunCount,
+  getListPeraturan,
+  JENIS2_PERATURAN,
+  NAMA2_JENIS,
+} from "@/lib/db";
+import { $pageLimit, $searchParams } from "@/lib/utils/validate";
+
+const paramsSchema = z.object({
+  jenis: z.union([
+    z.literal("all").transform(() => undefined),
+    z.enum(JENIS2_PERATURAN),
+  ]),
+  tahun: z.string().regex(/\d{4}/).optional(),
+});
+
+const searchParamsSchema = $searchParams.pipe($pageLimit);
+
+const res1 = await paramsSchema.safeParseAsync(Astro.params);
+if (!res1.success) return Astro.rewrite("/404");
+const jenis = res1.data.jenis;
+const tahun = res1.data.tahun;
+const res2 = await searchParamsSchema.safeParseAsync(Astro.url.searchParams);
+if (!res2.success) return Astro.rewrite("/404");
+const page = res2.data.page;
+const pageSize = res2.data.limit;
+
+const { hasil, total } = await getListPeraturan({
+  jenis,
+  tahun,
+  page,
+  pageSize,
+});
+if (!hasil.length) return Astro.rewrite("/404");
+const filterByJenisProps = {
+  data: await getFilterByJenisCount({ jenis, tahun }),
+  tahun,
+};
+const filterByTahunProps = {
+  data: await getFilterByTahunCount({ jenis, tahun }),
+  jenis,
+};
+
+const start = (page - 1) * pageSize + 1;
+const end = start + hasil.length - 1;
+const headingProps = {
+  title:
+    "Daftar " +
+    (jenis ? NAMA2_JENIS[jenis].panjang : "semua peraturan") +
+    (tahun ? ` pada tahun ${tahun}.` : "."),
+  description: `Menampilkan urutan ${
+    start === end ? start : `${start} s.d. ${end}`
+  } dari ${total} peraturan.`,
+};
+const layoutProps = {
+  title: `Laman #${page} | ${headingProps.title}`,
+  description: `Tampilan ${headingProps.title} ${headingProps.description}`,
+};
+const paginationProps = { total, page, pageSize };
+
+const startIndex = (page - 1) * pageSize + 1;
+---
+
+<RootLayout {...layoutProps}>
+  <div class="drawer">
+    <input id="filters" type="checkbox" class="drawer-toggle" hidden />
+    <aside class="drawer-side">
+      <label for="filters" aria-label="Close Filters" class="drawer-overlay"
+      ></label>
+      <div class="bg-base-100 min-h-screen p-5">
+        <FilterByJenis {...filterByJenisProps} />
+        <FilterByTahun {...filterByTahunProps} />
+      </div>
+    </aside>
+    <div class="drawer-content">
+      <PageHeading {...headingProps} />
+      <div class="container my-5">
+        <div class="block lg:hidden my-2">
+          <label for="filters" class="btn" aria-label="Open Filters">
+            <IconFunnel />
+            &nbsp;Saring
+          </label>
+        </div>
+        <div class="flex">
+          <div class="hidden lg:block">
+            <FilterByJenis {...filterByJenisProps} />
+            <FilterByTahun {...filterByTahunProps} />
+          </div>
+          <div class="divider divider-horizontal hidden lg:flex"></div>
+          <div class="flex-1 overflow-x-auto">
+            <table class="table border-t-2 border-t-base-300">
+              <thead>
+                <tr>
+                  <th scope="col">#</th>
+                  <th scope="col">Judul</th>
+                  <th scope="col">Nomor dan Tahun</th>
+                  <th scope="col">Bentuk</th>
+                </tr>
+              </thead>
+              <tbody>
+                {
+                  hasil.map(
+                    ({ path, judul, nomorPendek, namaJenisPanjang }, index) => (
+                      <tr>
+                        <th scope="row">{startIndex + index}</th>
+                        <td>{judul}</td>
+                        <td>
+                          <a class="link" href={path}>
+                            {nomorPendek}
+                          </a>
+                        </td>
+                        <td>{namaJenisPanjang}</td>
+                      </tr>
+                    ),
+                  )
+                }
+              </tbody>
+            </table>
+            <Pagination {...paginationProps} />
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</RootLayout>

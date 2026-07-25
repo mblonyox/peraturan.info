@@ -1,0 +1,30 @@
+---
+interface Props {
+  data: Record<string, number>;
+  jenis?: string;
+}
+
+const { data, jenis } = Astro.props;
+---
+
+<section>
+  <p>Saring berdasar tahun</p>
+  <div class="max-h-[50vh] overflow-auto">
+    <ul class="menu menu-vertical">
+      <li>
+        <a class="link" href={`/${jenis ?? "all"}`}> Semua tahun </a>
+      </li>
+      {
+        Object.entries(data)
+          .sort((a, b) => b[0].localeCompare(a[0]))
+          .map(([tahun, jumlah]) => (
+            <li>
+              <a class="link" href={`/${jenis ?? "all"}/${tahun}`}>
+                {tahun}&nbsp;({jumlah})
+              </a>
+            </li>
+          ))
+      }
+    </ul>
+  </div>
+</section>

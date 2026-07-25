@@ -1,0 +1,56 @@
+---
+interface Props {
+  title?: string;
+  description?: string;
+  peraturan: Peraturan;
+}
+
+import Comments from "@/components/details/Comments.astro";
+import SocialShareButtons from "@/components/details/SocialShareButtons.astro";
+import Tabs from "@/components/details/Tabs.astro";
+import PageHeading from "@/components/PageHeading.astro";
+import type { Peraturan } from "@/lib/db";
+
+import RootLayout from "./RootLayout.astro";
+
+const tabs = [
+  {
+    name: "Informasi",
+    path: "info",
+    disabled: false,
+  },
+  {
+    name: "Isi",
+    path: "isi",
+    disabled: false,
+  },
+  {
+    name: "Terkait",
+    path: "terkait",
+    disabled: false,
+  },
+];
+
+const { peraturan, title, description } = Astro.props;
+
+const layoutProps = {
+  title,
+  titleTemplate: `%s | ${peraturan.rujukPendek}`,
+  description: description ?? peraturan.rujukPanjang,
+};
+---
+
+<RootLayout {...layoutProps}>
+  <div class="container">
+    <PageHeading title={peraturan.judul} description={peraturan.rujukPendek} />
+    <SocialShareButtons title={peraturan.judul} text={peraturan.rujukPanjang} />
+    <Tabs
+      basePath={`/${peraturan.jenis}/${peraturan.tahun}/${peraturan.nomor}`}
+      tabs={tabs}
+      defaultTab={1}
+    >
+      <slot />
+    </Tabs>
+    <Comments />
+  </div>
+</RootLayout>

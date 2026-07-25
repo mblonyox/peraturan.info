@@ -1,0 +1,35 @@
+---
+interface Props {
+  prev?: { name: string; url: string } | null;
+  next?: { name: string; url: string } | null;
+}
+
+const { prev, next } = Astro.props;
+const { jenis, tahun, nomor } = Astro.params;
+const basePath = `/${jenis}/${tahun}/${nomor}`;
+---
+
+{
+  !prev ? (
+    <button type="button" disabled class="btn btn-outline mx-2">
+      &lt;&lt;
+    </button>
+  ) : (
+    <a class="btn btn-outline mx-2" href={`${basePath}/${prev.url}`}>
+      &lt;&lt;
+      <span class="hidden md:inline">{prev.name}</span>
+    </a>
+  )
+}
+{
+  !next ? (
+    <button type="button" disabled class="btn btn-outline mx-2">
+      &gt;&gt;
+    </button>
+  ) : (
+    <a class="btn btn-outline mx-2" href={`${basePath}/${next.url}`}>
+      &gt;&gt;
+      <span class="hidden md:inline">{next.name}</span>
+    </a>
+  )
+}

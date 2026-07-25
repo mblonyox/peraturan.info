@@ -1,0 +1,106 @@
+---
+import DetailLayout from "@/layouts/DetailLayout.astro";
+
+import { getPeraturanData } from "./data";
+
+const { jenis, tahun, nomor } = Astro.params;
+
+if (!jenis || !tahun || !nomor) return Astro.rewrite("/404");
+
+const peraturan = await getPeraturanData({ jenis, tahun, nomor });
+
+if (!peraturan) return Astro.rewrite("/404");
+
+const description = `Informasi umum (Metadata, Sumber Peraturan, Abstrak) atas ${peraturan.rujukPanjang}`;
+
+const {
+  path,
+  rujukPendek,
+  namaJenisPanjang,
+  judul,
+  tanggal_ditetapkan,
+  tanggal_diundangkan,
+  tanggal_berlaku,
+} = peraturan;
+---
+
+<DetailLayout peraturan={peraturan} title="Informasi" description={description}>
+  <div class="grid grid-cols-1 lg:grid-cols-2 gap-2">
+    <div>
+      <h2 class="text-2xl mb-2">Metadata</h2>
+      <table class="table table-zebra">
+        <tbody>
+          <tr>
+            <td>Jenis</td>
+            <td>:</td>
+            <td>{namaJenisPanjang}</td>
+          </tr>
+          <tr>
+            <td>Tahun</td>
+            <td>:</td>
+            <td>{tahun}</td>
+          </tr>
+          <tr>
+            <td>Nomor</td>
+            <td>:</td>
+            <td>{nomor}</td>
+          </tr>
+          <tr>
+            <td>Judul</td>
+            <td>:</td>
+            <td>{judul}</td>
+          </tr>
+          <tr>
+            <td>Tanggal Ditetapkan</td>
+            <td>:</td>
+            <td>
+              {
+                tanggal_ditetapkan.toLocaleDateString("id", {
+                  day: "numeric",
+                  month: "long",
+                  year: "numeric",
+                })
+              }
+            </td>
+          </tr>
+          <tr>
+            <td>Tanggal Diundangkan</td>
+            <td>:</td>
+            <td>
+              {
+                tanggal_diundangkan.toLocaleDateString("id", {
+                  day: "numeric",
+                  month: "long",
+                  year: "numeric",
+                })
+              }
+            </td>
+          </tr>
+          <tr>
+            <td>Tanggal Berlaku</td>
+            <td>:</td>
+            <td>
+              {
+                tanggal_berlaku.toLocaleDateString("id", {
+                  day: "numeric",
+                  month: "long",
+                  year: "numeric",
+                })
+              }
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div>
+      <h2 class="text-2xl mb-2">Tampilan</h2>
+      <img
+        src={path + "/thumbnail.png"}
+        alt={rujukPendek}
+        class="rounded-box w-full h-auto"
+        width={360}
+        height={0}
+      />
+    </div>
+  </div>
+</DetailLayout>

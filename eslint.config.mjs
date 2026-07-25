@@ -1,26 +1,30 @@
+import * as astroParser from "astro-eslint-parser";
 import { defineConfig, globalIgnores } from "eslint/config";
-import nextVitals from "eslint-config-next/core-web-vitals";
-import nextTs from "eslint-config-next/typescript";
+import eslintPluginAstro from "eslint-plugin-astro";
 import prettier from "eslint-plugin-prettier/recommended";
 import simpleImportSort from "eslint-plugin-simple-import-sort";
 import tseslint from "typescript-eslint";
 
 const eslintConfig = defineConfig([
-  ...nextVitals,
-  ...nextTs,
   ...tseslint.configs.strict,
   ...tseslint.configs.stylistic,
+  ...eslintPluginAstro.configs.recommended,
+  ...eslintPluginAstro.configs["jsx-a11y-recommended"],
   prettier,
-  // Override default ignores of eslint-config-next.
-  globalIgnores([
-    "public/**",
-    // Default ignores of eslint-config-next:
-    ".next/**",
-    "out/**",
-    "build/**",
-    "next-env.d.ts",
-    ".open-next/**",
-  ]),
+  {
+    files: ["**/*.astro"],
+    languageOptions: {
+      parser: astroParser,
+      parserOptions: {
+        // This instructs astro-eslint-parser to use TS parser for scripts
+        parser: tseslint.parser,
+        extraFileExtensions: [".astro"],
+        sourceType: "module",
+        // Add if you use typed linting rules:
+        // project: "./tsconfig.json",
+      },
+    },
+  },
   {
     plugins: { "simple-import-sort": simpleImportSort },
     rules: {
@@ -31,6 +35,7 @@ const eslintConfig = defineConfig([
       react: { version: "19" },
     },
   },
+  globalIgnores([".astro", "public"]),
 ]);
 
 export default eslintConfig;

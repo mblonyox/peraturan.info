@@ -1,0 +1,86 @@
+---
+export type Props = SEOProps;
+
+import "@/styles/globals.css";
+
+import { SEO, type SEOProps } from "astro-seo";
+
+import Breadcrumbs from "@/components/Breadcrumbs.astro";
+import Footer from "@/components/Footer.astro";
+import Navbar from "@/components/Navbar.astro";
+
+let { title, titleTemplate, titleDefault, description, extend, ...seoProps } =
+  Astro.props;
+
+titleDefault ??= "Peraturan.Info";
+titleTemplate ??= "%s | Peraturan.Info";
+description ??=
+  "Peraturan.Info adalah upaya untuk meningkatkan cara penyajian peraturan " +
+  "perundang-undangan di Indonesia sehingga lebih user-friendly yang terinspirasi " +
+  "dari legislation.gov.uk.";
+---
+
+<html lang="id" class="h-full antialiased">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <SEO
+      title={title}
+      titleTemplate={titleTemplate}
+      titleDefault={titleDefault}
+      description={description}
+      extend={{
+        link: [
+          {
+            rel: "icon",
+            href: "/favicon.ico",
+          },
+          {
+            rel: "apple-touch-icon",
+            href: "/icons/apple-touch-icon.png",
+          },
+          {
+            rel: "manifest",
+            type: "application/manifest+json",
+            href: "/manifest.json",
+          },
+          {
+            rel: "search",
+            type: "application/opensearchdescription+xml",
+            title: "Peraturan.Info Search",
+            href: "/search.xml",
+          },
+          {
+            rel: "alternate",
+            type: "application/rss+xml",
+            title: "Peraturan.Info RSS",
+            href: "/rss.xml",
+          },
+          {
+            rel: "alternate",
+            type: "application/atom+xml",
+            title: "Peraturan.Info ATOM",
+            href: "/atom.xml",
+          },
+          {
+            rel: "alternate",
+            type: "application/json",
+            title: "Peraturan.Info JSON",
+            href: "/feed.json",
+          },
+          ...(extend?.link ?? []),
+        ],
+        meta: [...(extend?.meta ?? [])],
+      }}
+      {...seoProps}
+    />
+  </head>
+  <body class="min-w-sm min-h-screen flex flex-col justify-between">
+    <Navbar />
+    <Breadcrumbs />
+    <main class="flex-1">
+      <slot />
+    </main>
+    <Footer />
+  </body>
+</html>
