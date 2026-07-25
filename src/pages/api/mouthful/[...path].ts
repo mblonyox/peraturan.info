@@ -1,0 +1,30 @@
+import type { APIRoute } from "astro";
+
+import { MOUTHFUL_URL } from "@/lib/constants";
+
+export const ALL: APIRoute = async ({ params, request }) => {
+  const { search } = new URL(request.url);
+  const targetUrl = new URL(params.path ?? "", MOUTHFUL_URL);
+  targetUrl.search = search;
+  const method = request.method;
+  const body =
+    method === "POST" || method === "PUT" || method === "PATCH"
+      ? request.body
+      : null;
+  try {
+    const response = await fetch(targetUrl, { method, body });
+    const contentType = response.headers.get("content-type");
+    const headers = new Headers();
+    if (contentType) headers.set("content-type", contentType);
+    return new Response(response.body, {
+      status: response.status,
+      statusText: response.statusText,
+      headers,
+    });
+  } catch (error) {
+    console.error(error);
+    return new Response("Failed to fetch from Mouthful", {
+      status: 502,
+    });
+  }
+};
