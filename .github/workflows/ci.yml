@@ -3,7 +3,7 @@ name: Snapshot Workflow
 on:
   push:
     branches:
-      - master
+      - main
 
 jobs:
   checks:
@@ -19,12 +19,12 @@ jobs:
 
     steps:
       - name: Setup repo
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
 
       - name: Setup Node.js
-        uses: actions/setup-node@v6
+        uses: actions/setup-node@v7
         with:
-          node-version: 22
+          node-version: 24
 
       - name: Enable pnpm
         run: |
