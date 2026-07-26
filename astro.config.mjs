@@ -4,6 +4,8 @@ import react from "@astrojs/react";
 import tailwindcss from "@tailwindcss/vite";
 import { defineConfig } from "astro/config";
 
+import { BASE_URL } from "./src/lib/constants";
+
 // https://astro.build/config
 export default defineConfig({
   output: "server",
@@ -20,4 +22,5 @@ export default defineConfig({
   cache: {
     provider: cacheCloudflare(),
   },
+  site: BASE_URL,
 });
