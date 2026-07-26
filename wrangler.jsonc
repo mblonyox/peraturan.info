@@ -34,14 +34,4 @@
   ],
   "workers_dev": false,
   "preview_urls": false,
-  "exports": {
-    "DOQueueHandler": {
-      "type": "durable-object",
-      "state": "deleted"
-    },
-    "DOShardedTagCache": {
-      "type": "durable-object",
-      "state": "deleted"
-    }
-  }
 }
