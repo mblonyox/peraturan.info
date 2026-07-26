@@ -2,15 +2,83 @@ import cloudflare from "@astrojs/cloudflare";
 import { cacheCloudflare } from "@astrojs/cloudflare/cache";
 import react from "@astrojs/react";
 import tailwindcss from "@tailwindcss/vite";
+import AstroPWA from "@vite-pwa/astro";
 import { defineConfig } from "astro/config";
 
+import manifest from "./src/assets/manifest.json";
 import { BASE_URL } from "./src/lib/constants";
 
 // https://astro.build/config
 export default defineConfig({
   output: "server",
   adapter: cloudflare(),
-  integrations: [react()],
+  integrations: [
+    react(),
+    AstroPWA({
+      manifest,
+      workbox: {
+        navigateFallback: "/",
+        globPatterns: ["**/*.{css,js,html,svg,png,webp,ico,txt,xml}"],
+        navigateFallbackAllowlist: [/^\/$/],
+        runtimeCaching: [
+          {
+            urlPattern: ({ url, sameOrigin, request }) =>
+              sameOrigin &&
+              request.mode === "navigate" &&
+              !url.pathname.match(/^\/$/),
+            handler: "NetworkFirst",
+            options: {
+              cacheName: "offline-ssr-pages-cache",
+              /* check the options in the workbox-build docs */
+              matchOptions: {
+                ignoreVary: true,
+                ignoreSearch: false,
+              },
+              cacheableResponse: {
+                statuses: [200],
+              },
+              expiration: {
+                maxEntries: 100,
+              },
+              plugins: [
+                {
+                  cachedResponseWillBeUsed: async (params) => {
+                    // When handlerDidError is invoked, then we can prevent redirecting if there is an entry in the cache.
+                    // To check the behavior, navigate to a product page, then disable the network and refresh the page.
+                    params.state ??= {};
+                    params.state.dontRedirect = params.cachedResponse;
+                    console.log(
+                      `[SW] cachedResponseWillBeUsed ${params.request.url}, ${params.state ? JSON.stringify(params.state) : ""}`,
+                    );
+                  },
+                  // This callback will be called when the fetch call fails.
+                  // Beware of the logic, will be also invoked if the server is down.
+                  handlerDidError: async ({ request, state, error }) => {
+                    if (state?.dontRedirect) {
+                      return state.dontRedirect;
+                    }
+
+                    console.log(
+                      `[SW] handlerDidError ${request.url}, ${state ? JSON.stringify(state) : ""}`,
+                    );
+                    return error &&
+                      "name" in error &&
+                      error.name === "no-response"
+                      ? Response.redirect(state.dontRedirect.url, 404)
+                      : undefined;
+                  },
+                },
+              ],
+            },
+          },
+        ],
+      },
+      devOptions: {
+        enabled: true,
+        navigateFallbackAllowlist: [/^\/$/],
+      },
+    }),
+  ],
   vite: {
     plugins: [tailwindcss()],
     resolve: {
