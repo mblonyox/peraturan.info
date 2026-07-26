@@ -17,5 +17,7 @@ export default defineConfig({
       },
     },
   },
-  cache: cacheCloudflare(),
+  cache: {
+    provider: cacheCloudflare(),
+  },
 });
