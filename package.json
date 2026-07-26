@@ -6,12 +6,12 @@
     "dev": "astro dev",
     "build": "astro build",
     "preview": "astro preview",
-    "deploy": "wrangler deploy",
-    "checks": "pnpm astrocheck && pnpm typecheck && pnpm lint && pnpm fmt",
+    "check": "astro check",
+    "cf:deploy": "wrangler deploy",
+    "ci:checks": "pnpm check && pnpm typecheck && pnpm lint && pnpm fmt",
     "lint": "eslint --fix .",
     "fmt": "prettier --write --log-level error .",
-    "typecheck": "tsc --noEmit",
-    "astrocheck": "astro check"
+    "typecheck": "tsc --noEmit"
   },
   "dependencies": {
     "@astrojs/cloudflare": "^14.1.4",
