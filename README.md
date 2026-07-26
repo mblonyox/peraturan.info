@@ -10,13 +10,13 @@ _user-friendly_ yang terinspirasi dari
 
 ## Dibuat dengan
 
-- Next.js
+- Astro
 - Tailwind
 - DaisyUI
 
 ## Pengembangan
 
-Saat ini pengembangan menggunakan Next.js dengan _package manager_ pnpm. Pengembangan sebelumnya menggunakan _framework_ Deno Fresh dapat dilihat pada _branch_ [deno-fresh](https://github.com/mblonyox/peraturan.info/tree/deno-fresh).
+Saat ini pengembangan menggunakan _framework_ **Astro** dengan _package manager_ **pnpm**. Pengembangan sebelumnya menggunakan _framework_ **Next.JS** dapat dilihat pada _branch_ [nextjs](https://github.com/mblonyox/peraturan.info/tree/nextjs) dan _framework_ **Deno Fresh** dapat dilihat pada _branch_ [deno-fresh](https://github.com/mblonyox/peraturan.info/tree/deno-fresh).
 
 Untuk memulai pengembangan jalankan:
 
@@ -24,9 +24,9 @@ Untuk memulai pengembangan jalankan:
 pnpm dev
 ```
 
-Buka [http://localhost:3000](http://localhost:3000) untuk melihat hasilnya.
+Buka [http://localhost:4321](http://localhost:4321) untuk melihat hasilnya.
 
-Anda bisa mulai mengedit halaman dengan memodifikasi `app/page.tsx`. Halaman akan diperbarui secara otomatis.
+Anda bisa mulai mengedit halaman dengan memodifikasi `src/pages/index.astro`. Halaman akan diperbarui secara otomatis.
 
 ## Kontribusi
 
