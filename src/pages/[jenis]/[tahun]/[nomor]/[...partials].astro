@@ -201,11 +201,17 @@ function handleBukuPartial(partials: string) {
   return { html, prev, next, title, description };
 }
 
-const data =
-  handleIsi(partials) ??
-  handleRootPartial(partials) ??
-  handlePasalPartial(partials) ??
-  handleBukuPartial(partials);
+let data: Data | null = null;
+try {
+  data =
+    handleIsi(partials) ??
+    handleRootPartial(partials) ??
+    handlePasalPartial(partials) ??
+    handleBukuPartial(partials);
+} catch (error) {
+  if (error instanceof PartialError) return Astro.rewrite("/404");
+  throw error;
+}
 if (!data) return Astro.rewrite("/404");
 const { html, prev, next, title, description } = data;
 
