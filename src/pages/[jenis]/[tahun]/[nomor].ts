@@ -8,12 +8,18 @@ interface ApiParams extends Params {
   nomor: string;
 }
 
-export const GET: APIRoute<Props, ApiParams> = async ({
+export const ALL: APIRoute<Props, ApiParams> = async ({
   params,
   redirect,
   rewrite,
+  cache,
 }) => {
   const { jenis, tahun, nomor } = params;
+  cache.set({
+    maxAge: 86400,
+    swr: 259200,
+    tags: ["peraturan", jenis, tahun, nomor],
+  });
   const md = await getPeraturanMarkdown({ jenis, tahun, nomor });
   if (!md) return rewrite("/404");
   const subPath = md ? "isi" : "info";
