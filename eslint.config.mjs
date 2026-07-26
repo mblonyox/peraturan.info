@@ -1,3 +1,4 @@
+import tsParser from "@typescript-eslint/parser";
 import * as astroParser from "astro-eslint-parser";
 import { defineConfig, globalIgnores } from "eslint/config";
 import eslintPluginAstro from "eslint-plugin-astro";
@@ -16,12 +17,9 @@ const eslintConfig = defineConfig([
     languageOptions: {
       parser: astroParser,
       parserOptions: {
-        // This instructs astro-eslint-parser to use TS parser for scripts
-        parser: tseslint.parser,
+        parser: tsParser,
         extraFileExtensions: [".astro"],
-        sourceType: "module",
-        // Add if you use typed linting rules:
-        // project: "./tsconfig.json",
+        project: "./tsconfig.json",
       },
     },
   },
@@ -31,11 +29,8 @@ const eslintConfig = defineConfig([
       "simple-import-sort/imports": "error",
       "simple-import-sort/exports": "error",
     },
-    settings: {
-      react: { version: "19" },
-    },
   },
-  globalIgnores([".astro", "public"]),
+  globalIgnores([".astro/", ".wrangler/", "dist/", "node_modules/", "public/"]),
 ]);
 
 export default eslintConfig;
