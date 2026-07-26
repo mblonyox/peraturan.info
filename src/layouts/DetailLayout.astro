@@ -37,6 +37,8 @@ const layoutProps = {
   title,
   titleTemplate: `%s | ${peraturan.rujukPendek}`,
   description: description ?? peraturan.rujukPanjang,
+  image: new URL(`${peraturan.path}/og-image.png`, Astro.site).href,
+  imageAlt: peraturan.rujukPendek,
 };
 ---
 
@@ -45,7 +47,7 @@ const layoutProps = {
     <PageHeading title={peraturan.judul} description={peraturan.rujukPendek} />
     <SocialShareButtons title={peraturan.judul} text={peraturan.rujukPanjang} />
     <Tabs
-      basePath={`/${peraturan.jenis}/${peraturan.tahun}/${peraturan.nomor}`}
+      basePath={peraturan.path}
       tabs={tabs}
       defaultTab={1}
     >
