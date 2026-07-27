@@ -61,5 +61,6 @@
     "workbox-window": "^7.4.1",
     "wrangler": "^4.114.0"
   },
-  "browserslist": "> 1%"
+  "browserslist": "> 1%",
+  "packageManager": "pnpm@11.16.0"
 }
