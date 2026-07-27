@@ -1,51 +1,65 @@
 <div
-    id="pwa-toast"
     role="alert"
     aria-labelledby="toast-message"
+    class="toast"
 >
-    <div class="message">
-      <span id="toast-message"></span>
+    <div class="alert alert-vertical md:alert-horizontal hidden" id="pwa-toast">
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" class="stroke-current text-info h-6 w-6 shrink-0">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+      </svg>
+      <span id="toast-message">Memperbarui...</span>
+      <button id="pwa-refresh" class="btn btn-sm btn-primary hidden"><span class="italic">Reload</span></button>
+      <button id="pwa-close" class="btn btn-sm btn-ghost">Tutup</button>
     </div>
-    <button id="pwa-refresh">
-      Reload
-    </button>
-    <button id="pwa-close">
-      Close
-    </button>
 </div>
-<script src="./pwa.ts"></script>
 
-<style>
-#pwa-toast {
-  visibility: hidden;
-  position: fixed;
-  right: 0;
-  bottom: 0;
-  margin: 16px;
-  padding: 12px;
-  border: 1px solid #8885;
-  border-radius: 4px;
-  z-index: 1;
-  text-align: left;
-  box-shadow: 3px 4px 5px 0 #8885;
-}
-#pwa-toast .message {
-  margin-bottom: 8px;
-}
-#pwa-toast button {
-  border: 1px solid #8885;
-  outline: none;
-  margin-right: 5px;
-  border-radius: 2px;
-  padding: 3px 10px;
-}
-#pwa-toast.show {
-  visibility: visible;
-}
-button#pwa-refresh {
-  display: none;
-}
-#pwa-toast.show.refresh button#pwa-refresh {
-  display: inline-block;
-}
-</style>
+<script>
+/* eslint-disable @typescript-eslint/no-non-null-assertion */
+import { registerSW } from "virtual:pwa-register";
+
+window.addEventListener("load", () => {
+  const pwaToast = document.querySelector<HTMLDivElement>("#pwa-toast")!;
+  const pwaToastMessage = pwaToast.querySelector<HTMLDivElement>(
+    ".message #toast-message",
+  )!;
+  const pwaCloseBtn = pwaToast.querySelector<HTMLButtonElement>("#pwa-close")!;
+  const pwaRefreshBtn =
+    pwaToast.querySelector<HTMLButtonElement>("#pwa-refresh")!;
+
+  // eslint-disable-next-line prefer-const
+  let refreshSW: (() => Promise<void>) | undefined;
+
+  const hidePwaToast = (raf = false) => {
+    if (raf) {
+      requestAnimationFrame(() => hidePwaToast(false));
+      return;
+    }
+    pwaToast.classList.add("hidden");
+  };
+  const showPwaToast = () => {
+    requestAnimationFrame(() => {
+      hidePwaToast(false);
+      pwaToast.classList.remove("hidden");
+    });
+  };
+
+  pwaRefreshBtn.addEventListener("click", () => refreshSW?.());
+  pwaCloseBtn.addEventListener("click", () => hidePwaToast(true));
+
+  refreshSW = registerSW({
+    immediate: true,
+    onOfflineReady() {
+      pwaToastMessage.innerHTML = "Aplikasi siap digunakan secara offline";
+      showPwaToast();
+    },
+    onNeedRefresh() {
+      pwaToastMessage.innerHTML = "Versi aplikasi diperbarui, silahkan reload";
+      pwaRefreshBtn.classList.remove("hidden");
+      showPwaToast();
+    },
+    onRegisteredSW(swScriptUrl: string) {
+      console.log("SW registered: ", swScriptUrl);
+    },
+  });
+});
+</script>
