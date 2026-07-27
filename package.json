@@ -12,7 +12,7 @@
     "lint": "eslint --fix .",
     "fmt": "prettier --write --log-level error .",
     "typecheck": "tsc --noEmit",
-    "gen-logo": "sharp -i ./src/assets/logo.png -o ./public/logo.webp",
+    "gen-logo": "sharp -i ./src/assets/logo.png -o ./public/logo.webp -f webp",
     "gen-pwa": "pwa-assets-generator"
   },
   "dependencies": {
