@@ -16,6 +16,9 @@ export default defineConfig({
     react(),
     AstroPWA({
       manifest,
+      pwaAssets: {
+        config: true,
+      },
       workbox: {
         navigateFallback: "/",
         globPatterns: ["**/*.{css,js,html,svg,png,webp,ico,txt,xml}"],

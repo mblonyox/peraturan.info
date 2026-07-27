@@ -11,7 +11,9 @@
     "ci:checks": "pnpm check && pnpm typecheck && pnpm lint && pnpm fmt",
     "lint": "eslint --fix .",
     "fmt": "prettier --write --log-level error .",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "gen-logo": "sharp -i ./src/assets/logo.png -o ./public/logo.webp",
+    "gen-pwa": "pwa-assets-generator"
   },
   "dependencies": {
     "@astrojs/cloudflare": "^14.1.4",
@@ -40,6 +42,7 @@
     "@types/react-dom": "^19.2.3",
     "@typescript-eslint/parser": "^8.65.0",
     "@typescript/native": "npm:typescript@^7.0.2",
+    "@vite-pwa/assets-generator": "^1.0.2",
     "@vite-pwa/astro": "^1.2.0",
     "astro-eslint-parser": "^3.0.0",
     "daisyui": "^5.7.0",
@@ -50,6 +53,7 @@
     "eslint-plugin-prettier": "^5.5.6",
     "eslint-plugin-simple-import-sort": "^14.0.0",
     "prettier": "^3.9.6",
+    "sharp-cli": "^5.2.0",
     "tailwindcss": "^4.3.3",
     "typescript": "npm:@typescript/typescript6@^6.0.2",
     "typescript-eslint": "^8.65.0",
