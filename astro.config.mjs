@@ -20,15 +20,22 @@ export default defineConfig({
         config: true,
       },
       workbox: {
-        navigateFallback: "/",
         globPatterns: ["**/*.{css,js,html,svg,png,webp,ico,txt,xml}"],
-        navigateFallbackAllowlist: [/^\/$/],
+        navigateFallback: "/not-found",
+        navigateFallbackAllowlist: [/^\/api/, /^\/cdn-cgi/, /^\/not-found/],
+        cleanupOutdatedCaches: true,
         runtimeCaching: [
+          {
+            urlPattern: ({ url, sameOrigin }) =>
+              sameOrigin && url.pathname.endsWith("thumbnail.png"),
+            handler: "CacheFirst",
+            options: { cacheName: "thumbnail-cache" },
+          },
           {
             urlPattern: ({ url, sameOrigin, request }) =>
               sameOrigin &&
               request.mode === "navigate" &&
-              !url.pathname.match(/^\/$/),
+              !url.pathname.match(/^\/not-found/),
             handler: "NetworkFirst",
             options: {
               cacheName: "offline-ssr-pages-cache",
@@ -78,7 +85,6 @@ export default defineConfig({
       },
       devOptions: {
         enabled: true,
-        navigateFallbackAllowlist: [/^\/$/],
       },
     }),
   ],
