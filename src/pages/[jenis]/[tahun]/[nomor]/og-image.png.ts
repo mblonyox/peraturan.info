@@ -3,8 +3,7 @@ import { ImageResponse } from "cf-workers-og";
 
 import OpenGraphImage from "@/components/OpenGraphImage";
 import { BASE_URL } from "@/lib/constants";
-
-import { getPeraturanData } from "./data";
+import { getPeraturan } from "@/lib/db";
 
 interface ApiParams extends Params {
   jenis: string;
@@ -18,7 +17,7 @@ export const GET: APIRoute<Props, ApiParams> = async ({
   cache,
 }) => {
   const { jenis, tahun, nomor } = params;
-  const peraturan = await getPeraturanData(params);
+  const peraturan = await getPeraturan(params);
   if (!peraturan) return rewrite("/404");
   const url = new URL(peraturan.path, BASE_URL).href;
 

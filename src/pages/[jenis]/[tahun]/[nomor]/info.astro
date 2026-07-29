@@ -1,13 +1,13 @@
 ---
 import DetailLayout from "@/layouts/DetailLayout.astro";
+import { getPeraturan } from "@/lib/db";
 
-import { getPeraturanData } from "./data";
 
 const { jenis, tahun, nomor } = Astro.params;
 
 if (!jenis || !tahun || !nomor) return Astro.rewrite("/404");
 
-const peraturan = await getPeraturanData({ jenis, tahun, nomor });
+const peraturan = await getPeraturan({ jenis, tahun, nomor });
 
 if (!peraturan) return Astro.rewrite("/404");
 

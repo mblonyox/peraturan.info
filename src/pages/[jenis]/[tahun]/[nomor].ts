@@ -1,6 +1,6 @@
 import type { APIRoute, Params, Props } from "astro";
 
-import { getPeraturanMarkdown } from "./[nomor]/data";
+import { readOrFetch } from "@/lib/utils/data";
 
 interface ApiParams extends Params {
   jenis: string;
@@ -20,7 +20,8 @@ export const ALL: APIRoute<Props, ApiParams> = async ({
     swr: 259200,
     tags: ["peraturan", jenis, tahun, nomor],
   });
-  const md = await getPeraturanMarkdown({ jenis, tahun, nomor });
+  const path = `${jenis}/${tahun}/${nomor}/fulltext.md`;
+  const md = await readOrFetch(path, "text");
   if (!md) return rewrite("/404");
   const subPath = md ? "isi" : "info";
   return redirect(`/${jenis}/${tahun}/${nomor}/${subPath}`);

@@ -5,8 +5,7 @@ import { EnumChangefreq, type SitemapItemLoose, SitemapStream } from "sitemap";
 
 import { getListPeraturan } from "@/lib/db";
 import { createMarked, type PeraturanToken } from "@/lib/marked";
-
-import { getPeraturanMarkdown } from "./[nomor]/data";
+import { readOrFetch } from "@/lib/utils/data";
 
 interface ApiParams extends Params {
   jenis: string;
@@ -55,11 +54,8 @@ async function* generateItems(
       changefreq: EnumChangefreq.YEARLY,
       priority: 0.5,
     };
-    const md = await getPeraturanMarkdown({
-      jenis,
-      tahun,
-      nomor: p.nomor.toString(),
-    });
+    const path = `${jenis}/${tahun}/${p.nomor}/fulltext.md`;
+    const md = await readOrFetch(path, "text");
     if (md) {
       const paths = getPartialPaths(md);
       for await (const path of paths) {

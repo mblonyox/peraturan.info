@@ -1,18 +1,19 @@
 ---
 import DetailLayout from "@/layouts/DetailLayout.astro";
-
-import { getPeraturanData, getRelasiData } from "./data";
+import { getPeraturan, getRelasiPeraturan1, getRelasiPeraturan2, getSumberPeraturan, } from "@/lib/db";
 
 const { jenis, tahun, nomor } = Astro.params;
 if (!jenis || !tahun || !nomor) return Astro.rewrite("/404");
-const peraturan = await getPeraturanData({ jenis, tahun, nomor });
+const peraturan = await getPeraturan({ jenis, tahun, nomor });
 if (!peraturan) return Astro.rewrite("/404");
 
-const { sumber, relasi1, relasi2 } = await getRelasiData({
-  jenis,
+const params = {  jenis,
   tahun,
   nomor,
-});
+};
+const sumber = await getSumberPeraturan(params);
+const relasi1 = await getRelasiPeraturan1(params);
+const relasi2 = await getRelasiPeraturan2(params);
 
 const terkait = [
   {

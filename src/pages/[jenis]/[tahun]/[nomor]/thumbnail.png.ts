@@ -1,6 +1,6 @@
 import type { APIRoute, Params, Props } from "astro";
 
-import { getPeraturanThumbnail } from "./data";
+import { readOrFetch } from "@/lib/utils/data";
 
 interface PathParams extends Params {
   jenis: string;
@@ -12,7 +12,8 @@ export const GET: APIRoute<Props, PathParams> = async ({ params, cache }) => {
   const jenis = params.jenis;
   const tahun = params.tahun;
   const nomor = params.nomor;
-  const thumbnail = await getPeraturanThumbnail({ jenis, tahun, nomor });
+  const path = `${jenis}/${tahun}/${nomor}/thumbnail.png`;
+  const thumbnail = await readOrFetch(path);
   if (!thumbnail)
     return Response.json({ error: "Thumbnail not found" }, { status: 404 });
   cache.set({

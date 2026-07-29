@@ -1,15 +1,16 @@
 ---
 import PartialLayout from "@/layouts/PartialLayout.astro";
+import { getPeraturan } from "@/lib/db";
 import { createMarked, type PeraturanToken } from "@/lib/marked";
+import { readOrFetch } from "@/lib/utils/data";
 import { ellipsis } from "@/lib/utils/string";
-
-import { getPeraturanData,getPeraturanMarkdown } from "./data";
 
 const { jenis, tahun, nomor, partials } = Astro.params;
 if (!jenis || !tahun || !nomor || !partials) return Astro.rewrite("/404");
-const peraturan = await getPeraturanData({ jenis, tahun, nomor });
+const peraturan = await getPeraturan({ jenis, tahun, nomor });
 if (!peraturan) return Astro.rewrite("/404");
-const md = await getPeraturanMarkdown({ jenis, tahun, nomor });
+const path = `${jenis}/${tahun}/${nomor}/fulltext.md`;
+const md = await readOrFetch(path, "text");
 if (!md) return Astro.rewrite("/404");
 
 const marked = createMarked();
