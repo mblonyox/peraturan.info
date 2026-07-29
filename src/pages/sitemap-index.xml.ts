@@ -5,10 +5,14 @@ import { SitemapIndexStream } from "sitemap";
 
 import { getFilterByTahunCount, JENIS2_PERATURAN } from "@/lib/db";
 
-export const GET: APIRoute = async ({ site }) => {
+export const GET: APIRoute = async ({ site, cache }) => {
   const smiStream = new SitemapIndexStream();
   const stream = Readable.from(generateItems(site?.origin)).pipe(smiStream);
   const body = Readable.toWeb(stream) as ReadableStream;
+  cache.set({
+    maxAge: 31536000,
+    tags: ["sitemap"],
+  });
   return new Response(body, {
     headers: { "Content-Type": "application/xml; charset=utf-8" },
   });

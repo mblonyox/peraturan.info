@@ -13,11 +13,19 @@ interface ApiParams extends Params {
   tahun: string;
 }
 
-export const GET: APIRoute<Props, ApiParams> = async ({ params, site }) => {
+export const GET: APIRoute<Props, ApiParams> = async ({
+  params,
+  site,
+  cache,
+}) => {
   const { jenis, tahun } = params;
   const smStream = new SitemapStream({ hostname: site?.origin });
   const stream = Readable.from(generateItems(jenis, tahun)).pipe(smStream);
   const body = Readable.toWeb(stream) as ReadableStream;
+  cache.set({
+    maxAge: 31536000,
+    tags: ["peraturan", jenis, tahun, "sitemap"],
+  });
   return new Response(body, {
     headers: { "Content-Type": "application/xml; charset=utf-8" },
   });
