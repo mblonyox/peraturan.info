@@ -30,7 +30,14 @@ const eslintConfig = defineConfig([
       "simple-import-sort/exports": "error",
     },
   },
-  globalIgnores([".astro/", ".wrangler/", "dist/", "node_modules/", "public/"]),
+  globalIgnores([
+    ".astro/",
+    ".wrangler/",
+    "dev-dist",
+    "dist/",
+    "node_modules/",
+    "public/",
+  ]),
 ]);
 
 export default eslintConfig;

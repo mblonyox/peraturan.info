@@ -25,5 +25,5 @@
     ]
   },
   "include": [".astro/types.d.ts", "**/*", "./worker-configuration.d.ts"],
-  "exclude": ["dist", "public"]
+  "exclude": ["dev-dist", "dist", "public"]
 }
