@@ -1,6 +1,5 @@
+import { Icon } from "astro-iconset/react";
 import { useEffect, useState } from "react";
-
-import IconSearch from "@/components/icons/search";
 
 async function getAutocomplete(query: string): Promise<string[]> {
   const url = new URL("/api/autocomplete", document.baseURI);
@@ -35,7 +34,7 @@ export default function SearchInput() {
   return (
     <form role="search" action="/search">
       <label className="input">
-        <IconSearch />
+        <Icon name="ri:search-line" />
         <input
           name="query"
           type="search"

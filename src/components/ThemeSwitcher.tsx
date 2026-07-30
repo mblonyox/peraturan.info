@@ -1,9 +1,7 @@
+import { Icon } from "astro-iconset/react";
 import { useEffect, useState } from "react";
 
 import { themeOptions } from "@/lib/utils/theme";
-
-import IconArrowDown from "./icons/arrow-down";
-import IconPalette from "./icons/palette";
 
 export default function ThemeSwitcher() {
   const [theme, setTheme] = useState("dark");
@@ -29,9 +27,9 @@ export default function ThemeSwitcher() {
         aria-label="Switch Theme"
         className="btn m-1"
       >
-        <IconPalette />
+        <Icon name="ri:palette-line" />
         <span className="hidden lg:inline-block">Tema</span>
-        <IconArrowDown />
+        <Icon name="ri:arrow-drop-down-line" />
       </div>
       <ul
         tabIndex={0}

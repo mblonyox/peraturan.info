@@ -1,9 +1,8 @@
 ---
-import SearchInput from "@/components/SearchInput.tsx";
-import ThemeSwitcher from "@/components/ThemeSwitcher.tsx";
+import { Icon } from "astro-iconset/components";
 
-import IconArrowDown from "./icons/arrow-down";
-import IconMenu from "./icons/menu";
+import SearchInput from "@/components/SearchInput";
+import ThemeSwitcher from "@/components/ThemeSwitcher";
 
 const pathname = Astro.url.pathname;
 
@@ -28,7 +27,7 @@ const menus = [
   <div class="navbar-start">
     <details class="flex-none lg:hidden dropdown">
       <summary aria-label="Show Menu" class="btn btn-square btn-ghost">
-        <IconMenu />
+        <Icon name="ri:menu-line" />
       </summary>
       <ul
         class="menu dropdown-content bg-base-300 rounded-box z-1 p-2 shadow-2xl"
@@ -78,7 +77,7 @@ const menus = [
               <div class="dropdown dropdown-start">
                 <div tabindex="0" role="button">
                   <span class="mx-1">{text}</span>
-                  <IconArrowDown />
+                  <Icon name="ri:arrow-drop-down-line" class="inline-block" />
                 </div>
                 <ul
                   tabindex="-1"

@@ -14,8 +14,8 @@ interface Props {
 
 import "@/styles/peraturan.css";
 
-import IconListNested from "@/components/icons/list-nested";
-import IconWarning from "@/components/icons/warning";
+import { Icon } from "astro-iconset/components";
+
 import Nav from "@/components/partials/Nav.astro";
 import Outline from "@/components/partials/Outline.astro";
 import PrintButton from "@/components/partials/PrintButton";
@@ -35,7 +35,7 @@ const { peraturan, rootTokens, title, prev, next, description } = Astro.props;
     </aside>
     <div class="drawer-content">
       <div role="alert" class="alert alert-warning alert-soft">
-        <IconWarning />
+        <Icon name="ri:error-warning-line"/>
         <div>
           <h5 class="text-lg font-bold">Disclaimer</h5>
           <p>
@@ -55,7 +55,7 @@ const { peraturan, rootTokens, title, prev, next, description } = Astro.props;
       </div>
       <div class="flex justify-between my-2">
         <label for="outline" class="btn btn-outline">
-          <IconListNested />
+          <Icon name="ri:node-tree"/>
           <span class="hidden md:inline">Outline</span>
         </label>
         <span class="text-center">

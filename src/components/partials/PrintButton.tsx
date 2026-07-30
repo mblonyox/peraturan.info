@@ -1,6 +1,5 @@
+import { Icon } from "astro-iconset/react";
 import { useCallback } from "react";
-
-import IconPrinter from "@/components/icons/printer";
 
 export default function PrintButton() {
   const onClickHandler = useCallback(async () => {
@@ -18,7 +17,7 @@ export default function PrintButton() {
       onClick={onClickHandler}
       aria-label="Cetak"
     >
-      <IconPrinter />
+      <Icon name="ri:printer-line" />
       <span className="hidden md:inline">Cetak</span>
     </button>
   );

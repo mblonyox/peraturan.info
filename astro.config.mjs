@@ -4,6 +4,7 @@ import react from "@astrojs/react";
 import tailwindcss from "@tailwindcss/vite";
 import AstroPWA from "@vite-pwa/astro";
 import { defineConfig } from "astro/config";
+import icon from "astro-iconset";
 
 import manifest from "./src/assets/manifest.json";
 import { BASE_URL } from "./src/lib/constants";
@@ -14,6 +15,28 @@ export default defineConfig({
   adapter: cloudflare(),
   integrations: [
     react(),
+    icon({
+      include: {
+        bi: ["rss-fill", "rss", "filetype-json"],
+        ri: [
+          "home-line",
+          "arrow-drop-down-line",
+          "arrow-right-up-box-line",
+          "error-warning-line",
+          "filter-line",
+          "github-fill",
+          "linkedin-box-line",
+          "menu-line",
+          "node-tree",
+          "palette-line",
+          "printer-line",
+          "search-line",
+          "share-line",
+          "twitter-x-line",
+          "whatsapp-line",
+        ],
+      },
+    }),
     AstroPWA({
       manifest,
       pwaAssets: {

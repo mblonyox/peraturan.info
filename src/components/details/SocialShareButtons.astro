@@ -4,9 +4,8 @@ interface Props {
   text?: string;
 }
 
-import IconLinkedIn from "@/components/icons/linked-in";
-import IconTwitterX from "@/components/icons/twitter-x";
-import IconWhatsApp from "@/components/icons/whatsapp";
+import { Icon } from "astro-iconset/components";
+
 import { ellipsis } from "@/lib/utils/string";
 
 import WebShareButton from "./WebShareButton.astro";
@@ -26,7 +25,7 @@ const waText = ellipsis(text ?? title, 240) + " " + url;
       rel="noopener noreferrer"
       class="btn btn-block bg-[#15202b] text-neutral-content"
     >
-      <IconTwitterX />
+      <Icon name="ri:twitter-x-line" />
       Tweet
     </a>
   </div>
@@ -37,7 +36,7 @@ const waText = ellipsis(text ?? title, 240) + " " + url;
       rel="noopener noreferrer"
       class="btn btn-block bg-[#25D366] text-neutral-content"
     >
-      <IconWhatsApp />
+      <Icon name="ri:whatsapp-line" />
       WhatsApp
     </a>
   </div>
@@ -48,7 +47,7 @@ const waText = ellipsis(text ?? title, 240) + " " + url;
       rel="noopener noreferrer"
       class="btn btn-block bg-[#0e76a8] text-neutral-content"
     >
-      <IconLinkedIn />
+      <Icon name="ri:linkedin-box-line" />
       LinkedIn
     </a>
   </div>

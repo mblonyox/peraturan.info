@@ -1,7 +1,7 @@
 ---
 import { Image } from "astro:assets";
+import { Icon } from "astro-iconset/components";
 
-import IconBoxArrowUpRight from "@/components/icons/box-arrow-up-right";
 import RootLayout from "@/layouts/RootLayout.astro";
 import { getFeedListPeraturan, getPeraturan, getPopularPuu } from "@/lib/db";
 
@@ -94,7 +94,7 @@ const terpopuler = await Promise.all(
             </div>
             <a href={path} target="_blank" class="btn btn-ghost">
               Lihat
-              <IconBoxArrowUpRight />
+              <Icon name="ri:arrow-right-up-box-line" />
             </a>
           </li>
         ))
@@ -116,7 +116,7 @@ const terpopuler = await Promise.all(
             </div>
             <a href={path ?? "#"} target="_blank" class="btn btn-ghost">
               Lihat
-              <IconBoxArrowUpRight />
+              <Icon name="ri:arrow-right-up-box-line" />
             </a>
           </li>
         ))

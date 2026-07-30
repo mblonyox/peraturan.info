@@ -1,7 +1,7 @@
 ---
-import { JENIS2_PERATURAN, type JenisPeraturan, NAMA2_JENIS } from "@/lib/db";
+import { Icon } from "astro-iconset/components"
 
-import IconHouse from "./icons/house";
+import { JENIS2_PERATURAN, type JenisPeraturan, NAMA2_JENIS } from "@/lib/db";
 
 const pathname = Astro.url.pathname;
 const segments = pathname.split("/").filter(Boolean);
@@ -93,7 +93,7 @@ const hasBreadcrumbs = segments.length > 0;
             itemprop="item"
             itemtype="https://schema.org/WebPage"
           >
-            <IconHouse />
+            <Icon name="ri:home-line" />
             <span itemprop="name">Beranda</span>
           </a>
           <meta itemprop="position" content="1" />

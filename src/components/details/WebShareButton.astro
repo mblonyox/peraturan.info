@@ -1,5 +1,5 @@
 ---
-import IconShare from "@/components/icons/share";
+import { Icon } from "astro-iconset/components";
 
 const { title, description, url } = Astro.props;
 ---
@@ -12,7 +12,7 @@ const { title, description, url } = Astro.props;
   data-description={description}
   data-url={url}
 >
-  <IconShare />
+  <Icon name="ri:share-line" />
   Bagikan
 </a>
 

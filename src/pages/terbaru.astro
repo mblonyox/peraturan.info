@@ -1,9 +1,7 @@
 ---
+import { Icon } from "astro-iconset/components";
 import clsx from "clsx";
 
-import IconFileJson from "@/components/icons/file-json";
-import IconRssFill from "@/components/icons/rss-fill";
-import IconRssLine from "@/components/icons/rss-line";
 import PageHeading from "@/components/PageHeading.astro";
 import RootLayout from "@/layouts/RootLayout.astro";
 import { getListPeraturanByTanggal, getTanggalTerakhir } from "@/lib/db";
@@ -65,15 +63,15 @@ const layoutProps = {
   <div class="container">
     <div class="join join-vertical md:join-horizontal w-full my-2">
       <a href="/atom.xml" class="join-item btn link flex-1 p-2">
-        <IconRssLine />
+        <Icon name="bi:rss-fill" />
         Atom
       </a>
       <a href="/rss.xml" class="join-item btn link flex-1 p-2">
-        <IconRssFill />
+        <Icon name="bi:rss" />
         RSS 2.0
       </a>
       <a href="/feed.json" class="join-item btn link flex-1 p-2">
-        <IconFileJson />
+        <Icon name="bi:filetype-json" />
         JSON Feed
       </a>
     </div>
