@@ -2,7 +2,6 @@ import type { APIRoute, Params, Props } from "astro";
 import { ImageResponse } from "cf-workers-og";
 
 import OpenGraphImage from "@/components/OpenGraphImage";
-import { BASE_URL } from "@/lib/constants";
 import { getPeraturan } from "@/lib/db";
 
 interface ApiParams extends Params {
@@ -12,14 +11,15 @@ interface ApiParams extends Params {
 }
 
 export const GET: APIRoute<Props, ApiParams> = async ({
+  cache,
   params,
   rewrite,
-  cache,
+  site,
 }) => {
   const { jenis, tahun, nomor } = params;
   const peraturan = await getPeraturan(params);
   if (!peraturan) return rewrite("/404");
-  const url = new URL(peraturan.path, BASE_URL).href;
+  const url = new URL(peraturan.path, site?.origin).href;
 
   cache.set({
     maxAge: 31536000,

@@ -1,6 +1,5 @@
 import { Feed } from "feed";
 
-import { BASE_URL } from "@/lib/constants";
 import { getFeedListPeraturan } from "@/lib/db";
 
 const me = {
@@ -9,33 +8,33 @@ const me = {
   link: "https://mblonyox.com",
 };
 
-export async function createPeraturanFeed() {
+export async function createPeraturanFeed(origin: string) {
   const list = await getFeedListPeraturan();
   const feed = new Feed({
     title: "Peraturan.Info Feed",
     description:
       "Feed Peraturan Perundang-undangan terbaru " +
       "yang tersedia di peraturan.info.",
-    id: BASE_URL + "/",
-    link: BASE_URL,
-    image: BASE_URL + "/og-image.png",
-    favicon: BASE_URL + "/favicon.ico",
+    id: origin + "/",
+    link: origin,
+    image: origin + "/og-image.png",
+    favicon: origin + "/favicon.ico",
     copyright: "@mblonyox",
-    generator: "nodejs",
+    generator: "astrojs",
     feedLinks: {
-      atom: BASE_URL + "/atom.xml",
-      json: BASE_URL + "/feed.json",
-      rss: BASE_URL + "/rss.xml",
+      atom: origin + "/atom.xml",
+      json: origin + "/feed.json",
+      rss: origin + "/rss.xml",
     },
     author: me,
   });
   list.forEach((p) => {
     feed.addItem({
-      id: BASE_URL + p.path,
+      id: origin + p.path,
       title: p.rujukPendek,
       description: p.judul,
       content: p.rujukPanjang,
-      link: BASE_URL + p.path,
+      link: origin + p.path,
       date: p.created_at,
       author: [me],
     });
