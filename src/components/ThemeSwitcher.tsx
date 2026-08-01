@@ -29,7 +29,10 @@ export default function ThemeSwitcher() {
       >
         <Icon name="ri:palette-line" />
         <span className="hidden lg:inline-block">Tema</span>
-        <Icon name="ri:arrow-drop-down-line" />
+        <Icon
+          name="ri:arrow-drop-down-line"
+          className="hidden lg:inline-block"
+        />
       </div>
       <ul
         tabIndex={0}
