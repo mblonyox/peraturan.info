@@ -22,6 +22,7 @@ export default defineConfig({
           "home-line",
           "arrow-drop-down-line",
           "arrow-right-up-box-line",
+          "close-line",
           "error-warning-line",
           "filter-line",
           "github-fill",

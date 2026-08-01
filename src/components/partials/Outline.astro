@@ -25,11 +25,9 @@ const batangTubuh = tokens.filter(
 ---
 
 <ul class="menu w-full bg-base-200 border border-base-300 rounded-box">
-  <li>
-    <div class="flex flex-col gap-2">
-      <a href={basePath + "/judul"}>JUDUL</a>
-      <cite>{judul?.raw}</cite>
-    </div>
+  <li class="flex flex-col gap-2">
+    <a href={basePath + "/judul"}>JUDUL</a>
+    <cite>{judul?.raw}</cite>
   </li>
   <li>
     <a href={basePath + "/pembukaan"}>PEMBUKAAN</a>
@@ -49,7 +47,7 @@ const batangTubuh = tokens.filter(
                 )
                 ?.map((token) => (
                   <li>
-                    <span>{ellipsis(token.raw)}</span>
+                    <span class="text-wrap">{ellipsis(token.raw)}</span>
                   </li>
                 ))
             }
@@ -71,7 +69,7 @@ const batangTubuh = tokens.filter(
                 )
                 ?.map((token) => (
                   <li>
-                    <span>{ellipsis(token.raw)}</span>
+                    <span class="text-wrap">{ellipsis(token.raw)}</span>
                   </li>
                 ))
             }
