@@ -1,12 +1,14 @@
+---
+import { Icon } from "astro-iconset/components";
+---
+
 <div
     role="alert"
     aria-labelledby="toast-message"
     class="toast"
 >
     <div class="alert alert-vertical md:alert-horizontal hidden" id="pwa-toast">
-      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" class="stroke-current text-info h-6 w-6 shrink-0">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-      </svg>
+      <Icon name="ri:information-line" />
       <span id="toast-message">Memperbarui...</span>
       <button id="pwa-refresh" class="btn btn-sm btn-primary hidden"><span class="italic">Reload</span></button>
       <button id="pwa-close" class="btn btn-sm btn-ghost">Tutup</button>

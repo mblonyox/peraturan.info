@@ -25,6 +25,7 @@ export default defineConfig({
           "error-warning-line",
           "filter-line",
           "github-fill",
+          "information-line",
           "linkedin-box-line",
           "menu-line",
           "node-tree",

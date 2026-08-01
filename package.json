@@ -16,13 +16,13 @@
     "gen-pwa": "pwa-assets-generator"
   },
   "dependencies": {
-    "@astrojs/cloudflare": "^14.1.4",
-    "@astrojs/react": "^6.0.1",
+    "@astrojs/cloudflare": "^14.1.7",
+    "@astrojs/react": "^6.0.2",
     "@iconify-json/bi": "^1.2.7",
     "@iconify-json/ri": "^1.2.10",
     "@orama/orama": "^2.1.1",
     "@orama/plugin-data-persistence": "^2.1.1",
-    "astro": "^7.1.3",
+    "astro": "^7.1.6",
     "astro-iconset": "^0.0.6",
     "astro-seo": "^1.1.0",
     "cf-workers-og": "^3.0.1",
@@ -38,18 +38,18 @@
     "zod": "^4.4.3"
   },
   "devDependencies": {
-    "@astrojs/check": "^0.9.9",
+    "@astrojs/check": "^0.9.10",
     "@tailwindcss/postcss": "^4.3.3",
     "@tailwindcss/vite": "^4.3.3",
-    "@types/node": "^26.1.1",
-    "@types/react": "^19.2.17",
-    "@types/react-dom": "^19.2.3",
+    "@types/node": "^26.1.2",
+    "@types/react": "^19.2.18",
+    "@types/react-dom": "^19.2.4",
     "@typescript-eslint/parser": "^8.65.0",
     "@typescript/native": "npm:typescript@^7.0.2",
     "@vite-pwa/assets-generator": "^1.0.2",
     "@vite-pwa/astro": "^1.2.0",
     "astro-eslint-parser": "^3.0.0",
-    "daisyui": "^5.7.0",
+    "daisyui": "^5.7.9",
     "eslint": "^10.8.0",
     "eslint-config-prettier": "^10.1.8",
     "eslint-plugin-astro": "^3.0.1",
@@ -63,8 +63,8 @@
     "typescript-eslint": "^8.65.0",
     "vite-plugin-pwa": "^1.3.0",
     "workbox-window": "^7.4.1",
-    "wrangler": "^4.114.0"
+    "wrangler": "^4.116.0"
   },
   "browserslist": "> 1%",
-  "packageManager": "pnpm@11.16.0"
+  "packageManager": "pnpm@11.18.0"
 }
