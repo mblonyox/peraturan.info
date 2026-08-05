@@ -1,11 +1,4 @@
-import { readFile } from "node:fs/promises";
-import { join } from "node:path";
-
-import { DATA_REPO, LOCAL_DATA_PATH } from "@/lib/constants";
-
-import { parseSrc } from "./github";
-
-const repoBaseUrl = parseSrc(DATA_REPO);
+import { DATA_URL } from "@/lib/constants";
 
 export function readOrFetch(path: string): Promise<ArrayBuffer | null>;
 export function readOrFetch(
@@ -16,13 +9,7 @@ export async function readOrFetch(
   path: string,
   format?: "text" | "binary",
 ): Promise<ArrayBuffer | string | null> {
-  const localPath = join(LOCAL_DATA_PATH, path);
-  const file = await readFile(localPath).catch((error) => {
-    if (error.code === "ENOENT") return;
-    console.error(error);
-  });
-  if (file) return format === "text" ? file.toString() : file.buffer;
-  const url = new URL(path, repoBaseUrl);
+  const url = new URL(path, DATA_URL);
   const response = await fetch(url.href)
     .then((response) => {
       if (response.ok) return response;
