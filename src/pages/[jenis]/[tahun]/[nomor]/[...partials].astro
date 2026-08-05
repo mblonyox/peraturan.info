@@ -167,7 +167,10 @@ function handleBukuPartial(partials: string) {
     next: { name: string; url: string } | undefined,
     path: string | undefined;
   for (const [k, v] of Object.entries({ buku, bab, bagian, paragraf })) {
-    if (!v) continue;
+    if (!v) {
+      if (k === "buku") continue;
+      else break;
+    }
     tokens = tokens.filter((t) => t.type === k);
     token = tokens.find((t) => t.nomor?.toLowerCase().replace(" ", "-") === v);
     if (!token?.nomor) throw new PartialError("Nomor not found.");
@@ -176,24 +179,25 @@ function handleBukuPartial(partials: string) {
     if (index > 0) {
       const prevToken = tokens[index - 1];
       if (prevToken.nomor) {
+        const subPath = prevToken.nomor.toLowerCase().replace(" ", "-");
         prev = {
           name: prevToken.nomor,
-          url: `${path}/${prevToken.nomor.toLowerCase().replace(" ", "-")}`,
+          url: path ? `${path}/${subPath}` : subPath,
         };
       }
     }
     if (index < tokens.length - 1) {
       const nextToken = tokens[index + 1];
       if (nextToken.nomor) {
+        const subPath = nextToken.nomor.toLowerCase().replace(" ", "-");
         next = {
           name: nextToken.nomor,
-          url: `${path}/${nextToken.nomor.toLowerCase().replace(" ", "-")}`,
+          url: path ? `${path}/${subPath}` : subPath,
         };
       }
     }
-    path = path
-      ? `${path}/${token?.nomor?.toLowerCase().replace(" ", "-")}`
-      : token?.nomor?.toLowerCase().replace(" ", "-");
+    const subPath = token.nomor.toLowerCase().replace(" ", "-");
+    path = path ? `${path}/${subPath}` : subPath;
     tokens = token.tokens ?? [];
   }
   if (!token?.nomor) throw new PartialError("Token not found.");
