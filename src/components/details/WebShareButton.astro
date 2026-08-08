@@ -7,7 +7,7 @@ const { title, description, url } = Astro.props;
   href={`https://www.addtoany.com/share#url=${encodeURIComponent(url)}&title=${encodeURIComponent(title)}`}
   target="_blank"
   rel="noopener noreferrer"
-  class="btn btn-block btn-secondary text-neutral-content web-share-btn"
+  class="btn btn-block btn-secondary btn-sm md:btn-md lg:btn-lg text-neutral-content web-share-btn"
   data-title={title}
   data-description={description}
   data-url={url}
