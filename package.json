@@ -34,6 +34,7 @@
     "printd": "^1.6.0",
     "react": "^19.2.8",
     "react-dom": "^19.2.8",
+    "sanitize-html": "^2.17.6",
     "sitemap": "^9.0.1",
     "zod": "^4.4.3"
   },
@@ -44,6 +45,7 @@
     "@types/node": "^26.1.2",
     "@types/react": "^19.2.18",
     "@types/react-dom": "^19.2.4",
+    "@types/sanitize-html": "^2.16.1",
     "@typescript-eslint/parser": "^8.66.0",
     "@typescript/native": "npm:typescript@^7.0.2",
     "@vite-pwa/assets-generator": "^1.0.2",

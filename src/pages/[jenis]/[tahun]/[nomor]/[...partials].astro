@@ -1,9 +1,10 @@
 ---
 import type { Tokens } from "marked";
+import sanitize from "sanitize-html"
 
 import PartialLayout from "@/layouts/PartialLayout.astro";
 import { getPeraturan } from "@/lib/db";
-import { createMarked, type PeraturanToken } from "@/lib/marked";
+import { createMarked, type PeraturanToken, sanitizeOptions } from "@/lib/marked";
 import { readOrFetch } from "@/lib/utils/data";
 import { ellipsis } from "@/lib/utils/string";
 
@@ -310,6 +311,8 @@ try {
 if (!data) return Astro.rewrite("/404");
 const { html, prev, next, title, description } = data;
 
+const sanitizedHtml = sanitize(html, sanitizeOptions)
+
 Astro.cache.set({
   maxAge: 86400,
   swr: 2592000,
@@ -319,5 +322,5 @@ Astro.cache.set({
 ---
 
 <PartialLayout {...{ peraturan, title, description, rootTokens, prev, next }}>
-  <div set:html={html} />
+  <div set:html={sanitizedHtml} />
 </PartialLayout>

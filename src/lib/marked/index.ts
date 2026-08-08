@@ -4,3 +4,4 @@ import { extension, type PeraturanToken } from "./extension";
 
 export const createMarked = () => marked.use(extension);
 export type { PeraturanToken };
+export { sanitizeOptions } from "./sanitize";
