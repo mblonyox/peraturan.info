@@ -9,7 +9,7 @@ interface Props {
 }
 
 const { token, path } = Astro.props;
-const { jenis, tahun, nomor: nomorPeraturan } = Astro.params;
+const { jenis, tahun, nomor: nomorPeraturan, partials } = Astro.params;
 
 const basePath = `/${jenis}/${tahun}/${nomorPeraturan}`;
 
@@ -20,15 +20,17 @@ const subTokenFilter = (token: Token) =>
   token.type === "paragraf" ||
   token.type === "pasal" ||
   token.type === "ayat"
+const slugify = (str: string) =>
+  str
+    .toLowerCase()
+    .replaceAll(" ", "-")
+    .replaceAll(/[\(\)]/g, "")
 
 const nomor =
   (token.type === "ayat" ? "ayat " : "") +
   ("nomor" in token ? token.nomor : "");
 const judul = "judul" in token ? token.judul : nomor;
-const slug = nomor
-  .toLowerCase()
-  .replaceAll(" ", "-")
-  .replaceAll(/[\(\)]/g, "");
+const slug = slugify(nomor)
 const subPath = (token.type === "pasal" ? basePath : path) + `/${slug}`;
 const subTokens = childTokens(token).filter(subTokenFilter);
 const angkaPasalRomawi = token.type === "pasal" && 
@@ -37,7 +39,7 @@ const angkaPasalRomawi = token.type === "pasal" &&
     .flatMap((token) =>
       token.type === "butir-list"
         ? token.items as Token[]
-        : childTokens(token)
+        : []
     )
     .filter((token): token is Token & {marker: `${number}.`} => token.type === "butir-item" && /^\d+\.$/.test(token.marker))
     .map(token => ({
@@ -52,14 +54,28 @@ if (token.type === "pasal" && !subTokens.length) {
     preview = preview.split(angkaPasalRomawi[0].text)[0].trim();
   }
 } else if (token.type === "ayat") {
-  preview = token.raw.substring(token.nomor?.length ?? 0).trim()
+  preview = token.raw.substring(token.nomor.length).trim()
+}
+
+let isOpen = false;
+if (token.type == "pasal") {
+  isOpen = true;
+} else if (partials?.startsWith("pasal")) {
+  const pasalPartial = partials.split("/")[0]
+  const hasPasalSubTokens = (t: Token): boolean => {
+    const tokens = childTokens(t);
+    return tokens.some(t => t.type === "pasal" && slugify(t.nomor) === pasalPartial || hasPasalSubTokens(t))
+  }
+  isOpen = hasPasalSubTokens(token)
+} else {
+  isOpen = subPath.split("/").slice(4).every(part => partials?.split("/").includes(part))
 }
 ---
 
 <li>
   {
     subTokens.length ? (
-      <details open={token.type === "pasal"}>
+      <details open={isOpen}>
         <summary><a href={subPath} class="text-wrap">{judul}</a></summary>
         <ul>
           {subTokens.map((token) => <Astro.self token={token} path={subPath} />)}
