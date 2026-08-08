@@ -13,9 +13,13 @@ const { jenis, tahun, nomor: nomorPeraturan } = Astro.params;
 
 const basePath = `/${jenis}/${tahun}/${nomorPeraturan}`;
 
-function childTokens(token?: Token) {
-  return token && "tokens" in token ? token.tokens : undefined;
-}
+const childTokens = (token: Token) => "tokens" in token && token.tokens || [];
+const subTokenFilter = (token: Token) => 
+  token.type === "bab" ||
+  token.type === "bagian" ||
+  token.type === "paragraf" ||
+  token.type === "pasal" ||
+  token.type === "ayat"
 
 const nomor =
   (token.type === "ayat" ? "ayat " : "") +
@@ -26,40 +30,52 @@ const slug = nomor
   .replaceAll(" ", "-")
   .replaceAll(/[\(\)]/g, "");
 const subPath = (token.type === "pasal" ? basePath : path) + `/${slug}`;
-const subTokens = childTokens(token)?.filter((token) =>
-  ["bab", "bagian", "paragraf", "pasal", "ayat"].includes(token.type),
-);
-const preview =
-  token.type === "pasal" && !subTokens?.length
-    ? ellipsis(token.raw?.substring(judul.length))
-    : token.type === "ayat"
-      ? ellipsis(token.raw?.substring(token.nomor?.length ?? 0))
-      : "";
+const subTokens = childTokens(token).filter(subTokenFilter);
+const angkaPasalRomawi = token.type === "pasal" && 
+  /Pasal [MDCLXVI]+/.test(token.nomor) &&
+  childTokens(token)
+    .flatMap((token) =>
+      token.type === "butir-list"
+        ? token.items as Token[]
+        : childTokens(token)
+    )
+    .filter((token): token is Token & {marker: `${number}.`} => token.type === "butir-item" && /^\d+\.$/.test(token.marker))
+    .map(token => ({
+      href: subPath + "/angka-" + token.marker.replace(".", ""),
+      text: token.raw.split(":::", 1)[0]
+    })) ||
+  []
+let preview: string | undefined;
+if (token.type === "pasal" && !subTokens.length) {
+  preview = token.raw.substring(judul.length).trim();
+  if (angkaPasalRomawi.length) {
+    preview = preview.split(angkaPasalRomawi[0].text)[0].trim();
+  }
+} else if (token.type === "ayat") {
+  preview = token.raw.substring(token.nomor?.length ?? 0).trim()
+}
 ---
 
 <li>
   {
-    subTokens?.length ? (
+    subTokens.length ? (
       <details open={token.type === "pasal"}>
-        <summary>
-          <a href={subPath} class="text-wrap">{judul}</a>
-        </summary>
+        <summary><a href={subPath} class="text-wrap">{judul}</a></summary>
         <ul>
-          {subTokens.map((token) => (
-            <Astro.self token={token} path={subPath} />
-          ))}
+          {subTokens.map((token) => <Astro.self token={token} path={subPath} />)}
         </ul>
       </details>
     ) : (
       <div class="flex flex-col gap-2">
-        <a class="text-wrap" href={subPath}>
-          {judul}
-        </a>
-        {preview && (
-          <a href={subPath}>
-            <cite class="text-wrap">{preview}</cite>
-          </a>
-        )}
+        <a class="text-wrap" href={subPath}>{judul}</a>
+        {preview && <a href={subPath}><cite class="text-wrap">{ellipsis(preview)}</cite></a>}
+        {angkaPasalRomawi.length > 0 &&
+          <ul>
+            {angkaPasalRomawi.map(({href, text}) => (
+              <li><a href={href} class="text-wrap">{ellipsis(text)}</a></li>
+            ))}
+          </ul>
+        }
       </div>
     )
   }
