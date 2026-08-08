@@ -29,7 +29,7 @@ const rules = {
   pasalRomawi: /^(Pasal [MDCLXVI]+)\n([^]+?)(?=\nPasal [MDCLXVI]+\n|\n{3,}|$)/,
   ayat: /^(\(\d+[a-z]*\))[ \t]([^]+?)(?=\n\(\d+[a-z]*\)[ \t]|\n{3,}|$)/,
   butir: /^([ \t]{0,6})([a1][\)\.])[ \t][^\n]+?(?=\n|$)/,
-  container: /^:{3}\n([^]+?)\n:{3}(?=\n|$)/,
+  container: /^:{3}\n([^]+?)\n:{3}/,
 };
 
 const judul: TokenizerAndRendererExtension = {
@@ -390,9 +390,9 @@ const butirList: TokenizerAndRendererExtension = {
       raw: "",
       items: [] as unknown[],
     };
-    const re = new RegExp(
-      `^(${bullet})[ \\t]([^]+?)(?=${bullet}[ \\t]|\\n{3,}|$)`,
-    );
+    let itemEnd = `${bullet}[ \\t]`;
+    if (indent.length) itemEnd += `|\\n[ \\t]{0,${indent.length - 1}}[^ \\t]`;
+    const re = new RegExp(`^(${bullet})[ \\t]([^]+?)(?=${itemEnd}|\\n{3,}|$)`);
     while (src) {
       const cap = re.exec(src);
       if (!cap) break;
@@ -468,6 +468,8 @@ export const extension: MarkedExtension = {
     paragraph(src) {
       const butirStart = src.search(/\n+[ \t]{0,6}[a1][\)\.]/);
       if (butirStart >= 0) src = src.slice(0, butirStart);
+      const containerStart = src.search(/\n+:{3}\n/);
+      if (containerStart >= 0) src = src.slice(0, containerStart);
       const cap = this.rules.block.paragraph.exec(src);
       if (cap) {
         const text =
