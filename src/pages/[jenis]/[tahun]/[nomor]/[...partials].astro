@@ -1,4 +1,6 @@
 ---
+import type { Tokens } from "marked";
+
 import PartialLayout from "@/layouts/PartialLayout.astro";
 import { getPeraturan } from "@/lib/db";
 import { createMarked, type PeraturanToken } from "@/lib/marked";
@@ -154,6 +156,93 @@ function handlePasalPartial(partials: string): Data | null {
   return { html, prev, next, title, description };
 }
 
+
+function handlePasalRomawiPartial(partials: string): Data | null {
+  const re = /^(pasal-[mdclxvi]+)(?:\/angka-(\d+))?$/;
+  const match = re.exec(partials);
+  if (!match) return null;
+  const [, pasal, angka] = match;
+  const pasalTokens = getPasalTokens(rootTokens);
+  let token: Tokens.Generic | undefined,
+    title: string | undefined,
+    prev: { name: string; url: string } | undefined,
+    next: { name: string; url: string } | undefined;
+  token = pasalTokens.find((token: PeraturanToken) => {
+    const slug = token.nomor?.toLowerCase().replace(" ", "-");
+    return slug === pasal;
+  });
+  if (!token?.nomor) throw new PartialError("Pasal has no nomor.");
+  title = token.nomor;
+  {
+    const index = pasalTokens.indexOf(token);
+    if (index > 0) {
+      const prevToken = pasalTokens[index - 1];
+      if (prevToken.nomor) {
+        prev = {
+          name: prevToken.nomor,
+          url: prevToken.nomor.toLowerCase().replace(" ", "-"),
+        };
+      }
+    }
+    if (index < pasalTokens.length - 1) {
+      const nextToken = pasalTokens[index + 1];
+      if (nextToken.nomor) {
+        next = {
+          name: nextToken.nomor,
+          url: nextToken.nomor.toLowerCase().replace(" ", "-"),
+        };
+      }
+    }
+  }
+  if (angka) {
+    const pasal = token;
+    const butirs = (token.tokens ?? [])
+      .flatMap((token) =>
+        token.type === "butir-list"
+          ? token.items as Tokens.Generic[]
+          : []
+      )
+      .filter((token) => token.type === "butir-item" && /^\d+\.$/.test(token.marker))
+    token = butirs.find((token) => {
+      if (!("marker" in token)) return;
+      const nomor = token.marker.replace(".", "");
+      return nomor === angka;
+    });
+    if (!token) throw new PartialError("Angka not found.");
+    const nomor = (token.marker as string).replace(".", "")
+    title = `${pasal.nomor} angka ${nomor}`;
+    const index = butirs.indexOf(token);
+    if (index > 0) {
+      const prevToken = butirs[index - 1];
+      if (prevToken.marker) {
+        const nomor = prevToken.marker.replace(".", "")
+        prev = {
+          name: `${pasal.nomor} angka ${nomor}`,
+          url: `${pasal.nomor?.toLowerCase()?.replace(" ", "-")}/angka-${nomor}`,
+        };
+      }
+    }
+    if (index < butirs.length - 1) {
+      const nextToken = butirs[index + 1];
+      if (nextToken.marker) {
+        const nomor = nextToken.marker.replace(".", "")
+        next = {
+          name: `${pasal.nomor} angka ${nomor}`,
+          url: `${pasal.nomor?.toLowerCase().replace(" ", "-")}/angka-${nomor}`,
+        };
+      }
+    }
+    token = {
+      type: "butir-list",
+      raw: token.raw,
+      items: [token],
+    }
+  }
+  const html = marked.parser([token]);
+  const description = ellipsis(token.raw, 155);
+  return { html, prev, next, title, description };
+}
+
 function handleBukuPartial(partials: string) {
   const re =
     /^(?:(buku-\w+)\/?)?(?:(bab-[mdclxvi]+)(?:\/(bagian-\w+)(?:\/(paragraf-\d+))?)?)?$/;
@@ -212,6 +301,7 @@ try {
     handleIsi(partials) ??
     handleRootPartial(partials) ??
     handlePasalPartial(partials) ??
+    handlePasalRomawiPartial(partials) ??
     handleBukuPartial(partials);
 } catch (error) {
   if (error instanceof PartialError) return Astro.rewrite("/404");
