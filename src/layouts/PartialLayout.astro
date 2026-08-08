@@ -39,7 +39,7 @@ const { peraturan, rootTokens, title, prev, next, description } = Astro.props;
         <Outline tokens={rootTokens} />
       </div>
     </aside>
-    <div class="drawer-content">
+    <div id="scroll-container" class="drawer-content">
       <div role="alert" class="alert alert-warning alert-soft">
         <Icon name="ri:error-warning-line"/>
         <div>
@@ -71,7 +71,7 @@ const { peraturan, rootTokens, title, prev, next, description } = Astro.props;
       </div>
       <div class="flex w-full">
         <div
-          class="hidden lg:block max-w-1/4 2xl:max-w-1/5 max-h-[75vh] overflow-y-auto in-[&:has(#outline:checked)]:lg:hidden"
+          class="hidden lg:block max-w-1/4 2xl:max-w-3/8 max-h-[75vh] overflow-y-auto in-[&:has(#outline:checked)]:lg:hidden"
         >
           <Outline tokens={rootTokens} />
         </div>
@@ -81,7 +81,7 @@ const { peraturan, rootTokens, title, prev, next, description } = Astro.props;
         </div>
         <div class="flex-1 max-h-[75vh] overflow-y-auto">
           <div class="peraturan wadah">
-            <div class="kertas">
+            <div class="kertas scale-70 sm:scale-80 md:scale-90 lg:scale-100">
               <div class="isi">
                 <slot />
               </div>
@@ -92,3 +92,17 @@ const { peraturan, rootTokens, title, prev, next, description } = Astro.props;
     </div>
   </div>
 </DetailLayout>
+
+<script>
+window.addEventListener("load", () => {
+  const scrollContainer = document.querySelector("#scroll-container")
+  if (scrollContainer) {
+    scrollContainer.scrollIntoView({ behavior: "smooth", block: "start"})
+  }
+  const isi = document.querySelector(".isi")
+  if (isi) {
+    // @ts-ignore
+    isi.scrollIntoView({ behavior: "smooth", block: "start", container: "nearest"})
+  }
+})
+</script>
