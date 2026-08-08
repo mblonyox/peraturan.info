@@ -39,7 +39,7 @@ const { peraturan, rootTokens, title, prev, next, description } = Astro.props;
         <Outline tokens={rootTokens} />
       </div>
     </aside>
-    <div id="scroll-container" class="drawer-content">
+    <div class="drawer-content">
       <div role="alert" class="alert alert-warning alert-soft">
         <Icon name="ri:error-warning-line"/>
         <div>
@@ -59,7 +59,7 @@ const { peraturan, rootTokens, title, prev, next, description } = Astro.props;
           </p>
         </div>
       </div>
-      <div class="flex justify-between my-2">
+      <div class="flex justify-between my-2" id="nav-control">
         <label for="outline" class="btn btn-outline">
           <Icon name="ri:node-tree"/>
           <span class="hidden md:inline">Outline</span>
@@ -94,15 +94,24 @@ const { peraturan, rootTokens, title, prev, next, description } = Astro.props;
 </DetailLayout>
 
 <script>
-window.addEventListener("load", () => {
-  const scrollContainer = document.querySelector("#scroll-container")
-  if (scrollContainer) {
-    scrollContainer.scrollIntoView({ behavior: "smooth", block: "start"})
+window.addEventListener("load", async () => {
+  const navControl = document.querySelector("#nav-control")
+  if (navControl) {
+    await navControl.scrollIntoView({ behavior: "smooth", block: "start"})
   }
   const isi = document.querySelector(".isi")
   if (isi) {
     // @ts-ignore
-    isi.scrollIntoView({ behavior: "smooth", block: "start", container: "nearest"})
+    await isi.scrollIntoView({ behavior: "instant", inline: "center", container: "nearest" })
+    const container = isi.closest(".overflow-y-auto");
+    if (container) {
+      const containerRect = container.getBoundingClientRect();
+      const isiRect = isi.getBoundingClientRect();
+      await container.scrollTo({
+        top: isiRect.top + container.scrollTop - containerRect.top - 50,
+        behavior: "instant",
+      })
+    }
   }
 })
 </script>
