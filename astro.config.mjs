@@ -122,4 +122,5 @@ export default defineConfig({
     provider: cacheCloudflare(),
   },
   site: BASE_URL,
+  session: false,
 });
