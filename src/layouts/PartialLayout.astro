@@ -97,20 +97,20 @@ const { peraturan, rootTokens, title, prev, next, description } = Astro.props;
 window.addEventListener("load", async () => {
   const navControl = document.querySelector("#nav-control")
   if (navControl) {
-    await navControl.scrollIntoView({ behavior: "smooth", block: "start"})
+    await Promise.resolve(navControl.scrollIntoView({ behavior: "smooth", block: "start"}))
   }
   const isi = document.querySelector(".isi")
   if (isi) {
-    // @ts-ignore
-    await isi.scrollIntoView({ behavior: "instant", inline: "center", container: "nearest" })
+    // @ts-expect-error: container is not a valid option, supported in future versions
+    await Promise.resolve(isi.scrollIntoView({ behavior: "instant", inline: "center", container: "nearest" }))
     const container = isi.closest(".overflow-y-auto");
     if (container) {
       const containerRect = container.getBoundingClientRect();
       const isiRect = isi.getBoundingClientRect();
-      await container.scrollTo({
+      await Promise.resolve(container.scrollTo({
         top: isiRect.top + container.scrollTop - containerRect.top - 50,
         behavior: "instant",
-      })
+      }))
     }
   }
 })
