@@ -16,13 +16,13 @@
     "gen-pwa": "pwa-assets-generator"
   },
   "dependencies": {
-    "@astrojs/cloudflare": "^14.2.0",
+    "@astrojs/cloudflare": "^14.2.1",
     "@astrojs/react": "^6.0.2",
     "@iconify-json/bi": "^1.2.7",
     "@iconify-json/ri": "^1.2.10",
     "@orama/orama": "^2.1.1",
     "@orama/plugin-data-persistence": "^2.1.1",
-    "astro": "^7.2.0",
+    "astro": "^7.2.2",
     "astro-iconset": "^0.0.6",
     "astro-seo": "^1.1.0",
     "cf-workers-og": "^3.0.1",
@@ -34,7 +34,7 @@
     "printd": "^1.6.0",
     "react": "^19.2.8",
     "react-dom": "^19.2.8",
-    "sanitize-html": "^2.17.6",
+    "sanitize-html": "^2.17.7",
     "satori-html": "^0.3.2",
     "sitemap": "^9.0.1",
     "zod": "^4.4.3"
@@ -51,8 +51,8 @@
     "@typescript/native": "npm:typescript@^7.0.2",
     "@vite-pwa/assets-generator": "^1.0.2",
     "@vite-pwa/astro": "^1.2.0",
-    "astro-eslint-parser": "^3.0.0",
-    "daisyui": "^5.7.16",
+    "astro-eslint-parser": "^3.1.0",
+    "daisyui": "^5.7.17",
     "eslint": "^10.8.1",
     "eslint-config-prettier": "^10.1.8",
     "eslint-plugin-astro": "^3.1.0",
@@ -60,13 +60,13 @@
     "eslint-plugin-prettier": "^5.5.6",
     "eslint-plugin-simple-import-sort": "^14.0.0",
     "prettier": "^3.9.6",
-    "sharp-cli": "^5.2.0",
+    "sharp-cli": "^5.3.0",
     "tailwindcss": "^4.3.3",
     "typescript": "npm:@typescript/typescript6@^6.0.2",
     "typescript-eslint": "^8.67.0",
     "vite-plugin-pwa": "^1.3.0",
     "workbox-window": "^7.4.1",
-    "wrangler": "^4.120.1"
+    "wrangler": "^4.123.0"
   },
   "browserslist": "> 1%",
   "packageManager": "pnpm@11.18.0"
