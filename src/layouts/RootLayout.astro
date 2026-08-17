@@ -31,6 +31,8 @@ description ??=
   "dari legislation.gov.uk.";
 image ??= new URL("/og-image.png", Astro.site).href;
 imageAlt ??= "Peraturan.Info";
+
+const parsedTitle = titleTemplate.replace("%s", title ?? titleDefault);
 ---
 
 <html lang="id" class="h-full antialiased">
@@ -45,7 +47,7 @@ imageAlt ??= "Peraturan.Info";
       openGraph={{
         basic: {
           type: "website",
-          title: title ?? titleDefault,
+          title: parsedTitle,
           url: new URL(Astro.url.pathname, Astro.site).href,
           image,
         },
@@ -58,7 +60,7 @@ imageAlt ??= "Peraturan.Info";
       twitter={{
         card: "summary_large_image",
         site: "@mblonyox",
-        title,
+        title: parsedTitle,
         description,
         image,
         imageAlt
