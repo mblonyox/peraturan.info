@@ -35,6 +35,7 @@
     "react": "^19.2.8",
     "react-dom": "^19.2.8",
     "sanitize-html": "^2.17.6",
+    "satori-html": "^0.3.2",
     "sitemap": "^9.0.1",
     "zod": "^4.4.3"
   },

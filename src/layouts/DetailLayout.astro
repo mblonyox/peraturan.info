@@ -3,6 +3,8 @@ interface Props {
   title?: string;
   description?: string;
   peraturan: Peraturan;
+  image?: string;
+  imageAlt?: string;
 }
 
 import Comments from "@/components/details/Comments.astro";
@@ -31,14 +33,14 @@ const tabs = [
   },
 ];
 
-const { peraturan, title, description } = Astro.props;
+const { peraturan, title, description, image, imageAlt } = Astro.props;
 
 const layoutProps = {
   title,
   titleTemplate: `%s | ${peraturan.rujukPendek}`,
   description: description ?? peraturan.rujukPanjang,
-  image: new URL(`${peraturan.path}/og-image.png`, Astro.site).href,
-  imageAlt: peraturan.rujukPendek,
+  image: image ?? new URL(`${peraturan.path}/og-image.png`, Astro.site).href,
+  imageAlt: imageAlt ?? peraturan.rujukPendek,
 };
 ---
 

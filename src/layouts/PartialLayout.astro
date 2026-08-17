@@ -10,6 +10,8 @@ interface Props {
   description?: string;
   prev?: { name: string; url: string };
   next?: { name: string; url: string };
+  image?: string;
+  imageAlt?: string;
 }
 
 import "@/styles/peraturan.css";
@@ -22,10 +24,10 @@ import PrintButton from "@/components/partials/PrintButton";
 
 import DetailLayout from "./DetailLayout.astro";
 
-const { peraturan, rootTokens, title, prev, next, description } = Astro.props;
+const { peraturan, rootTokens, title, prev, next, description, image, imageAlt } = Astro.props;
 ---
 
-<DetailLayout peraturan={peraturan} title={title} description={description}>
+<DetailLayout peraturan={peraturan} title={title} description={description} image={image} imageAlt={imageAlt}>
   <div class="max-lg:drawer">
     <input id="outline" type="checkbox" class="drawer-toggle" hidden />
     <aside class="drawer-side lg:hidden">
