@@ -334,8 +334,8 @@ const pasal: TokenizerAndRendererExtension = {
       this.lexer.state.top = false;
       this.lexer.blockTokens(cap[2], token.tokens);
       this.lexer.state.top = top;
-      token.tokens?.forEach((token: PeraturanToken) => {
-        if (token.type === "ayat") token.nomorPasal = token.nomor;
+      token.tokens?.forEach((t: PeraturanToken) => {
+        if (t.type === "ayat") t.nomorPasal = token.nomor;
       });
       return token;
     }
