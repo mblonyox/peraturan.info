@@ -1,11 +1,10 @@
 ---
-import { search } from "@orama/orama";
 import { z } from "zod";
 
 import PageHeading from "@/components/PageHeading.astro";
 import Pagination from "@/components/Pagination.astro";
 import RootLayout from "@/layouts/RootLayout.astro";
-import { getOrama } from "@/lib/orama";
+import { createClient, type Peraturan } from "@/lib/typesense";
 import { ellipsis } from "@/lib/utils/string";
 import { $searchParams } from "@/lib/utils/validate";
 
@@ -29,23 +28,26 @@ const res = searchParamsSchema.safeParse(Astro.url.searchParams);
 if (!res.success) throw Error("Invalid search parameters");
 const { page, limit, query } = res.data;
 const offset = (page - 1) * limit;
-const index = await getOrama();
-const results = await search(index, {
-  term: query,
-  properties: ["jenis", "nomor", "judul"],
-  offset,
-  limit,
-});
-if (results.count && !results.hits.length) return Astro.rewrite("/404");
-const total = results.count;
+const client = createClient();
+const response = await client
+  .collections<Peraturan>("peraturan")
+  .documents()
+  .search({
+    q: query,
+    offset,
+    limit,
+  });
+const hits = response.hits;
+if (!hits?.length) return Astro.rewrite("/404");
+const total = response.found_docs;
 const start = offset + 1;
-const end = offset + results.hits.length;
+const end = offset + hits.length;
 const headingProps = {
   title: `Hasil Pencarian: "${ellipsis(query, averageQueryLength)}"`,
-  description: results.hits.length
+  description: hits.length
     ? `Pencarian dengan kata kunci "${query}" menampilkan urutan ${
         start === end ? start : start + " s.d. " + end
-      } dari ${total} hasil dalam ${results.elapsed.formatted}.`
+      } dari ${total} hasil dalam ${response.search_time_ms}.`
     : "Pencarian tidak menemukan hasil.",
 };
 const layoutProps = {
@@ -60,18 +62,17 @@ const paginationProps = { total, page, pageSize: limit };
   <div class="container">
     <div class="grid grid-cols-2 xl:grid-cols-3 gap-2">
       {
-        results.hits.map((hit) => (
+        hits.map((hit) => (
           <div class="card card-border shadow-sm">
             <div class="card-body">
               <p class="card-title line-clamp-3 text-xl font-bold">
-                {hit.document.judul as string}
+                {hit.document.judul}
               </p>
               <p class="font-light">
                 {hit.document.jenis} {hit.document.nomor}
               </p>
-              <p>{ellipsis(hit.document.teks as string)}</p>
               <div class="card-actions justify-end">
-                <a href={hit.document.path as string} class="btn btn-outline">
+                <a href={hit.document.path} class="btn btn-outline">
                   Buka
                 </a>
               </div>

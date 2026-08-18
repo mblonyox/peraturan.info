@@ -1,8 +1,9 @@
 import type { APIRoute } from "astro";
 
-import { MOUTHFUL_URL } from "@/lib/constants";
-
 export const ALL: APIRoute = async ({ params, request, cache }) => {
+  const MOUTHFUL_URL = process.env.MOUTHFUL_URL;
+  if (!MOUTHFUL_URL)
+    return new Response("MOUTHFUL_URL is not defined", { status: 500 });
   const { search } = new URL(request.url);
   const targetUrl = new URL(params.path ?? "", MOUTHFUL_URL);
   targetUrl.search = search;

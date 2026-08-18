@@ -2,6 +2,7 @@
   "name": "peraturan.info",
   "version": "0.1.0",
   "private": true,
+  "type": "module",
   "scripts": {
     "dev": "astro dev",
     "build": "astro build",
@@ -13,21 +14,19 @@
     "fmt": "prettier --write --log-level error .",
     "typecheck": "tsc --noEmit",
     "gen-logo": "sharp -i ./src/assets/logo.png -o ./public/logo.webp -f webp",
-    "gen-pwa": "pwa-assets-generator"
+    "gen-pwa": "pwa-assets-generator",
+    "gen-wrangler-types": "wrangler types --env-interface CloudflareEnv"
   },
   "dependencies": {
     "@astrojs/cloudflare": "^14.2.1",
     "@astrojs/react": "^6.0.2",
     "@iconify-json/bi": "^1.2.7",
     "@iconify-json/ri": "^1.2.10",
-    "@orama/orama": "^2.1.1",
-    "@orama/plugin-data-persistence": "^2.1.1",
     "astro": "^7.2.2",
     "astro-iconset": "^0.0.6",
     "astro-seo": "^1.1.0",
     "cf-workers-og": "^3.0.1",
     "clsx": "^2.1.1",
-    "dpack": "^0.6.22",
     "feed": "^6.0.0",
     "github-slugger": "^2.0.0",
     "marked": "^18.0.9",
@@ -37,6 +36,7 @@
     "sanitize-html": "^2.17.7",
     "satori-html": "^0.3.2",
     "sitemap": "^9.0.1",
+    "typesense": "^3.0.6",
     "zod": "^4.4.3"
   },
   "devDependencies": {
@@ -62,6 +62,7 @@
     "prettier": "^3.9.6",
     "sharp-cli": "^5.3.0",
     "tailwindcss": "^4.3.3",
+    "tsx": "^4.23.12",
     "typescript": "npm:@typescript/typescript6@^6.0.2",
     "typescript-eslint": "^8.67.0",
     "vite-plugin-pwa": "^1.3.0",
