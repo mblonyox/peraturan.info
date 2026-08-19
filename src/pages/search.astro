@@ -4,7 +4,7 @@ import { z } from "zod";
 import PageHeading from "@/components/PageHeading.astro";
 import Pagination from "@/components/Pagination.astro";
 import RootLayout from "@/layouts/RootLayout.astro";
-import { createClient, type Peraturan } from "@/lib/typesense";
+import { searchDocuments } from "@/lib/typesense";
 import { ellipsis } from "@/lib/utils/string";
 import { $searchParams } from "@/lib/utils/validate";
 
@@ -28,15 +28,7 @@ const res = searchParamsSchema.safeParse(Astro.url.searchParams);
 if (!res.success) throw Error("Invalid search parameters");
 const { page, limit, query } = res.data;
 const offset = (page - 1) * limit;
-const client = createClient();
-const response = await client
-  .collections<Peraturan>("peraturan")
-  .documents()
-  .search({
-    q: query,
-    offset,
-    limit,
-  });
+const response = await searchDocuments(query, offset, limit);
 const hits = response.hits;
 if (!hits?.length) return Astro.rewrite("/404");
 const total = response.found_docs;
