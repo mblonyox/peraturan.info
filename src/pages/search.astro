@@ -31,7 +31,7 @@ const offset = (page - 1) * limit;
 const response = await searchDocuments(query, offset, limit);
 const hits = response.hits;
 if (!hits?.length) return Astro.rewrite("/404");
-const total = response.found_docs;
+const total = response.found;
 const start = offset + 1;
 const end = offset + hits.length;
 const headingProps = {
@@ -39,7 +39,7 @@ const headingProps = {
   description: hits.length
     ? `Pencarian dengan kata kunci "${query}" menampilkan urutan ${
         start === end ? start : start + " s.d. " + end
-      } dari ${total} hasil dalam ${response.search_time_ms}.`
+      } dari ${total} hasil dalam ${response.search_time_ms}milidetik.`
     : "Pencarian tidak menemukan hasil.",
 };
 const layoutProps = {

@@ -41,6 +41,7 @@ export async function searchDocuments(
       offset,
       limit,
       query_by: "judul, jenis, nomor",
+      facet_by: "jenis, tahun",
     });
 }
 
