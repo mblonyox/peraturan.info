@@ -20,7 +20,7 @@
       "binding": "DATABASE",
       "database_name": "data-peraturan",
       "database_id": "c665fed0-21e8-45f9-b3e0-35dbff130803",
-      "migrations_dir": "../../migrations",
+      "migrations_dir": "./migrations",
     },
   ],
   "workers_dev": false,
