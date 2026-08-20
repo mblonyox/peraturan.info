@@ -1,4 +1,6 @@
 ---
+import { Image } from "astro:assets"
+
 import DetailLayout from "@/layouts/DetailLayout.astro";
 import { getPeraturan } from "@/lib/db";
 
@@ -101,12 +103,12 @@ Astro.cache.set({
     </div>
     <div>
       <h2 class="text-2xl mb-2">Tampilan</h2>
-      <img
-        src={path + "/thumbnail.png"}
+      <Image
+        src={new URL(path + "/thumbnail.png", Astro.site).href}
         alt={rujukPendek}
         class="rounded-box w-full h-auto"
         width={360}
-        height={0}
+        height={Infinity}
       />
     </div>
   </div>

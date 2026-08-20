@@ -79,9 +79,9 @@ const terpopuler = await Promise.all(
         terbaru.slice(0, 5).map(({ path, nomor, judul, tanggal }) => (
           <li class="list-row">
             <div>
-              <img
+              <Image
                 class="h-auto rounded-xs"
-                src={`${path}/thumbnail.png`}
+                src={new URL(path + "/thumbnail.png", Astro.site).href}
                 alt={judul}
                 width={64}
                 height={64}
