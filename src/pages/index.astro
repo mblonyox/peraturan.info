@@ -3,7 +3,8 @@ import { Image } from "astro:assets";
 import { Icon } from "astro-iconset/components";
 
 import RootLayout from "@/layouts/RootLayout.astro";
-import { getFeedListPeraturan, getPeraturan, getPopularPuu } from "@/lib/db";
+import { getTopVisitedPaths } from "@/lib/analytics";
+import { getFeedListPeraturan, getPeraturan } from "@/lib/db";
 
 Astro.cache.set({
   maxAge: 86400,
@@ -26,9 +27,12 @@ const terbaru = feedList.map((p) => ({
   nomor: p?.rujukPendek,
   judul: p?.judul,
 }));
-const results = await getPopularPuu(5);
+const results = await getTopVisitedPaths();
 const terpopuler = await Promise.all(
-  results.map(async ({ path, count }) => {
+  Object.entries(results)
+    .sort((a, b) => b[1] - a[1])
+    .slice(0, 5)
+    .map(async ([path, count]) => {
     const [jenis, tahun, nomor] = path.split("/");
     const peraturan = await getPeraturan({ jenis, tahun, nomor });
     return {
@@ -101,7 +105,7 @@ const terpopuler = await Promise.all(
       }
     </ul>
     <div class="divider lg:divider-horizontal"></div>
-    <ul class="list rounded-box bg-base-200 flex-1">
+    <ul class="list justify-between rounded-box bg-base-200 flex-1">
       <li class="p-4 pb-2 text-xl font-bold">Terpopuler</li>
       {
         terpopuler.slice(0, 5).map(({ path, nomor, judul, count }, index) => (
