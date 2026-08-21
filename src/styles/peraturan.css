@@ -85,9 +85,6 @@
   td:nth-child(2) {
     width: 5mm;
   }
-  td:nth-child(3) {
-    width: 125mm;
-  }
 
   :not(center, center > *) {
     text-align: justify;
@@ -121,5 +118,11 @@
     padding: 25mm;
     background-color: white;
     box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+  }
+}
+@media print {
+  @page {
+    size: legal;
+    margin: 25mm;
   }
 }
