@@ -30,6 +30,7 @@ const rules = {
   ayat: /^(\(\d+[a-z]*\))[ \t]([^]+?)(?=\n\(\d+[a-z]*\)[ \t]|\n{3,}|$)/,
   butir: /^([ \t]{0,6})([a1][\)\.])[ \t][^\n]+?(?=\n|$)/,
   container: /^:{3}\n([^]+?)\n:{3}/,
+  indentedBlock: /^(?:(?:&nbsp;){4}[^\n]+\n?)+/,
 };
 
 const judul: TokenizerAndRendererExtension = {
@@ -377,6 +378,9 @@ const ayat: TokenizerAndRendererExtension = {
 const butirList: TokenizerAndRendererExtension = {
   name: "butir-list",
   level: "block",
+  start(src) {
+    return src.search(/\n+[ \t]{0,6}[a1][\)\.]/);
+  },
   tokenizer(src: string) {
     const cap = rules.butir.exec(src);
     if (!cap) return;
@@ -427,6 +431,9 @@ const butirItem: RendererExtension = {
 const container: TokenizerAndRendererExtension = {
   name: "container",
   level: "block",
+  start(src) {
+    return src.search(/\n+:{3}\n/);
+  },
   tokenizer(src: string) {
     const cap = rules.container.exec(src);
     if (cap) {
@@ -442,6 +449,28 @@ const container: TokenizerAndRendererExtension = {
   renderer(token) {
     const content = this.parser.parse(token.tokens ?? []);
     return `<div class="container">${content}</div>`;
+  },
+};
+
+const indentedBlock: TokenizerAndRendererExtension = {
+  name: "indented-block",
+  level: "block",
+  tokenizer(src: string) {
+    const cap = rules.indentedBlock.exec(src);
+    if (cap) {
+      const text = cap[0].replaceAll("&nbsp;", "");
+      const item = {
+        type: "indented-block",
+        raw: cap[0],
+        tokens: [],
+      };
+      this.lexer.blockTokens(text, item.tokens);
+      return item;
+    }
+  },
+  renderer(token) {
+    const content = this.parser.parse(token.tokens ?? []);
+    return `<div class="indent">${content}</div>`;
   },
 };
 
@@ -463,41 +492,6 @@ export const extension: MarkedExtension = {
     butirList,
     butirItem,
     container,
+    indentedBlock,
   ],
-  tokenizer: {
-    paragraph(src) {
-      const butirStart = src.search(/\n+[ \t]{0,6}[a1][\)\.]/);
-      if (butirStart >= 0) src = src.slice(0, butirStart);
-      const containerStart = src.search(/\n+:{3}\n/);
-      if (containerStart >= 0) src = src.slice(0, containerStart);
-      const cap = this.rules.block.paragraph.exec(src);
-      if (cap) {
-        let text =
-          cap[1].charAt(cap[1].length - 1) === "\n"
-            ? cap[1].slice(0, -1)
-            : cap[1];
-        let className: string | undefined;
-        if (text.includes("&nbsp;&nbsp;&nbsp;&nbsp;")) {
-          className = "indent";
-          text = text.replaceAll("&nbsp;", "");
-        }
-        return {
-          type: "paragraph",
-          raw: cap[0],
-          text,
-          tokens: this.lexer.inline(text),
-          className,
-        };
-      }
-    },
-  },
-  renderer: {
-    paragraph({
-      tokens,
-      className,
-    }: Tokens.Paragraph & { className?: string }) {
-      const content = this.parser.parseInline(tokens ?? []);
-      return `<p${className ? ` class="${className}"` : ""}>${content}</p>\n`;
-    },
-  },
 };
