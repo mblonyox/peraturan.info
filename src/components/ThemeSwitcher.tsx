@@ -4,20 +4,21 @@ import { useEffect, useState } from "react";
 import { themeOptions } from "@/lib/utils/theme";
 
 export default function ThemeSwitcher() {
-  const [theme, setTheme] = useState("dark");
+  const [theme, setTheme] = useState<string>();
 
   useEffect(() => {
-    const docTheme =
-      document.documentElement.getAttribute("data-theme") || "dark";
-    setTheme(docTheme);
-  }, []);
+    if (theme) {
+      document.documentElement.setAttribute("data-theme", theme);
+      localStorage.setItem("theme", theme);
+    }
+  }, [theme]);
 
-  const changeTheme = (newTheme: string) => {
-    setTheme(newTheme);
-    document.documentElement.setAttribute("data-theme", newTheme);
-    document.cookie = `theme=${newTheme}; Max-Age=1707109200; Path=/`;
-    localStorage.setItem("theme", newTheme);
-  };
+  useEffect(() => {
+    const savedTheme = localStorage.getItem("theme");
+    if (savedTheme) {
+      setTheme(savedTheme);
+    }
+  }, []);
 
   return (
     <div className="dropdown dropdown-end">
@@ -47,7 +48,7 @@ export default function ThemeSwitcher() {
               aria-label={t.toUpperCase()}
               value={t}
               checked={theme === t}
-              onChange={() => changeTheme(t)}
+              onChange={(e) => setTheme(e.target.value)}
             />
           </li>
         ))}
