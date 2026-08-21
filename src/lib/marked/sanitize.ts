@@ -7,7 +7,13 @@ export const sanitizeOptions: IOptions = {
   },
   allowedClasses: {
     h1: ["judul"],
-    p: ["frasa-drtyme", "jabatan-pembentuk", "kata-memutuskan", "persetujuan"],
+    p: [
+      "frasa-drtyme",
+      "jabatan-pembentuk",
+      "kata-memutuskan",
+      "persetujuan",
+      "indent",
+    ],
     table: ["konsideran", "dasar-hukum", "mencabut", "menetapkan"],
     h2: ["buku"],
     h3: ["bab"],

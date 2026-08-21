@@ -472,17 +472,32 @@ export const extension: MarkedExtension = {
       if (containerStart >= 0) src = src.slice(0, containerStart);
       const cap = this.rules.block.paragraph.exec(src);
       if (cap) {
-        const text =
+        let text =
           cap[1].charAt(cap[1].length - 1) === "\n"
             ? cap[1].slice(0, -1)
             : cap[1];
+        let className: string | undefined;
+        if (text.includes("&nbsp;&nbsp;&nbsp;&nbsp;")) {
+          className = "indent";
+          text = text.replaceAll("&nbsp;", "");
+        }
         return {
           type: "paragraph",
           raw: cap[0],
           text,
           tokens: this.lexer.inline(text),
+          className,
         };
       }
+    },
+  },
+  renderer: {
+    paragraph({
+      tokens,
+      className,
+    }: Tokens.Paragraph & { className?: string }) {
+      const content = this.parser.parseInline(tokens ?? []);
+      return `<p${className ? ` class="${className}"` : ""}>${content}</p>\n`;
     },
   },
 };
