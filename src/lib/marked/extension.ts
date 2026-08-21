@@ -384,19 +384,21 @@ const butirList: TokenizerAndRendererExtension = {
   tokenizer(src: string) {
     const cap = rules.butir.exec(src);
     if (!cap) return;
-    const indent = cap[1];
+    const indent = cap[1].length;
     const marker = cap[2];
     const suffix = marker.slice(-1);
     const alphaNumeric = /\d+/.test(marker) ? "\\d+" : "[a-z]+";
-    const bullet = `${indent}${alphaNumeric}\\${suffix}`;
+    const bullet = `[ \\t]{${indent}}${alphaNumeric}\\${suffix}`;
     const list = {
       type: "butir-list",
       raw: "",
       items: [] as unknown[],
     };
-    let itemEnd = `${bullet}[ \\t]`;
-    if (indent.length) itemEnd += `|\\n[ \\t]{0,${indent.length - 1}}[^ \\t]`;
-    const re = new RegExp(`^(${bullet})[ \\t]([^]+?)(?=${itemEnd}|\\n{3,}|$)`);
+    let itemEnd = `\\n${bullet}[ \\t]`;
+    if (indent) itemEnd += `|\\n[ \\t]{0,${indent - 1}}[^ \\t]`;
+    const re = new RegExp(
+      `^\\s*?(${bullet})[ \\t]([^]+?)(?=${itemEnd}|\\n{3,}|$)`,
+    );
     while (src) {
       const cap = re.exec(src);
       if (!cap) break;
