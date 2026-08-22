@@ -1,6 +1,6 @@
 import type { APIRoute, Params, Props } from "astro";
 
-import { readOrFetch } from "@/lib/utils/data";
+import { getData } from "@/lib/utils/data";
 
 interface ApiParams extends Params {
   jenis: string;
@@ -18,10 +18,10 @@ export const ALL: APIRoute<Props, ApiParams> = async ({
   cache.set({
     maxAge: 86400,
     swr: 259200,
-    tags: ["peraturan", jenis, tahun, nomor],
+    tags: ["peraturan", `${jenis}/${tahun}/${nomor}`],
   });
   const path = `${jenis}/${tahun}/${nomor}/fulltext.md`;
-  const md = await readOrFetch(path, "text");
+  const md = await getData(path, { format: "text" });
   if (!md) return rewrite("/404");
   const subPath = md ? "isi" : "info";
   return redirect(`/${jenis}/${tahun}/${nomor}/${subPath}`);

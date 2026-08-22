@@ -73,7 +73,7 @@ const startIndex = (page - 1) * pageSize + 1;
 Astro.cache.set({
   maxAge: 2592000,
   swr: 31536000,
-  tags: ["peraturan", jenis ?? "jenis-all", tahun ?? "tahun-all", "list"],
+  tags: ["peraturan", `jenis-${jenis ?? "all"}`, `tahun-${tahun ?? "all"}`],
 });
 ---
 

@@ -5,7 +5,7 @@ import { EnumChangefreq, type SitemapItemLoose, SitemapStream } from "sitemap";
 
 import { getListPeraturan } from "@/lib/db";
 import { createMarked, type PeraturanToken } from "@/lib/marked";
-import { readOrFetch } from "@/lib/utils/data";
+import { getData } from "@/lib/utils/data";
 
 interface ApiParams extends Params {
   jenis: string;
@@ -23,7 +23,7 @@ export const GET: APIRoute<Props, ApiParams> = async ({
   const body = Readable.toWeb(stream) as ReadableStream;
   cache.set({
     maxAge: 31536000,
-    tags: ["peraturan", jenis, tahun, "sitemap"],
+    tags: ["peraturan", `jenis-${jenis}`, `tahun-${tahun}`, "sitemap"],
   });
   return new Response(body, {
     headers: { "Content-Type": "application/xml; charset=utf-8" },
@@ -55,7 +55,7 @@ async function* generateItems(
       priority: 0.5,
     };
     const path = `${jenis}/${tahun}/${p.nomor}/fulltext.md`;
-    const md = await readOrFetch(path, "text");
+    const md = await getData(path, { format: "text" });
     if (md) {
       const paths = getPartialPaths(md);
       for await (const path of paths) {

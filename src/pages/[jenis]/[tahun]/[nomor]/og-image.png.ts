@@ -23,7 +23,7 @@ export const GET: APIRoute<Props, ApiParams> = async ({
 
   cache.set({
     maxAge: 31536000,
-    tags: ["peraturan", jenis, tahun, nomor, "og-image"],
+    tags: ["peraturan", `${jenis}/${tahun}/${nomor}`],
   });
 
   return ImageResponse.create(

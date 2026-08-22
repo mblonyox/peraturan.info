@@ -4,7 +4,7 @@ import { ImageResponse } from "cf-workers-og";
 import PartialsOgImage from "@/components/partials/OgImage";
 import { getPeraturan } from "@/lib/db";
 import { createMarked, type PeraturanToken } from "@/lib/marked";
-import { readOrFetch } from "@/lib/utils/data";
+import { getData } from "@/lib/utils/data";
 import { handlerPartials } from "@/lib/utils/partials";
 
 interface ApiParams extends Params {
@@ -24,7 +24,7 @@ export const GET: APIRoute<Props, ApiParams> = async ({
   const peraturan = await getPeraturan({ jenis, tahun, nomor });
   if (!peraturan) return rewrite("/404");
   const path = `${jenis}/${tahun}/${nomor}/fulltext.md`;
-  const md = await readOrFetch(path, "text");
+  const md = await getData(path, { format: "text" });
   if (!md) return rewrite("/404");
   const marked = createMarked();
   const rootTokens = marked.lexer(md) as PeraturanToken[];
@@ -35,7 +35,7 @@ export const GET: APIRoute<Props, ApiParams> = async ({
 
   cache.set({
     maxAge: 31536000,
-    tags: ["peraturan", jenis, tahun, nomor, "og-image"],
+    tags: ["peraturan", `${jenis}/${tahun}/${nomor}`],
   });
 
   return ImageResponse.create(

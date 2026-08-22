@@ -1,16 +1,21 @@
 import { DATA_URL } from "@/lib/constants";
 
-export function readOrFetch(path: string): Promise<ArrayBuffer | null>;
-export function readOrFetch(
+interface Options {
+  format?: "text" | "binary";
+  cache?: RequestCache;
+}
+
+export function getData(
   path: string,
-  format: "text",
+  options: { format: "text"; cache?: RequestCache },
 ): Promise<string | null>;
-export async function readOrFetch(
+export function getData(
   path: string,
-  format?: "text" | "binary",
-): Promise<ArrayBuffer | string | null> {
+  options?: { format?: "binary"; cache?: RequestCache },
+): Promise<ArrayBuffer | null>;
+export async function getData(path: string, options?: Options) {
   const url = new URL(path, DATA_URL);
-  const response = await fetch(url.href)
+  const response = await fetch(url.href, { cache: options?.cache })
     .then((response) => {
       if (response.ok) return response;
       if (response.status === 404) return;
@@ -18,6 +23,8 @@ export async function readOrFetch(
     })
     .catch((error) => console.error(error));
   if (response)
-    return format === "text" ? response.text() : response.arrayBuffer();
+    return options?.format === "text"
+      ? response.text()
+      : response.arrayBuffer();
   return null;
 }

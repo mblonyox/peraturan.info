@@ -28,7 +28,7 @@ const {
 Astro.cache.set({
   maxAge: 2592000,
   swr: 31536000,
-  tags: ["peraturan", jenis, tahun, nomor],
+  tags: ["peraturan", `${jenis}/${tahun}/${nomor}`],
 });
 
 ---

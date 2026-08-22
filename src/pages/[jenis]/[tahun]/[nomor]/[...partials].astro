@@ -5,7 +5,7 @@ import sanitize from "sanitize-html"
 import PartialLayout from "@/layouts/PartialLayout.astro";
 import { getPeraturan } from "@/lib/db";
 import { createMarked, type PeraturanToken, sanitizeOptions } from "@/lib/marked";
-import { readOrFetch } from "@/lib/utils/data";
+import { getData } from "@/lib/utils/data";
 import { handlerPartials } from "@/lib/utils/partials";
 
 interface RouteParams extends Params {
@@ -19,7 +19,7 @@ const { jenis, tahun, nomor, partials } = Astro.params as RouteParams;
 const peraturan = await getPeraturan({ jenis, tahun, nomor });
 if (!peraturan) return Astro.rewrite("/404");
 const path = `${jenis}/${tahun}/${nomor}/fulltext.md`;
-const md = await readOrFetch(path, "text");
+const md = await getData(path, { format: "text" });
 if (!md) return Astro.rewrite("/404");
 const marked = createMarked();
 const rootTokens = marked.lexer(md) as PeraturanToken[];
@@ -35,7 +35,7 @@ const imageAlt = `${partials}-${peraturan.rujukPendek}`;
 Astro.cache.set({
   maxAge: 86400,
   swr: 2592000,
-  tags: ["peraturan", jenis, tahun, nomor, partials],
+  tags: ["peraturan", `${jenis}/${tahun}/${nomor}`],
 });
 
 ---

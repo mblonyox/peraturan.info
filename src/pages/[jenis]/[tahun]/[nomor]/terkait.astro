@@ -59,7 +59,7 @@ const description = `Peraturan Terkait (Sumber dokumen dan tautan ke peraturan l
 Astro.cache.set({
   maxAge: 2592000,
   swr: 31536000,
-  tags: ["peraturan", jenis, tahun, nomor, "terkait"],
+  tags: ["peraturan", `${jenis}/${tahun}/${nomor}`],
 });
 
 ---
