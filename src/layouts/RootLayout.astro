@@ -3,6 +3,7 @@ export type Props = SEOProps & { image?: string; imageAlt?: string };
 
 import "@/styles/globals.css";
 
+import { ClientRouter } from "astro:transitions"
 import { SEO, type SEOProps } from "astro-seo";
 import { pwaAssetsHead } from 'virtual:pwa-assets/head';
 import { pwaInfo } from 'virtual:pwa-info';
@@ -102,6 +103,7 @@ const parsedTitle = titleTemplate.replace("%s", title ?? titleDefault);
         <link {...link} />
     )) }
     { pwaInfo && <Fragment set:html={pwaInfo.webManifest.linkTag} /> }
+    <ClientRouter />
   </head>
   <body class="min-h-screen flex flex-col justify-between">
     <Navbar />

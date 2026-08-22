@@ -96,8 +96,21 @@ const { peraturan, rootTokens, title, prev, next, description, image, imageAlt }
 </DetailLayout>
 
 <script>
-window.addEventListener("load", async () => {
-  const navControl = document.querySelector("#nav-control")
+let currentScrollY: number, currentScrollX: number;
+
+document.addEventListener('astro:after-preparation', () => {
+  currentScrollY = window.scrollY;
+  currentScrollX = window.scrollX;
+});
+
+document.addEventListener("astro:after-swap", () => {
+  if (typeof currentScrollX !== 'undefined' && typeof currentScrollY !== 'undefined') {
+    window.scrollTo(currentScrollX, currentScrollY);
+  }
+});
+
+document.addEventListener("astro:page-load", async () => {
+ const navControl = document.querySelector("#nav-control")
   if (navControl) {
     await Promise.resolve(navControl.scrollIntoView({ behavior: "smooth", block: "start"}))
   }

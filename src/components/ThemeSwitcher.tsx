@@ -4,21 +4,17 @@ import { useEffect, useState } from "react";
 import { themeOptions } from "@/lib/utils/theme";
 
 export default function ThemeSwitcher() {
-  const [theme, setTheme] = useState<string>();
+  const [theme, setTheme] = useState<string | null>(null);
 
   useEffect(() => {
-    if (theme) {
-      document.documentElement.setAttribute("data-theme", theme);
-      localStorage.setItem("theme", theme);
-    }
-  }, [theme]);
-
-  useEffect(() => {
-    const savedTheme = localStorage.getItem("theme");
-    if (savedTheme) {
-      setTheme(savedTheme);
-    }
+    if (typeof localStorage !== "undefined")
+      setTheme(localStorage.getItem("theme"));
   }, []);
+
+  useEffect(() => {
+    if (theme && typeof localStorage !== "undefined")
+      localStorage.setItem("theme", theme);
+  }, [theme]);
 
   return (
     <div className="dropdown dropdown-end">
@@ -44,7 +40,7 @@ export default function ThemeSwitcher() {
             <input
               type="radio"
               name="theme-dropdown"
-              className="btn btn-sm btn-block btn-ghost justify-start"
+              className="btn btn-sm btn-block btn-ghost justify-start theme-controller"
               aria-label={t.toUpperCase()}
               value={t}
               checked={theme === t}
