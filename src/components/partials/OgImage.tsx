@@ -2,6 +2,7 @@ import { html } from "satori-html";
 
 import logoBase64 from "@/assets/logo.png?inline";
 import { createMarked, type PeraturanToken } from "@/lib/marked";
+import { ellipsis } from "@/lib/utils/string";
 
 interface Props {
   title: string;
@@ -10,6 +11,14 @@ interface Props {
 }
 
 type VNode = ReturnType<typeof html>;
+
+function queryByTypes(vnode: VNode, types: string[]): VNode[] {
+  if (types.includes(vnode.type)) return [vnode];
+  return [vnode.props.children]
+    .flat()
+    .filter((v): v is VNode => typeof v === "object")
+    .flatMap((child) => queryByTypes(child, types));
+}
 
 const centerClassName = [
   "judul",
@@ -25,10 +34,70 @@ const centerClassName = [
 ];
 
 function normalizeCenter(vnode: VNode) {
-  vnode.props.style ??= {};
-  if (vnode.props.class && centerClassName.includes(vnode.props.class)) {
+  if (centerClassName.includes(vnode.props.class)) {
+    vnode.props.style ??= {};
     vnode.props.style.alignItems = "center";
   }
+}
+
+function normalizeTable(vnode: VNode) {
+  if (vnode.type !== "table") return;
+  const trs = queryByTypes(vnode, ["tr"]);
+  trs.forEach((tr) => {
+    tr.props.style ??= {};
+    tr.props.style.borderWidth = "1px";
+    tr.props.style.display = "flex";
+    tr.props.style.flexDirection = "row";
+    tr.props.style.justifyContent = "space-between";
+    const columns = queryByTypes(tr, ["td", "th"]);
+    const lastColumn = columns.at(-1);
+    if (lastColumn) {
+      lastColumn.props.style ??= {};
+      lastColumn.props.style.width = "85%";
+    }
+  });
+}
+
+function normalizeAyat(vnode: VNode) {
+  if (vnode.props.class !== "ayat") return;
+  vnode.props.style ??= {};
+  vnode.props.style.display = "flex";
+  vnode.props.style.flexDirection = "row";
+  vnode.props.style.gap = 7;
+  const children = vnode.props.children;
+  if (!children || !Array.isArray(children)) return;
+  const [lead, ...rest] = children;
+  vnode.props.children = [
+    lead,
+    {
+      type: "div",
+      props: {
+        children: rest,
+        style: { width: "95%", display: "flex", flexDirection: "column" },
+      },
+    },
+  ];
+}
+
+function normalizeMarker(vnode: VNode) {
+  const marker = vnode.props["data-marker"];
+  if (!marker) return;
+  vnode.props.style ??= {};
+  vnode.props.style.display = "flex";
+  vnode.props.style.flexDirection = "row";
+  vnode.props.style.gap = 7;
+  const children = [vnode.props.children].flat();
+  vnode.props.children = [
+    marker,
+    {
+      type: "div",
+      props: {
+        children,
+        style: { width: "95%", display: "flex", flexDirection: "column" },
+      },
+    },
+  ];
+  delete vnode.props["data-marker"];
 }
 
 function normalizeParagraph(vnode: VNode) {
@@ -38,53 +107,40 @@ function normalizeParagraph(vnode: VNode) {
   vnode.props.style.marginBottom = 0;
 }
 
-function normalizeMarker(vnode: VNode) {
-  const marker = vnode.props["data-marker"];
-  if (marker) {
-    vnode.props.style ??= {};
-    vnode.props.style.display = "flex";
-    vnode.props.style.flexDirection = "row";
-    const children = vnode.props.children;
-    if (!children) return;
-    if (Array.isArray(children)) {
-      children.unshift(marker);
-    } else if (typeof children === "string") {
-      vnode.props.children = [
-        marker,
-        normalizeVNode({ type: "p", props: { children } }),
-      ];
-    } else {
-      vnode.props.children = [marker, children];
-    }
-  }
-}
-
-function normalizeVNode(vnode: VNode) {
-  if (typeof vnode === "string") return vnode;
+function normalizeContainer(vnode: VNode) {
+  const children = vnode.props.children;
+  if (!children) return;
   vnode.props.style ??= {};
-  vnode.props.style.fontSize = 18;
+
+  // Use to debug
   // vnode.props.style.borderWidth = "1px";
   // vnode.props.style.borderColor = "red";
+
+  // All texts inside peraturan is 18
+  vnode.props.style.fontSize = 18;
+  if (!Array.isArray(children)) return;
+  vnode.props.style.display = "flex";
+  vnode.props.style.flexDirection = "column";
+  // vnode.props.style.alignItems = "flex-start";
+  // vnode.props.style.justifyContent = "flex-start";
+}
+
+function normalizeVNode(vnode: VNode | string) {
+  if (typeof vnode === "string")
+    return ellipsis(vnode, 500) as unknown as VNode;
+
+  // Normalize children
   const children = vnode.props.children;
-  if (Array.isArray(children)) {
-    vnode.props.children = children.slice(0, 10).map(normalizeVNode);
-    vnode.props.style.display = "flex";
-    vnode.props.style.flexDirection = "column";
-    vnode.props.style.alignItems = "flex-start";
-    vnode.props.style.justifyContent = "flex-start";
-    if (vnode.type === "tr") {
-      vnode.props.style.flexDirection = "row";
-      vnode.props.style.justifyContent = "flex-start";
-      const lastColumn = vnode.props.children.at(-1);
-      if (lastColumn) {
-        lastColumn.props.style ??= {};
-        lastColumn.props.style.width = "85%";
-      }
-    }
-  }
+  if (Array.isArray(children))
+    vnode.props.children = children.slice(0, 5).map(normalizeVNode);
+  else if (children) vnode.props.children = normalizeVNode(children);
+
+  normalizeContainer(vnode);
+  normalizeCenter(vnode);
+  normalizeAyat(vnode);
   normalizeMarker(vnode);
   normalizeParagraph(vnode);
-  normalizeCenter(vnode);
+  normalizeTable(vnode);
   return vnode;
 }
 
