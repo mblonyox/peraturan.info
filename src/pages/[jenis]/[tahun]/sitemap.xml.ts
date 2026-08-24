@@ -87,16 +87,16 @@ async function* getPartialPaths(md: string): AsyncGenerator<string> {
 function* getSubPaths(tokens: PeraturanToken[], path = ""): Generator<string> {
   for (const token of tokens) {
     if (["buku", "bab", "bagian", "paragraf"].includes(token.type)) {
-      path += "/" + token.nomor?.toLowerCase().replace(" ", "-");
-      yield path;
+      const subPath = path + "/" + token.nomor?.toLowerCase().replace(" ", "-");
+      yield subPath;
       const tokens = token.tokens ?? [];
-      yield* getSubPaths(tokens, path);
+      yield* getSubPaths(tokens, subPath);
     }
     if (token.type === "pasal") {
-      path = "/" + token.nomor?.toLowerCase().replace(" ", "-");
-      yield path;
+      const subPath = "/" + token.nomor?.toLowerCase().replace(" ", "-");
+      yield subPath;
       const tokens = token.tokens ?? [];
-      yield* getSubPaths(tokens, path);
+      yield* getSubPaths(tokens, subPath);
     }
     if (token.type === "ayat") {
       const nomorAyat = token.nomor?.toLowerCase().replaceAll(/[\(\)]/g, "");
