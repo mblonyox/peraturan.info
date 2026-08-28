@@ -22,6 +22,7 @@
     "@astrojs/react": "^6.0.4",
     "@iconify-json/bi": "^1.2.7",
     "@iconify-json/ri": "^1.2.10",
+    "@mjackson/headers": "^0.11.1",
     "astro": "^7.2.8",
     "astro-iconset": "^0.0.6",
     "astro-seo": "^1.1.0",

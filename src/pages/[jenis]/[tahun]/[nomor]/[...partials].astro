@@ -1,4 +1,5 @@
 ---
+import { SuperHeaders } from "@mjackson/headers"
 import type { Params } from "astro";
 import sanitize from "sanitize-html"
 
@@ -27,6 +28,14 @@ const rootTokens = marked.lexer(md) as PeraturanToken[];
 const data = handlerPartials(partials, rootTokens)
 if (!data) return Astro.rewrite("/404");
 const { tokens, prev, next, title, description } = data;
+if (new SuperHeaders(Astro.request.headers).accept.getPreferred(["text/markdown", "text/html"]) === "text/markdown") {
+  return new Response(tokens.map((token) => token.raw).join("\n"), {
+    headers: {
+      "Content-Type": "text/markdown; charset=utf-8",
+      "Vary": "Accept",
+    },
+  });
+}
 const html = marked.parser(tokens);
 const sanitizedHtml = sanitize(html, sanitizeOptions)
 
@@ -37,6 +46,7 @@ Astro.cache.set({
   maxAge: YEAR,
   tags: ["peraturan", `${jenis}/${tahun}/${nomor}`],
 });
+Astro.response.headers.set("Vary", "Accept")
 
 ---
 
