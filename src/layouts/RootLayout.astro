@@ -16,7 +16,14 @@ import PromptUpdate from "@/components/PromptUpdate.astro";
 
 const sh = new SuperHeaders(Astro.request.headers);
 if (!sh.accept.accepts("text/html") && !sh.accept.accepts("application/xhtml+xml")) {
-  return new Response(null, { status: 406, headers: { "Vary": "Accept" } });
+  return new Response("Invalid requested Content-Type.", {
+    status: 406,
+    headers: {
+      "Cache-Control": "no-cache",
+      "Content-Type": "text/plain; charset=utf-8",
+      "Vary": "Accept",
+    },
+  });
 }
 
 let {
