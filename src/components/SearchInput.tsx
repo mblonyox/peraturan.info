@@ -17,6 +17,18 @@ export default function SearchInput() {
     if (typeof window !== "undefined") {
       const searchParams = new URLSearchParams(window.location.search);
       setQuery(searchParams.get("query") ?? "");
+
+      const handleKeydown = (event: KeyboardEvent) => {
+        if (event.metaKey && event.key === "k") {
+          event.preventDefault();
+          const input = document.querySelector(
+            "input[type='search']",
+          ) as HTMLInputElement;
+          if (input) input.focus();
+        }
+      };
+      document.addEventListener("keydown", handleKeydown);
+      return () => document.removeEventListener("keydown", handleKeydown);
     }
   }, []);
 
