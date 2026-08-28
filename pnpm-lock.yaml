@@ -32,6 +32,9 @@ importers:
       astro-seo:
         specifier: ^1.1.0
         version: 1.1.0(@typescript/typescript6@6.0.2)(prettier@3.9.6)
+      axios:
+        specifier: ^1.20.0
+        version: 1.20.0(debug@4.4.3(supports-color@10.2.2))(supports-color@10.2.2)
       cf-workers-og:
         specifier: ^3.0.1
         version: 3.0.1(react@19.2.8)

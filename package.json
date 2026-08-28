@@ -25,6 +25,7 @@
     "astro": "^7.2.8",
     "astro-iconset": "^0.0.6",
     "astro-seo": "^1.1.0",
+    "axios": "^1.20.0",
     "cf-workers-og": "^3.0.1",
     "clsx": "^2.1.1",
     "feed": "^6.0.0",

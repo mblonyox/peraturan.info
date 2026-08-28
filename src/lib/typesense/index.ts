@@ -1,3 +1,4 @@
+import { AxiosError } from "axios";
 import { env } from "cloudflare:workers";
 import { Client } from "typesense";
 import { z } from "zod";
@@ -11,7 +12,49 @@ import {
 export const client = new Client({
   apiKey: env.TYPESENSE_API_KEY,
   nodes: [{ url: env.TYPESENSE_URL }],
-  axiosAdapter: "fetch",
+  axiosAdapter: (config) =>
+    new Promise((resolve, reject) => {
+      fetch(config.url ?? "", {
+        method: config.method?.toUpperCase() ?? "GET",
+        headers: (config.headers?.toJSON() ?? {}) as HeadersInit,
+        body: config.data,
+        signal: config.signal as AbortSignal,
+      })
+        .then(async (fetchResponse) => {
+          const responseData = await fetchResponse.text();
+
+          const response = {
+            data: responseData,
+            status: fetchResponse.status,
+            statusText: fetchResponse.statusText,
+            headers: Object.fromEntries(fetchResponse.headers.entries()),
+            config,
+            request: null,
+          };
+          const validateStatus = response.config.validateStatus;
+          if (
+            !response.status ||
+            !validateStatus ||
+            validateStatus(response.status)
+          ) {
+            resolve(response);
+          } else {
+            reject(
+              new AxiosError(
+                "Request failed with status code " + response.status,
+                response.status >= 400 && response.status < 500
+                  ? AxiosError.ERR_BAD_REQUEST
+                  : AxiosError.ERR_BAD_RESPONSE,
+                response.config,
+                response.request,
+                response,
+              ),
+            );
+          }
+        })
+        .catch(reject);
+    }),
+  useServerSideSearchCache: true,
 });
 
 export async function createCollection() {
