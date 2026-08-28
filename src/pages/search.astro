@@ -4,13 +4,14 @@ import { z } from "zod";
 import PageHeading from "@/components/PageHeading.astro";
 import Pagination from "@/components/Pagination.astro";
 import RootLayout from "@/layouts/RootLayout.astro";
+import { DAY, WEEK } from "@/lib/constants";
 import { searchDocuments } from "@/lib/typesense";
 import { ellipsis } from "@/lib/utils/string";
 import { $searchParams } from "@/lib/utils/validate";
 
 Astro.cache.set({
-  maxAge: 3600,
-  swr: 86400,
+  maxAge: DAY,
+  swr: WEEK,
   tags: ["search"]
 });
 

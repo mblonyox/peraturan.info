@@ -4,11 +4,12 @@ import clsx from "clsx";
 
 import PageHeading from "@/components/PageHeading.astro";
 import RootLayout from "@/layouts/RootLayout.astro";
+import { DAY, WEEK } from "@/lib/constants";
 import { getListPeraturanByTanggal, getTanggalTerakhir } from "@/lib/db";
 
 Astro.cache.set({
-  maxAge: 86400,
-  swr: 604800,
+  maxAge: DAY,
+  swr: WEEK,
   tags: ["terbaru"],
 });
 

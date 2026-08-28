@@ -2,6 +2,7 @@ import type { APIRoute, Params, Props } from "astro";
 import { ImageResponse } from "cf-workers-og";
 
 import OpenGraphImage from "@/components/OpenGraphImage";
+import { YEAR } from "@/lib/constants";
 import { getPeraturan } from "@/lib/db";
 
 interface ApiParams extends Params {
@@ -22,7 +23,7 @@ export const GET: APIRoute<Props, ApiParams> = async ({
   const url = new URL(peraturan.path, site?.origin).href;
 
   cache.set({
-    maxAge: 31536000,
+    maxAge: YEAR,
     tags: ["peraturan", `${jenis}/${tahun}/${nomor}`],
   });
 

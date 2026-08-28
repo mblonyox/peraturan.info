@@ -1,5 +1,6 @@
 import type { APIRoute, Params, Props } from "astro";
 
+import { YEAR } from "@/lib/constants";
 import { getData } from "@/lib/utils/data";
 
 interface ApiParams extends Params {
@@ -16,8 +17,7 @@ export const ALL: APIRoute<Props, ApiParams> = async ({
 }) => {
   const { jenis, tahun, nomor } = params;
   cache.set({
-    maxAge: 86400,
-    swr: 259200,
+    maxAge: YEAR,
     tags: ["peraturan", `${jenis}/${tahun}/${nomor}`],
   });
   const path = `${jenis}/${tahun}/${nomor}/fulltext.md`;

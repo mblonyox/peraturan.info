@@ -2,6 +2,7 @@ import type { APIRoute, Params, Props } from "astro";
 import { ImageResponse } from "cf-workers-og";
 
 import PartialsOgImage from "@/components/partials/OgImage";
+import { YEAR } from "@/lib/constants";
 import { getPeraturan } from "@/lib/db";
 import { createMarked, type PeraturanToken } from "@/lib/marked";
 import { getData } from "@/lib/utils/data";
@@ -34,7 +35,7 @@ export const GET: APIRoute<Props, ApiParams> = async ({
   const url = new URL(peraturan.path + "/" + partials, site?.origin).href;
 
   cache.set({
-    maxAge: 31536000,
+    maxAge: YEAR,
     tags: ["peraturan", `${jenis}/${tahun}/${nomor}`],
   });
 

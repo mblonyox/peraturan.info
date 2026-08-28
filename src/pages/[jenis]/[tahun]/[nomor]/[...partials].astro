@@ -3,6 +3,7 @@ import type { Params } from "astro";
 import sanitize from "sanitize-html"
 
 import PartialLayout from "@/layouts/PartialLayout.astro";
+import { YEAR } from "@/lib/constants";
 import { getPeraturan } from "@/lib/db";
 import { createMarked, type PeraturanToken, sanitizeOptions } from "@/lib/marked";
 import { getData } from "@/lib/utils/data";
@@ -33,8 +34,7 @@ const image = new URL(`${peraturan.path}/${partials}/og-image.png`, Astro.site).
 const imageAlt = `${partials}-${peraturan.rujukPendek}`;
 
 Astro.cache.set({
-  maxAge: 86400,
-  swr: 2592000,
+  maxAge: YEAR,
   tags: ["peraturan", `${jenis}/${tahun}/${nomor}`],
 });
 

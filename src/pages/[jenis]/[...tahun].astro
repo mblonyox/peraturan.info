@@ -7,6 +7,7 @@ import FilterByTahun from "@/components/lists/FilterByTahun.astro";
 import PageHeading from "@/components/PageHeading.astro";
 import Pagination from "@/components/Pagination.astro";
 import RootLayout from "@/layouts/RootLayout.astro";
+import { YEAR } from "@/lib/constants";
 import {
   getFilterByJenisCount,
   getFilterByTahunCount,
@@ -71,8 +72,7 @@ const paginationProps = { total, page, pageSize };
 const startIndex = (page - 1) * pageSize + 1;
 
 Astro.cache.set({
-  maxAge: 2592000,
-  swr: 31536000,
+  maxAge: YEAR,
   tags: ["peraturan", `jenis-${jenis ?? "all"}`, `tahun-${tahun ?? "all"}`],
 });
 ---

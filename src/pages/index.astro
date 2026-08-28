@@ -4,11 +4,11 @@ import { Icon } from "astro-iconset/components";
 
 import RootLayout from "@/layouts/RootLayout.astro";
 import { getTopVisitedPaths } from "@/lib/analytics";
+import { DAY } from "@/lib/constants";
 import { getFeedListPeraturan, getPeraturan } from "@/lib/db";
 
 Astro.cache.set({
-  maxAge: 86400,
-  swr: 604800,
+  maxAge: DAY,
   tags: ["home"]
 })
 

@@ -3,6 +3,7 @@ import { Readable } from "node:stream";
 import type { APIRoute } from "astro";
 import { SitemapIndexStream } from "sitemap";
 
+import { YEAR } from "@/lib/constants";
 import { getFilterByTahunCount, JENIS2_PERATURAN } from "@/lib/db";
 
 export const GET: APIRoute = async ({ site, cache }) => {
@@ -10,7 +11,7 @@ export const GET: APIRoute = async ({ site, cache }) => {
   const stream = Readable.from(generateItems(site?.origin)).pipe(smiStream);
   const body = Readable.toWeb(stream) as ReadableStream;
   cache.set({
-    maxAge: 31536000,
+    maxAge: YEAR,
     tags: ["sitemap"],
   });
   return new Response(body, {

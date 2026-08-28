@@ -2,6 +2,7 @@
 import { Image } from "astro:assets"
 
 import DetailLayout from "@/layouts/DetailLayout.astro";
+import { YEAR } from "@/lib/constants";
 import { getPeraturan } from "@/lib/db";
 
 
@@ -26,8 +27,7 @@ const {
 } = peraturan;
 
 Astro.cache.set({
-  maxAge: 2592000,
-  swr: 31536000,
+  maxAge: YEAR,
   tags: ["peraturan", `${jenis}/${tahun}/${nomor}`],
 });
 

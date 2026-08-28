@@ -3,6 +3,7 @@ import { Readable } from "node:stream";
 import type { APIRoute, Params, Props } from "astro";
 import { EnumChangefreq, type SitemapItemLoose, SitemapStream } from "sitemap";
 
+import { YEAR } from "@/lib/constants";
 import { getListPeraturan } from "@/lib/db";
 import { createMarked, type PeraturanToken } from "@/lib/marked";
 import { getData } from "@/lib/utils/data";
@@ -22,7 +23,7 @@ export const GET: APIRoute<Props, ApiParams> = async ({
   const stream = Readable.from(generateItems(jenis, tahun)).pipe(smStream);
   const body = Readable.toWeb(stream) as ReadableStream;
   cache.set({
-    maxAge: 31536000,
+    maxAge: YEAR,
     tags: ["peraturan", `jenis-${jenis}`, `tahun-${tahun}`, "sitemap"],
   });
   return new Response(body, {
