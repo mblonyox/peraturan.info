@@ -60,6 +60,7 @@ export async function getTopVisitedPaths() {
     body: JSON.stringify({ query, variables }),
   });
   const json = await response.json<GraphQLResponse>();
+  if (!json.data) return {};
   const group = json.data.viewer.zones[0].httpRequestsAdaptiveGroups;
   const pathCountMap = group
     .map((i) => ({
