@@ -27,6 +27,7 @@ export default defineConfig({
           "filter-line",
           "github-fill",
           "information-line",
+          "link",
           "linkedin-box-line",
           "menu-line",
           "node-tree",

@@ -1,4 +1,5 @@
 ---
+import { Icon } from "astro-iconset/components"
 import type { Token } from "marked";
 
 import { ellipsis } from "@/lib/utils/string";
@@ -76,19 +77,20 @@ if (token.type == "pasal") {
   {
     subTokens.length ? (
       <details open={isOpen}>
-        <summary><a href={subPath} class="text-wrap">{judul}</a></summary>
+        <summary class="text-wrap">{judul}</summary>
         <ul>
+          <li><a href={subPath} class="link text-wrap"><span><Icon name="ri:link" class="inline mr-1" />{judul}</span></a></li>
           {subTokens.map((token) => <Astro.self token={token} path={subPath} />)}
         </ul>
       </details>
     ) : (
       <div class="flex flex-col gap-2">
-        <a class="text-wrap" href={subPath}>{judul}</a>
-        {preview && <a href={subPath}><cite class="text-wrap">{ellipsis(preview)}</cite></a>}
+        <a class="link text-wrap" href={subPath}><span><Icon name="ri:link" class="inline mr-1" />{judul}</span></a>
+        {preview && <cite class="text-wrap">{ellipsis(preview)}</cite>}
         {angkaPasalRomawi.length > 0 &&
           <ul>
             {angkaPasalRomawi.map(({href, text}) => (
-              <li><a href={href} class="text-wrap">{ellipsis(text)}</a></li>
+              <li><a href={href} class="link text-wrap"><span><Icon name="ri:link" class="inline mr-1" />{ellipsis(text)}</span></a></li>
             ))}
           </ul>
         }

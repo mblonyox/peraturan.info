@@ -1,4 +1,5 @@
 ---
+import { Icon } from "astro-iconset/components";
 import type { Token } from "marked";
 
 import { ellipsis } from "@/lib/utils/string";
@@ -34,10 +35,9 @@ const batangTubuh = tokens.filter(
     <ul>
       <li>
         <details>
-          <summary>
-            <a href={basePath + "/konsideran"}>Konsideran (Menimbang)</a>
-          </summary>
+          <summary>Konsideran (Menimbang)</summary>
           <ul>
+            <li><a class="link text-wrap" href={basePath + "/konsideran"}><span><Icon name="ri:link" class="inline mr-1" />Konsideran (Menimbang)</span></a></li>
             {
               childTokens(konsideran)
                 ?.flatMap((token) =>
@@ -56,10 +56,9 @@ const batangTubuh = tokens.filter(
       </li>
       <li>
         <details>
-          <summary>
-            <a href={basePath + "/dasar-hukum"}>Dasar Hukum (Mengingat)</a>
-          </summary>
+          <summary>Dasar Hukum (Mengingat)</summary>
           <ul>
+            <li><a class="link text-wrap" href={basePath + "/dasar-hukum"}><span><Icon name="ri:link" class="inline mr-1" />Dasar Hukum (Mengingat)</span></a></li>
             {
               childTokens(dasarHukum)
                 ?.flatMap((token) =>
