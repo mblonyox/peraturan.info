@@ -41,6 +41,8 @@ export default function SearchInput() {
           list="autocomplete-list"
           placeholder="Pencarian..."
           aria-label="Pencarian"
+          aria-controls="autocomplete-list"
+          aria-expanded={!!options.length}
           value={query}
           onChange={(e) => setQuery(e.currentTarget.value)}
         />
