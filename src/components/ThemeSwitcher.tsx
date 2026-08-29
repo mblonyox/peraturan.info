@@ -32,7 +32,7 @@ export default function ThemeSwitcher() {
         />
       </div>
       <ul
-        tabIndex={0}
+        tabIndex={-1}
         className="dropdown-content bg-base-300 rounded-box z-1 p-2 shadow-2xl"
       >
         {themeOptions.map((t) => (

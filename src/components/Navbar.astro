@@ -26,12 +26,18 @@ const menus = [
 
 <nav class="navbar bg-base-200">
   <div class="navbar-start">
-    <details class="flex-none lg:hidden dropdown">
-      <summary aria-label="Show Menu" class="btn btn-square btn-ghost">
+    <div class="flex-none lg:hidden dropdown">
+      <div
+        class="btn m-1"
+        role="button"
+        aria-label="Show Menu"
+        tabindex="0"
+      >
         <Icon name="ri:menu-line" />
-      </summary>
+      </div>
       <ul
         class="menu dropdown-content bg-base-300 rounded-box z-1 p-2 shadow-2xl"
+        tabindex="-1"
       >
         {
           menus.map(({ href, text, menu }) => (
@@ -66,9 +72,9 @@ const menus = [
           ))
         }
       </ul>
-    </details>
+    </div>
     <a href="/" class="hidden lg:block">
-      <Image src="/logo.webp" alt="Logo Peraturan.Info" width="32" height="32" loading="eager" />
+      <Image src="/logo.webp" alt="Logo Peraturan.Info" width="48" height="48" loading="eager" />
     </a>
     <ul class="hidden lg:flex menu menu-horizontal rounded-box gap-2">
       {
