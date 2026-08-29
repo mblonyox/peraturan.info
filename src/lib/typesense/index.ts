@@ -14,7 +14,11 @@ export const client = new Client({
   nodes: [{ url: env.TYPESENSE_URL }],
   axiosAdapter: (config) =>
     new Promise((resolve, reject) => {
-      fetch(config.url ?? "", {
+      const url = new URL(config.url ?? "");
+      for (const [key, value] of Object.entries(config.params ?? {})) {
+        url.searchParams.set(key, value as string);
+      }
+      fetch(url, {
         method: config.method?.toUpperCase() ?? "GET",
         headers: (config.headers?.toJSON() ?? {}) as HeadersInit,
         body: config.data,
