@@ -104,6 +104,7 @@ const parsedTitle = titleTemplate.replace("%s", title ?? titleDefault);
     )) }
     { pwaInfo && <Fragment set:html={pwaInfo.webManifest.linkTag} /> }
     <ClientRouter />
+    <script async src="https://news.google.com/swg/js/v1/publisher.js"></script>
   </head>
   <body class="min-h-screen flex flex-col justify-between">
     <Navbar />
