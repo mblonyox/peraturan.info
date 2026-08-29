@@ -12,7 +12,6 @@ interface ApiParams extends Params {
 export const ALL: APIRoute<Props, ApiParams> = async ({
   params,
   redirect,
-  rewrite,
   cache,
 }) => {
   const { jenis, tahun, nomor } = params;
@@ -22,7 +21,6 @@ export const ALL: APIRoute<Props, ApiParams> = async ({
   });
   const path = `${jenis}/${tahun}/${nomor}/fulltext.md`;
   const md = await getData(path, { format: "text" });
-  if (!md) return rewrite("/404");
   const subPath = md ? "isi" : "info";
   return redirect(`/${jenis}/${tahun}/${nomor}/${subPath}`);
 };
