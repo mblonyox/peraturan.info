@@ -43,10 +43,16 @@ const terpopuler = await Promise.all(
     };
   }),
 );
+
+const seed = new Date().toISOString().slice(0, 10);
+const buffer = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(seed));
+const hashedSeed = Array.from(new Uint8Array(buffer).slice(0, 8), (b) => b.toString(16).padStart(2, "0")).join("");
+const imgUrl = `https://picsum.photos/seed/${hashedSeed}/800?blur=5`;
 ---
 
 <RootLayout>
-  <div class="hero bg-base-300">
+  <div class="hero bg-base-300" style={`background-image: url(${imgUrl});`}>
+    <div class="hero-overlay"></div>
     <div class="hero-content text-center">
       <div class="max-w-md">
         <Image
