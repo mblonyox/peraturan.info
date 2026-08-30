@@ -5,6 +5,7 @@ import tailwindcss from "@tailwindcss/vite";
 import AstroPWA from "@vite-pwa/astro";
 import { defineConfig } from "astro/config";
 import icon from "astro-iconset";
+import arraybuffer from "vite-plugin-arraybuffer";
 
 import manifest from "./src/assets/manifest.json";
 import { BASE_URL } from "./src/lib/constants";
@@ -112,7 +113,7 @@ export default defineConfig({
     }),
   ],
   vite: {
-    plugins: [tailwindcss()],
+    plugins: [tailwindcss(), arraybuffer()],
     resolve: {
       alias: {
         "@": "/src",

@@ -21,7 +21,8 @@
       "astro/client",
       "vite-plugin-pwa/vanillajs",
       "vite-plugin-pwa/info",
-      "vite-plugin-pwa/pwa-assets"
+      "vite-plugin-pwa/pwa-assets",
+      "vite-plugin-arraybuffer/types"
     ]
   },
   "include": [".astro/types.d.ts", "**/*", "./worker-configuration.d.ts"],
