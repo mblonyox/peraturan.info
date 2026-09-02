@@ -30,14 +30,15 @@ if (!data) return Astro.rewrite("/404");
 const { tokens, prev, next, title, description } = data;
 
 const sh = new SuperHeaders(Astro.request.headers);
-if (sh.accept.getPreferred(["text/markdown", "text/html"]) === "text/markdown") {
+const preferredMimeType = sh.accept.getPreferred(["text/html", "application/xhtml+xml", "text/markdown"])
+if (preferredMimeType === "text/markdown") {
   return new Response(tokens.map((token) => token.raw).join("\n"), {
     headers: {
       "Content-Type": "text/markdown; charset=utf-8",
       "Vary": "Accept",
     },
   });
-} else if (!sh.accept.accepts("text/html") && !sh.accept.accepts("application/xhtml+xml")) {
+} else if (!preferredMimeType || !["text/html", "application/xhtml+xml"].includes(preferredMimeType)) {
   return new Response("Invalid requested Content-Type.", {
     status: 406,
     headers: {
