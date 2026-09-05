@@ -18,14 +18,14 @@
     "gen-wrangler-types": "wrangler types --env-interface CloudflareEnv"
   },
   "dependencies": {
-    "@astrojs/cloudflare": "^14.2.5",
-    "@astrojs/react": "^6.0.4",
+    "@astrojs/cloudflare": "^14.3.0",
+    "@astrojs/react": "^6.0.5",
     "@iconify-json/bi": "^1.2.7",
     "@iconify-json/ri": "^1.2.10",
     "@mjackson/headers": "^0.11.1",
-    "astro": "^7.2.8",
+    "astro": "^7.3.1",
     "astro-iconset": "^0.0.6",
-    "astro-seo": "^1.1.0",
+    "astro-seo": "^1.2.0",
     "axios": "^1.20.0",
     "cf-workers-og": "^3.0.1",
     "clsx": "^2.1.1",
@@ -39,22 +39,22 @@
     "satori-html": "^0.3.2",
     "sitemap": "^9.0.1",
     "typesense": "^3.0.6",
-    "zod": "^4.4.3"
+    "zod": "^4.5.4"
   },
   "devDependencies": {
     "@astrojs/check": "^0.9.10",
     "@tailwindcss/postcss": "^4.3.3",
     "@tailwindcss/vite": "^4.3.3",
-    "@types/node": "^26.4.0",
+    "@types/node": "^26.4.1",
     "@types/react": "^19.2.18",
-    "@types/react-dom": "^19.2.5",
+    "@types/react-dom": "^19.2.7",
     "@types/sanitize-html": "^2.16.1",
-    "@typescript-eslint/parser": "^8.68.0",
+    "@typescript-eslint/parser": "^8.69.0",
     "@typescript/native": "npm:typescript@^7.0.2",
     "@vite-pwa/assets-generator": "^1.0.2",
     "@vite-pwa/astro": "^1.2.0",
     "astro-eslint-parser": "^3.1.0",
-    "daisyui": "^5.7.22",
+    "daisyui": "^5.7.28",
     "eslint": "^10.9.1",
     "eslint-config-prettier": "^10.1.8",
     "eslint-plugin-astro": "^3.1.0",
@@ -62,16 +62,16 @@
     "eslint-plugin-prettier": "^5.5.6",
     "eslint-plugin-simple-import-sort": "^14.0.0",
     "prettier": "^3.9.6",
-    "sharp-cli": "6.0.0",
+    "sharp-cli": "6.1.0",
     "tailwindcss": "^4.3.3",
-    "tsx": "^4.23.12",
+    "tsx": "^4.23.13",
     "typescript": "npm:@typescript/typescript6@^6.0.2",
-    "typescript-eslint": "^8.68.0",
+    "typescript-eslint": "^8.69.0",
     "vite-plugin-arraybuffer": "^0.1.4",
     "vite-plugin-pwa": "^1.3.0",
     "workbox-window": "^7.4.1",
-    "wrangler": "^4.126.0"
+    "wrangler": "^4.129.0"
   },
   "browserslist": "> 1%",
-  "packageManager": "pnpm@11.24.0"
+  "packageManager": "pnpm@11.25.0"
 }

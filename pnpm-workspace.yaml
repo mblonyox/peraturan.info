@@ -3,7 +3,7 @@ allowBuilds:
   sharp: true
   unrs-resolver: true
   workerd: true
-packages:
-  - .
 overrides:
- sharp: ^0.35.3
+  sharp: ^0.35.3
+  "@vite-pwa/astro>astro": ^7.3.1
+  eslint-plugin-jsx-a11y>eslint: ^10.9.1
