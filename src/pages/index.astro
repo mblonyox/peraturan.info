@@ -61,6 +61,7 @@ const imgUrl = `https://picsum.photos/seed/${hashedSeed}/800?blur=5`;
           class="mx-auto mb-5"
           width={256}
           height={256}
+          loading="eager"
         />
         <h1 class="text-5xl font-bold mb-2">
           Peraturan<span class="text-neutral-500">.Info</span>
@@ -83,29 +84,29 @@ const imgUrl = `https://picsum.photos/seed/${hashedSeed}/800?blur=5`;
     </div>
   </div>
   <div class="container flex flex-col lg:flex-row my-5">
-    <ul class="list rounded-box bg-base-200 flex-1">
+    <ul class="list justify-between rounded-box bg-base-200 flex-1">
       <li class="p-4 pb-2 text-xl font-bold">Terbaru</li>
       {
         terbaru.slice(0, 5).map(({ path, nomor, judul, tanggal }) => (
           <li class="list-row">
-            <div>
-              <Image
-                class="h-auto rounded-xs"
-                src={new URL(path + "/thumbnail.png", Astro.site).href}
-                alt={judul}
-                width={64}
-                height={64}
-              />
+            <div class="flex flex-col items-center justify-center card p-4 bg-base-300 font-thin opacity-50">
+              <span class="text-xs">{tanggal.split(" ")[1].slice(0, 3)}</span>
+              <span class="text-4xl">{tanggal.split(" ")[0]}</span>
+              <span class="text-sm border-t border-dashed">{tanggal.split(" ")[2]}</span>
             </div>
-            <div>
+            <Image
+              class="h-auto rounded-xs"
+              src={new URL(path + "/thumbnail.png", Astro.site).href}
+              alt={judul}
+              width={64}
+              height={64}
+              loading="lazy"
+            />
+            <div class="list-col-grow">
               <div class="text-xs">{tanggal}</div>
-              <div class="font-semibold">{nomor}</div>
+              <a href={path} class="font-semibold link"><Icon name="ri:link" class="inline" /> {nomor}</a>
               <p class="text-sm">{judul}</p>
             </div>
-            <a href={path} target="_blank" class="btn btn-ghost">
-              Lihat
-              <Icon name="ri:arrow-right-up-box-line" />
-            </a>
           </li>
         ))
       }
@@ -116,18 +117,22 @@ const imgUrl = `https://picsum.photos/seed/${hashedSeed}/800?blur=5`;
       {
         terpopuler.slice(0, 5).map(({ path, nomor, judul, count }, index) => (
           <li class="list-row">
-            <div class="text-4xl font-thin opacity-30 tabular-nums">
+            <div class="text-4xl font-thin opacity-50 tabular-nums">
               #{index + 1}
             </div>
-            <div>
+            <Image
+              class="h-auto rounded-xs"
+              src={new URL(path + "/thumbnail.png", Astro.site).href}
+              alt={judul}
+              width={64}
+              height={64}
+              loading="lazy"
+            />
+            <div class="list-col-grow">
               <div class="text-xs">{count} kali dilihat</div>
-              <div class="font-semibold">{nomor}</div>
+              <a href={path} class="font-semibold link"><Icon name="ri:link" class="inline" /> {nomor}</a>
               <p class="text-sm">{judul}</p>
             </div>
-            <a href={path ?? "#"} target="_blank" class="btn btn-ghost">
-              Lihat
-              <Icon name="ri:arrow-right-up-box-line" />
-            </a>
           </li>
         ))
       }
