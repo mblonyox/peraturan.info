@@ -29,7 +29,7 @@ const rules = {
   pasalRomawi: /^(Pasal [MDCLXVI]+)\n([^]+?)(?=\nPasal [MDCLXVI]+\n|\n{3,}|$)/,
   ayat: /^(\(\d+[a-z]*\))[ \t]([^]+?)(?=\n\(\d+[a-z]*\)[ \t]|\n{3,}|$)/,
   butir: /^([ \t]{0,6})([a1][\)\.])[ \t][^\n]+?(?=\n|$)/,
-  container: /^:{3}\n([^]+?)\n:{3}/,
+  container: /^([ \t]{0,6}):{3}\n([^]+?)\n\1:{3}/,
   indentedBlock: /^(?:(?:&nbsp;){4}[^\n]+\n?)+/,
 };
 
@@ -384,20 +384,20 @@ const butirList: TokenizerAndRendererExtension = {
   tokenizer(src: string) {
     const cap = rules.butir.exec(src);
     if (!cap) return;
-    const indent = cap[1].length;
-    const marker = cap[2];
-    const suffix = marker.slice(-1);
-    const alphaNumeric = /\d+/.test(marker) ? "\\d+" : "[a-z]+";
-    const bullet = `[ \\t]{${indent}}${alphaNumeric}\\${suffix}`;
+    const indent = cap[1];
+    const numbering = cap[2];
+    const suffix = numbering.slice(-1);
+    const alphaNumeric = /\d+/.test(numbering) ? "\\d+" : "[a-z]+";
+    const marker = `${alphaNumeric}\\${suffix}`;
     const list = {
       type: "butir-list",
       raw: "",
       items: [] as unknown[],
     };
-    let itemEnd = `\\n${bullet}[ \\t]`;
-    if (indent) itemEnd += `|\\n[ \\t]{0,${indent - 1}}[^ \\t]`;
+    let itemEnd = `\\n${indent}${marker}[ \\t]`;
+    if (indent) itemEnd += `|\\n[ \\t]{0,${indent.length - 1}}[^ \\t]`;
     const re = new RegExp(
-      `^\\s*?(${bullet})[ \\t]([^]+?)(?=${itemEnd}|\\n{3,}|$)`,
+      `^\\s*?${indent}(${marker})[ \\t]([^]+?)(?=${itemEnd}|\\n{3,}|$)`,
     );
     while (src) {
       const cap = re.exec(src);
@@ -405,10 +405,11 @@ const butirList: TokenizerAndRendererExtension = {
       const item = {
         type: "butir-item",
         raw: cap[0],
-        marker: cap[1].trim(),
+        marker: cap[1],
         tokens: [],
       };
-      this.lexer.blockTokens(cap[2], item.tokens);
+      const innerContent = indent ? cap[2].replaceAll(indent, "") : cap[2];
+      this.lexer.blockTokens(innerContent, item.tokens);
       list.items.push(item);
       list.raw += item.raw;
       src = src.slice(item.raw.length);
@@ -434,7 +435,7 @@ const container: TokenizerAndRendererExtension = {
   name: "container",
   level: "block",
   start(src) {
-    return src.search(/\n+:{3}\n/);
+    return src.search(/\n+[ \t]{0,6}:{3}\n/);
   },
   tokenizer(src: string) {
     const cap = rules.container.exec(src);
@@ -444,7 +445,9 @@ const container: TokenizerAndRendererExtension = {
         raw: cap[0],
         tokens: [],
       };
-      this.lexer.blockTokens(cap[1], token.tokens);
+      const indent = cap[1];
+      const innerContent = indent ? cap[2].replaceAll(indent, "") : cap[2];
+      this.lexer.blockTokens(innerContent, token.tokens);
       return token;
     }
   },
