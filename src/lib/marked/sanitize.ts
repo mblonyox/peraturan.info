@@ -4,6 +4,7 @@ export const sanitizeOptions: IOptions = {
   allowedAttributes: {
     "*": ["class", "id"],
     div: ["data-marker"],
+    a: ["href"],
   },
   allowedClasses: {
     h1: ["judul"],
