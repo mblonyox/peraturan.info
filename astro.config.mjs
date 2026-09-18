@@ -125,5 +125,4 @@ export default defineConfig({
   },
   site: BASE_URL,
   session: false,
-  image: { domains: [new URL(BASE_URL).hostname] },
 });
