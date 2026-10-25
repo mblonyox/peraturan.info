@@ -139,10 +139,6 @@ function normalizeVNode(vnode: VNode | string) {
   normalizeMarker(vnode);
   normalizeTable(vnode);
 
-  if (vnode.type.startsWith("h")) {
-    console.log(vnode);
-  }
-
   return vnode;
 }
 
