@@ -35,8 +35,16 @@ const centerClassName = [
 
 function normalizeCenter(vnode: VNode) {
   if (centerClassName.includes(vnode.props.class)) {
-    vnode.props.style ??= {};
-    vnode.props.style.alignItems = "center";
+    const children = { ...vnode };
+    vnode.type = "div";
+    vnode.props = {
+      style: {
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+      },
+      children,
+    };
   }
 }
 
@@ -61,9 +69,6 @@ function normalizeTable(vnode: VNode) {
 function normalizeAyat(vnode: VNode) {
   if (vnode.props.class !== "ayat") return;
   vnode.props.style ??= {};
-  vnode.props.style.display = "flex";
-  vnode.props.style.flexDirection = "row";
-  vnode.props.style.gap = 7;
   const children = vnode.props.children;
   if (!children || !Array.isArray(children)) return;
   const [lead, ...rest] = children;
@@ -73,56 +78,49 @@ function normalizeAyat(vnode: VNode) {
       type: "div",
       props: {
         children: rest,
-        style: { width: "95%", display: "flex", flexDirection: "column" },
+        style: {
+          width: "95%",
+          display: "flex",
+          flexDirection: "column",
+        },
       },
     },
   ];
+  vnode.props.style.display = "flex";
+  vnode.props.style.flexDirection = "row";
+  vnode.props.style.gap = 7;
 }
 
 function normalizeMarker(vnode: VNode) {
   const marker = vnode.props["data-marker"];
   if (!marker) return;
   vnode.props.style ??= {};
+  const content = { type: "div", props: { ...vnode.props } };
+  vnode.props.children = [marker, content];
   vnode.props.style.display = "flex";
   vnode.props.style.flexDirection = "row";
   vnode.props.style.gap = 7;
-  const children = [vnode.props.children].flat();
-  vnode.props.children = [
-    marker,
-    {
-      type: "div",
-      props: {
-        children,
-        style: { width: "95%", display: "flex", flexDirection: "column" },
-      },
-    },
-  ];
   delete vnode.props["data-marker"];
-}
-
-function normalizeParagraph(vnode: VNode) {
-  if (vnode.type !== "p") return vnode;
-  vnode.props.style ??= {};
-  vnode.props.style.marginTop = 0;
-  vnode.props.style.marginBottom = 0;
 }
 
 function normalizeContainer(vnode: VNode) {
   const children = vnode.props.children;
   if (!children) return;
+
   vnode.props.style ??= {};
 
   // Use to debug
   // vnode.props.style.borderWidth = "1px";
   // vnode.props.style.borderColor = "red";
 
-  // All texts inside peraturan is 18
-  vnode.props.style.fontSize = 18;
-  if (!Array.isArray(children)) return;
-  vnode.props.style.display = "flex";
-  vnode.props.style.flexDirection = "column";
-  // vnode.props.style.alignItems = "flex-start";
-  // vnode.props.style.justifyContent = "flex-start";
+  if ([children].flat().some((v) => typeof v === "string")) {
+    vnode.props.style.fontSize = 18;
+    vnode.props.style.lineHeight = 1.25;
+    vnode.props.style.display = "contents";
+  } else {
+    vnode.props.style.display = "flex";
+    vnode.props.style.flexDirection = "column";
+  }
 }
 
 function normalizeVNode(vnode: VNode | string) {
@@ -132,28 +130,38 @@ function normalizeVNode(vnode: VNode | string) {
   // Normalize children
   const children = vnode.props.children;
   if (Array.isArray(children))
-    vnode.props.children = children.slice(0, 5).map(normalizeVNode);
+    vnode.props.children = children.slice(0, 10).map(normalizeVNode);
   else if (children) vnode.props.children = normalizeVNode(children);
 
   normalizeContainer(vnode);
   normalizeCenter(vnode);
   normalizeAyat(vnode);
   normalizeMarker(vnode);
-  normalizeParagraph(vnode);
   normalizeTable(vnode);
+
+  if (vnode.type.startsWith("h")) {
+    console.log(vnode);
+  }
+
   return vnode;
 }
 
 function TokenComponent({ tokens }: { tokens: PeraturanToken[] }) {
   const marked = createMarked();
   const vnode = html(marked.parser(tokens));
-  normalizeVNode(vnode);
-  vnode.props.style ??= {};
-  vnode.props.style.alignItems = "center";
-  return vnode as React.ReactNode;
+  return normalizeVNode(vnode) as React.ReactNode;
+}
+
+function reduceSubTokens(tokens: PeraturanToken[], size = 10) {
+  return tokens.slice(0, size).map((t) => {
+    if (t.tokens && Array.isArray(t.tokens))
+      t.tokens = reduceSubTokens(t.tokens, size);
+    return t;
+  });
 }
 
 export default function PartialsOgImage({ title, tokens, url }: Props) {
+  tokens = reduceSubTokens(tokens);
   return (
     <div
       style={{
