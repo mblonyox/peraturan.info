@@ -22,7 +22,7 @@ const paramsSchema = z.object({
     z.literal("all").transform(() => undefined),
     z.enum(JENIS2_PERATURAN),
   ]),
-  tahun: z.string().regex(/\d{4}/).optional(),
+  tahun: z.string().regex(/^\d{4}$/).optional(),
 });
 
 const searchParamsSchema = $searchParams.pipe($pageLimit);
