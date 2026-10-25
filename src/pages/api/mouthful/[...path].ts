@@ -1,5 +1,7 @@
 import type { APIRoute } from "astro";
 
+import { YEAR } from "@/lib/constants";
+
 export const ALL: APIRoute = async ({ params, request, cache }) => {
   const MOUTHFUL_URL = process.env.MOUTHFUL_URL;
   if (!MOUTHFUL_URL)
@@ -18,10 +20,10 @@ export const ALL: APIRoute = async ({ params, request, cache }) => {
     const headers = new Headers();
     if (contentType) headers.set("content-type", contentType);
     if (method === "GET") {
+      const uri = targetUrl.searchParams.get("uri");
       cache.set({
-        maxAge: 86400,
-        swr: 604800,
-        tags: ["mouthful"],
+        maxAge: YEAR,
+        tags: [`mouthful-uri:${uri}`],
       });
     }
     return new Response(response.body, {

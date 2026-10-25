@@ -1,5 +1,6 @@
 import type { APIRoute } from "astro";
 
+import { DAY, WEEK } from "@/lib/constants";
 import { searchAutocomplete } from "@/lib/typesense";
 
 export const GET: APIRoute = async ({ request, cache }) => {
@@ -9,8 +10,8 @@ export const GET: APIRoute = async ({ request, cache }) => {
     if (!query || query.length < 3) return Response.json([]);
     const items = await searchAutocomplete(query);
     cache.set({
-      maxAge: 604800,
-      swr: 2592000,
+      maxAge: DAY,
+      swr: WEEK,
       tags: ["autocomplete"],
     });
     return Response.json(items);
