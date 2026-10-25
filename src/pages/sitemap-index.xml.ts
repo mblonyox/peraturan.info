@@ -3,8 +3,8 @@ import { Readable } from "node:stream";
 import type { APIRoute } from "astro";
 import { SitemapIndexStream } from "sitemap";
 
-import { YEAR } from "@/lib/constants";
-import { getFilterByTahunCount, JENIS2_PERATURAN } from "@/lib/db";
+import { JENIS2_PERATURAN, YEAR } from "@/lib/constants";
+import { getFilterByTahunCount } from "@/lib/db";
 
 export const GET: APIRoute = async ({ site, cache }) => {
   const smiStream = new SitemapIndexStream();

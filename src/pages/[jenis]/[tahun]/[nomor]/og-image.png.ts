@@ -1,24 +1,16 @@
-import type { APIRoute, Params, Props } from "astro";
+import type { APIRoute } from "astro";
 import { ImageResponse } from "cf-workers-og";
 
 import OpenGraphImage from "@/components/OpenGraphImage";
 import { YEAR } from "@/lib/constants";
 import { getPeraturan } from "@/lib/db";
+import { $peraturanPaths } from "@/lib/utils/validate";
 
-interface ApiParams extends Params {
-  jenis: string;
-  tahun: string;
-  nomor: string;
-}
-
-export const GET: APIRoute<Props, ApiParams> = async ({
-  cache,
-  params,
-  rewrite,
-  site,
-}) => {
-  const { jenis, tahun, nomor } = params;
-  const peraturan = await getPeraturan(params);
+export const GET: APIRoute = async ({ cache, params, rewrite, site }) => {
+  const paths = $peraturanPaths.safeParse(params);
+  if (!paths.success) return rewrite("/404");
+  const { jenis, tahun, nomor } = paths.data;
+  const peraturan = await getPeraturan({ jenis, tahun, nomor });
   if (!peraturan) return rewrite("/404");
   const url = new URL(peraturan.path, site?.origin).href;
 

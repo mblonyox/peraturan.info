@@ -1,5 +1,7 @@
 import { z } from "zod";
 
+import { JENIS2_PERATURAN } from "../constants";
+
 export const $searchParams = z
   .custom<URLSearchParams>()
   .transform((params) => Object.fromEntries(params.entries()));
@@ -7,4 +9,10 @@ export const $searchParams = z
 export const $pageLimit = z.object({
   page: z.coerce.number<string>().int().positive().default(1),
   limit: z.coerce.number<string>().int().min(10).max(100).default(10),
+});
+
+export const $peraturanPaths = z.object({
+  jenis: z.enum(JENIS2_PERATURAN),
+  tahun: z.string().regex(/^\d{4}$/),
+  nomor: z.string().regex(/^\d+$/),
 });

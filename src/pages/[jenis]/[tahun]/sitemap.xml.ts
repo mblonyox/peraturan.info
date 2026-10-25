@@ -1,24 +1,20 @@
 import { Readable } from "node:stream";
 
-import type { APIRoute, Params, Props } from "astro";
+import type { APIRoute } from "astro";
 import { EnumChangefreq, type SitemapItemLoose, SitemapStream } from "sitemap";
 
 import { YEAR } from "@/lib/constants";
 import { getListPeraturan } from "@/lib/db";
 import { createMarked, type PeraturanToken } from "@/lib/marked";
 import { getData } from "@/lib/utils/data";
+import { $peraturanPaths } from "@/lib/utils/validate";
 
-interface ApiParams extends Params {
-  jenis: string;
-  tahun: string;
-}
-
-export const GET: APIRoute<Props, ApiParams> = async ({
-  params,
-  site,
-  cache,
-}) => {
-  const { jenis, tahun } = params;
+export const GET: APIRoute = async ({ params, site, cache, rewrite }) => {
+  const paths = await $peraturanPaths
+    .omit({ nomor: true })
+    .safeParseAsync(params);
+  if (!paths.success) return rewrite("/404");
+  const { jenis, tahun } = paths.data;
   const smStream = new SitemapStream({ hostname: site?.origin });
   const stream = Readable.from(generateItems(jenis, tahun)).pipe(smStream);
   const body = Readable.toWeb(stream) as ReadableStream;

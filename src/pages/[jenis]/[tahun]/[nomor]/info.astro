@@ -4,14 +4,12 @@ import { Image } from "astro:assets"
 import DetailLayout from "@/layouts/DetailLayout.astro";
 import { YEAR } from "@/lib/constants";
 import { getPeraturan } from "@/lib/db";
+import { $peraturanPaths } from "@/lib/utils/validate"
 
-
-const { jenis, tahun, nomor } = Astro.params;
-
-if (!jenis || !tahun || !nomor) return Astro.rewrite("/404");
-
+const paths = $peraturanPaths.safeParse(Astro.params);
+if (!paths.success) return Astro.rewrite("/404");
+const { jenis, tahun, nomor } = paths.data;
 const peraturan = await getPeraturan({ jenis, tahun, nomor });
-
 if (!peraturan) return Astro.rewrite("/404");
 
 const description = `Informasi umum (Metadata, Sumber Peraturan, Abstrak) atas ${peraturan.rujukPanjang}`;

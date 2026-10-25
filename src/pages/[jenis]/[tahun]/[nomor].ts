@@ -1,20 +1,13 @@
-import type { APIRoute, Params, Props } from "astro";
+import type { APIRoute } from "astro";
 
 import { YEAR } from "@/lib/constants";
 import { getData } from "@/lib/utils/data";
+import { $peraturanPaths } from "@/lib/utils/validate";
 
-interface ApiParams extends Params {
-  jenis: string;
-  tahun: string;
-  nomor: string;
-}
-
-export const ALL: APIRoute<Props, ApiParams> = async ({
-  params,
-  redirect,
-  cache,
-}) => {
-  const { jenis, tahun, nomor } = params;
+export const ALL: APIRoute = async ({ params, redirect, cache, rewrite }) => {
+  const paths = await $peraturanPaths.safeParseAsync(params);
+  if (!paths.success) return rewrite("/404");
+  const { jenis, tahun, nomor } = paths.data;
   cache.set({
     maxAge: YEAR,
     tags: ["peraturan", `${jenis}/${tahun}/${nomor}`],

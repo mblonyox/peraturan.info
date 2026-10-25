@@ -1,4 +1,4 @@
-import type { APIRoute, Params, Props } from "astro";
+import type { APIRoute } from "astro";
 import { ImageResponse } from "cf-workers-og";
 
 import placeholder from "@/assets/placeholder.png?arraybuffer";
@@ -6,22 +6,13 @@ import Thumbnail from "@/components/Thumbnail";
 import { YEAR } from "@/lib/constants";
 import { getPeraturan } from "@/lib/db";
 import { getData } from "@/lib/utils/data";
+import { $peraturanPaths } from "@/lib/utils/validate";
 
-interface PathParams extends Params {
-  jenis: string;
-  tahun: string;
-  nomor: string;
-}
-
-export const GET: APIRoute<Props, PathParams> = async ({
-  params,
-  cache,
-  rewrite,
-}) => {
-  const jenis = params.jenis;
-  const tahun = params.tahun;
-  const nomor = params.nomor;
-  const peraturan = await getPeraturan(params);
+export const GET: APIRoute = async ({ params, cache, rewrite }) => {
+  const paths = $peraturanPaths.safeParse(params);
+  if (!paths.success) return rewrite("/404");
+  const { jenis, tahun, nomor } = paths.data;
+  const peraturan = await getPeraturan({ jenis, tahun, nomor });
   if (!peraturan) return rewrite("/404");
   const path = `${jenis}/${tahun}/${nomor}/thumbnail.png`;
   const thumbnail = await getData(path);
