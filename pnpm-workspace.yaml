@@ -6,4 +6,6 @@ allowBuilds:
 overrides:
   sharp: ^0.35.3
   "@vite-pwa/astro>astro": ^7.3.1
+  "@vite-pwa/astro>vite-plugin-pwa": ^2.0.0
+  "@vite-pwa/astro>@vite-pwa/assets-generator": ^2.0.0
   eslint-plugin-jsx-a11y>eslint: ^10.9.1
