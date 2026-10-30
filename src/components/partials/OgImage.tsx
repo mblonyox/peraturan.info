@@ -1,7 +1,12 @@
+import sanitize from "sanitize-html";
 import { html } from "satori-html";
 
 import logoBase64 from "@/assets/logo.png?inline";
-import { createMarked, type PeraturanToken } from "@/lib/marked";
+import {
+  createMarked,
+  type PeraturanToken,
+  sanitizeOptions,
+} from "@/lib/marked";
 import { ellipsis } from "@/lib/utils/string";
 
 interface Props {
@@ -144,7 +149,9 @@ function normalizeVNode(vnode: VNode | string) {
 
 function TokenComponent({ tokens }: { tokens: PeraturanToken[] }) {
   const marked = createMarked();
-  const vnode = html(marked.parser(tokens));
+  const parsed = marked.parser(tokens);
+  const sanitized = sanitize(parsed, sanitizeOptions);
+  const vnode = html(sanitized);
   return normalizeVNode(vnode) as React.ReactNode;
 }
 
