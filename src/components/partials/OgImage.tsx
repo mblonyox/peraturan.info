@@ -17,6 +17,9 @@ interface Props {
 
 type VNode = ReturnType<typeof html>;
 
+const MAX_CHARACTERS = 240;
+const MAX_SUBITEMS = 10;
+
 function queryByTypes(vnode: VNode, types: string[]): VNode[] {
   if (types.includes(vnode.type)) return [vnode];
   return [vnode.props.children]
@@ -73,24 +76,26 @@ function normalizeTable(vnode: VNode) {
 
 function normalizeAyat(vnode: VNode) {
   if (vnode.props.class !== "ayat") return;
-  vnode.props.style ??= {};
   const children = vnode.props.children;
   if (!children || !Array.isArray(children)) return;
-  const [lead, ...rest] = children;
-  vnode.props.children = [
-    lead,
-    {
-      type: "div",
-      props: {
-        children: rest,
-        style: {
-          width: "95%",
-          display: "flex",
-          flexDirection: "column",
-        },
+  const [lead, ...subChildren] = children;
+  const content = {
+    type: "div",
+    props: {
+      children: subChildren,
+      style: {
+        width: "97%",
+        display: "flex",
+        flexDirection: "column",
       },
     },
-  ];
+  };
+  vnode.type = "div";
+  vnode.props = {};
+  vnode.props.children = [lead, content];
+  vnode.props.style ??= {};
+  vnode.props.style.fontSize = 18;
+  vnode.props.style.lineHeight = 1.25;
   vnode.props.style.display = "flex";
   vnode.props.style.flexDirection = "row";
   vnode.props.style.gap = 7;
@@ -99,13 +104,28 @@ function normalizeAyat(vnode: VNode) {
 function normalizeMarker(vnode: VNode) {
   const marker = vnode.props["data-marker"];
   if (!marker) return;
-  vnode.props.style ??= {};
-  const content = { type: "div", props: { ...vnode.props } };
+  delete vnode.props["data-marker"];
+  const subchildren = [{ ...vnode }];
+  const content = {
+    type: "div",
+    props: {
+      children: subchildren,
+      style: {
+        width: "97%",
+        display: "flex",
+        flexDirection: "column",
+      },
+    },
+  };
+  vnode.type = "div";
+  vnode.props = {};
   vnode.props.children = [marker, content];
+  vnode.props.style ??= {};
+  vnode.props.style.fontSize = 18;
+  vnode.props.style.lineHeight = 1.25;
   vnode.props.style.display = "flex";
   vnode.props.style.flexDirection = "row";
   vnode.props.style.gap = 7;
-  delete vnode.props["data-marker"];
 }
 
 function normalizeContainer(vnode: VNode) {
@@ -128,14 +148,21 @@ function normalizeContainer(vnode: VNode) {
   }
 }
 
+function normalizeBr(vnode: VNode) {
+  if (vnode.type !== "br") return;
+  vnode.props.style ??= {};
+  vnode.props.style.display = "block";
+  vnode.props.style.height = 12;
+}
+
 function normalizeVNode(vnode: VNode | string) {
   if (typeof vnode === "string")
-    return ellipsis(vnode, 500) as unknown as VNode;
+    return ellipsis(vnode, MAX_CHARACTERS) as unknown as VNode;
 
   // Normalize children
   const children = vnode.props.children;
   if (Array.isArray(children))
-    vnode.props.children = children.slice(0, 10).map(normalizeVNode);
+    vnode.props.children = children.slice(0, MAX_SUBITEMS).map(normalizeVNode);
   else if (children) vnode.props.children = normalizeVNode(children);
 
   normalizeContainer(vnode);
@@ -143,28 +170,28 @@ function normalizeVNode(vnode: VNode | string) {
   normalizeAyat(vnode);
   normalizeMarker(vnode);
   normalizeTable(vnode);
+  normalizeBr(vnode);
 
   return vnode;
 }
 
+function reduceSubTokens(tokens: PeraturanToken[]) {
+  return tokens.slice(0, MAX_SUBITEMS).map((t) => {
+    if (t.tokens) t.tokens = reduceSubTokens(t.tokens);
+    return t;
+  });
+}
+
 function TokenComponent({ tokens }: { tokens: PeraturanToken[] }) {
+  const reducedTokens = reduceSubTokens(tokens);
   const marked = createMarked();
-  const parsed = marked.parser(tokens);
+  const parsed = marked.parser(reducedTokens);
   const sanitized = sanitize(parsed, sanitizeOptions);
   const vnode = html(sanitized);
   return normalizeVNode(vnode) as React.ReactNode;
 }
 
-function reduceSubTokens(tokens: PeraturanToken[], size = 10) {
-  return tokens.slice(0, size).map((t) => {
-    if (t.tokens && Array.isArray(t.tokens))
-      t.tokens = reduceSubTokens(t.tokens, size);
-    return t;
-  });
-}
-
 export default function PartialsOgImage({ title, tokens, url }: Props) {
-  tokens = reduceSubTokens(tokens);
   return (
     <div
       style={{
