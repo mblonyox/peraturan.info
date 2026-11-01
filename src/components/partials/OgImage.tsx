@@ -7,7 +7,6 @@ import {
   type PeraturanToken,
   sanitizeOptions,
 } from "@/lib/marked";
-import { ellipsis } from "@/lib/utils/string";
 
 interface Props {
   title: string;
@@ -17,8 +16,8 @@ interface Props {
 
 type VNode = ReturnType<typeof html>;
 
-const MAX_CHARACTERS = 240;
 const MAX_SUBITEMS = 10;
+const MAX_LINES = 20;
 
 function queryByTypes(vnode: VNode, types: string[]): VNode[] {
   if (types.includes(vnode.type)) return [vnode];
@@ -155,14 +154,21 @@ function normalizeBr(vnode: VNode) {
   vnode.props.style.height = 12;
 }
 
+let lines = 0;
 function normalizeVNode(vnode: VNode | string) {
-  if (typeof vnode === "string")
-    return ellipsis(vnode, MAX_CHARACTERS) as unknown as VNode;
+  if (lines > MAX_LINES) return undefined;
+  if (typeof vnode === "string") {
+    lines += Math.ceil(vnode.length / 80);
+    return vnode as unknown as VNode;
+  }
 
   // Normalize children
   const children = vnode.props.children;
   if (Array.isArray(children))
-    vnode.props.children = children.slice(0, MAX_SUBITEMS).map(normalizeVNode);
+    vnode.props.children = children
+      .slice(0, MAX_SUBITEMS)
+      .map(normalizeVNode)
+      .filter((v) => !!v);
   else if (children) vnode.props.children = normalizeVNode(children);
 
   normalizeContainer(vnode);
