@@ -154,11 +154,11 @@ function normalizeBr(vnode: VNode) {
   vnode.props.style.height = 12;
 }
 
-let lines = 0;
-function normalizeVNode(vnode: VNode | string) {
-  if (lines > MAX_LINES) return undefined;
+function normalizeVNode(vnode: VNode | string, state?: { lines: number }) {
+  state ??= { lines: 0 };
+  if (state.lines > MAX_LINES) return undefined;
   if (typeof vnode === "string") {
-    lines += Math.ceil(vnode.length / 80);
+    state.lines += Math.ceil(vnode.length / 80);
     return vnode as unknown as VNode;
   }
 
@@ -167,9 +167,9 @@ function normalizeVNode(vnode: VNode | string) {
   if (Array.isArray(children))
     vnode.props.children = children
       .slice(0, MAX_SUBITEMS)
-      .map(normalizeVNode)
+      .map((c) => normalizeVNode(c, state))
       .filter((v) => !!v);
-  else if (children) vnode.props.children = normalizeVNode(children);
+  else if (children) vnode.props.children = normalizeVNode(children, state);
 
   normalizeContainer(vnode);
   normalizeCenter(vnode);
