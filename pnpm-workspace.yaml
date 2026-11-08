@@ -4,12 +4,9 @@ allowBuilds:
   unrs-resolver: true
   workerd: true
 overrides:
-  sharp: ^0.35.3
-  "@vite-pwa/astro>astro": ^7.3.1
-  "@vite-pwa/astro>vite-plugin-pwa": ^2.0.0
-  "@vite-pwa/astro>@vite-pwa/assets-generator": ^2.0.0
-  eslint-plugin-jsx-a11y>eslint: ^10.9.1
-  brace-expansion@>=2.0.0 <2.1.7: ^2.1.7
-  fast-uri@>=3.0.0 <3.1.9: ^3.1.9
-  serialize-javascript@<7.1.3: ^7.1.3
-  undici@>=7.0.0 <7.30.1: ^7.30.1
+  "@emnapi/runtime": ^1.11.3
+  fflate: ^0.7.5
+  glob: ^14.0.2
+  satori: ^0.33.5
+  sharp: ^0.35.5
+  eslint-plugin-jsx-a11y>eslint: ^10

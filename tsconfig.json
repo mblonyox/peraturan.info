@@ -19,9 +19,9 @@
     },
     "types": [
       "astro/client",
-      "vite-plugin-pwa/vanillajs",
-      "vite-plugin-pwa/info",
-      "vite-plugin-pwa/pwa-assets",
+      "@unplugin-pwa/core/vanillajs",
+      "@unplugin-pwa/core/info",
+      "@unplugin-pwa/core/pwa-assets",
       "vite-plugin-arraybuffer/types"
     ]
   },

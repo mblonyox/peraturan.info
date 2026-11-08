@@ -2,7 +2,7 @@ import cloudflare from "@astrojs/cloudflare";
 import { cacheCloudflare } from "@astrojs/cloudflare/cache";
 import react from "@astrojs/react";
 import tailwindcss from "@tailwindcss/vite";
-import AstroPWA from "@vite-pwa/astro";
+import { AstroPWAIntegration } from "@vite-pwa/astro";
 import { defineConfig } from "astro/config";
 import icon from "astro-iconset";
 import arraybuffer from "vite-plugin-arraybuffer";
@@ -41,12 +41,12 @@ export default defineConfig({
         ],
       },
     }),
-    AstroPWA({
+    AstroPWAIntegration({
       manifest,
       pwaAssets: {
         config: true,
       },
-      workbox: {
+      generateSW: {
         globPatterns: ["**/*.{css,js,html,svg,png,webp,ico,txt,xml}"],
         navigateFallback: "/not-found",
         navigateFallbackAllowlist: [/^\/api/, /^\/cdn-cgi/, /^\/not-found/],
