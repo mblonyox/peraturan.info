@@ -4,7 +4,6 @@ allowBuilds:
   unrs-resolver: true
   workerd: true
 overrides:
-  "@emnapi/runtime": ^1.11.3
   fflate: ^0.7.5
   glob: ^14.0.2
   satori: ^0.33.5
