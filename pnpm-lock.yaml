@@ -215,6 +215,9 @@ importers:
       marked:
         specifier: ^18.2.0
         version: 18.2.0
+      pixl-resize:
+        specifier: ^1.0.0
+        version: 1.0.0
       printd:
         specifier: ^1.6.0
         version: 1.6.0
@@ -3311,6 +3314,10 @@ packages:
   picomatch@4.0.7:
     resolution: {integrity: sha512-qcJu88Q2IWqJsDD529JKMdwGm/dvInW4HvQnRwiH9JtihJvzGOscDtHE3x1pBKeUOTysQ8kVmLnJ2kJu7yhcGA==}
     engines: {node: '>=12'}
+
+  pixl-resize@1.0.0:
+    resolution: {integrity: sha512-bg765NKC2xq9dNupuGMIzAOCsLiOAzoJ1HvvBCytPrCEWMEZl0MeHiiuSuulqJyVbKgKX7n7B3WjdUG0BzOkQg==}
+    engines: {node: '>=18'}
 
   possible-typed-array-names@1.1.0:
     resolution: {integrity: sha512-/+5VFTchJDoVj3bhoqi6UeymcD00DAwb1nJwamzPvHEszJ4FpF6SNNbUbOS8yI56qHzdV8eK0qEfOSiodkTdxg==}
@@ -7071,6 +7078,8 @@ snapshots:
   picomatch@2.3.2: {}
 
   picomatch@4.0.7: {}
+
+  pixl-resize@1.0.0: {}
 
   possible-typed-array-names@1.1.0: {}
 

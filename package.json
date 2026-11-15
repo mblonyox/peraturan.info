@@ -32,6 +32,7 @@
     "feed": "^6.0.0",
     "github-slugger": "^2.0.0",
     "marked": "^18.2.0",
+    "pixl-resize": "^1.0.0",
     "printd": "^1.6.0",
     "react": "^19.3.1",
     "react-dom": "^19.3.1",
