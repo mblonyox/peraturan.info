@@ -13,7 +13,10 @@ import { BASE_URL } from "./src/lib/constants";
 // https://astro.build/config
 export default defineConfig({
   output: "server",
-  adapter: cloudflare(),
+  adapter: cloudflare({
+    imagesBindingName: false,
+    imageService: "passthrough",
+  }),
   integrations: [
     react(),
     icon({
