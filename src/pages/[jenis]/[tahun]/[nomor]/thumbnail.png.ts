@@ -43,5 +43,10 @@ export const GET: APIRoute = async ({ params, cache, rewrite, url }) => {
     const input = Buffer.from(thumbnail);
     thumbnail = resize(input, { width, height }).buffer as ArrayBuffer;
   }
-  return new Response(thumbnail, { headers: { "Content-Type": "image/png" } });
+  return new Response(thumbnail, {
+    headers: {
+      "Content-Type": "image/png",
+      "No-Vary-Search": 'key-order, params, except("width" "height")',
+    },
+  });
 };
