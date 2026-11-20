@@ -18,6 +18,7 @@ type VNode = ReturnType<typeof html>;
 
 const MAX_SUBITEMS = 10;
 const MAX_LINES = 20;
+const CHAR_PER_LINE = 80;
 
 function queryByTypes(vnode: VNode, types: string[]): VNode[] {
   if (types.includes(vnode.type)) return [vnode];
@@ -158,8 +159,10 @@ function normalizeVNode(vnode: VNode | string, state?: { lines: number }) {
   state ??= { lines: 0 };
   if (state.lines > MAX_LINES) return undefined;
   if (typeof vnode === "string") {
-    state.lines += Math.ceil(vnode.length / 80);
-    return vnode as unknown as VNode;
+    const available = MAX_LINES - state.lines;
+    const current = Math.ceil(vnode.length / CHAR_PER_LINE);
+    state.lines += current;
+    return vnode.slice(0, available * CHAR_PER_LINE) as unknown as VNode;
   }
 
   // Normalize children
