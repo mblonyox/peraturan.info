@@ -37,7 +37,7 @@ const { peraturan, title, description, image, imageAlt } = Astro.props;
 
 const layoutProps = {
   title,
-  titleTemplate: `%s | ${peraturan.rujukPendek}`,
+  titleTemplate: `%s | ${peraturan.rujukPanjang}`,
   description: description ?? peraturan.rujukPanjang,
   image: image ?? new URL(`${peraturan.path}/og-image.png`, Astro.site).href,
   imageAlt: imageAlt ?? peraturan.rujukPendek,

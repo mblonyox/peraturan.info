@@ -1,5 +1,11 @@
 ---
-export type Props = SEOProps & { image?: string; imageAlt?: string };
+export type Props = SEOProps & {
+  image?: string;
+  imageAlt?: string;
+  imageType?: string;
+  imageWidth?: number;
+  imageHeight?: number;
+};
 
 import "@/styles/globals.css";
 
@@ -21,6 +27,9 @@ let {
   extend,
   image,
   imageAlt,
+  imageType,
+  imageWidth,
+  imageHeight,
   ...seoProps
 } = Astro.props;
 
@@ -32,8 +41,11 @@ description ??=
   "dari legislation.gov.uk.";
 image ??= new URL("/og-image.png", Astro.site).href;
 imageAlt ??= "Peraturan.Info";
+imageType ??= "image/png";
+imageWidth ??= 1200;
+imageHeight ??= 630;
 
-const parsedTitle = titleTemplate.replace("%s", title ?? titleDefault);
+const parsedTitle = title ? titleTemplate.replace("%s", title) : titleDefault;
 ---
 
 <html lang="id" class="h-full antialiased">
@@ -49,13 +61,20 @@ const parsedTitle = titleTemplate.replace("%s", title ?? titleDefault);
         basic: {
           type: "website",
           title: parsedTitle,
-          url: new URL(Astro.url.pathname, Astro.site).href,
-          image,
+          url: new URL(Astro.url.pathname, Astro.site),
+          image
         },
         optional: {
           description,
           locale: "id_ID",
           siteName: "Peraturan.Info"
+        },
+        image: {
+          url: image,
+          alt: imageAlt,
+          type: imageType,
+          width: imageWidth,
+          height: imageHeight
         }
       }}
       twitter={{
@@ -66,6 +85,7 @@ const parsedTitle = titleTemplate.replace("%s", title ?? titleDefault);
         image,
         imageAlt
       }}
+      {...seoProps}
       extend={{
         link: [
           {
@@ -94,14 +114,11 @@ const parsedTitle = titleTemplate.replace("%s", title ?? titleDefault);
           },
           ...(extend?.link ?? []),
         ],
-        meta: [...(extend?.meta ?? [])],
+        meta: extend?.meta,
       }}
-      {...seoProps}
     />
     { pwaAssetsHead.themeColor && <meta name="theme-color" content={pwaAssetsHead.themeColor.content} /> }
-    { pwaAssetsHead.links.map(link => (
-        <link {...link} />
-    )) }
+    { pwaAssetsHead.links.map(props => <link {...props} />) }
     { pwaInfo && <Fragment set:html={pwaInfo.webManifest.linkTag} /> }
     <ClientRouter />
     <script is:inline async src="https://news.google.com/swg/js/v1/publisher.js" />
