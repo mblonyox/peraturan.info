@@ -185,6 +185,8 @@ function normalizeVNode(vnode: VNode | string, state?: { lines: number }) {
     return vnode;
   }
 
+  vnode.props ??= {};
+
   unwrapAnchor(vnode);
 
   // Normalize children
