@@ -55,13 +55,23 @@ export const GET: APIRoute = async ({
     maxAge: YEAR,
     tags: ["peraturan", `${jenis}/${tahun}/${nomor}`],
   });
-  const width = Number(url.searchParams.get("width")) || undefined;
-  const height = Number(url.searchParams.get("height")) || undefined;
+  const size = url.searchParams.get("size");
+  let width, height;
+  switch (size) {
+    case "xs":
+      width = 105;
+      height = 165;
+      break;
+    case "sm":
+      width = 210;
+      height = 330;
+      break;
+  }
   const thumbnail = await getThumbnailBytes(peraturan, width, height);
   return new Response(thumbnail, {
     headers: {
       "Content-Type": "image/png",
-      "No-Vary-Search": 'key-order, params, except("width" "height")',
+      "No-Vary-Search": 'key-order, params, except("size")',
     },
   });
 };
