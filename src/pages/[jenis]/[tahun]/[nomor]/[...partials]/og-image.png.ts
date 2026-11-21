@@ -30,8 +30,14 @@ export const GET: APIRoute = async ({
   if (!md) return rewrite("/404");
   let rootTokens = marked.lexer(md) as PeraturanToken[];
   if (partials === "isi") {
-    rootTokens = rootTokens.filter(
-      (t) => !["buku", "bab", "pasal"].includes(t.type),
+    rootTokens = rootTokens.filter((t) =>
+      [
+        "judul",
+        "frasa-jabatan",
+        "konsideran",
+        "dasar-hukum",
+        "diktum",
+      ].includes(t.type),
     );
   }
   const data = handlerPartials(partials, rootTokens);
