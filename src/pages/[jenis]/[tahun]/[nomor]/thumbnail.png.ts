@@ -1,5 +1,5 @@
 import type { APIRoute } from "astro";
-import { ImageResponse } from "cf-workers-og";
+import { cache as fontCache, GoogleFont, ImageResponse } from "cf-workers-og";
 import { resize } from "pixl-resize";
 
 import placeholder from "@/assets/placeholder.png?arraybuffer";
@@ -23,7 +23,7 @@ export async function getThumbnailBytes(
           nomor: peraturan.nomorPanjang,
           judul: peraturan.judul,
         }),
-        { width: 540, height: 890 },
+        { width: 540, height: 890, fonts: [new GoogleFont("EB Garamond")] },
       );
       thumbnail = await imageResponse.arrayBuffer();
     } catch (error) {
@@ -38,7 +38,14 @@ export async function getThumbnailBytes(
   return thumbnail;
 }
 
-export const GET: APIRoute = async ({ params, cache, rewrite, url }) => {
+export const GET: APIRoute = async ({
+  params,
+  cache,
+  rewrite,
+  url,
+  locals,
+}) => {
+  fontCache.setExecutionContext(locals.cfContext);
   const paths = $peraturanPaths.safeParse(params);
   if (!paths.success) return rewrite("/404");
   const { jenis, tahun, nomor } = paths.data;
