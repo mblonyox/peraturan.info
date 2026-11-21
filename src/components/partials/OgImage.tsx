@@ -14,6 +14,9 @@ type VNode = ReturnType<typeof html>;
 const MAX_SUBITEMS = 10;
 const MAX_LINES = 20;
 const CHAR_PER_LINE = 80;
+const FONT_FAMILY = "EB Garamond";
+const FONT_SIZE = 28;
+const LINE_HEIGHT = 1.5;
 
 function queryByTypes(vnode: VNode, types: string[]): VNode[] {
   if (types.includes(vnode.type)) return [vnode];
@@ -89,8 +92,9 @@ function normalizeAyat(vnode: VNode) {
   vnode.props = {};
   vnode.props.children = [lead, content];
   vnode.props.style ??= {};
-  vnode.props.style.fontSize = 18;
-  vnode.props.style.lineHeight = 1.25;
+  vnode.props.style.fontFamily = FONT_FAMILY;
+  vnode.props.style.fontSize = FONT_SIZE;
+  vnode.props.style.lineHeight = LINE_HEIGHT;
   vnode.props.style.display = "flex";
   vnode.props.style.flexDirection = "row";
   vnode.props.style.gap = 7;
@@ -116,8 +120,9 @@ function normalizeMarker(vnode: VNode) {
   vnode.props = {};
   vnode.props.children = [marker, content];
   vnode.props.style ??= {};
-  vnode.props.style.fontSize = 18;
-  vnode.props.style.lineHeight = 1.25;
+  vnode.props.style.fontFamily = FONT_FAMILY;
+  vnode.props.style.fontSize = FONT_SIZE;
+  vnode.props.style.lineHeight = LINE_HEIGHT;
   vnode.props.style.display = "flex";
   vnode.props.style.flexDirection = "row";
   vnode.props.style.gap = 7;
@@ -134,8 +139,9 @@ function normalizeContainer(vnode: VNode) {
   // vnode.props.style.borderColor = "red";
 
   if ([children].flat().some((v) => typeof v === "string")) {
-    vnode.props.style.fontSize = 18;
-    vnode.props.style.lineHeight = 1.25;
+    vnode.props.style.fontFamily = FONT_FAMILY;
+    vnode.props.style.fontSize = FONT_SIZE;
+    vnode.props.style.lineHeight = LINE_HEIGHT;
     vnode.props.style.display = "contents";
   } else {
     vnode.props.style.display = "flex";
@@ -147,7 +153,7 @@ function normalizeBr(vnode: VNode) {
   if (vnode.type !== "br") return;
   vnode.props.style ??= {};
   vnode.props.style.display = "block";
-  vnode.props.style.height = 12;
+  vnode.props.style.height = FONT_SIZE;
 }
 
 function normalizeVNode(vnode: VNode | string, state?: { lines: number }) {

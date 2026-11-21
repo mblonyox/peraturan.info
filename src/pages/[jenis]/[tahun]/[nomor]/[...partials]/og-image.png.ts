@@ -1,5 +1,5 @@
 import type { APIRoute } from "astro";
-import { ImageResponse } from "cf-workers-og";
+import { cache as fontCache, GoogleFont, ImageResponse } from "cf-workers-og";
 import { z } from "zod";
 
 import PartialsOgImage from "@/components/partials/OgImage";
@@ -10,7 +10,14 @@ import { getData } from "@/lib/utils/data";
 import { handlerPartials } from "@/lib/utils/partials";
 import { $peraturanPaths } from "@/lib/utils/validate";
 
-export const GET: APIRoute = async ({ cache, params, rewrite, site }) => {
+export const GET: APIRoute = async ({
+  cache,
+  params,
+  rewrite,
+  site,
+  locals,
+}) => {
+  fontCache.setExecutionContext(locals.cfContext);
   const paths = await $peraturanPaths
     .extend({ partials: z.string() })
     .safeParseAsync(params);
@@ -43,5 +50,11 @@ export const GET: APIRoute = async ({ cache, params, rewrite, site }) => {
       tokens,
       url,
     }),
+    {
+      fonts: [
+        new GoogleFont("Plus Jakarta Sans"),
+        new GoogleFont("EB Garamond", { weight: 400 }),
+      ],
+    },
   );
 };
