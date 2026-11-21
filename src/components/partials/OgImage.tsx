@@ -149,6 +149,24 @@ function normalizeContainer(vnode: VNode) {
   }
 }
 
+function unwrapAnchor(vnode: VNode) {
+  const children = vnode.props.children;
+  if (!children || typeof children === "string") return;
+  if (Array.isArray(children)) {
+    vnode.props.children = children
+      .map((c) => (c.type === "a" ? c.props.children : c))
+      .reduce((a: (string | VNode | VNode[] | undefined)[], c) => {
+        const last = a.at(-1);
+        if (typeof last === "string" && typeof c === "string")
+          a[a.length - 1] = last + " " + c;
+        else a.push(c);
+        return a;
+      }, [])
+      .filter((c): c is VNode => !!c);
+  } else if (children.type === "a")
+    vnode.props.children = children.props.children;
+}
+
 function normalizeBr(vnode: VNode) {
   if (vnode.type !== "br") return;
   vnode.props.style ??= {};
@@ -158,7 +176,7 @@ function normalizeBr(vnode: VNode) {
 
 function normalizeVNode(vnode: VNode | string, state?: { lines: number }) {
   state ??= { lines: 0 };
-  if (state.lines > MAX_LINES) return undefined;
+  if (state.lines > MAX_LINES) return;
   if (typeof vnode === "string") {
     const available = MAX_LINES - state.lines;
     const current = Math.ceil(vnode.length / CHAR_PER_LINE);
@@ -167,14 +185,19 @@ function normalizeVNode(vnode: VNode | string, state?: { lines: number }) {
     return vnode;
   }
 
+  unwrapAnchor(vnode);
+
   // Normalize children
-  const children = vnode.props.children;
-  if (Array.isArray(children))
-    vnode.props.children = children
-      .slice(0, MAX_SUBITEMS)
-      .map((c) => normalizeVNode(c, state))
-      .filter((v): v is VNode => !!v);
-  else if (children) vnode.props.children = normalizeVNode(children, state);
+  let children = vnode.props.children;
+  if (children) {
+    if (Array.isArray(children))
+      children = children
+        .slice(0, MAX_SUBITEMS)
+        .map((c) => normalizeVNode(c, state))
+        .filter((v): v is VNode => !!v);
+    else children = normalizeVNode(children, state);
+    vnode.props.children = children;
+  }
 
   normalizeContainer(vnode);
   normalizeCenter(vnode);
@@ -197,7 +220,9 @@ function TokenComponent({ tokens }: { tokens: PeraturanToken[] }) {
   const reducedTokens = reduceSubTokens(tokens);
   const parsed = marked.parser(reducedTokens);
   const vnode = html(parsed);
-  return normalizeVNode(vnode) as React.ReactNode;
+  const result = normalizeVNode(vnode);
+  // console.log(JSON.stringify(vnode, undefined, 2));
+  return result as React.ReactNode;
 }
 
 export default function PartialsOgImage({ title, tokens, url }: Props) {
