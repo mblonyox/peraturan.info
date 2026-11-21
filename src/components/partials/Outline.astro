@@ -1,16 +1,16 @@
 ---
 import { Icon } from "astro-iconset/components";
-import type { Token } from "marked";
 
+import type { PeraturanToken } from "@/lib/marked";
 import { ellipsis } from "@/lib/utils/string";
 
 import BatangTubuhOutline from "./BatangTubuhOutline.astro";
 
 interface Props {
-  tokens: Token[];
+  tokens: PeraturanToken[];
 }
 
-function childTokens(token?: Token) {
+function childTokens(token?: PeraturanToken) {
   return token && "tokens" in token ? token.tokens : undefined;
 }
 const { jenis, tahun, nomor } = Astro.params;

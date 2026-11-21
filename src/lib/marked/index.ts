@@ -1,7 +1,9 @@
 import { marked } from "marked";
 
-import { extension, type PeraturanToken } from "./extension";
+import { extension } from "./extension";
+import { sanitizeOptions } from "./sanitize";
 
-export const createMarked = () => marked.use(extension);
-export type { PeraturanToken };
-export { sanitizeOptions } from "./sanitize";
+marked.use(extension);
+
+export { marked, sanitizeOptions };
+export type { PeraturanToken } from "./extension";

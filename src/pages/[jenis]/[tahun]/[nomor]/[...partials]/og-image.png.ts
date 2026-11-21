@@ -5,7 +5,7 @@ import { z } from "zod";
 import PartialsOgImage from "@/components/partials/OgImage";
 import { YEAR } from "@/lib/constants";
 import { getPeraturan } from "@/lib/db";
-import { createMarked, type PeraturanToken } from "@/lib/marked";
+import { marked, type PeraturanToken } from "@/lib/marked";
 import { getData } from "@/lib/utils/data";
 import { handlerPartials } from "@/lib/utils/partials";
 import { $peraturanPaths } from "@/lib/utils/validate";
@@ -21,8 +21,12 @@ export const GET: APIRoute = async ({ cache, params, rewrite, site }) => {
   const path = `${jenis}/${tahun}/${nomor}/fulltext.md`;
   const md = await getData(path, { format: "text" });
   if (!md) return rewrite("/404");
-  const marked = createMarked();
-  const rootTokens = marked.lexer(md) as PeraturanToken[];
+  let rootTokens = marked.lexer(md) as PeraturanToken[];
+  if (partials === "isi") {
+    rootTokens = rootTokens.filter(
+      (t) => !["buku", "bab", "pasal"].includes(t.type),
+    );
+  }
   const data = handlerPartials(partials, rootTokens);
   if (!data) return rewrite("/404");
   const { tokens, title } = data;

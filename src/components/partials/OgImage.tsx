@@ -2,11 +2,7 @@ import sanitize from "sanitize-html";
 import { html } from "satori-html";
 
 import logoBase64 from "@/assets/logo.png?inline";
-import {
-  createMarked,
-  type PeraturanToken,
-  sanitizeOptions,
-} from "@/lib/marked";
+import { marked, type PeraturanToken, sanitizeOptions } from "@/lib/marked";
 
 interface Props {
   title: string;
@@ -162,7 +158,8 @@ function normalizeVNode(vnode: VNode | string, state?: { lines: number }) {
     const available = MAX_LINES - state.lines;
     const current = Math.ceil(vnode.length / CHAR_PER_LINE);
     state.lines += current;
-    return vnode.slice(0, available * CHAR_PER_LINE) as unknown as VNode;
+    if (current > available) vnode = vnode.slice(0, available * CHAR_PER_LINE);
+    return vnode;
   }
 
   // Normalize children
@@ -171,7 +168,7 @@ function normalizeVNode(vnode: VNode | string, state?: { lines: number }) {
     vnode.props.children = children
       .slice(0, MAX_SUBITEMS)
       .map((c) => normalizeVNode(c, state))
-      .filter((v) => !!v);
+      .filter((v): v is VNode => !!v);
   else if (children) vnode.props.children = normalizeVNode(children, state);
 
   normalizeContainer(vnode);
@@ -193,7 +190,6 @@ function reduceSubTokens(tokens: PeraturanToken[]) {
 
 function TokenComponent({ tokens }: { tokens: PeraturanToken[] }) {
   const reducedTokens = reduceSubTokens(tokens);
-  const marked = createMarked();
   const parsed = marked.parser(reducedTokens);
   const sanitized = sanitize(parsed, sanitizeOptions);
   const vnode = html(sanitized);

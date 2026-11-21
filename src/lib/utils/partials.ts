@@ -1,6 +1,4 @@
-import type { Tokens } from "marked";
-
-import { type PeraturanToken } from "../marked";
+import type { PeraturanToken } from "../marked";
 import { ellipsis } from "./string";
 
 function getPasalTokens(tokens: PeraturanToken[]): PeraturanToken[] {
@@ -144,7 +142,7 @@ export function handlerPartials(
     if (!match) return null;
     const [, pasal, angka] = match;
     const pasalTokens = getPasalTokens(rootTokens);
-    let token: Tokens.Generic | undefined,
+    let token: PeraturanToken | undefined,
       title: string | undefined,
       prev: { name: string; url: string } | undefined,
       next: { name: string; url: string } | undefined;
@@ -179,7 +177,7 @@ export function handlerPartials(
       const pasal = token;
       const butirs = (token.tokens ?? [])
         .flatMap((token) =>
-          token.type === "butir-list" ? (token.items as Tokens.Generic[]) : [],
+          token.type === "butir-list" ? (token.items as PeraturanToken[]) : [],
         )
         .filter(
           (token) =>

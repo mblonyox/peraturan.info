@@ -1,11 +1,11 @@
 ---
-import { Icon } from "astro-iconset/components"
-import type { Token } from "marked";
+import { Icon } from "astro-iconset/components";
 
+import type { PeraturanToken } from "@/lib/marked";
 import { ellipsis } from "@/lib/utils/string";
 
 interface Props {
-  token: Token;
+  token: PeraturanToken;
   path: string;
 }
 
@@ -14,8 +14,8 @@ const { jenis, tahun, nomor: nomorPeraturan, partials } = Astro.params;
 
 const basePath = `/${jenis}/${tahun}/${nomorPeraturan}`;
 
-const childTokens = (token: Token) => "tokens" in token && token.tokens || [];
-const subTokenFilter = (token: Token) => 
+const childTokens = (token: PeraturanToken) => "tokens" in token && token.tokens || [];
+const subTokenFilter = (token: PeraturanToken) => 
   token.type === "bab" ||
   token.type === "bagian" ||
   token.type === "paragraf" ||
@@ -30,19 +30,20 @@ const slugify = (str: string) =>
 const nomor =
   (token.type === "ayat" ? "ayat " : "") +
   ("nomor" in token ? token.nomor : "");
-const judul = "judul" in token ? token.judul : nomor;
+const judul = "judul" in token && token.judul ? token.judul : nomor;
 const slug = slugify(nomor)
 const subPath = (token.type === "pasal" ? basePath : path) + `/${slug}`;
 const subTokens = childTokens(token).filter(subTokenFilter);
-const angkaPasalRomawi = token.type === "pasal" && 
+const angkaPasalRomawi = token.type === "pasal" &&
+  token.nomor &&
   /Pasal [MDCLXVI]+/.test(token.nomor) &&
   childTokens(token)
     .flatMap((token) =>
       token.type === "butir-list"
-        ? token.items as Token[]
+        ? token.items as PeraturanToken[]
         : []
     )
-    .filter((token): token is Token & {marker: `${number}.`} => token.type === "butir-item" && /^\d+\.$/.test(token.marker))
+    .filter((token): token is PeraturanToken & {marker: `${number}.`} => token.type === "butir-item" && /^\d+\.$/.test(token.marker))
     .map(token => ({
       href: subPath + "/angka-" + token.marker.replace(".", ""),
       text: token.raw.split(":::", 1)[0]
@@ -54,7 +55,7 @@ if (token.type === "pasal" && !subTokens.length) {
   if (angkaPasalRomawi.length) {
     preview = preview.split(angkaPasalRomawi[0].text)[0].trim();
   }
-} else if (token.type === "ayat") {
+} else if (token.type === "ayat" && token.nomor) {
   preview = token.raw.substring(token.nomor.length).trim()
 }
 
@@ -63,7 +64,7 @@ if (token.type == "pasal") {
   isOpen = true;
 } else if (partials?.startsWith("pasal")) {
   const pasalPartial = partials.split("/")[0]
-  const hasPasalSubTokens = (t: Token): boolean => {
+  const hasPasalSubTokens = (t: PeraturanToken): boolean => {
     const tokens = childTokens(t);
     return tokens.some(t => t.type === "pasal" && slugify(t.nomor) === pasalPartial || hasPasalSubTokens(t))
   }

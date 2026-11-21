@@ -1,11 +1,10 @@
 ---
-import type { Token } from "marked";
-
 import type { Peraturan } from "@/lib/db";
+import type { PeraturanToken } from "@/lib/marked";
 
 interface Props {
   peraturan: Peraturan;
-  rootTokens: Token[];
+  rootTokens: PeraturanToken[];
   title?: string;
   description?: string;
   prev?: { name: string; url: string };

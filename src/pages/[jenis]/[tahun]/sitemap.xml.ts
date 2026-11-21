@@ -5,7 +5,7 @@ import { EnumChangefreq, type SitemapItemLoose, SitemapStream } from "sitemap";
 
 import { YEAR } from "@/lib/constants";
 import { getListPeraturan } from "@/lib/db";
-import { createMarked, type PeraturanToken } from "@/lib/marked";
+import { marked, type PeraturanToken } from "@/lib/marked";
 import { getData } from "@/lib/utils/data";
 import { $peraturanPaths } from "@/lib/utils/validate";
 
@@ -76,7 +76,6 @@ async function* getPartialPaths(md: string): AsyncGenerator<string> {
     "/batang-tubuh",
   ];
   yield* paths;
-  const marked = createMarked();
   const rootTokens = [...marked.lexer(md)] as PeraturanToken[];
   yield* getSubPaths(rootTokens);
 }
