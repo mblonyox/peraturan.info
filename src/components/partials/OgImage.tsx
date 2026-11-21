@@ -1,8 +1,7 @@
-import sanitize from "sanitize-html";
 import { html } from "satori-html";
 
 import logoBase64 from "@/assets/logo.png?inline";
-import { marked, type PeraturanToken, sanitizeOptions } from "@/lib/marked";
+import { marked, type PeraturanToken } from "@/lib/marked";
 
 interface Props {
   title: string;
@@ -191,8 +190,7 @@ function reduceSubTokens(tokens: PeraturanToken[]) {
 function TokenComponent({ tokens }: { tokens: PeraturanToken[] }) {
   const reducedTokens = reduceSubTokens(tokens);
   const parsed = marked.parser(reducedTokens);
-  const sanitized = sanitize(parsed, sanitizeOptions);
-  const vnode = html(sanitized);
+  const vnode = html(parsed);
   return normalizeVNode(vnode) as React.ReactNode;
 }
 

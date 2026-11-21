@@ -5,6 +5,9 @@ import type {
   TokenizerAndRendererExtension,
   Tokens,
 } from "marked";
+import sanitize from "sanitize-html";
+
+import { sanitizeOptions } from "./sanitize";
 
 export type PeraturanToken = Tokens.Generic & {
   nomor?: string;
@@ -499,4 +502,9 @@ export const extension: MarkedExtension = {
     container,
     indentedBlock,
   ],
+  hooks: {
+    postprocess(html) {
+      return sanitize(html, sanitizeOptions);
+    },
+  },
 };
