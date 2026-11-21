@@ -76,8 +76,8 @@ export function handlerPartials(
       title: string | undefined,
       prev: { name: string; url: string } | undefined,
       next: { name: string; url: string } | undefined;
-    token = pasalTokens.find((token: PeraturanToken) => {
-      const slug = token.nomor?.toLowerCase().replace(" ", "-");
+    token = pasalTokens.find((t) => {
+      const slug = t.nomor?.toLowerCase().replaceAll(" ", "-");
       return slug === pasal;
     });
     if (!token?.nomor) return null;
@@ -89,7 +89,7 @@ export function handlerPartials(
         if (prevToken.nomor) {
           prev = {
             name: prevToken.nomor,
-            url: prevToken.nomor.toLowerCase().replace(" ", "-"),
+            url: prevToken.nomor.toLowerCase().replaceAll(" ", "-"),
           };
         }
       }
@@ -98,7 +98,7 @@ export function handlerPartials(
         if (nextToken.nomor) {
           next = {
             name: nextToken.nomor,
-            url: nextToken.nomor.toLowerCase().replace(" ", "-"),
+            url: nextToken.nomor.toLowerCase().replaceAll(" ", "-"),
           };
         }
       }
@@ -106,9 +106,9 @@ export function handlerPartials(
     if (ayat) {
       const pasal = token;
       const ayats = token.tokens as PeraturanToken[];
-      token = ayats.find((token) => {
-        const slug = token?.nomor?.toLowerCase()?.replaceAll(/[\(\)]/g, "");
-        return token.type === "ayat" && slug === ayat;
+      token = ayats.find((t) => {
+        const slug = t.nomor?.toLowerCase().replaceAll(/[\(\)]/g, "");
+        return t.type === "ayat" && slug === ayat;
       });
       if (!token) return null;
       title = `${pasal.nomor} ayat ${token.nomor}`;
@@ -117,8 +117,8 @@ export function handlerPartials(
         const prevToken = ayats[index - 1];
         if (prevToken.nomor) {
           prev = {
-            name: `${pasal.nomor} ayat ${prevToken?.nomor}`,
-            url: `${pasal.nomor?.toLowerCase()?.replace(" ", "-")}/ayat-${prevToken?.nomor?.toLowerCase()?.replaceAll(/[\(\)]/g, "")}`,
+            name: `${pasal.nomor} ayat ${prevToken.nomor}`,
+            url: `${pasal.nomor?.toLowerCase().replaceAll(" ", "-")}/ayat-${prevToken.nomor.toLowerCase().replaceAll(/[\(\)]/g, "")}`,
           };
         }
       }
@@ -127,7 +127,7 @@ export function handlerPartials(
         if (nextToken.nomor) {
           next = {
             name: `${pasal.nomor} ayat ${nextToken.nomor}`,
-            url: `${pasal.nomor?.toLowerCase().replace(" ", "-")}/ayat-${nextToken.nomor?.toLowerCase().replaceAll(/[\(\)]/g, "")}`,
+            url: `${pasal.nomor?.toLowerCase().replaceAll(" ", "-")}/ayat-${nextToken.nomor.toLowerCase().replaceAll(/[\(\)]/g, "")}`,
           };
         }
       }
@@ -146,8 +146,8 @@ export function handlerPartials(
       title: string | undefined,
       prev: { name: string; url: string } | undefined,
       next: { name: string; url: string } | undefined;
-    token = pasalTokens.find((token: PeraturanToken) => {
-      const slug = token.nomor?.toLowerCase().replace(" ", "-");
+    token = pasalTokens.find((t) => {
+      const slug = t.nomor?.toLowerCase().replaceAll(" ", "-");
       return slug === pasal;
     });
     if (!token?.nomor) return null;
@@ -159,7 +159,7 @@ export function handlerPartials(
         if (prevToken.nomor) {
           prev = {
             name: prevToken.nomor,
-            url: prevToken.nomor.toLowerCase().replace(" ", "-"),
+            url: prevToken.nomor.toLowerCase().replaceAll(" ", "-"),
           };
         }
       }
@@ -168,7 +168,7 @@ export function handlerPartials(
         if (nextToken.nomor) {
           next = {
             name: nextToken.nomor,
-            url: nextToken.nomor.toLowerCase().replace(" ", "-"),
+            url: nextToken.nomor.toLowerCase().replaceAll(" ", "-"),
           };
         }
       }
@@ -183,9 +183,9 @@ export function handlerPartials(
           (token) =>
             token.type === "butir-item" && /^\d+\.$/.test(token.marker),
         );
-      token = butirs.find((token) => {
-        if (!("marker" in token)) return;
-        const nomor = token.marker.replace(".", "");
+      token = butirs.find((t) => {
+        if (!("marker" in t)) return;
+        const nomor = t.marker.replace(".", "");
         return nomor === angka;
       });
       if (!token) return null;
@@ -198,7 +198,7 @@ export function handlerPartials(
           const nomor = prevToken.marker.replace(".", "");
           prev = {
             name: `${pasal.nomor} angka ${nomor}`,
-            url: `${pasal.nomor?.toLowerCase()?.replace(" ", "-")}/angka-${nomor}`,
+            url: `${pasal.nomor?.toLowerCase().replaceAll(" ", "-")}/angka-${nomor}`,
           };
         }
       }
@@ -208,7 +208,7 @@ export function handlerPartials(
           const nomor = nextToken.marker.replace(".", "");
           next = {
             name: `${pasal.nomor} angka ${nomor}`,
-            url: `${pasal.nomor?.toLowerCase().replace(" ", "-")}/angka-${nomor}`,
+            url: `${pasal.nomor?.toLowerCase().replaceAll(" ", "-")}/angka-${nomor}`,
           };
         }
       }
@@ -224,7 +224,7 @@ export function handlerPartials(
 
   function handleBukuPartial() {
     const re =
-      /^(?:(buku-\w+)\/?)?(?:(bab-[mdclxvi]+)(?:\/(bagian-\w+)(?:\/(paragraf-\d+))?)?)?$/;
+      /^(?:(buku-\w+)\/?)?(?:(bab-[mdclxvi]+)(?:\/(bagian-[a-z\-]+)(?:\/(paragraf-\d+))?)?)?$/;
     const match = re.exec(partials);
     if (!match) return null;
     const [, buku, bab, bagian, paragraf] = match;
@@ -239,17 +239,17 @@ export function handlerPartials(
         if (k === "buku") continue;
         else break;
       }
-      tokens = tokens.filter((t) => t.type === k);
-      token = tokens.find(
-        (t) => t.nomor?.toLowerCase().replace(" ", "-") === v,
-      );
+      token = tokens.find((t) => {
+        const slug = t.nomor?.toLowerCase().replaceAll(" ", "-");
+        return slug === v;
+      });
       if (!token?.nomor) return null;
       title = title ? `${title}, ${token.nomor}` : token.nomor;
       const index = tokens.indexOf(token);
       if (index > 0) {
         const prevToken = tokens[index - 1];
         if (prevToken.nomor) {
-          const subPath = prevToken.nomor.toLowerCase().replace(" ", "-");
+          const subPath = prevToken.nomor.toLowerCase().replaceAll(" ", "-");
           prev = {
             name: prevToken.nomor,
             url: path ? `${path}/${subPath}` : subPath,
@@ -259,14 +259,14 @@ export function handlerPartials(
       if (index < tokens.length - 1) {
         const nextToken = tokens[index + 1];
         if (nextToken.nomor) {
-          const subPath = nextToken.nomor.toLowerCase().replace(" ", "-");
+          const subPath = nextToken.nomor.toLowerCase().replaceAll(" ", "-");
           next = {
             name: nextToken.nomor,
             url: path ? `${path}/${subPath}` : subPath,
           };
         }
       }
-      const subPath = token.nomor.toLowerCase().replace(" ", "-");
+      const subPath = token.nomor.toLowerCase().replaceAll(" ", "-");
       path = path ? `${path}/${subPath}` : subPath;
       tokens = token.tokens ?? [];
     }
