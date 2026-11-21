@@ -5,22 +5,16 @@ import { resize } from "pixl-resize";
 import placeholder from "@/assets/placeholder.png?arraybuffer";
 import Thumbnail from "@/components/Thumbnail";
 import { YEAR } from "@/lib/constants";
-import { getPeraturan } from "@/lib/db";
+import { getPeraturan, type Peraturan } from "@/lib/db";
 import { getData } from "@/lib/utils/data";
 import { $peraturanPaths } from "@/lib/utils/validate";
 
-export const GET: APIRoute = async ({ params, cache, rewrite, url }) => {
-  const paths = $peraturanPaths.safeParse(params);
-  if (!paths.success) return rewrite("/404");
-  const { jenis, tahun, nomor } = paths.data;
-  const peraturan = await getPeraturan({ jenis, tahun, nomor });
-  if (!peraturan) return rewrite("/404");
-  const path = `${jenis}/${tahun}/${nomor}/thumbnail.png`;
-  let thumbnail = await getData(path);
-  cache.set({
-    maxAge: YEAR,
-    tags: ["peraturan", `${jenis}/${tahun}/${nomor}`],
-  });
+export async function getThumbnailBytes(
+  peraturan: Peraturan,
+  width?: number,
+  height?: number,
+) {
+  let thumbnail = await getData(`${peraturan.path}/thumbnail.png`);
   if (!thumbnail) {
     try {
       const imageResponse = await ImageResponse.create(
@@ -37,12 +31,26 @@ export const GET: APIRoute = async ({ params, cache, rewrite, url }) => {
     }
   }
   thumbnail ??= placeholder;
-  const width = Number(url.searchParams.get("width")) || undefined;
-  const height = Number(url.searchParams.get("height")) || undefined;
   if (width && height) {
     const input = Buffer.from(thumbnail);
     thumbnail = resize(input, { width, height }).buffer as ArrayBuffer;
   }
+  return thumbnail;
+}
+
+export const GET: APIRoute = async ({ params, cache, rewrite, url }) => {
+  const paths = $peraturanPaths.safeParse(params);
+  if (!paths.success) return rewrite("/404");
+  const { jenis, tahun, nomor } = paths.data;
+  const peraturan = await getPeraturan({ jenis, tahun, nomor });
+  if (!peraturan) return rewrite("/404");
+  cache.set({
+    maxAge: YEAR,
+    tags: ["peraturan", `${jenis}/${tahun}/${nomor}`],
+  });
+  const width = Number(url.searchParams.get("width")) || undefined;
+  const height = Number(url.searchParams.get("height")) || undefined;
+  const thumbnail = await getThumbnailBytes(peraturan, width, height);
   return new Response(thumbnail, {
     headers: {
       "Content-Type": "image/png",
