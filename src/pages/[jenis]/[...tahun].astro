@@ -69,7 +69,7 @@ const startIndex = (page - 1) * pageSize + 1;
 
 Astro.cache.set({
   maxAge: YEAR,
-  tags: ["peraturan", `jenis-${jenis ?? "all"}`, `tahun-${tahun ?? "all"}`],
+  tags: [`jenis-${jenis ?? "all"}`, `tahun-${tahun ?? "all"}`],
 });
 ---
 

@@ -10,7 +10,7 @@ export const ALL: APIRoute = async ({ params, redirect, cache, rewrite }) => {
   const { jenis, tahun, nomor } = paths.data;
   cache.set({
     maxAge: YEAR,
-    tags: ["peraturan", `${jenis}/${tahun}/${nomor}`],
+    tags: [`${jenis}/${tahun}/${nomor}`],
   });
   const path = `${jenis}/${tahun}/${nomor}/fulltext.md`;
   const md = await getData(path, { format: "text" });

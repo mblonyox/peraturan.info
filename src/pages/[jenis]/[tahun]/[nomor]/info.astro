@@ -26,7 +26,7 @@ const {
 
 Astro.cache.set({
   maxAge: YEAR,
-  tags: ["peraturan", `${jenis}/${tahun}/${nomor}`],
+  tags: [`${jenis}/${tahun}/${nomor}`],
 });
 
 ---

@@ -20,7 +20,7 @@ export const GET: APIRoute = async ({ params, site, cache, rewrite }) => {
   const body = Readable.toWeb(stream) as ReadableStream;
   cache.set({
     maxAge: YEAR,
-    tags: ["peraturan", `jenis-${jenis}`, `tahun-${tahun}`, "sitemap"],
+    tags: [`jenis-${jenis}`, `tahun-${tahun}`, "sitemap"],
   });
   return new Response(body, {
     headers: { "Content-Type": "application/xml; charset=utf-8" },

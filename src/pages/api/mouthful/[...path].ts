@@ -25,6 +25,8 @@ export const ALL: APIRoute = async ({ params, request, cache }) => {
         maxAge: YEAR,
         tags: [`mouthful-uri:${uri}`],
       });
+    } else {
+      cache.set(false);
     }
     return new Response(response.body, {
       status: response.status,

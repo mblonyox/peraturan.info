@@ -14,7 +14,8 @@ export async function getThumbnailBytes(
   width?: number,
   height?: number,
 ) {
-  let thumbnail = await getData(`${peraturan.path}/thumbnail.png`);
+  const { jenis, tahun, nomor } = peraturan;
+  let thumbnail = await getData(`${jenis}/${tahun}/${nomor}/thumbnail.png`);
   if (!thumbnail) {
     try {
       const imageResponse = await ImageResponse.create(
@@ -53,7 +54,7 @@ export const GET: APIRoute = async ({
   if (!peraturan) return rewrite("/404");
   cache.set({
     maxAge: YEAR,
-    tags: ["peraturan", `${jenis}/${tahun}/${nomor}`],
+    tags: [`${jenis}/${tahun}/${nomor}`, "thumbnail"],
   });
   const size = url.searchParams.get("size");
   let width, height;
