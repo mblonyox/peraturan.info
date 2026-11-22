@@ -1,4 +1,5 @@
 ---
+import { Image } from "astro:assets";
 import { z } from "zod";
 
 import PageHeading from "@/components/PageHeading.astro";
@@ -53,18 +54,28 @@ const paginationProps = { total, page, pageSize: limit };
 <RootLayout {...layoutProps}>
   <PageHeading {...headingProps} />
   <div class="container">
-    <div class="grid grid-cols-2 xl:grid-cols-3 gap-2">
-      {hits.map((hit) => (
-        <div class="card card-border shadow-sm">
-          <div class="card-body">
-            <p class="card-title line-clamp-3 text-xl font-bold">
-              {hit.document.judul}
-            </p>
+    <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-2">
+      {hits.map(({ document }) => (
+        <div class="bg-base-100 card card-border sm:card-side shadow-sm">
+          <figure class="sm:flex-1">
+            <Image
+              width={140}
+              height={220}
+              src={
+                new URL(document.path + "/thumbnail.png?size=xs", Astro.site)
+                  .href
+              }
+              alt={document.judul}
+              loading="lazy"
+            />
+          </figure>
+          <div class="card-body sm:flex-2">
+            <p class="card-title line-clamp-3 font-bold">{document.judul}</p>
             <p class="font-light">
-              {hit.document.jenis} {hit.document.nomor}
+              {document.jenis} {document.nomor}
             </p>
             <div class="card-actions justify-end">
-              <a class="btn btn-outline" href={hit.document.path}>
+              <a class="btn btn-outline" href={document.path}>
                 Buka
               </a>
             </div>
