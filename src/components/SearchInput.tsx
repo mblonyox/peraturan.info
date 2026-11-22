@@ -1,5 +1,5 @@
 import { Icon } from "astro-iconset/react";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 async function getAutocomplete(query: string): Promise<string[]> {
   const url = new URL("/api/autocomplete", document.baseURI);
@@ -10,6 +10,7 @@ async function getAutocomplete(query: string): Promise<string[]> {
 }
 
 export default function SearchInput() {
+  const inputRef = useRef<HTMLInputElement>(null);
   const [query, setQuery] = useState("");
   const [options, setOptions] = useState<string[]>([]);
 
@@ -18,16 +19,15 @@ export default function SearchInput() {
       const searchParams = new URLSearchParams(window.location.search);
       setQuery(searchParams.get("query") ?? "");
 
-      const handleKeydown = (event: KeyboardEvent) => {
+      function onKeyDown(event: KeyboardEvent) {
         if ((event.metaKey || event.ctrlKey) && event.key === "k") {
           event.preventDefault();
-          document
-            .querySelector<HTMLInputElement>("input[type='search']")
-            ?.focus();
+          inputRef.current?.focus();
         }
-      };
-      document.addEventListener("keydown", handleKeydown);
-      return () => document.removeEventListener("keydown", handleKeydown);
+      }
+
+      document.addEventListener("keydown", onKeyDown);
+      return () => document.removeEventListener("keydown", onKeyDown);
     }
   }, []);
 
@@ -37,7 +37,7 @@ export default function SearchInput() {
       return;
     }
     const timer = setTimeout(
-      () => getAutocomplete(query).then((value) => setOptions(value)),
+      () => getAutocomplete(query).then((v) => setOptions(v)),
       300,
     );
     return () => clearTimeout(timer);
@@ -48,6 +48,7 @@ export default function SearchInput() {
       <label className="input">
         <Icon name="ri:search-line" />
         <input
+          ref={inputRef}
           name="query"
           type="search"
           list="autocomplete-list"
@@ -58,7 +59,8 @@ export default function SearchInput() {
           value={query}
           onChange={(e) => setQuery(e.currentTarget.value)}
         />
-        <kbd className="kbd hidden p-3 kbd-sm lg:flex">Ctrl/⌘ + K</kbd>
+        <kbd className="kbd hidden p-3 kbd-sm lg:flex">Ctrl</kbd>
+        <kbd className="kbd hidden p-3 kbd-sm lg:flex">K</kbd>
       </label>
       <datalist id="autocomplete-list">
         {options.map((value) => (
