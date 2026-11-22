@@ -19,12 +19,11 @@ export default function SearchInput() {
       setQuery(searchParams.get("query") ?? "");
 
       const handleKeydown = (event: KeyboardEvent) => {
-        if (event.metaKey && event.key === "k") {
+        if ((event.metaKey || event.ctrlKey) && event.key === "k") {
           event.preventDefault();
-          const input = document.querySelector(
-            "input[type='search']",
-          ) as HTMLInputElement;
-          if (input) input.focus();
+          document
+            .querySelector<HTMLInputElement>("input[type='search']")
+            ?.focus();
         }
       };
       document.addEventListener("keydown", handleKeydown);
@@ -37,9 +36,10 @@ export default function SearchInput() {
       setOptions([]);
       return;
     }
-    const timer = setTimeout(() => {
-      getAutocomplete(query).then((value) => setOptions(value));
-    }, 300);
+    const timer = setTimeout(
+      () => getAutocomplete(query).then((value) => setOptions(value)),
+      300,
+    );
     return () => clearTimeout(timer);
   }, [query]);
 
@@ -58,7 +58,7 @@ export default function SearchInput() {
           value={query}
           onChange={(e) => setQuery(e.currentTarget.value)}
         />
-        <kbd className="kbd hidden p-3 kbd-sm lg:flex">⌘ K</kbd>
+        <kbd className="kbd hidden p-3 kbd-sm lg:flex">Ctrl/⌘ + K</kbd>
       </label>
       <datalist id="autocomplete-list">
         {options.map((value) => (
