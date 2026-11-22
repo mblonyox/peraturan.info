@@ -55,29 +55,29 @@ const paginationProps = { total, page, pageSize: limit };
   <PageHeading {...headingProps} />
   <div class="container">
     <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-2">
-      {hits.map(({ document }) => (
+      {hits.map(({ document: { path, judul, jenis, nomor } }) => (
         <div class="bg-base-200 card card-border sm:card-side shadow-sm">
           <figure class="sm:flex-1">
             <Image
               width={140}
               height={220}
-              src={
-                new URL(document.path + "/thumbnail.png?size=xs", Astro.site)
-                  .href
-              }
-              alt={document.judul}
+              src={new URL(path + "/thumbnail.png?size=xs", Astro.site).href}
+              alt={judul}
               loading="lazy"
             />
           </figure>
           <div class="card-body sm:flex-2">
-            <div class="card-title">
-              <p class="line-clamp-3 font-bold">{document.judul}</p>
+            <div
+              class="card-title tooltip tooltip-bottom tooltip-end"
+              data-tip={judul}
+            >
+              <p class="line-clamp-3 font-bold">{judul}</p>
             </div>
             <p class="font-light">
-              {document.jenis} {document.nomor}
+              {jenis} {nomor}
             </p>
             <div class="card-actions justify-end">
-              <a class="btn btn-outline" href={document.path}>
+              <a class="btn btn-outline" href={path}>
                 Buka
               </a>
             </div>
