@@ -67,14 +67,7 @@ async function* generateItems(
 }
 
 async function* getPartialPaths(md: string): AsyncGenerator<string> {
-  const paths = [
-    "/isi",
-    "/judul",
-    "/pembukaan",
-    "/konsideran",
-    "/dasar-hukum",
-    "/batang-tubuh",
-  ];
+  const paths = ["/isi", "/pembukaan", "/batang-tubuh"];
   yield* paths;
   const rootTokens = [...marked.lexer(md)] as PeraturanToken[];
   yield* getSubPaths(rootTokens);
@@ -82,21 +75,26 @@ async function* getPartialPaths(md: string): AsyncGenerator<string> {
 
 function* getSubPaths(tokens: PeraturanToken[], path = ""): Generator<string> {
   for (const token of tokens) {
+    if (["judul", "konsideran", "dasar-hukum"].includes(token.type)) {
+      yield "/" + token.type;
+    }
+    if (!token.nomor) continue;
+    const slug = token.nomor
+      .toLowerCase()
+      .replaceAll(/[()]/g, "")
+      .replaceAll(/\W/g, "-");
     if (["buku", "bab", "bagian", "paragraf"].includes(token.type)) {
-      const subPath = path + "/" + token.nomor?.toLowerCase().replace(" ", "-");
+      const subPath = path + "/" + slug;
       yield subPath;
-      const tokens = token.tokens ?? [];
-      yield* getSubPaths(tokens, subPath);
+      yield* getSubPaths(token.tokens ?? [], subPath);
     }
     if (token.type === "pasal") {
-      const subPath = "/" + token.nomor?.toLowerCase().replace(" ", "-");
+      const subPath = "/" + slug;
       yield subPath;
-      const tokens = token.tokens ?? [];
-      yield* getSubPaths(tokens, subPath);
+      yield* getSubPaths(token.tokens ?? [], subPath);
     }
-    if (token.type === "ayat") {
-      const nomorAyat = token.nomor?.toLowerCase().replaceAll(/[\(\)]/g, "");
-      yield path + "/ayat-" + nomorAyat;
+    if (token.type === "ayat" && token.nomor) {
+      yield path + "/ayat-" + slug;
     }
   }
 }
