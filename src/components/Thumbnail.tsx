@@ -22,6 +22,7 @@ export default function Thumbnail({ jenis, nomor, judul }: Props) {
         display: "flex",
         flexDirection: "column",
         alignItems: "center",
+        textAlign: "center",
         gap: 20,
         backgroundColor: "white",
         filter: "blur(2.5)",
@@ -34,7 +35,7 @@ export default function Thumbnail({ jenis, nomor, judul }: Props) {
       <span>{jenis.toUpperCase()} REPUBLIK INDONESIA</span>
       <span>{nomor.toUpperCase()}</span>
       <span>TENTANG</span>
-      <span>{judul.toUpperCase()}</span>
+      <span style={{ width: "75%" }}>{judul.toUpperCase()}</span>
       <div>DENGAN RAHMAT TUHAN YANG MAHA ESA</div>
       <div>PRESIDEN REPUBLIK INDONESIA,</div>
       <div
