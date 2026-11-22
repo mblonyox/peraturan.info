@@ -2,16 +2,17 @@ import tsParser from "@typescript-eslint/parser";
 import * as astroParser from "astro-eslint-parser";
 import { defineConfig, globalIgnores } from "eslint/config";
 import eslintPluginAstro from "eslint-plugin-astro";
-import prettier from "eslint-plugin-prettier/recommended";
 import simpleImportSort from "eslint-plugin-simple-import-sort";
 import tseslint from "typescript-eslint";
 
-const eslintConfig = defineConfig([
+/**
+ * @see https://eslint.org/docs/latest/use/configure/
+ */
+export default defineConfig([
   ...tseslint.configs.strict,
   ...tseslint.configs.stylistic,
   ...eslintPluginAstro.configs.recommended,
   ...eslintPluginAstro.configs["jsx-a11y-recommended"],
-  prettier,
   {
     files: ["**/*.astro"],
     languageOptions: {
@@ -33,11 +34,9 @@ const eslintConfig = defineConfig([
   globalIgnores([
     ".astro/",
     ".wrangler/",
-    "dev-dist",
+    "dev-dist/",
     "dist/",
     "node_modules/",
     "public/",
   ]),
 ]);
-
-export default eslintConfig;

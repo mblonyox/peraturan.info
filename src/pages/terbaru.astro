@@ -1,6 +1,5 @@
 ---
 import { Icon } from "astro-iconset/components";
-import clsx from "clsx";
 
 import PageHeading from "@/components/PageHeading.astro";
 import RootLayout from "@/layouts/RootLayout.astro";
@@ -52,92 +51,88 @@ const layoutProps = {
 
 <RootLayout {...layoutProps}>
   <PageHeading
-    title="Peraturan Terbaru"
-    description={(
+    description={
       <>
         Selalu <i>up-to-date</i> dengan Peraturan Perundang-undangan terbaru
         yang ditetapkan pada situs ini dengan layanan berlangganan gratis
         menggunakan <i>RSS Feed.</i>
       </>
-    )}
+    }
+    title="Peraturan Terbaru"
   />
   <div class="container my-5">
     <div class="join join-vertical md:join-horizontal w-full my-2">
-      <a href="/atom.xml" class="join-item btn link flex-1 p-2">
+      <a class="join-item btn link flex-1 p-2" href="/atom.xml">
         <Icon name="bi:rss-fill" />
         Atom
       </a>
-      <a href="/rss.xml" class="join-item btn link flex-1 p-2">
+      <a class="join-item btn link flex-1 p-2" href="/rss.xml">
         <Icon name="bi:rss" />
         RSS 2.0
       </a>
-      <a href="/feed.json" class="join-item btn link flex-1 p-2">
+      <a class="join-item btn link flex-1 p-2" href="/feed.json">
         <Icon name="bi:filetype-json" />
         JSON Feed
       </a>
     </div>
     <div class="card card-border">
       <div
-        role="tablist"
         class="tabs tabs-border bg-base-200 rounded-box rounded-b-none"
+        role="tablist"
       >
-        {
-          tanggalTerakhir.map(({ tanggal, jumlah }) => (
-            <a
-              role="tab"
-              href={`/terbaru?tanggal=${tanggal}`}
-              class={clsx(
-                "tab flex-1 z-1 text-nowrap",
-                tanggal === tanggalDipilih ? "tab-active" : "tab-inactive",
-              )}
-              aria-selected={tanggal === tanggalDipilih}
-            >
-              {new Date(tanggal).toLocaleDateString("id-ID", {
-                day: "2-digit",
-                month: "short",
-              })}{" "}
-              ({jumlah})
-            </a>
-          ))
-        }
+        {tanggalTerakhir.map(({ tanggal, jumlah }) => (
+          <a
+            aria-selected={tanggal === tanggalDipilih}
+            class:list={[
+              "tab flex-1 z-1 text-nowrap",
+              tanggal === tanggalDipilih ? "tab-active" : "tab-inactive",
+            ]}
+            href={`/terbaru?tanggal=${tanggal}`}
+            role="tab"
+          >
+            {new Date(tanggal).toLocaleDateString("id-ID", {
+              day: "2-digit",
+              month: "short",
+            })}{" "}
+            ({jumlah})
+          </a>
+        ))}
       </div>
       <div class="card-body p-0">
-        {
-          !listPeraturan.length ? (
-            <div class="alert alert-info" role="alert">
-              Tidak ada peraturan pada tanggal yang ditentukan.
-            </div>
-          ) : (
-            <div class="flex-1 overflow-x-auto">
-              <table class="table table-zebra">
-                <thead>
-                  <tr>
-                    <th scope="col">#</th>
-                    <th scope="col">Judul</th>
-                    <th scope="col">Nomor dan Tahun</th>
-                    <th scope="col">Bentuk</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {listPeraturan.map(
-                    ({ path, judul, nomorPendek, namaJenisPanjang }, index) => (
-                      <tr>
-                        <th scope="row">{index + 1}</th>
-                        <td>{judul}</td>
-                        <td>
-                          <a class="link" href={path}>
-                            {nomorPendek}
-                          </a>
-                        </td>
-                        <td>{namaJenisPanjang}</td>
-                      </tr>
-                    ),
-                  )}
-                </tbody>
-              </table>
-            </div>
-          )
-        }
+        {!listPeraturan.length ? (
+          <div class="alert alert-info" role="alert">
+            Tidak ada peraturan pada tanggal yang ditentukan.
+          </div>
+        ) : (
+          <div class="flex-1 overflow-x-auto">
+            <table class="table table-zebra">
+              <thead>
+                <tr>
+                  <th scope="col">#</th>
+                  <th scope="col">Judul</th>
+                  <th scope="col">Nomor dan Tahun</th>
+                  <th scope="col">Bentuk</th>
+                </tr>
+              </thead>
+              <tbody>
+                {listPeraturan.map(
+                  ({ path, judul, nomorPendek, namaJenisPanjang }, index) => (
+                    <tr>
+                      <th scope="row">{index + 1}</th>
+                      <td>{judul}</td>
+                      <td>
+                        <a class="link" href={path}>
+                          {nomorPendek}
+                        </a>
+                      </td>
+                      <td>{namaJenisPanjang}</td>
+                    </tr>
+                  ),
+                )}
+              </tbody>
+            </table>
+          </div>
+        )}
       </div>
     </div>
   </div>

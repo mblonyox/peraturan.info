@@ -13,7 +13,11 @@ import {
   getFilterByTahunCount,
   getListPeraturan,
 } from "@/lib/db";
-import { $pageLimit, $peraturanPaths, $searchParams } from "@/lib/utils/validate";
+import {
+  $pageLimit,
+  $peraturanPaths,
+  $searchParams,
+} from "@/lib/utils/validate";
 
 const paramsSchema = z.object({
   jenis: z.union([
@@ -27,10 +31,10 @@ const searchParamsSchema = $searchParams.pipe($pageLimit);
 
 const res1 = await paramsSchema.safeParseAsync(Astro.params);
 if (!res1.success) return Astro.rewrite("/404");
-const {jenis, tahun} = res1.data;
+const { jenis, tahun } = res1.data;
 const res2 = await searchParamsSchema.safeParseAsync(Astro.url.searchParams);
 if (!res2.success) return Astro.rewrite("/404");
-const {page, limit: pageSize} = res2.data;
+const { page, limit: pageSize } = res2.data;
 
 const { hasil, total } = await getListPeraturan({
   jenis,
@@ -75,9 +79,12 @@ Astro.cache.set({
 
 <RootLayout {...layoutProps}>
   <div class="drawer">
-    <input id="filters" type="checkbox" class="drawer-toggle" hidden />
+    <input class="drawer-toggle" hidden id="filters" type="checkbox" />
     <aside class="drawer-side">
-      <label for="filters" aria-label="Close Filters" class="drawer-overlay"
+      <label
+        aria-label="Close Filters"
+        class="drawer-overlay"
+        for="filters"
       ></label>
       <div class="bg-base-100 min-h-screen p-5">
         <FilterByJenis {...filterByJenisProps} />
@@ -88,7 +95,7 @@ Astro.cache.set({
       <PageHeading {...headingProps} />
       <div class="container my-5">
         <div class="block lg:hidden my-2">
-          <label for="filters" class="btn" aria-label="Open Filters">
+          <label aria-label="Open Filters" class="btn" for="filters">
             <Icon name="ri:filter-line" />
             &nbsp;Saring
           </label>
@@ -110,22 +117,20 @@ Astro.cache.set({
                 </tr>
               </thead>
               <tbody>
-                {
-                  hasil.map(
-                    ({ path, judul, nomorPendek, namaJenisPanjang }, index) => (
-                      <tr>
-                        <th scope="row">{startIndex + index}</th>
-                        <td>{judul}</td>
-                        <td>
-                          <a class="link" href={path}>
-                            {nomorPendek}
-                          </a>
-                        </td>
-                        <td>{namaJenisPanjang}</td>
-                      </tr>
-                    ),
-                  )
-                }
+                {hasil.map(
+                  ({ path, judul, nomorPendek, namaJenisPanjang }, index) => (
+                    <tr>
+                      <th scope="row">{startIndex + index}</th>
+                      <td>{judul}</td>
+                      <td>
+                        <a class="link" href={path}>
+                          {nomorPendek}
+                        </a>
+                      </td>
+                      <td>{namaJenisPanjang}</td>
+                    </tr>
+                  ),
+                )}
               </tbody>
             </table>
             <Pagination {...paginationProps} />

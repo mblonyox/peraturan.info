@@ -23,26 +23,44 @@ import PrintButton from "@/components/partials/PrintButton";
 
 import DetailLayout from "./DetailLayout.astro";
 
-const { peraturan, rootTokens, title, prev, next, description, image, imageAlt } = Astro.props;
+const {
+  peraturan,
+  rootTokens,
+  title,
+  prev,
+  next,
+  description,
+  image,
+  imageAlt,
+} = Astro.props;
 ---
 
-<DetailLayout peraturan={peraturan} title={title} description={description} image={image} imageAlt={imageAlt}>
+<DetailLayout
+  description={description}
+  image={image}
+  imageAlt={imageAlt}
+  peraturan={peraturan}
+  title={title}
+>
   <div class="max-lg:drawer">
-    <input id="outline" type="checkbox" class="drawer-toggle" hidden />
+    <input class="drawer-toggle" hidden id="outline" type="checkbox" />
     <aside class="drawer-side lg:hidden">
-      <label for="outline" aria-label="Close Outline" class="drawer-overlay"
+      <label
+        aria-label="Close Outline"
+        class="drawer-overlay"
+        for="outline"
       ></label>
       <div class="min-h-screen w-11/12 bg-base-100 p-2">
-        <label for="outline" class="btn btn-ghost float-right">
-          <Icon name="ri:close-line"/>
+        <label class="btn btn-ghost float-right" for="outline">
+          <Icon name="ri:close-line" />
           <span>Tutup</span>
         </label>
         <Outline tokens={rootTokens} />
       </div>
     </aside>
     <div class="drawer-content">
-      <div role="alert" class="alert alert-warning alert-soft">
-        <Icon name="ri:error-warning-line"/>
+      <div class="alert alert-warning alert-soft" role="alert">
+        <Icon name="ri:error-warning-line" />
         <div>
           <h5 class="text-lg font-bold">Disclaimer</h5>
           <p>
@@ -61,25 +79,20 @@ const { peraturan, rootTokens, title, prev, next, description, image, imageAlt }
         </div>
       </div>
       <div class="flex justify-between my-2" id="nav-control">
-        <label for="outline" class="btn btn-outline">
-          <Icon name="ri:node-tree"/>
+        <label class="btn btn-outline" for="outline">
+          <Icon name="ri:node-tree" />
           <span class="hidden md:inline">Outline</span>
         </label>
         <span class="text-center">
-          <Nav prev={prev} next={next} />
+          <Nav next={next} prev={prev} />
         </span>
         <PrintButton client:load />
       </div>
       <div class="flex w-full">
-        <div
-          class="hidden lg:block max-w-1/4 2xl:max-w-3/8 max-h-[75vh] overflow-y-auto in-[&:has(#outline:checked)]:lg:hidden"
-        >
+        <div class="hidden lg:block max-w-1/4 2xl:max-w-3/8 max-h-[75vh] overflow-y-auto in-[&:has(#outline:checked)]:lg:hidden">
           <Outline tokens={rootTokens} />
         </div>
-        <div
-          class="divider divider-horizontal hidden lg:flex in-[&:has(#outline:checked)]:lg:hidden"
-        >
-        </div>
+        <div class="divider divider-horizontal hidden lg:flex in-[&:has(#outline:checked)]:lg:hidden"></div>
         <div class="flex-1 max-h-[75vh] overflow-y-auto">
           <div class="peraturan wadah">
             <div class="kertas scale-70 sm:scale-80 md:scale-90 lg:scale-100">
@@ -95,37 +108,50 @@ const { peraturan, rootTokens, title, prev, next, description, image, imageAlt }
 </DetailLayout>
 
 <script>
-let currentScrollY: number, currentScrollX: number;
+  let currentScrollY: number, currentScrollX: number;
 
-document.addEventListener('astro:after-preparation', () => {
-  currentScrollY = window.scrollY;
-  currentScrollX = window.scrollX;
-});
+  document.addEventListener("astro:after-preparation", () => {
+    currentScrollY = window.scrollY;
+    currentScrollX = window.scrollX;
+  });
 
-document.addEventListener("astro:after-swap", () => {
-  if (typeof currentScrollX !== 'undefined' && typeof currentScrollY !== 'undefined') {
-    window.scrollTo(currentScrollX, currentScrollY);
-  }
-});
-
-document.addEventListener("astro:page-load", async () => {
- const navControl = document.querySelector("#nav-control")
-  if (navControl) {
-    await Promise.resolve(navControl.scrollIntoView({ behavior: "smooth", block: "start"}))
-  }
-  const isi = document.querySelector(".isi")
-  if (isi) {
-    // @ts-expect-error: container is not a valid option, supported in future versions
-    await Promise.resolve(isi.scrollIntoView({ behavior: "instant", inline: "center", container: "nearest" }))
-    const container = isi.closest(".overflow-y-auto");
-    if (container) {
-      const containerRect = container.getBoundingClientRect();
-      const isiRect = isi.getBoundingClientRect();
-      await Promise.resolve(container.scrollTo({
-        top: isiRect.top + container.scrollTop - containerRect.top - 50,
-        behavior: "instant",
-      }))
+  document.addEventListener("astro:after-swap", () => {
+    if (
+      typeof currentScrollX !== "undefined" &&
+      typeof currentScrollY !== "undefined"
+    ) {
+      window.scrollTo(currentScrollX, currentScrollY);
     }
-  }
-})
+  });
+
+  document.addEventListener("astro:page-load", async () => {
+    const navControl = document.querySelector("#nav-control");
+    if (navControl) {
+      await Promise.resolve(
+        navControl.scrollIntoView({ behavior: "smooth", block: "start" }),
+      );
+    }
+    const isi = document.querySelector(".isi");
+    if (isi) {
+      await Promise.resolve(
+        isi.scrollIntoView({
+          behavior: "instant",
+          inline: "center",
+          // @ts-expect-error: container is not a valid option, supported in future versions
+          container: "nearest",
+        }),
+      );
+      const container = isi.closest(".overflow-y-auto");
+      if (container) {
+        const containerRect = container.getBoundingClientRect();
+        const isiRect = isi.getBoundingClientRect();
+        await Promise.resolve(
+          container.scrollTo({
+            top: isiRect.top + container.scrollTop - containerRect.top - 50,
+            behavior: "instant",
+          }),
+        );
+      }
+    }
+  });
 </script>

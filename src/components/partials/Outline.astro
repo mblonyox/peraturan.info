@@ -37,20 +37,25 @@ const batangTubuh = tokens.filter(
         <details>
           <summary>Konsideran (Menimbang)</summary>
           <ul>
-            <li><a class="link text-wrap" href={basePath + "/konsideran"}><span><Icon name="ri:link" class="inline mr-1" />Konsideran (Menimbang)</span></a></li>
-            {
-              childTokens(konsideran)
-                ?.flatMap((token) =>
-                  token.type === "list" || token.type === "butir-list"
-                    ? token.items
-                    : (childTokens(token) ?? [token]),
-                )
-                ?.map((token) => (
-                  <li>
-                    <span class="text-wrap">{ellipsis(token.raw)}</span>
-                  </li>
-                ))
-            }
+            <li>
+              <a class="link text-wrap" href={basePath + "/konsideran"}>
+                <span>
+                  <Icon class="inline mr-1" name="ri:link" />
+                  Konsideran (Menimbang)
+                </span>
+              </a>
+            </li>
+            {childTokens(konsideran)
+              ?.flatMap((token) =>
+                token.type === "list" || token.type === "butir-list"
+                  ? token.items
+                  : (childTokens(token) ?? [token]),
+              )
+              ?.map((token) => (
+                <li>
+                  <span class="text-wrap">{ellipsis(token.raw)}</span>
+                </li>
+              ))}
           </ul>
         </details>
       </li>
@@ -58,20 +63,25 @@ const batangTubuh = tokens.filter(
         <details>
           <summary>Dasar Hukum (Mengingat)</summary>
           <ul>
-            <li><a class="link text-wrap" href={basePath + "/dasar-hukum"}><span><Icon name="ri:link" class="inline mr-1" />Dasar Hukum (Mengingat)</span></a></li>
-            {
-              childTokens(dasarHukum)
-                ?.flatMap((token) =>
-                  token.type === "list" || token.type === "butir-list"
-                    ? token.items
-                    : (childTokens(token) ?? [token]),
-                )
-                ?.map((token) => (
-                  <li>
-                    <span class="text-wrap">{ellipsis(token.raw)}</span>
-                  </li>
-                ))
-            }
+            <li>
+              <a class="link text-wrap" href={basePath + "/dasar-hukum"}>
+                <span>
+                  <Icon class="inline mr-1" name="ri:link" />
+                  Dasar Hukum (Mengingat)
+                </span>
+              </a>
+            </li>
+            {childTokens(dasarHukum)
+              ?.flatMap((token) =>
+                token.type === "list" || token.type === "butir-list"
+                  ? token.items
+                  : (childTokens(token) ?? [token]),
+              )
+              ?.map((token) => (
+                <li>
+                  <span class="text-wrap">{ellipsis(token.raw)}</span>
+                </li>
+              ))}
           </ul>
         </details>
       </li>
@@ -80,11 +90,9 @@ const batangTubuh = tokens.filter(
   <li>
     <a href={basePath + "/batang-tubuh"}>BATANG TUBUH</a>
     <ul>
-      {
-        batangTubuh.map((token) => (
-          <BatangTubuhOutline token={token} path={basePath} />
-        ))
-      }
+      {batangTubuh.map((token) => (
+        <BatangTubuhOutline path={basePath} token={token} />
+      ))}
     </ul>
   </li>
   <li>PENUTUP</li>

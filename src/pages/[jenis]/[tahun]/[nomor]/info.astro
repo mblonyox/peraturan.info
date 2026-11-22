@@ -1,10 +1,10 @@
 ---
-import { Image } from "astro:assets"
+import { Image } from "astro:assets";
 
 import DetailLayout from "@/layouts/DetailLayout.astro";
 import { YEAR } from "@/lib/constants";
 import { getPeraturan } from "@/lib/db";
-import { $peraturanPaths } from "@/lib/utils/validate"
+import { $peraturanPaths } from "@/lib/utils/validate";
 
 const paths = $peraturanPaths.safeParse(Astro.params);
 if (!paths.success) return Astro.rewrite("/404");
@@ -28,10 +28,9 @@ Astro.cache.set({
   maxAge: YEAR,
   tags: [`${jenis}/${tahun}/${nomor}`],
 });
-
 ---
 
-<DetailLayout peraturan={peraturan} title="Informasi" description={description}>
+<DetailLayout description={description} peraturan={peraturan} title="Informasi">
   <div class="grid grid-cols-1 lg:grid-cols-2 gap-2">
     <div>
       <h2 class="text-2xl mb-2">Metadata</h2>
@@ -61,39 +60,33 @@ Astro.cache.set({
             <td>Tanggal Ditetapkan</td>
             <td>:</td>
             <td>
-              {
-                tanggal_ditetapkan.toLocaleDateString("id", {
-                  day: "numeric",
-                  month: "long",
-                  year: "numeric",
-                })
-              }
+              {tanggal_ditetapkan.toLocaleDateString("id", {
+                day: "numeric",
+                month: "long",
+                year: "numeric",
+              })}
             </td>
           </tr>
           <tr>
             <td>Tanggal Diundangkan</td>
             <td>:</td>
             <td>
-              {
-                tanggal_diundangkan.toLocaleDateString("id", {
-                  day: "numeric",
-                  month: "long",
-                  year: "numeric",
-                })
-              }
+              {tanggal_diundangkan.toLocaleDateString("id", {
+                day: "numeric",
+                month: "long",
+                year: "numeric",
+              })}
             </td>
           </tr>
           <tr>
             <td>Tanggal Berlaku</td>
             <td>:</td>
             <td>
-              {
-                tanggal_berlaku.toLocaleDateString("id", {
-                  day: "numeric",
-                  month: "long",
-                  year: "numeric",
-                })
-              }
+              {tanggal_berlaku.toLocaleDateString("id", {
+                day: "numeric",
+                month: "long",
+                year: "numeric",
+              })}
             </td>
           </tr>
         </tbody>
@@ -102,11 +95,11 @@ Astro.cache.set({
     <div>
       <h2 class="text-2xl mb-2">Tampilan</h2>
       <Image
-        class="rounded-box w-full h-auto"
-        src={new URL(path + "/thumbnail.png", Astro.site).href}
         alt={rujukPendek}
-        width={540}
+        class="rounded-box w-full h-auto"
         height={890}
+        src={new URL(path + "/thumbnail.png", Astro.site).href}
+        width={540}
       />
     </div>
   </div>

@@ -12,7 +12,7 @@ import { $searchParams } from "@/lib/utils/validate";
 Astro.cache.set({
   maxAge: DAY,
   swr: WEEK,
-  tags: ["search"]
+  tags: ["search"],
 });
 
 const averageQueryLength = 16;
@@ -54,25 +54,23 @@ const paginationProps = { total, page, pageSize: limit };
   <PageHeading {...headingProps} />
   <div class="container">
     <div class="grid grid-cols-2 xl:grid-cols-3 gap-2">
-      {
-        hits.map((hit) => (
-          <div class="card card-border shadow-sm">
-            <div class="card-body">
-              <p class="card-title line-clamp-3 text-xl font-bold">
-                {hit.document.judul}
-              </p>
-              <p class="font-light">
-                {hit.document.jenis} {hit.document.nomor}
-              </p>
-              <div class="card-actions justify-end">
-                <a href={hit.document.path} class="btn btn-outline">
-                  Buka
-                </a>
-              </div>
+      {hits.map((hit) => (
+        <div class="card card-border shadow-sm">
+          <div class="card-body">
+            <p class="card-title line-clamp-3 text-xl font-bold">
+              {hit.document.judul}
+            </p>
+            <p class="font-light">
+              {hit.document.jenis} {hit.document.nomor}
+            </p>
+            <div class="card-actions justify-end">
+              <a class="btn btn-outline" href={hit.document.path}>
+                Buka
+              </a>
             </div>
           </div>
-        ))
-      }
+        </div>
+      ))}
     </div>
     <Pagination {...paginationProps} />
   </div>

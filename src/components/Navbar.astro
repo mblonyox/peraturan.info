@@ -27,101 +27,101 @@ const menus = [
 <nav class="navbar bg-base-200">
   <div class="navbar-start">
     <div class="flex-none lg:hidden dropdown">
-      <div
-        class="btn m-1"
-        role="button"
-        aria-label="Show Menu"
-        tabindex="0"
-      >
+      <div aria-label="Show Menu" class="btn m-1" role="button" tabindex="0">
         <Icon name="ri:menu-line" />
       </div>
       <ul
         class="menu dropdown-content bg-base-300 rounded-box z-1 p-2 shadow-2xl"
         tabindex="-1"
       >
-        {
-          menus.map(({ href, text, menu }) => (
-            <li>
-              {menu ? (
-                <details open>
-                  <summary>{text}</summary>
-                  <ul>
-                    {menu.map(({ href, text }) => (
-                      <li>
-                        <a
-                          href={href}
-                          class={pathname === href ? "menu-active" : ""}
-                          aria-current={pathname === href ? "page" : "false"}
-                        >
-                          {text}
-                        </a>
-                      </li>
-                    ))}
-                  </ul>
-                </details>
-              ) : (
-                <a
-                  href={href}
-                  class={pathname === href ? "menu-active" : ""}
-                  aria-current={pathname === href ? "page" : "false"}
-                >
-                  {text}
-                </a>
-              )}
-            </li>
-          ))
-        }
-      </ul>
-    </div>
-    <a href="/" class="hidden lg:block">
-      <Image src="/logo.webp" alt="Logo Peraturan.Info" width="48" height="48" loading="eager" />
-    </a>
-    <ul class="hidden lg:flex menu menu-horizontal rounded-box gap-2">
-      {
-        menus.map(({ href, text, menu }) => (
+        {menus.map(({ href, text, menu }) => (
           <li>
             {menu ? (
-              <div class="dropdown dropdown-start">
-                <div tabindex="0" role="button">
-                  <span class="mx-1">{text}</span>
-                  <Icon name="ri:arrow-drop-down-line" class="inline-block" />
-                </div>
-                <ul
-                  tabindex="-1"
-                  class="menu dropdown-content bg-base-300 rounded-box z-1 p-2 shadow-2xl"
-                >
+              <details open>
+                <summary>{text}</summary>
+                <ul>
                   {menu.map(({ href, text }) => (
                     <li>
                       <a
-                        href={href}
-                        class={pathname === href ? "menu-active" : ""}
                         aria-current={pathname === href ? "page" : "false"}
+                        class:list={{ "menu-active": pathname === href }}
+                        href={href}
                       >
                         {text}
                       </a>
                     </li>
                   ))}
                 </ul>
-              </div>
+              </details>
             ) : (
               <a
-                href={href}
-                class={pathname === href ? "menu-active" : ""}
                 aria-current={pathname === href ? "page" : "false"}
+                class:list={{ "menu-active": pathname === href }}
+                href={href}
               >
                 {text}
               </a>
             )}
           </li>
-        ))
-      }
+        ))}
+      </ul>
+    </div>
+    <a class="hidden lg:block" href="/">
+      <Image
+        alt="Logo Peraturan.Info"
+        height="48"
+        loading="eager"
+        src="/logo.webp"
+        width="48"
+      />
+    </a>
+    <ul class="hidden lg:flex menu menu-horizontal rounded-box gap-2">
+      {menus.map(({ href, text, menu }) => (
+        <li>
+          {menu ? (
+            <div class="dropdown dropdown-start">
+              <div role="button" tabindex="0">
+                <span class="mx-1">{text}</span>
+                <Icon class="inline-block" name="ri:arrow-drop-down-line" />
+              </div>
+              <ul
+                class="menu dropdown-content bg-base-300 rounded-box z-1 p-2 shadow-2xl"
+                tabindex="-1"
+              >
+                {menu.map(({ href, text }) => (
+                  <li>
+                    <a
+                      aria-current={pathname === href ? "page" : "false"}
+                      class:list={{ "menu-active": pathname === href }}
+                      href={href}
+                    >
+                      {text}
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ) : (
+            <a
+              aria-current={pathname === href ? "page" : "false"}
+              class:list={{ "menu-active": pathname === href }}
+              href={href}
+            >
+              {text}
+            </a>
+          )}
+        </li>
+      ))}
     </ul>
   </div>
   <div class="navbar-center">
     <SearchInput client:load transition:persist />
   </div>
   <div class="navbar-end">
-    <div class="hidden lg:block scheme-light my-auto mx-auto" google-add-preferred-source-btn />
+    <div
+      class="hidden lg:block scheme-light my-auto mx-auto"
+      google-add-preferred-source-btn
+    />
     <ThemeSwitcher client:load transition:persist />
   </div>
 </nav>

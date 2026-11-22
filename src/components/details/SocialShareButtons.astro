@@ -20,10 +20,10 @@ const waText = ellipsis(text ?? title, 240) + " " + url;
 <div class="flex flex-col md:flex-row gap-1 my-2 md:my-3 lg:my-6">
   <div class="flex-1">
     <a
-      href={`https://twitter.com/intent/tweet?text=${encodeURIComponent(tweetText)}&url=${encodeURIComponent(url)}`}
-      target="_blank"
-      rel="noopener noreferrer"
       class="btn btn-block btn-sm md:btn-md lg:btn-lg bg-[#15202b] text-neutral-content"
+      href={`https://twitter.com/intent/tweet?text=${encodeURIComponent(tweetText)}&url=${encodeURIComponent(url)}`}
+      rel="noopener noreferrer"
+      target="_blank"
     >
       <Icon name="ri:twitter-x-line" />
       Tweet
@@ -31,10 +31,10 @@ const waText = ellipsis(text ?? title, 240) + " " + url;
   </div>
   <div class="flex-1">
     <a
-      href={`https://wa.me/?text=${encodeURIComponent(waText)}`}
-      target="_blank"
-      rel="noopener noreferrer"
       class="btn btn-block btn-sm md:btn-md lg:btn-lg bg-[#25D366] text-neutral-content"
+      href={`https://wa.me/?text=${encodeURIComponent(waText)}`}
+      rel="noopener noreferrer"
+      target="_blank"
     >
       <Icon name="ri:whatsapp-line" />
       WhatsApp
@@ -42,10 +42,10 @@ const waText = ellipsis(text ?? title, 240) + " " + url;
   </div>
   <div class="flex-1">
     <a
-      href={`https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(url)}`}
-      target="_blank"
-      rel="noopener noreferrer"
       class="btn btn-block btn-sm md:btn-md lg:btn-lg bg-[#0e76a8] text-neutral-content"
+      href={`https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(url)}`}
+      rel="noopener noreferrer"
+      target="_blank"
     >
       <Icon name="ri:linkedin-box-line" />
       LinkedIn

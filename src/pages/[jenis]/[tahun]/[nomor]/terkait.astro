@@ -1,7 +1,12 @@
 ---
 import DetailLayout from "@/layouts/DetailLayout.astro";
 import { YEAR } from "@/lib/constants";
-import { getPeraturan, getRelasiPeraturan1, getRelasiPeraturan2, getSumberPeraturan, } from "@/lib/db";
+import {
+  getPeraturan,
+  getRelasiPeraturan1,
+  getRelasiPeraturan2,
+  getSumberPeraturan,
+} from "@/lib/db";
 import { $peraturanPaths } from "@/lib/utils/validate";
 
 const paths = $peraturanPaths.safeParse(Astro.params);
@@ -10,10 +15,7 @@ const { jenis, tahun, nomor } = paths.data;
 const peraturan = await getPeraturan({ jenis, tahun, nomor });
 if (!peraturan) return Astro.rewrite("/404");
 
-const params = {  jenis,
-  tahun,
-  nomor,
-};
+const params = { jenis, tahun, nomor };
 const sumber = await getSumberPeraturan(params);
 const relasi1 = await getRelasiPeraturan1(params);
 const relasi2 = await getRelasiPeraturan2(params);
@@ -63,74 +65,67 @@ Astro.cache.set({
   maxAge: YEAR,
   tags: [`${jenis}/${tahun}/${nomor}`],
 });
-
 ---
 
 <DetailLayout
+  description={description}
   peraturan={peraturan}
   title="Peraturan Terkait"
-  description={description}
 >
   <div class="grid grid-cols-1 lg:grid-cols-2 gap-2">
     <div class="lg:col-span-2">
       <h2 class="text-2xl mb-2">Sumber</h2>
       <div class="w-full join join-vertical">
-        {
-          sumber.map(({ nama, url_page, url_pdf }) => (
-            <div class="join-item collapse bg-base-100 border border-base-300">
-              <input type="radio" name="sumber" />
-              <div class="collapse-title">{nama}</div>
-              <div class="collapse-content">
-                <p>
-                  <a
-                    href={url_page}
-                    class="link inline-block w-full overflow-hidden text-ellipsis whitespace-nowrap"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    {"🌐 " + url_page}
-                  </a>
-                </p>
-                {url_pdf && (
-                  <iframe
-                    title={nama}
-                    loading="lazy"
-                    src={`https://docs.google.com/gview?url=${url_pdf}&embedded=true`}
-                    class="w-full aspect-square border border-base-300 rounded-box"
-                  />
-                )}
-              </div>
+        {sumber.map(({ nama, url_page, url_pdf }) => (
+          <div class="join-item collapse bg-base-100 border border-base-300">
+            <input name="sumber" type="radio" />
+            <div class="collapse-title">{nama}</div>
+            <div class="collapse-content">
+              <p>
+                <a
+                  class="link inline-block w-full overflow-hidden text-ellipsis whitespace-nowrap"
+                  href={url_page}
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
+                  {"🌐 " + url_page}
+                </a>
+              </p>
+              {url_pdf && (
+                <iframe
+                  class="w-full aspect-square border border-base-300 rounded-box"
+                  loading="lazy"
+                  src={`https://docs.google.com/gview?url=${url_pdf}&embedded=true`}
+                  title={nama}
+                />
+              )}
             </div>
-          ))
-        }
+          </div>
+        ))}
       </div>
     </div>
-    {
-      terkait.map(({ title, items }) => (
-        <div>
-          <h2 class="text-2xl mb-2">{title}</h2>
-          <div class="list bg-base-100 border border-base-300 rounded-box max-h-[50vh] overflow-y-auto">
-            {items.map(
-              ({ catatan, peraturan: { path, judul, rujukPendek } }) => (
-                <div class="list-row">
-                  <a class="link" href={path}>
-                    {rujukPendek}
-                  </a>
-                  <p class="list-col-wrap">
-                    {judul}
-                    {catatan && (
-                      <>
-                        <br />
-                        <em class="italic">{catatan}</em>
-                      </>
-                    )}
-                  </p>
-                </div>
-              ),
-            )}
-          </div>
+    {terkait.map(({ title, items }) => (
+      <div>
+        <h2 class="text-2xl mb-2">{title}</h2>
+        <div class="list bg-base-100 border border-base-300 rounded-box max-h-[50vh] overflow-y-auto">
+          {items.map(({ catatan, peraturan: { path, judul, rujukPendek } }) => (
+            <div class="list-row">
+              <a class="link" href={path}>
+                {rujukPendek}
+              </a>
+              <p class="list-col-wrap">
+                {judul}
+                {catatan && (
+                  <>
+                    <br />
+                    <em class="italic">{catatan}</em>
+                  </>
+                )}
+              </p>
+            </div>
+          ))}
         </div>
-      ))
-    }
+      </div>
+    ))}
   </div>
 </DetailLayout>

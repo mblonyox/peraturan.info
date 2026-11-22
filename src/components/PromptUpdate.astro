@@ -2,63 +2,67 @@
 import { Icon } from "astro-iconset/components";
 ---
 
-<div
-    role="alert"
-    aria-labelledby="toast-message"
-    class="toast"
->
-    <div class="alert alert-vertical md:alert-horizontal hidden" id="pwa-toast">
-      <Icon name="ri:information-line" />
-      <span id="toast-message">Memperbarui...</span>
-      <button id="pwa-refresh" class="btn btn-sm btn-primary hidden"><span class="italic">Reload</span></button>
-      <button id="pwa-close" class="btn btn-sm btn-ghost">Tutup</button>
-    </div>
+<div aria-labelledby="toast-message" class="toast" role="alert">
+  <div class="alert alert-vertical md:alert-horizontal hidden" id="pwa-toast">
+    <Icon name="ri:information-line" />
+    <span id="toast-message">Memperbarui...</span>
+    <button class="btn btn-sm btn-primary hidden" id="pwa-refresh">
+      <span class="italic">Reload</span>
+    </button>
+    <button class="btn btn-sm btn-ghost" id="pwa-close">
+      Tutup
+    </button>
+  </div>
 </div>
 
 <script>
-/* eslint-disable @typescript-eslint/no-non-null-assertion */
-import { registerSW } from "virtual:pwa-register";
+  /* eslint-disable @typescript-eslint/no-non-null-assertion */
+  import { registerSW } from "virtual:pwa-register";
 
-window.addEventListener("load", () => {
-  const pwaToast = document.querySelector<HTMLDivElement>("#pwa-toast")!;
-  const pwaToastMessage = pwaToast.querySelector<HTMLDivElement>("#toast-message",)!;
-  const pwaCloseBtn = pwaToast.querySelector<HTMLButtonElement>("#pwa-close")!;
-  const pwaRefreshBtn = pwaToast.querySelector<HTMLButtonElement>("#pwa-refresh")!;
+  window.addEventListener("load", () => {
+    const pwaToast = document.querySelector<HTMLDivElement>("#pwa-toast")!;
+    const pwaToastMessage =
+      pwaToast.querySelector<HTMLDivElement>("#toast-message")!;
+    const pwaCloseBtn =
+      pwaToast.querySelector<HTMLButtonElement>("#pwa-close")!;
+    const pwaRefreshBtn =
+      pwaToast.querySelector<HTMLButtonElement>("#pwa-refresh")!;
 
-  // eslint-disable-next-line prefer-const
-  let refreshSW: (() => Promise<void>) | undefined;
+    // eslint-disable-next-line prefer-const
+    let refreshSW: (() => Promise<void>) | undefined;
 
-  const hidePwaToast = (raf = false) => {
-    if (raf) {
-      requestAnimationFrame(() => hidePwaToast(false));
-      return;
-    }
-    pwaToast.classList.add("hidden");
-  };
-  const showPwaToast = () => {
-    requestAnimationFrame(() => {
-      hidePwaToast(false);
-      pwaToast.classList.remove("hidden");
+    const hidePwaToast = (raf = false) => {
+      if (raf) {
+        requestAnimationFrame(() => hidePwaToast(false));
+        return;
+      }
+      pwaToast.classList.add("hidden");
+    };
+    const showPwaToast = () => {
+      requestAnimationFrame(() => {
+        hidePwaToast(false);
+        pwaToast.classList.remove("hidden");
+      });
+    };
+
+    pwaRefreshBtn.addEventListener("click", () => refreshSW?.());
+    pwaCloseBtn.addEventListener("click", () => hidePwaToast(true));
+
+    refreshSW = registerSW({
+      immediate: true,
+      onOfflineReady() {
+        pwaToastMessage.innerHTML = "Aplikasi siap digunakan secara offline";
+        showPwaToast();
+      },
+      onNeedRefresh() {
+        pwaToastMessage.innerHTML =
+          "Versi aplikasi diperbarui, silahkan reload";
+        pwaRefreshBtn.classList.remove("hidden");
+        showPwaToast();
+      },
+      onRegisteredSW(swScriptUrl: string) {
+        console.log("SW registered: ", swScriptUrl);
+      },
     });
-  };
-
-  pwaRefreshBtn.addEventListener("click", () => refreshSW?.());
-  pwaCloseBtn.addEventListener("click", () => hidePwaToast(true));
-
-  refreshSW = registerSW({
-    immediate: true,
-    onOfflineReady() {
-      pwaToastMessage.innerHTML = "Aplikasi siap digunakan secara offline";
-      showPwaToast();
-    },
-    onNeedRefresh() {
-      pwaToastMessage.innerHTML = "Versi aplikasi diperbarui, silahkan reload";
-      pwaRefreshBtn.classList.remove("hidden");
-      showPwaToast();
-    },
-    onRegisteredSW(swScriptUrl: string) {
-      console.log("SW registered: ", swScriptUrl);
-    },
   });
-});
 </script>

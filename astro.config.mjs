@@ -10,7 +10,9 @@ import arraybuffer from "vite-plugin-arraybuffer";
 import manifest from "./src/assets/manifest.json";
 import { BASE_URL } from "./src/lib/constants";
 
-// https://astro.build/config
+/**
+ * @see https://astro.build/config
+ */
 export default defineConfig({
   output: "server",
   adapter: cloudflare({

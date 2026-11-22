@@ -4,9 +4,11 @@ const { total, page, pageSize, lastPage, maxItems = 5 } = Astro.props;
 const pathname = Astro.url.pathname;
 const searchParams = Astro.url.searchParams;
 
-const calculatedLastPage = lastPage ?? Math.ceil((total ?? 0) / (pageSize ?? 10));
+const calculatedLastPage =
+  lastPage ?? Math.ceil((total ?? 0) / (pageSize ?? 10));
 
-const showPagination = calculatedLastPage && page >= 1 && page <= calculatedLastPage;
+const showPagination =
+  calculatedLastPage && page >= 1 && page <= calculatedLastPage;
 
 const items = [page];
 if (showPagination) {
@@ -28,6 +30,7 @@ const getPageUrl = (targetPage: number) => {
   return pathname + "?" + q.toString();
 };
 ---
+
 {showPagination && (
   <nav
     aria-label="Laman-laman hasil pencarian"
@@ -35,25 +38,22 @@ const getPageUrl = (targetPage: number) => {
   >
     <div class="join join-horizontal">
       {page === 1 ? (
-        <button type="button" class="join-item btn" disabled>
+        <button class="join-item btn" disabled type="button">
           <span>&lt;</span>
         </button>
       ) : (
-        <a
-          class="join-item btn"
-          href={getPageUrl(page - 1)}
-        >
+        <a class="join-item btn" href={getPageUrl(page - 1)}>
           &lt;
         </a>
       )}
 
       {!items.includes(1) && (
         <>
-          <a href={getPageUrl(1)} class="join-item btn">
+          <a class="join-item btn" href={getPageUrl(1)}>
             1
           </a>
           {Math.min(...items) > 2 && (
-            <button type="button" class="join-item btn" disabled>
+            <button class="join-item btn" disabled type="button">
               <span>&#8230;</span>
             </button>
           )}
@@ -61,7 +61,7 @@ const getPageUrl = (targetPage: number) => {
       )}
       {items.map((item) => (
         <a
-          class={`join-item btn ${page === item ? "btn-active" : ""}`}
+          class:list={[`join-item btn`, { "btn-active": page === item }]}
           href={getPageUrl(item)}
         >
           {item}
@@ -70,7 +70,7 @@ const getPageUrl = (targetPage: number) => {
       {!items.includes(calculatedLastPage) && (
         <>
           {Math.max(...items) < calculatedLastPage - 1 && (
-            <button type="button" class="join-item btn" disabled>
+            <button class="join-item btn" disabled type="button">
               <span>&#8230;</span>
             </button>
           )}
@@ -80,7 +80,7 @@ const getPageUrl = (targetPage: number) => {
         </>
       )}
       {page === calculatedLastPage ? (
-        <button type="button" class="join-item btn" disabled>
+        <button class="join-item btn" disabled type="button">
           <span>&gt;</span>
         </button>
       ) : (

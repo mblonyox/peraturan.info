@@ -1,7 +1,11 @@
 ---
-import { Icon } from "astro-iconset/components"
+import { Icon } from "astro-iconset/components";
 
-import { JENIS2_PERATURAN, type JenisPeraturan, NAMA2_JENIS } from "@/lib/constants";
+import {
+  JENIS2_PERATURAN,
+  type JenisPeraturan,
+  NAMA2_JENIS,
+} from "@/lib/constants";
 
 const pathname = Astro.url.pathname;
 const segments = pathname.split("/").filter(Boolean);
@@ -79,6 +83,7 @@ function segmentsToBreadcrumbs(segments: string[]) {
 const breadcrumbs = segmentsToBreadcrumbs(segments);
 const hasBreadcrumbs = segments.length > 0;
 ---
+
 {hasBreadcrumbs && (
   <div class="container my-5">
     <nav aria-label="breadcrumb" class="breadcrumbs">
@@ -88,15 +93,11 @@ const hasBreadcrumbs = segments.length > 0;
           itemscope
           itemtype="https://schema.org/ListItem"
         >
-          <a
-            href="/"
-            itemprop="item"
-            itemtype="https://schema.org/WebPage"
-          >
+          <a href="/" itemprop="item" itemtype="https://schema.org/WebPage">
             <Icon name="ri:home-line" />
             <span itemprop="name">Beranda</span>
           </a>
-          <meta itemprop="position" content="1" />
+          <meta content="1" itemprop="position" />
         </li>
         {breadcrumbs.map(({ name, url }, index) => (
           <li
@@ -115,7 +116,7 @@ const hasBreadcrumbs = segments.length > 0;
             ) : (
               <span itemprop="name">{name}</span>
             )}
-            <meta itemprop="position" content={`${index + 2}`} />
+            <meta content={`${index + 2}`} itemprop="position" />
           </li>
         ))}
       </ol>

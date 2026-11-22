@@ -13,22 +13,23 @@ const { data, tahun } = Astro.props;
   <p>Saring berdasar jenis</p>
   <ul class="menu menu-vertical">
     <li>
-      <a class="link" href={`/all/${tahun ?? ""}`}> Semua jenis </a>
+      <a class="link" href={`/all/${tahun ?? ""}`}>
+        {" "}
+        Semua jenis{" "}
+      </a>
     </li>
-    {
-      Object.entries(data)
-        .sort(
-          (a, b) =>
-            JENIS2_PERATURAN.indexOf(a[0] as never) -
-            JENIS2_PERATURAN.indexOf(b[0] as never),
-        )
-        .map(([jenis, jumlah]) => (
-          <li>
-            <a class="link" href={`/${jenis}/${tahun ?? ""}`}>
-              {NAMA2_JENIS[jenis].pendek}&nbsp;({jumlah})
-            </a>
-          </li>
-        ))
-    }
+    {Object.entries(data)
+      .sort(
+        (a, b) =>
+          JENIS2_PERATURAN.indexOf(a[0] as never) -
+          JENIS2_PERATURAN.indexOf(b[0] as never),
+      )
+      .map(([jenis, jumlah]) => (
+        <li>
+          <a class="link" href={`/${jenis}/${tahun ?? ""}`}>
+            {NAMA2_JENIS[jenis].pendek}&nbsp;({jumlah})
+          </a>
+        </li>
+      ))}
   </ul>
 </section>

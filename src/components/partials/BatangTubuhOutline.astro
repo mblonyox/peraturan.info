@@ -14,41 +14,44 @@ const { jenis, tahun, nomor: nomorPeraturan, partials } = Astro.params;
 
 const basePath = `/${jenis}/${tahun}/${nomorPeraturan}`;
 
-const childTokens = (token: PeraturanToken) => "tokens" in token && token.tokens || [];
-const subTokenFilter = (token: PeraturanToken) => 
+const childTokens = (token: PeraturanToken) =>
+  ("tokens" in token && token.tokens) || [];
+const subTokenFilter = (token: PeraturanToken) =>
   token.type === "bab" ||
   token.type === "bagian" ||
   token.type === "paragraf" ||
   token.type === "pasal" ||
-  token.type === "ayat"
+  token.type === "ayat";
 const slugify = (str: string) =>
   str
     .toLowerCase()
     .replaceAll(" ", "-")
-    .replaceAll(/[\(\)]/g, "")
+    .replaceAll(/[\(\)]/g, "");
 
 const nomor =
   (token.type === "ayat" ? "ayat " : "") +
   ("nomor" in token ? token.nomor : "");
 const judul = "judul" in token && token.judul ? token.judul : nomor;
-const slug = slugify(nomor)
+const slug = slugify(nomor);
 const subPath = (token.type === "pasal" ? basePath : path) + `/${slug}`;
 const subTokens = childTokens(token).filter(subTokenFilter);
-const angkaPasalRomawi = token.type === "pasal" &&
-  token.nomor &&
-  /Pasal [MDCLXVI]+/.test(token.nomor) &&
-  childTokens(token)
-    .flatMap((token) =>
-      token.type === "butir-list"
-        ? token.items as PeraturanToken[]
-        : []
-    )
-    .filter((token): token is PeraturanToken & {marker: `${number}.`} => token.type === "butir-item" && /^\d+\.$/.test(token.marker))
-    .map(token => ({
-      href: subPath + "/angka-" + token.marker.replace(".", ""),
-      text: token.raw.split(":::", 1)[0]
-    })) ||
-  []
+const angkaPasalRomawi =
+  (token.type === "pasal" &&
+    token.nomor &&
+    /Pasal [MDCLXVI]+/.test(token.nomor) &&
+    childTokens(token)
+      .flatMap((token) =>
+        token.type === "butir-list" ? (token.items as PeraturanToken[]) : [],
+      )
+      .filter(
+        (token): token is PeraturanToken & { marker: `${number}.` } =>
+          token.type === "butir-item" && /^\d+\.$/.test(token.marker),
+      )
+      .map((token) => ({
+        href: subPath + "/angka-" + token.marker.replace(".", ""),
+        text: token.raw.split(":::", 1)[0],
+      }))) ||
+  [];
 let preview: string | undefined;
 if (token.type === "pasal" && !subTokens.length) {
   preview = token.raw.substring(judul.length).trim();
@@ -56,46 +59,72 @@ if (token.type === "pasal" && !subTokens.length) {
     preview = preview.split(angkaPasalRomawi[0].text)[0].trim();
   }
 } else if (token.type === "ayat" && token.nomor) {
-  preview = token.raw.substring(token.nomor.length).trim()
+  preview = token.raw.substring(token.nomor.length).trim();
 }
 
 let isOpen = false;
 if (token.type == "pasal") {
   isOpen = true;
 } else if (partials?.startsWith("pasal")) {
-  const pasalPartial = partials.split("/")[0]
+  const pasalPartial = partials.split("/")[0];
   const hasPasalSubTokens = (t: PeraturanToken): boolean => {
     const tokens = childTokens(t);
-    return tokens.some(t => t.type === "pasal" && slugify(t.nomor) === pasalPartial || hasPasalSubTokens(t))
-  }
-  isOpen = hasPasalSubTokens(token)
+    return tokens.some(
+      (t) =>
+        (t.type === "pasal" && slugify(t.nomor) === pasalPartial) ||
+        hasPasalSubTokens(t),
+    );
+  };
+  isOpen = hasPasalSubTokens(token);
 } else {
-  isOpen = subPath.split("/").slice(4).every(part => partials?.split("/").includes(part))
+  isOpen = subPath
+    .split("/")
+    .slice(4)
+    .every((part) => partials?.split("/").includes(part));
 }
 ---
 
 <li>
-  {
-    subTokens.length ? (
-      <details open={isOpen}>
-        <summary class="text-wrap">{judul}</summary>
+  {subTokens.length ? (
+    <details open={isOpen}>
+      <summary class="text-wrap">{judul}</summary>
+      <ul>
+        <li>
+          <a class="link text-wrap" href={subPath}>
+            <span>
+              <Icon class="inline mr-1" name="ri:link" />
+              {judul}
+            </span>
+          </a>
+        </li>
+        {subTokens.map((token) => (
+          <Astro.self path={subPath} token={token} />
+        ))}
+      </ul>
+    </details>
+  ) : (
+    <div class="flex flex-col gap-2">
+      <a class="link text-wrap" href={subPath}>
+        <span>
+          <Icon class="inline mr-1" name="ri:link" />
+          {judul}
+        </span>
+      </a>
+      {preview && <cite class="text-wrap">{ellipsis(preview)}</cite>}
+      {angkaPasalRomawi.length > 0 && (
         <ul>
-          <li><a href={subPath} class="link text-wrap"><span><Icon name="ri:link" class="inline mr-1" />{judul}</span></a></li>
-          {subTokens.map((token) => <Astro.self token={token} path={subPath} />)}
+          {angkaPasalRomawi.map(({ href, text }) => (
+            <li>
+              <a class="link text-wrap" href={href}>
+                <span>
+                  <Icon class="inline mr-1" name="ri:link" />
+                  {ellipsis(text)}
+                </span>
+              </a>
+            </li>
+          ))}
         </ul>
-      </details>
-    ) : (
-      <div class="flex flex-col gap-2">
-        <a class="link text-wrap" href={subPath}><span><Icon name="ri:link" class="inline mr-1" />{judul}</span></a>
-        {preview && <cite class="text-wrap">{ellipsis(preview)}</cite>}
-        {angkaPasalRomawi.length > 0 &&
-          <ul>
-            {angkaPasalRomawi.map(({href, text}) => (
-              <li><a href={href} class="link text-wrap"><span><Icon name="ri:link" class="inline mr-1" />{ellipsis(text)}</span></a></li>
-            ))}
-          </ul>
-        }
-      </div>
-    )
-  }
+      )}
+    </div>
+  )}
 </li>

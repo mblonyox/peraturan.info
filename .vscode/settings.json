@@ -3,7 +3,7 @@
   "editor.formatOnSave": true,
   "editor.defaultFormatter": "esbenp.prettier-vscode",
   "[astro]": {
-    "editor.defaultFormatter": "astro-build.astro-vscode"
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
   },
   "[javascript]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode"
@@ -31,10 +31,5 @@
     "astro"
   ],
   "json.validate.enable": true,
-  "json.schemas": [
-    {
-      "fileMatch": ["**/manifest.json"],
-      "url": "https://json.schemastore.org/web-manifest"
-    }
-  ]
+  "prettier.documentSelectors": ["**/*.astro"]
 }

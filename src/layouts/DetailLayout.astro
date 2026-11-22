@@ -46,13 +46,9 @@ const layoutProps = {
 
 <RootLayout {...layoutProps}>
   <div class="container">
-    <PageHeading title={peraturan.judul} description={peraturan.rujukPendek} />
-    <SocialShareButtons title={peraturan.judul} text={peraturan.rujukPanjang} />
-    <Tabs
-      basePath={peraturan.path}
-      tabs={tabs}
-      defaultTab={1}
-    >
+    <PageHeading description={peraturan.rujukPendek} title={peraturan.judul} />
+    <SocialShareButtons text={peraturan.rujukPanjang} title={peraturan.judul} />
+    <Tabs basePath={peraturan.path} defaultTab={1} tabs={tabs}>
       <slot />
     </Tabs>
     <Comments />

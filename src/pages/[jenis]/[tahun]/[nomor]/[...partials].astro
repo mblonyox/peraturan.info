@@ -1,5 +1,5 @@
 ---
-import { SuperHeaders } from "@mjackson/headers"
+import { SuperHeaders } from "@mjackson/headers";
 import { z } from "zod";
 
 import PartialLayout from "@/layouts/PartialLayout.astro";
@@ -21,43 +21,61 @@ const path = `${jenis}/${tahun}/${nomor}/fulltext.md`;
 const md = await getData(path, { format: "text" });
 if (!md) return Astro.rewrite("/404");
 const rootTokens = marked.lexer(md) as PeraturanToken[];
-const data = handlerPartials(partials, rootTokens)
+const data = handlerPartials(partials, rootTokens);
 if (!data) return Astro.rewrite("/404");
 const { tokens, prev, next, title, description } = data;
 
 const sh = new SuperHeaders(Astro.request.headers);
-const preferredMimeType = sh.accept.getPreferred(["text/html", "application/xhtml+xml", "text/markdown"])
+const preferredMimeType = sh.accept.getPreferred([
+  "text/html",
+  "application/xhtml+xml",
+  "text/markdown",
+]);
 if (preferredMimeType === "text/markdown") {
   return new Response(tokens.map((token) => token.raw).join("\n"), {
     headers: {
       "Content-Type": "text/markdown; charset=utf-8",
-      "Vary": "Accept",
+      Vary: "Accept",
     },
   });
-} else if (!preferredMimeType || !["text/html", "application/xhtml+xml"].includes(preferredMimeType)) {
+} else if (
+  !preferredMimeType ||
+  !["text/html", "application/xhtml+xml"].includes(preferredMimeType)
+) {
   return new Response("Invalid requested Content-Type.", {
     status: 406,
     headers: {
       "Cache-Control": "no-cache",
       "Content-Type": "text/plain; charset=utf-8",
-      "Vary": "Accept",
+      Vary: "Accept",
     },
   });
 }
 
 const html = marked.parser(tokens);
 
-const image = new URL(`${peraturan.path}/${partials}/og-image.png`, Astro.site).href;
+const image = new URL(`${peraturan.path}/${partials}/og-image.png`, Astro.site)
+  .href;
 const imageAlt = `${partials}-${peraturan.rujukPendek}`;
 
 Astro.cache.set({
   maxAge: YEAR,
   tags: [`${jenis}/${tahun}/${nomor}`],
 });
-Astro.response.headers.set("Vary", "Accept")
-
+Astro.response.headers.set("Vary", "Accept");
 ---
 
-<PartialLayout {...{ peraturan, title, description, rootTokens, prev, next, image, imageAlt }}>
+<PartialLayout
+  {...{
+    peraturan,
+    title,
+    description,
+    rootTokens,
+    prev,
+    next,
+    image,
+    imageAlt,
+  }}
+>
   <div set:html={html} />
 </PartialLayout>

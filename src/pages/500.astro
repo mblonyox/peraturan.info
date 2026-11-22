@@ -26,11 +26,14 @@ const errorMessage = Error.isError(error)
       </div>
     </div>
     <div class="w-full flex flex-row gap-2 justify-center">
-      <a href="/" class="btn btn-outline-secondary"> Kembali ke beranda </a>
+      <a class="btn btn-outline-secondary" href="/">
+        {" "}
+        Kembali ke beranda{" "}
+      </a>
       <button
-        type="button"
-        onclick="location.reload()"
         class="btn btn-secondary"
+        onclick="location.reload()"
+        type="button"
       >
         Coba lagi
       </button>
