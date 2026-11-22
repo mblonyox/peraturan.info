@@ -52,14 +52,14 @@
     "@types/sanitize-html": "^2.16.2",
     "@typescript-eslint/parser": "^8.73.0",
     "@typescript/native": "npm:typescript@^7.0.2",
-    "@unplugin-pwa/core": "^0.0.7",
-    "@unplugin-pwa/vite": "^0.0.7",
+    "@unplugin-pwa/core": "^0.0.8",
+    "@unplugin-pwa/vite": "^0.0.8",
     "@vite-pwa/assets-generator": "^2.0.0",
-    "@vite-pwa/astro": "^2.0.3",
+    "@vite-pwa/astro": "^2.0.4",
     "@vite-pwa/workbox-swkit": "^8.0.15",
     "@vite-pwa/workbox-window": "^8.0.15",
     "astro-eslint-parser": "^3.2.0",
-    "daisyui": "^5.8.1",
+    "daisyui": "^5.8.2",
     "eslint": "^10.15.0",
     "eslint-config-prettier": "^10.1.8",
     "eslint-plugin-astro": "^3.2.1",
@@ -75,8 +75,8 @@
     "typescript": "npm:@typescript/typescript6@^6.0.2",
     "typescript-eslint": "^8.73.0",
     "vite-plugin-arraybuffer": "^0.1.4",
-    "wrangler": "^4.165.0"
+    "wrangler": "^4.166.0"
   },
   "browserslist": "> 1%",
-  "packageManager": "pnpm@12.15.0"
+  "packageManager": "pnpm@12.21.0"
 }
