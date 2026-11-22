@@ -70,7 +70,9 @@ const paginationProps = { total, page, pageSize: limit };
             />
           </figure>
           <div class="card-body sm:flex-2">
-            <p class="card-title line-clamp-3 font-bold">{document.judul}</p>
+            <div class="card-title">
+              <p class="line-clamp-3 font-bold">{document.judul}</p>
+            </div>
             <p class="font-light">
               {document.jenis} {document.nomor}
             </p>
