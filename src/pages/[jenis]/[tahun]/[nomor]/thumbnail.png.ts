@@ -2,7 +2,7 @@ import type { APIRoute } from "astro";
 import { cache as fontCache, GoogleFont, ImageResponse } from "cf-workers-og";
 import { resize } from "pixl-resize";
 
-import placeholder from "@/assets/placeholder.png?arraybuffer";
+import placeholder from "@/assets/placeholder.png?inline";
 import Thumbnail from "@/components/Thumbnail";
 import { YEAR } from "@/lib/constants";
 import { getPeraturan, type Peraturan } from "@/lib/db";
@@ -31,7 +31,7 @@ export async function getThumbnailBytes(
       console.error(error);
     }
   }
-  thumbnail ??= placeholder;
+  thumbnail ??= Buffer.from(placeholder.split(",")[1], "base64").buffer;
   if (width && height) {
     const input = Buffer.from(thumbnail);
     thumbnail = resize(input, { width, height }).buffer as ArrayBuffer;
