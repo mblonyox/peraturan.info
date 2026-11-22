@@ -58,7 +58,7 @@ export default function SearchInput() {
           value={query}
           onChange={(e) => setQuery(e.currentTarget.value)}
         />
-        <kbd className="hidden lg:flex kbd kbd-sm p-3">⌘ K</kbd>
+        <kbd className="kbd hidden p-3 kbd-sm lg:flex">⌘ K</kbd>
       </label>
       <datalist id="autocomplete-list">
         {options.map((value) => (

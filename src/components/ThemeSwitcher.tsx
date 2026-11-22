@@ -33,14 +33,14 @@ export default function ThemeSwitcher() {
       </div>
       <ul
         tabIndex={-1}
-        className="dropdown-content bg-base-300 rounded-box z-1 p-2 shadow-2xl"
+        className="dropdown-content z-1 rounded-box bg-base-300 p-2 shadow-2xl"
       >
         {themeOptions.map((t) => (
           <li key={t}>
             <input
               type="radio"
               name="theme-dropdown"
-              className="btn btn-sm btn-block btn-ghost justify-start theme-controller"
+              className="theme-controller btn btn-block justify-start btn-ghost btn-sm"
               aria-label={t.toUpperCase()}
               value={t}
               checked={theme === t}

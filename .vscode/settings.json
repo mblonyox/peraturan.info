@@ -1,5 +1,4 @@
 {
-  "css.customData": [".vscode/tailwind.json"],
   "editor.formatOnSave": true,
   "editor.defaultFormatter": "esbenp.prettier-vscode",
   "[astro]": {
@@ -23,13 +22,19 @@
   "[typescript]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode"
   },
+  "editor.quickSuggestions": {
+    "strings": "on"
+  },
   "eslint.validate": [
+    "astro",
     "javascript",
     "javascriptreact",
     "typescript",
-    "typescriptreact",
-    "astro"
+    "typescriptreact"
   ],
+  "files.associations": {
+    "*.css": "tailwindcss"
+  },
   "json.validate.enable": true,
   "prettier.documentSelectors": ["**/*.astro"]
 }
