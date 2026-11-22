@@ -85,7 +85,10 @@ const layoutProps = {
             aria-selected={tanggal === tanggalDipilih}
             class:list={[
               "tab flex-1 z-1 text-nowrap",
-              tanggal === tanggalDipilih ? "tab-active" : "tab-inactive",
+              {
+                "tab-active": tanggal === tanggalDipilih,
+                "tab-inactive": tanggal !== tanggalDipilih,
+              },
             ]}
             href={`/terbaru?tanggal=${tanggal}`}
             role="tab"

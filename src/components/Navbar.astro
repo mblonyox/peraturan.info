@@ -27,9 +27,9 @@ const menus = [
 <nav class="navbar bg-base-200">
   <div class="navbar-start">
     <div class="flex-none lg:hidden dropdown">
-      <div aria-label="Show Menu" class="btn m-1" role="button" tabindex="0">
+      <button aria-label="Nav Menu" class="btn m-1" tabindex="0">
         <Icon name="ri:menu-line" />
-      </div>
+      </button>
       <ul
         class="menu dropdown-content bg-base-300 rounded-box z-1 p-2 shadow-2xl"
         tabindex="-1"
@@ -80,10 +80,10 @@ const menus = [
         <li>
           {menu ? (
             <div class="dropdown dropdown-start">
-              <div role="button" tabindex="0">
+              <button tabindex="0">
                 <span class="mx-1">{text}</span>
                 <Icon class="inline-block" name="ri:arrow-drop-down-line" />
-              </div>
+              </button>
               <ul
                 class="menu dropdown-content bg-base-300 rounded-box z-1 p-2 shadow-2xl"
                 tabindex="-1"

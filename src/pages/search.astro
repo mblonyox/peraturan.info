@@ -59,11 +59,11 @@ const paginationProps = { total, page, pageSize: limit };
         <div class="bg-base-200 card card-border sm:card-side shadow-sm">
           <figure class="sm:flex-1">
             <Image
-              width={140}
-              height={220}
-              src={new URL(path + "/thumbnail.png?size=xs", Astro.site).href}
               alt={judul}
+              height={220}
               loading="lazy"
+              src={new URL(path + "/thumbnail.png?size=xs", Astro.site).href}
+              width={140}
             />
           </figure>
           <div class="card-body sm:flex-2">
